@@ -1,0 +1,215 @@
+name: marketdesktop
+description: A new Flutter project.
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.6 <4.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  responsive_framework: ^1.1.0
+  get: ^4.6.5
+  get_storage: ^2.1.1
+  responsive_sizer: ^3.1.1
+  flutter_svg: ^2.0.7
+  shimmer: ^3.0.0
+  http: ^1.0.0
+  intl: ^0.18.1
+  dio: ^5.2.1+1
+  web_socket_channel: ^2.4.0
+  dropdown_button2: ^2.3.9
+  flutter_pdfview: ^1.2.7
+  dropdown_search: ^5.0.6
+  window_manager: ^0.3.5
+  number_inc_dec: ^0.8.0
+  syncfusion_flutter_charts: ^23.2.6
+  multiselect: ^0.1.0
+  get_ip_address: ^0.0.6
+  device_info_plus: ^9.0.3
+  resizable_widget: ^1.0.5
+  number_to_indian_words: ^1.0.1
+  path_provider: ^2.0.15
+  file_saver: ^0.2.9
+  paginable: ^2.0.0
+  floating_dialog: ^1.0.1+1
+  package_info_plus: ^4.2.0
+  socket_io_client: ^2.0.3+1
+  url_launcher: ^6.2.1
+  syncfusion_flutter_pdfviewer: ^23.2.6
+  flutter_calendar_carousel: ^2.4.2
+  marquee: ^2.2.3
+  check_vpn_connection: ^0.0.2
+  spinner_date_time_picker: ^0.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - resources/assets/
+    - resources/assets/images/
+    - resources/fonts/
+  fonts:
+    - family: Poppins-ExtraBold
+      fonts:
+        - asset: resources/fonts/Poppins-ExtraBold.ttf
+
+    - family: Poppins-SemiBold
+      fonts:
+        - asset: resources/fonts/Poppins-SemiBold.ttf
+
+    - family: Poppins-Medium
+      fonts:
+        - asset: resources/fonts/Poppins-Medium.ttf
+
+    - family: Poppins-Regular
+      fonts:
+        - asset: resources/fonts/Poppins-Regular.ttf
+    - family: Roboto-Regular
+      fonts:
+        - asset: resources/fonts/Roboto-Regular.ttf
+    - family: Roboto-Medium
+      fonts:
+        - asset: resources/fonts/Roboto-Medium.ttf
+    - family: Roboto-Bold
+      fonts:
+        - asset: resources/fonts/Roboto-Bold.ttf
+    - family: Raleway-Regular
+      fonts:
+        - asset: resources/fonts/Raleway-Regular.ttf
+    - family: Raleway-Medium
+      fonts:
+        - asset: resources/fonts/Raleway-Medium.ttf
+    - family: Raleway-Bold
+      fonts:
+        - asset: resources/fonts/Raleway-Bold.ttf
+    - family: OpenSans-Regular
+      fonts:
+        - asset: resources/fonts/OpenSans-Regular.ttf
+    - family: OpenSans-Medium
+      fonts:
+        - asset: resources/fonts/OpenSans-Medium.ttf
+    - family: OpenSans-Bold
+      fonts:
+        - asset: resources/fonts/OpenSans-Bold.ttf
+    - family: NunitoSans-Regular
+      fonts:
+        - asset: resources/fonts/NunitoSans-Regular.ttf
+    - family: NunitoSans-Medium
+      fonts:
+        - asset: resources/fonts/NunitoSans-Medium.ttf
+    - family: NunitoSans-Bold
+      fonts:
+        - asset: resources/fonts/NunitoSans-Bold.ttf
+    - family: Montserrat-Regular
+      fonts:
+        - asset: resources/fonts/Montserrat-Regular.ttf
+    - family: Montserrat-Medium
+      fonts:
+        - asset: resources/fonts/Montserrat-Medium.ttf
+    - family: Montserrat-Bold
+      fonts:
+        - asset: resources/fonts/Montserrat-Bold.ttf
+    - family: Manrope-Regular
+      fonts:
+        - asset: resources/fonts/Manrope-Regular.ttf
+    - family: Manrope-Medium
+      fonts:
+        - asset: resources/fonts/Manrope-Medium.ttf
+    - family: Manrope-Bold
+      fonts:
+        - asset: resources/fonts/Manrope-Bold.ttf
+    - family: Lato-Regular
+      fonts:
+        - asset: resources/fonts/Lato-Regular.ttf
+    - family: Lato-Medium
+      fonts:
+        - asset: resources/fonts/Lato-Medium.ttf
+    - family: Lato-Bold
+      fonts:
+        - asset: resources/fonts/Lato-Bold.ttf
+    - family: Inter-Regular
+      fonts:
+        - asset: resources/fonts/Inter-Regular.ttf
+    - family: Inter-Medium
+      fonts:
+        - asset: resources/fonts/Inter-Medium.ttf
+    - family: Inter-Bold
+      fonts:
+        - asset: resources/fonts/Inter-Bold.ttf
+    - family: Gilroy-Regular
+      fonts:
+        - asset: resources/fonts/Gilroy-Regular.ttf
+    - family: Gilroy-Medium
+      fonts:
+        - asset: resources/fonts/Gilroy-Medium.ttf
+    - family: Gilroy-Bold
+      fonts:
+        - asset: resources/fonts/Gilroy-Bold.ttf
+    - family: ARIALBD
+      fonts:
+        - asset: resources/fonts/ARIALBD.TTF
+    - family: ARIALBI
+      fonts:
+        - asset: resources/fonts/ARIALBI.TTF
+    - family: ArialCEBoldItalic
+      fonts:
+        - asset: resources/fonts/ArialCEBoldItalic.ttf
+    - family: ARIALI
+      fonts:
+        - asset: resources/fonts/ARIALI.TTF
+    - family: ARIALN
+      fonts:
+        - asset: resources/fonts/ARIALN.TTF
+    - family: ARIALNB
+      fonts:
+        - asset: resources/fonts/ARIALNB.TTF
+    - family: ARIALNBI
+      fonts:
+        - asset: resources/fonts/ARIALNBI.TTF
+    - family: ARIALNI
+      fonts:
+        - asset: resources/fonts/ARIALNI.TTF
+    - family: ARIALR
+      fonts:
+        - asset: resources/fonts/ARIALR.TTF
+    - family: ARIBLK
+      fonts:
+        - asset: resources/fonts/ARIBLK.TTF
+    - family: NotoSans-Medium
+      fonts:
+        - asset: resources/fonts/NotoSans-Medium.ttf
+    - family: Cabin-SemiBold
+      fonts:
+        - asset: resources/fonts/Cabin-SemiBold.ttf
