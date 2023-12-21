@@ -4,6 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
+
 MyTradeListModel myTradeListModelFromJson(String str) => MyTradeListModel.fromJson(json.decode(str));
 
 String myTradeListModelToJson(MyTradeListModel data) => json.encode(data.toJson());
@@ -66,6 +69,7 @@ class TradeData {
   DateTime? updatedAt;
   num? oddLotTrade;
   double currentPriceFromSocket = 0.0;
+  Rx<ScriptData> scriptDataFromSocket = ScriptData().obs;
   num? profitLoss = 0.0;
   bool isSelected = false;
 

@@ -332,7 +332,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
               valueBox(tradeValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(tradeValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
               valueBox(shortFullDateTime(tradeValue.expiryDate!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(tradeValue.tradeMargin!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+
               valueBox(tradeValue.symbolName ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
               valueBox((tradeValue.tradeAttribute ?? "").toUpperCase(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
               valueBox((tradeValue.allowTradeValue ?? "").toUpperCase(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
@@ -353,7 +353,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
         titleBox("Exchange"),
         titleBox("Script", isLarge: true),
         titleBox("Expiry Date", isForDate: true),
-        titleBox("Trade Margin", isBig: true),
+
         titleBox("Description", isLarge: true),
         titleBox("Trade Attribute", isBig: true),
         titleBox("Allow Trade", isBig: true),

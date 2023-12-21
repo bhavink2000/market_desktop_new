@@ -485,13 +485,18 @@ class UserListScreen extends BaseView<UserListController> {
               valueBox(controller.arrUserListData[index].credit.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
               valueBox(controller.arrUserListData[index].profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+
+              valueBox((controller.getPlPer(percentage: controller.arrUserListData[index].profitAndLossSharing!, pl: controller.arrUserListData[index].profitLoss!) * -1).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  controller.getPlPer(percentage: controller.arrUserListData[index].profitAndLossSharing!, pl: controller.arrUserListData[index].profitLoss!) > 0 ? AppColors().redColor : AppColors().blueColor, index),
+
               valueBox("${(controller.arrUserListData[index].profitLoss! / 100).toStringAsFixed(2)}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+
               valueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, isBig: true),
               valueBox(controller.arrUserListData[index].role == UserRollList.user ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2) : "0", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                   AppColors().blueColor, index,
                   isBig: true),
 
-              valueBox(controller.arrUserListData[index].tradeBalance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+              valueBox(controller.arrUserListData[index].balance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
 
               valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs),
               valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: controller.arrUserListData[index].role == UserRollList.master ? false : true, switchValue: controller.arrUserListData[index].closeOnly!.obs),

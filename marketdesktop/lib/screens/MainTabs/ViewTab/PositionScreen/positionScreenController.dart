@@ -329,21 +329,23 @@ class PositionController extends BaseController {
       isTradeCallFinished.value = false;
 
       var response = await service.tradeCall(
-          symbolId: arrPositionScriptList[selectedScriptIndex].symbolId,
-          quantity: double.parse(lotController.text),
-          totalQuantity: int.parse(qtyController.text),
-          price: double.parse(priceController.text),
-          isFromStopLoss: selectedOrderType.value.id == "stopLoss",
-          marketPrice: selectedOrderType.value.id == "stopLoss"
-              ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ltp!.toDouble()
-              : isFromBuy
-                  ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble()
-                  : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
-          lotSize: arrPositionScriptList[selectedScriptIndex].lotSize!.toInt(),
-          orderType: selectedOrderType.value.id,
-          tradeType: isFromBuy ? "buy" : "sell",
-          exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
-          productType: "longTerm");
+        symbolId: arrPositionScriptList[selectedScriptIndex].symbolId,
+        quantity: double.parse(lotController.text),
+        totalQuantity: int.parse(qtyController.text),
+        price: double.parse(priceController.text),
+        isFromStopLoss: selectedOrderType.value.id == "stopLoss",
+        marketPrice: selectedOrderType.value.id == "stopLoss"
+            ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ltp!.toDouble()
+            : isFromBuy
+                ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble()
+                : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        lotSize: arrPositionScriptList[selectedScriptIndex].lotSize!.toInt(),
+        orderType: selectedOrderType.value.id,
+        tradeType: isFromBuy ? "buy" : "sell",
+        exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
+        productType: "longTerm",
+        refPrice: isFromBuy ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble() : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+      );
 
       //longterm
       isTradeCallFinished.value = false;
@@ -399,15 +401,17 @@ class PositionController extends BaseController {
       isTradeCallFinished.value = false;
 
       var response = await service.manualTradeCall(
-          symbolId: arrPositionScriptList[selectedScriptIndex].symbolId,
-          quantity: double.parse(lotController.text),
-          totalQuantity: double.parse(qtyController.text),
-          price: double.parse(priceController.text),
-          lotSize: arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ls!.toInt(),
-          orderType: selectedOrderType.value.id,
-          tradeType: isFromBuy ? "buy" : "sell",
-          exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
-          userId: selectedUser.value.userId!);
+        symbolId: arrPositionScriptList[selectedScriptIndex].symbolId,
+        quantity: double.parse(lotController.text),
+        totalQuantity: double.parse(qtyController.text),
+        price: double.parse(priceController.text),
+        lotSize: arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ls!.toInt(),
+        orderType: selectedOrderType.value.id,
+        tradeType: isFromBuy ? "buy" : "sell",
+        exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
+        userId: selectedUser.value.userId!,
+        refPrice: isFromBuy ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble() : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+      );
 
       //longterm
       isTradeCallFinished.value = false;

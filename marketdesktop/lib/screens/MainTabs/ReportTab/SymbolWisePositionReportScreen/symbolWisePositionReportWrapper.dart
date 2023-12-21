@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 
 import 'package:marketdesktop/customWidgets/appButton.dart';
-import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -21,7 +20,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrTrade.length, onCLickFilter: () {
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -244,35 +243,6 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                           ],
                         ),
                       ),
-                      if (userData!.role != UserRollList.user)
-                        SizedBox(
-                          height: 10,
-                        ),
-                      if (userData!.role != UserRollList.user)
-                        Container(
-                          height: 35,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              Container(
-                                child: Text("Username:",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
-                                      color: AppColors().fontColor,
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              userListDropDown(controller.selectedUser, width: 200),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ],
-                          ),
-                        ),
                       SizedBox(
                         height: 10,
                       ),
@@ -348,7 +318,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                               title: "View",
                               textSize: 14,
                               onPress: () {
-                                controller.getTradeList();
+                                controller.getAccountSummaryNewList("", isFromfilter: true);
                               },
                               focusKey: controller.viewFocus,
                               borderColor: Colors.transparent,
@@ -378,8 +348,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";
-                                controller.currentPage = 1;
-                                controller.getTradeList(isFromClear: true);
+                                controller.getAccountSummaryNewList("", isFromClear: true);
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,
@@ -411,7 +380,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        width: 2100,
+        width: 2450,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -429,20 +398,20 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
               ),
             ),
             Expanded(
-              child: controller.isApiCallRunning == false && controller.arrTrade.isEmpty
-                  ? dataNotFoundView("Symbol wise position report not found")
+              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrSummaryList.isEmpty
+                  ? dataNotFoundView("Account Summary not found")
                   : PaginableListView.builder(
                       loadMore: () async {
                         if (controller.totalPage >= controller.currentPage) {
                           //print(controller.currentPage);
-                          controller.getTradeList();
+                          controller.getAccountSummaryNewList("");
                         }
                       },
                       errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
                       progressIndicatorWidget: displayIndicator(),
                       physics: const ClampingScrollPhysics(),
                       clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning ? 50 : controller.arrTrade.length,
+                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrSummaryList.length,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
@@ -460,7 +429,6 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    // var scriptValue = controller.arrUserOderList[index];
     if (controller.isApiCallRunning || controller.isResetCall) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
@@ -473,23 +441,30 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
             highlightColor: AppColors().grayBg),
       );
     } else {
+      var scriptValue = controller.arrSummaryList[index];
       return GestureDetector(
         onTap: () {
-          controller.selectedOrderIndex = index;
+          // controller.selectedScriptIndex = index;
           controller.update();
         },
         child: Container(
-          decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedOrderIndex == index ? AppColors().darkText : Colors.transparent)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(controller.arrTrade[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrTrade[index].exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrTrade[index].symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(controller.arrTrade[index].oldOrderTypeValue ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(controller.arrTrade[index].orderTypeValue ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(shortFullDateTime(controller.arrTrade[index].updatedAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(controller.arrTrade[index].userUpdatedName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(scriptValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(scriptValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
+
+              valueBox(scriptValue.totalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox((scriptValue.totalQuantity! / 100).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+
+              valueBox(scriptValue.avgPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+
+              valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox((scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
+              valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(scriptValue.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
+              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             ],
           ),
         ),
@@ -501,19 +476,16 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
-
         titleBox("Exchange"),
-        titleBox("Symbol", isBig: true),
+        titleBox("symbol", isLarge: true),
         titleBox("Net Qty"),
+        titleBox("Net Qty % wise", isBig: true),
         titleBox("Net A Price"),
-        titleBox("brokerage"),
-        titleBox("wit brokerage a price", isLarge: true),
-
-        titleBox("cmp"),
-        titleBox("p/l"),
-        titleBox("p/l %"),
-        titleBox("brokerage %", isBig: true),
+        titleBox("BROKRAGE"),
+        titleBox("with BROKRAGE a price", isLarge: true),
+        titleBox("CMP"),
+        titleBox("P/L"),
+        // titleBox("P/L (%)"),
       ],
     );
   }

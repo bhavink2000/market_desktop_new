@@ -144,16 +144,16 @@ class MainContainerScreen extends BaseView<MainContainerController> {
               Spacer(),
               Text("v1.0.0", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
               Spacer(),
-              Text(controller.setupbottomData(), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
-              SizedBox(
-                width: 5,
-              ),
-              Image.asset(
-                AppImages.infoGreenIcon,
-                width: 20,
-                height: 20,
-                fit: BoxFit.cover,
-              ),
+              // Text(controller.setupbottomData(), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+              // SizedBox(
+              //   width: 5,
+              // ),
+              // Image.asset(
+              //   AppImages.infoGreenIcon,
+              //   width: 20,
+              //   height: 20,
+              //   fit: BoxFit.cover,
+              // ),
               SizedBox(
                 width: 12,
               ),

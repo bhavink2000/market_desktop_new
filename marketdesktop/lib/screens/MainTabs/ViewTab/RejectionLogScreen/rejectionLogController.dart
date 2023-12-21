@@ -9,7 +9,7 @@ class RejectionLogController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
   Rx<UserData> selectedUser = UserData().obs;

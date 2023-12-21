@@ -977,25 +977,27 @@ class MarketWatchController extends BaseController {
       isTradeCallFinished.value = false;
       update();
       var response = await service.tradeCall(
-          symbolId: selectedSymbol!.symbolId,
-          quantity: double.parse(lotController.text),
-          totalQuantity: int.parse(qtyController.text),
-          price: double.parse(priceController.text),
-          isFromStopLoss: selectedOrderType.value.id == "stopLoss",
-          marketPrice: selectedOrderType.value.id == "stopLoss"
-              ? isFromBuy
-                  ? selectedScript.value!.ask!.toDouble()
-                  : selectedScript.value!.bid!.toDouble()
-              : selectedOrderType.value.id == "limit"
-                  ? double.parse(priceController.text)
-                  : isFromBuy
-                      ? selectedScript.value!.ask!.toDouble()
-                      : selectedScript.value!.bid!.toDouble(),
-          lotSize: selectedSymbol!.lotSize!,
-          orderType: selectedOrderType.value.id == "123" ? "market" : selectedOrderType.value.id,
-          tradeType: isFromBuy ? "buy" : "sell",
-          exchangeId: selectedSymbol!.exchangeId,
-          productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm");
+        symbolId: selectedSymbol!.symbolId,
+        quantity: double.parse(lotController.text),
+        totalQuantity: int.parse(qtyController.text),
+        price: double.parse(priceController.text),
+        isFromStopLoss: selectedOrderType.value.id == "stopLoss",
+        marketPrice: selectedOrderType.value.id == "stopLoss"
+            ? isFromBuy
+                ? selectedScript.value!.ask!.toDouble()
+                : selectedScript.value!.bid!.toDouble()
+            : selectedOrderType.value.id == "limit"
+                ? double.parse(priceController.text)
+                : isFromBuy
+                    ? selectedScript.value!.ask!.toDouble()
+                    : selectedScript.value!.bid!.toDouble(),
+        lotSize: selectedSymbol!.lotSize!,
+        orderType: selectedOrderType.value.id == "123" ? "market" : selectedOrderType.value.id,
+        tradeType: isFromBuy ? "buy" : "sell",
+        exchangeId: selectedSymbol!.exchangeId,
+        productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm",
+        refPrice: isFromBuy ? selectedScript.value!.ask!.toDouble() : selectedScript.value!.bid!.toDouble(),
+      );
 
       //longterm
       isTradeCallFinished.value = false;
@@ -1052,16 +1054,18 @@ class MarketWatchController extends BaseController {
       isTradeCallFinished.value = false;
 
       var response = await service.manualTradeCall(
-          symbolId: selectedSymbol!.symbolId,
-          quantity: double.parse(lotController.text),
-          totalQuantity: double.parse(qtyController.text),
-          price: double.parse(priceController.text),
-          lotSize: selectedScript.value!.ls!.toInt(),
-          orderType: selectedOrderType.value.id,
-          tradeType: isFromBuy ? "buy" : "sell",
-          exchangeId: selectedSymbol!.exchangeId,
-          executionTime: serverFormatDateTime(DateTime.now()),
-          userId: selectedUser.value.userId!);
+        symbolId: selectedSymbol!.symbolId,
+        quantity: double.parse(lotController.text),
+        totalQuantity: double.parse(qtyController.text),
+        price: double.parse(priceController.text),
+        lotSize: selectedScript.value!.ls!.toInt(),
+        orderType: selectedOrderType.value.id,
+        tradeType: isFromBuy ? "buy" : "sell",
+        exchangeId: selectedSymbol!.exchangeId,
+        executionTime: serverFormatDateTime(DateTime.now()),
+        userId: selectedUser.value.userId!,
+        refPrice: isFromBuy ? selectedScript.value!.ask!.toDouble() : selectedScript.value!.bid!.toDouble(),
+      );
 
       //longterm
       isTradeCallFinished.value = false;

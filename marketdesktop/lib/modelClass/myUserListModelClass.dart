@@ -1,8 +1,6 @@
-// To parse this JSON data, do
-//
-//     final userListModel = userListModelFromJson(jsonString);
-
 import 'dart:convert';
+
+import 'exchangeAllowModelClass.dart';
 
 UserListModel userListModelFromJson(String str) => UserListModel.fromJson(json.decode(str));
 
@@ -40,13 +38,16 @@ class UserData {
   String? phone;
   num? credit;
   num? initialCredit;
-  num? tradeBalance;
+  num? balance;
+  num? tradeMarginBalance;
+  num? marginBalance;
   String? remark;
   num? profitAndLossSharing;
   num? profitAndLossSharingDownLine;
   num? brkSharing;
   num? brkSharingDownLine;
-  List<String>? exchangeAllow;
+  List<ExchangeAllow>? exchangeAllow;
+  List<AssignGroupDatum>? assignGroupData;
   List<String>? highLowBetweenTradeLimit;
   bool? firstLogin;
   bool? changePasswordOnFirstLogin;
@@ -58,22 +59,28 @@ class UserData {
   bool? closeOnly;
   bool? marginSquareOff;
   bool? freshStopLoss;
-  num? cmpOrder;
+  int? cmpOrder;
   String? cmpOrderValue;
-  num? manualOrder;
+  int? manualOrder;
   String? manualOrderValue;
-  num? addMaster;
+  int? marketOrder;
+  String? marketOrderValue;
+  int? addMaster;
   String? addMasterValue;
-  num? modifyOrder;
+  int? modifyOrder;
   String? modifyOrderValue;
-  num? autoSquareOff;
+  int? executePendingOrder;
+  String? executePendingOrderValue;
+  int? deleteTrade;
+  String? deleteTradeValue;
+  int? autoSquareOff;
   String? autoSquareOffValue;
-  num? noOfLogin;
-  DateTime? lastLoginTime;
-  DateTime? lastLogoutTime;
-  dynamic leverage;
-  num? cutOff;
-  num? intraday;
+  int? noOfLogin;
+  String? lastLoginTime;
+  String? lastLogoutTime;
+  String? leverage;
+  int? cutOff;
+  int? intraday;
   String? intradayValue;
   DateTime? createdAt;
   String? ipAddress;
@@ -82,61 +89,67 @@ class UserData {
   String? deviceType;
   num? profitLoss;
   num? brokerageTotal;
-  num? tradeMarginBalance;
-  num? marginBalance;
 
-  UserData(
-      {this.status,
-      this.userId,
-      this.name,
-      this.userName,
-      this.phone,
-      this.credit,
-      this.initialCredit,
-      this.tradeBalance,
-      this.remark,
-      this.profitAndLossSharing,
-      this.profitAndLossSharingDownLine,
-      this.brkSharing,
-      this.brkSharingDownLine,
-      this.exchangeAllow,
-      this.highLowBetweenTradeLimit,
-      this.firstLogin,
-      this.changePasswordOnFirstLogin,
-      this.role,
-      this.roleName,
-      this.parentId,
-      this.parentUser,
-      this.bet,
-      this.closeOnly,
-      this.marginSquareOff,
-      this.freshStopLoss,
-      this.cmpOrder,
-      this.cmpOrderValue,
-      this.manualOrder,
-      this.manualOrderValue,
-      this.addMaster,
-      this.addMasterValue,
-      this.modifyOrder,
-      this.modifyOrderValue,
-      this.autoSquareOff,
-      this.autoSquareOffValue,
-      this.noOfLogin,
-      this.lastLoginTime,
-      this.lastLogoutTime,
-      this.leverage,
-      this.cutOff,
-      this.intraday,
-      this.intradayValue,
-      this.createdAt,
-      this.ipAddress,
-      this.deviceToken,
-      this.deviceId,
-      this.deviceType,
-      this.profitLoss,
-      this.brokerageTotal,
-      this.tradeMarginBalance,
-      this.marginBalance});
+  UserData({
+    this.status,
+    this.userId,
+    this.name,
+    this.userName,
+    this.phone,
+    this.credit,
+    this.initialCredit,
+    this.balance,
+    this.tradeMarginBalance,
+    this.marginBalance,
+    this.remark,
+    this.profitAndLossSharing,
+    this.profitAndLossSharingDownLine,
+    this.brkSharing,
+    this.brkSharingDownLine,
+    this.exchangeAllow,
+    this.assignGroupData,
+    this.highLowBetweenTradeLimit,
+    this.firstLogin,
+    this.changePasswordOnFirstLogin,
+    this.role,
+    this.roleName,
+    this.parentId,
+    this.parentUser,
+    this.bet,
+    this.closeOnly,
+    this.marginSquareOff,
+    this.freshStopLoss,
+    this.cmpOrder,
+    this.cmpOrderValue,
+    this.manualOrder,
+    this.manualOrderValue,
+    this.marketOrder,
+    this.marketOrderValue,
+    this.addMaster,
+    this.addMasterValue,
+    this.modifyOrder,
+    this.modifyOrderValue,
+    this.executePendingOrder,
+    this.executePendingOrderValue,
+    this.deleteTrade,
+    this.deleteTradeValue,
+    this.autoSquareOff,
+    this.autoSquareOffValue,
+    this.noOfLogin,
+    this.lastLoginTime,
+    this.lastLogoutTime,
+    this.leverage,
+    this.cutOff,
+    this.intraday,
+    this.intradayValue,
+    this.createdAt,
+    this.ipAddress,
+    this.deviceToken,
+    this.deviceId,
+    this.deviceType,
+    this.profitLoss,
+    this.brokerageTotal,
+  });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
         status: json["status"],
@@ -144,15 +157,18 @@ class UserData {
         name: json["name"],
         userName: json["userName"],
         phone: json["phone"],
-        credit: json["credit"]?.toDouble(),
+        credit: json["credit"],
         initialCredit: json["initialCredit"],
-        tradeBalance: json["balance"],
+        balance: json["balance"],
+        tradeMarginBalance: json["tradeMarginBalance"],
+        marginBalance: json["marginBalance"],
         remark: json["remark"],
         profitAndLossSharing: json["profitAndLossSharing"],
         profitAndLossSharingDownLine: json["profitAndLossSharingDownLine"],
         brkSharing: json["brkSharing"],
         brkSharingDownLine: json["brkSharingDownLine"],
-        exchangeAllow: json["exchangeAllow"] == null ? [] : List<String>.from(json["exchangeAllow"]!.map((x) => x)),
+        exchangeAllow: json["exchangeAllow"] == null ? [] : List<ExchangeAllow>.from(json["exchangeAllow"]!.map((x) => ExchangeAllow.fromJson(x))),
+        assignGroupData: json["assignGroupData"] == null ? [] : List<AssignGroupDatum>.from(json["assignGroupData"]!.map((x) => AssignGroupDatum.fromJson(x))),
         highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<String>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
         firstLogin: json["firstLogin"],
         changePasswordOnFirstLogin: json["changePasswordOnFirstLogin"],
@@ -168,15 +184,21 @@ class UserData {
         cmpOrderValue: json["cmpOrderValue"],
         manualOrder: json["manualOrder"],
         manualOrderValue: json["manualOrderValue"],
+        marketOrder: json["marketOrder"],
+        marketOrderValue: json["marketOrderValue"],
         addMaster: json["addMaster"],
         addMasterValue: json["addMasterValue"],
         modifyOrder: json["modifyOrder"],
         modifyOrderValue: json["modifyOrderValue"],
+        executePendingOrder: json["executePendingOrder"],
+        executePendingOrderValue: json["executePendingOrderValue"],
+        deleteTrade: json["deleteTrade"],
+        deleteTradeValue: json["deleteTradeValue"],
         autoSquareOff: json["autoSquareOff"],
         autoSquareOffValue: json["autoSquareOffValue"],
         noOfLogin: json["noOfLogin"],
-        lastLoginTime: json["lastLoginTime"] == null || json["lastLoginTime"] == "" ? null : DateTime.parse(json["lastLoginTime"]),
-        lastLogoutTime: json["lastLogoutTime"] == null || json["lastLogoutTime"] == "" ? null : DateTime.parse(json["lastLogoutTime"]),
+        lastLoginTime: json["lastLoginTime"],
+        lastLogoutTime: json["lastLogoutTime"],
         leverage: json["leverage"],
         cutOff: json["cutOff"],
         intraday: json["intraday"],
@@ -186,10 +208,8 @@ class UserData {
         deviceToken: json["deviceToken"],
         deviceId: json["deviceId"],
         deviceType: json["deviceType"],
-        profitLoss: json["profitLoss"]?.toDouble(),
+        profitLoss: json["profitLoss"],
         brokerageTotal: json["brokerageTotal"],
-        tradeMarginBalance: json["tradeMarginBalance"],
-        marginBalance: json["marginBalance"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -200,13 +220,16 @@ class UserData {
         "phone": phone,
         "credit": credit,
         "initialCredit": initialCredit,
-        "tradeBalance": tradeBalance,
+        "balance": balance,
+        "tradeMarginBalance": tradeMarginBalance,
+        "marginBalance": marginBalance,
         "remark": remark,
         "profitAndLossSharing": profitAndLossSharing,
         "profitAndLossSharingDownLine": profitAndLossSharingDownLine,
         "brkSharing": brkSharing,
         "brkSharingDownLine": brkSharingDownLine,
-        "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow!.map((x) => x)),
+        "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow!.map((x) => x.toJson())),
+        "assignGroupData": assignGroupData == null ? [] : List<dynamic>.from(assignGroupData!.map((x) => x.toJson())),
         "highLowBetweenTradeLimit": highLowBetweenTradeLimit == null ? [] : List<dynamic>.from(highLowBetweenTradeLimit!.map((x) => x)),
         "firstLogin": firstLogin,
         "changePasswordOnFirstLogin": changePasswordOnFirstLogin,
@@ -222,14 +245,20 @@ class UserData {
         "cmpOrderValue": cmpOrderValue,
         "manualOrder": manualOrder,
         "manualOrderValue": manualOrderValue,
+        "marketOrder": marketOrder,
+        "marketOrderValue": marketOrderValue,
         "addMaster": addMaster,
         "addMasterValue": addMasterValue,
         "modifyOrder": modifyOrder,
         "modifyOrderValue": modifyOrderValue,
+        "executePendingOrder": executePendingOrder,
+        "executePendingOrderValue": executePendingOrderValue,
+        "deleteTrade": deleteTrade,
+        "deleteTradeValue": deleteTradeValue,
         "autoSquareOff": autoSquareOff,
         "autoSquareOffValue": autoSquareOffValue,
         "noOfLogin": noOfLogin,
-        "lastLoginTime": lastLoginTime?.toIso8601String(),
+        "lastLoginTime": lastLoginTime,
         "lastLogoutTime": lastLogoutTime,
         "leverage": leverage,
         "cutOff": cutOff,
@@ -242,8 +271,66 @@ class UserData {
         "deviceType": deviceType,
         "profitLoss": profitLoss,
         "brokerageTotal": brokerageTotal,
-        "tradeMarginBalance": tradeMarginBalance,
-        "marginBalance": marginBalance,
+      };
+}
+
+class AssignGroupDatum {
+  String? id;
+  String? groupId;
+  String? userId;
+  String? exchangeId;
+  int? autoSquareOff;
+  int? onlySquareOff;
+  bool? isTurnoverWise;
+  bool? isSymbolWise;
+  int? status;
+  int? v;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  AssignGroupDatum({
+    this.id,
+    this.groupId,
+    this.userId,
+    this.exchangeId,
+    this.autoSquareOff,
+    this.onlySquareOff,
+    this.isTurnoverWise,
+    this.isSymbolWise,
+    this.status,
+    this.v,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory AssignGroupDatum.fromJson(Map<String, dynamic> json) => AssignGroupDatum(
+        id: json["_id"],
+        groupId: json["groupId"],
+        userId: json["userId"],
+        exchangeId: json["exchangeId"],
+        autoSquareOff: json["autoSquareOff"],
+        onlySquareOff: json["onlySquareOff"],
+        isTurnoverWise: json["isTurnoverWise"],
+        isSymbolWise: json["isSymbolWise"],
+        status: json["status"],
+        v: json["__v"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "groupId": groupId,
+        "userId": userId,
+        "exchangeId": exchangeId,
+        "autoSquareOff": autoSquareOff,
+        "onlySquareOff": onlySquareOff,
+        "isTurnoverWise": isTurnoverWise,
+        "isSymbolWise": isSymbolWise,
+        "status": status,
+        "__v": v,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
       };
 }
 
@@ -277,4 +364,16 @@ class Meta {
         "limit": limit,
         "totalPage": totalPage,
       };
+}
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

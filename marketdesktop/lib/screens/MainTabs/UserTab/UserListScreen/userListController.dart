@@ -11,7 +11,7 @@ class UserListController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   List<UserData> arrUserListData = [];
   int selectedUserIndex = -1;
   Rx<AddMaster> selectedFilterType = AddMaster().obs;
@@ -41,6 +41,13 @@ class UserListController extends BaseController {
     callForRoleList();
     isLoadingData = true;
     getUserList();
+  }
+
+  num getPlPer({num? percentage, num? pl}) {
+    var temp1 = pl! * percentage!;
+    var temp2 = temp1 / 100;
+
+    return temp2;
   }
 
   getUserList({bool isFromClear = false, bool isFromButtons = false}) async {

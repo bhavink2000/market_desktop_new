@@ -13,7 +13,7 @@ class AccountSummaryController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   RxString fromDate = "".obs;
   RxString endDate = "".obs;
   AccountSummaryType? selectedAccountSummaryType;

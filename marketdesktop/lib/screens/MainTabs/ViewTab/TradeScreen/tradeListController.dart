@@ -19,7 +19,7 @@ class TradeListController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
   Rx<UserData> selectedUser = UserData().obs;
@@ -222,17 +222,19 @@ class TradeListController extends BaseController {
 
       update();
       var response = await service.modifyTradeCall(
-          tradeId: arrTrade[selectedOrderIndex].tradeId!,
-          symbolId: arrTrade[selectedOrderIndex].symbolId!,
-          quantity: double.parse(lotController.text),
-          totalQuantity: double.parse(qtyController.text),
-          price: double.parse(priceController.text),
-          marketPrice: double.parse(priceController.text),
-          lotSize: arrTrade[selectedOrderIndex].lotSize!.toDouble(),
-          orderType: arrTrade[selectedOrderIndex].orderType,
-          tradeType: isFromBuy ? "buy" : "sell",
-          exchangeId: arrTrade[selectedOrderIndex].exchangeId,
-          productType: arrTrade[selectedOrderIndex].productTypeMain!);
+        tradeId: arrTrade[selectedOrderIndex].tradeId!,
+        symbolId: arrTrade[selectedOrderIndex].symbolId!,
+        quantity: double.parse(lotController.text),
+        totalQuantity: double.parse(qtyController.text),
+        price: double.parse(priceController.text),
+        marketPrice: double.parse(priceController.text),
+        lotSize: arrTrade[selectedOrderIndex].lotSize!.toDouble(),
+        orderType: arrTrade[selectedOrderIndex].orderType,
+        tradeType: isFromBuy ? "buy" : "sell",
+        exchangeId: arrTrade[selectedOrderIndex].exchangeId,
+        productType: arrTrade[selectedOrderIndex].productTypeMain!,
+        refPrice: isFromBuy ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble() : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
+      );
 
       if (response != null) {
         // Get.back();
@@ -259,17 +261,19 @@ class TradeListController extends BaseController {
 
   pendingToSuccessTrade(bool isFromBuy) async {
     var response = await service.modifyTradeCall(
-        tradeId: arrTrade[selectedOrderIndex].tradeId!,
-        symbolId: arrTrade[selectedOrderIndex].symbolId!,
-        quantity: arrTrade[selectedOrderIndex].quantity!.toDouble(),
-        totalQuantity: arrTrade[selectedOrderIndex].totalQuantity!.toDouble(),
-        price: arrTrade[selectedOrderIndex].currentPriceFromSocket,
-        marketPrice: arrTrade[selectedOrderIndex].currentPriceFromSocket,
-        lotSize: arrTrade[selectedOrderIndex].lotSize!.toDouble(),
-        orderType: "market",
-        tradeType: isFromBuy ? "buy" : "sell",
-        exchangeId: arrTrade[selectedOrderIndex].exchangeId,
-        productType: arrTrade[selectedOrderIndex].productTypeMain!);
+      tradeId: arrTrade[selectedOrderIndex].tradeId!,
+      symbolId: arrTrade[selectedOrderIndex].symbolId!,
+      quantity: arrTrade[selectedOrderIndex].quantity!.toDouble(),
+      totalQuantity: arrTrade[selectedOrderIndex].totalQuantity!.toDouble(),
+      price: arrTrade[selectedOrderIndex].currentPriceFromSocket,
+      marketPrice: arrTrade[selectedOrderIndex].currentPriceFromSocket,
+      lotSize: arrTrade[selectedOrderIndex].lotSize!.toDouble(),
+      orderType: "market",
+      tradeType: isFromBuy ? "buy" : "sell",
+      exchangeId: arrTrade[selectedOrderIndex].exchangeId,
+      productType: arrTrade[selectedOrderIndex].productTypeMain!,
+      refPrice: isFromBuy ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble() : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
+    );
 
     if (response != null) {
       // Get.back();
@@ -306,6 +310,7 @@ class TradeListController extends BaseController {
       if (obj != null) {
         for (var i = 0; i < arrTrade.length; i++) {
           if (arrTrade[i].symbolName == socketData.data!.symbol) {
+            arrTrade[i].scriptDataFromSocket.value = socketData.data!;
             arrTrade[i].currentPriceFromSocket = arrTrade[i].tradeType == "buy" ? double.parse(socketData.data!.ask.toString()) : double.parse(socketData.data!.bid.toString());
           }
         }

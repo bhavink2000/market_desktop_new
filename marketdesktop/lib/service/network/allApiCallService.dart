@@ -117,6 +117,39 @@ class AllApiCallService {
     }
   }
 
+  Future<AccountSummaryNewListModel?> symbolWisePositionListCall(
+    int page,
+    String search, {
+    String userId = "",
+    String exchangeId = "",
+    String symbolId = "",
+    String startDate = "",
+    String endDate = "",
+    String productType = "",
+  }) async {
+    try {
+      _dio.options.headers = getHeaders();
+      //print(_dio.options.headers);
+      final payload = {
+        "page": page,
+        "limit": pageLimit,
+        "search": search,
+        "userId": userId,
+        "startDate": startDate,
+        "endDate": endDate,
+        "symbolId": symbolId,
+        "exchangeId": exchangeId,
+        "productType": productType,
+      };
+      print(payload);
+      final data = await _dio.post(Api.symbolWisePositionReport, data: payload);
+      print(data.data);
+      return AccountSummaryNewListModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<CommonModel?> rollOverTradeCall({
     List<String>? symbolId,
     String? userId,
@@ -178,7 +211,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> tradeCall({String? symbolId, double? quantity, int? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, bool? isFromStopLoss, double? marketPrice, String? productType}) async {
+  Future<TradeExecuteModel?> tradeCall({String? symbolId, double? quantity, int? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, bool? isFromStopLoss, double? marketPrice, String? productType, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -194,7 +227,8 @@ class AllApiCallService {
         "productType": productType,
         "ipAddress": myIpAddress,
         'deviceId': deviceId,
-        "orderMethod": deviceName
+        "orderMethod": deviceName,
+        "referencePrice": refPrice,
       };
       print(payload);
       final data = await _dio.post(Api.createTrade, data: payload);
@@ -208,7 +242,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> modifyTradeCall({String? symbolId, double? quantity, double? totalQuantity, double? price, double? lotSize, String? orderType, String? tradeType, String? exchangeId, double? marketPrice, String? productType, String? tradeId}) async {
+  Future<TradeExecuteModel?> modifyTradeCall({String? symbolId, double? quantity, double? totalQuantity, double? price, double? lotSize, String? orderType, String? tradeType, String? exchangeId, double? marketPrice, String? productType, String? tradeId, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -225,7 +259,8 @@ class AllApiCallService {
         "productType": productType,
         "ipAddress": myIpAddress,
         'deviceId': deviceId,
-        "orderMethod": deviceName
+        "orderMethod": deviceName,
+        "referencePrice": refPrice,
       };
       print(payload);
       final data = await _dio.post(Api.modifyTrade, data: payload);
@@ -239,7 +274,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> manualTradeCall({String? userId, String? symbolId, double? quantity, double? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, String? executionTime, String? manuallyTradeAddedFor}) async {
+  Future<TradeExecuteModel?> manualTradeCall({String? userId, String? symbolId, double? quantity, double? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, String? executionTime, String? manuallyTradeAddedFor, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -259,6 +294,7 @@ class AllApiCallService {
         "orderMethod": deviceName,
         "executionDateTime": executionTime,
         "manuallyTradeAddedFor": manuallyTradeAddedFor,
+        "referencePrice": refPrice,
       };
       print(payload);
       final data = await _dio.post(Api.manualOrderCreate, data: payload);

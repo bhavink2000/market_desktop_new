@@ -60,4 +60,5 @@ abstract class Api {
   static const accountSummaryNewList = 'account-summary-new/list';
   static const tradeDelete = 'trade/delete';
   static const tradeRollOver = 'trade/roll-over';
+  static const symbolWisePositionReport = 'symbol-wise-position-report/list';
 }

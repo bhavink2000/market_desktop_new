@@ -16,10 +16,11 @@ class ClientAccountReportController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
 
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   RxString fromDate = "".obs;
   RxString endDate = "".obs;
   Rx<UserData> selectedUser = UserData().obs;
+  Rx<String> selectedplType = "All".obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
   List<AccountSummaryNewListData> arrSummaryList = [];

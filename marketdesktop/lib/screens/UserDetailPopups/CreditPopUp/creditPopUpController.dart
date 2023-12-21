@@ -16,7 +16,7 @@ class CreditPopUpController extends BaseController {
   //*********************************************************************** */
 
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   RxString fromDate = "Start Date".obs;
   RxString selectedOperation = "".obs;
   RxString endDate = "End Date".obs;

@@ -12,7 +12,7 @@ class BillGenerateController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   bool isApiCall = false;
   Rx<UserData> selectedUser = UserData().obs;
   final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();

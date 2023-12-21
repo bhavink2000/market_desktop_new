@@ -524,9 +524,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                   }
                   controller.update();
                 }),
-              valueBox(controller.arrTrade[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: controller.arrTrade[index].userId!, userName: controller.arrTrade[index].userName!);
-              }),
+              if (userData!.role != UserRollList.user) valueBox(controller.arrTrade[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               if (userData!.role != UserRollList.user) valueBox(controller.arrTrade[index].parentUserName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
 
               valueBox(controller.arrTrade[index].exchangeName ?? "0", 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
@@ -601,7 +599,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
               controller.update();
             }
           }),
-        titleBox("User Name"),
+        if (userData!.role != UserRollList.user) titleBox("User Name"),
         if (userData!.role != UserRollList.user) titleBox("Parent User"),
 
         titleBox(userData!.role != UserRollList.user ? "segment" : "seqment"),
@@ -613,9 +611,9 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
         titleBox("Lot", isSmall: true),
         // if (userData!.role != UserRollList.user) titleBox("Total Qty"),
         titleBox("type"),
-        titleBox("price"),
+        titleBox("trade price"),
         titleBox("Brokerage"),
-        titleBox("Net Price"),
+        titleBox("Price(B)"),
         titleBox(userData!.role != UserRollList.user ? "Order Time" : "Order Time/date", isForDate: true),
         titleBox(userData!.role != UserRollList.user ? "Execution Time" : "Execution Time/date", isForDate: true),
         titleBox("REFERENCE PRICE", isBig: true),

@@ -17,7 +17,7 @@ class OpenPositionController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
 
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
 
   Rx<UserData> selectedUser = UserData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
@@ -131,7 +131,9 @@ class OpenPositionController extends BaseController {
           if (indexOfScript == 0) {}
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
-            arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].tradeTypeValue!.toUpperCase() == "BUY" ? (double.parse(socketData.data!.bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].quantity! : (arrPositionScriptList[indexOfScript].price! - double.parse(socketData.data!.ask.toString())) * arrPositionScriptList[indexOfScript].quantity!;
+            arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].tradeTypeValue!.toUpperCase() == "BUY"
+                ? (double.parse(socketData.data!.bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].quantity!
+                : (arrPositionScriptList[indexOfScript].price! - double.parse(socketData.data!.ask.toString())) * arrPositionScriptList[indexOfScript].quantity!;
           }
         }
         totalPL = 0.0;

@@ -43,8 +43,12 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   rateDetailsView(),
                   // typeDetailView(),
                   // orderTypeDetailView(),
-                  QuantityDetailsView(),
+
                   LotDetailsView(),
+                  QuantityDetailsView(),
+                  SizedBox(
+                    height: 15,
+                  ),
                   timePickerView(),
                   typeDetailView(),
                   Row(
@@ -570,6 +574,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
               Container(
                 width: 20.w,
                 height: 5.6.h,
+
                 // margin: EdgeInsets.symmetric(vertical: 5),
                 child: CustomTextField(
                   regex: "[0-9]",
@@ -729,7 +734,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
           Container(
             width: 20.w,
             height: 5.6.h,
-            margin: EdgeInsets.symmetric(vertical: 15),
+            margin: EdgeInsets.only(top: 15),
             child: NumberInputWithIncrementDecrementOwn(
               incIconSize: 25,
               decIconSize: 25,

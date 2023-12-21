@@ -199,8 +199,7 @@ class UserListPopUpScreen extends BaseView<UserListPopUpController> {
                             ),
                             Container(
                               width: 250,
-                              decoration: BoxDecoration(
-                                  color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                               child: TextFormField(
                                 textInputAction: TextInputAction.search,
                                 style: TextStyle(
@@ -359,27 +358,16 @@ class UserListPopUpScreen extends BaseView<UserListPopUpController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          valueBox(controller.arrUserListData[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText, index,
-              isBig: true, isUnderlined: true, onClickValue: () {
-            showUserDetailsPopUp(
-                userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!);
+          valueBox(controller.arrUserListData[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true, isUnderlined: true, onClickValue: () {
+            showUserDetailsPopUp(userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!);
           }),
-          valueBox(controller.arrUserListData[index].name ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText, index,
-              isBig: true),
-          valueBox(controller.arrUserListData[index].roleName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText, index),
-          valueBox(controller.arrUserListData[index].parentUser ?? "--", 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-          valueBox(controller.arrUserListData[index].credit.toString(), 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-          valueBox(controller.arrUserListData[index].tradeBalance.toString(), 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-          valueBox("${controller.arrUserListData[index].brkSharing}%", 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-          valueBox("${controller.arrUserListData[index].profitAndLossSharing}%", 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+          valueBox(controller.arrUserListData[index].name ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+          valueBox(controller.arrUserListData[index].roleName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+          valueBox(controller.arrUserListData[index].parentUser ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+          valueBox(controller.arrUserListData[index].credit.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+          valueBox(controller.arrUserListData[index].balance.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+          valueBox("${controller.arrUserListData[index].brkSharing}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+          valueBox("${controller.arrUserListData[index].profitAndLossSharing}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
           // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
           //     isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs),
           // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
@@ -389,14 +377,9 @@ class UserListPopUpScreen extends BaseView<UserListPopUpController> {
           //     isSwitch: true, switchValue: controller.arrUserListData[index].marginSquareOff!.obs, isBig: true),
           // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
           //     isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs),
-          valueBox(controller.arrUserListData[index].deviceId ?? "--", 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              isBig: true),
-          valueBox(shortDate(controller.arrUserListData[index].createdAt!), 60,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              isBig: true),
-          valueBox(controller.arrUserListData[index].ipAddress ?? "--", 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+          valueBox(controller.arrUserListData[index].deviceId ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+          valueBox(shortDate(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+          valueBox(controller.arrUserListData[index].ipAddress ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
           // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
           //     isImage: true, isSmall: true, strImage: AppImages.editUserImage),
           // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,

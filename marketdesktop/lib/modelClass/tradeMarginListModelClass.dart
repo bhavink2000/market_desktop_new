@@ -43,6 +43,7 @@ class TradeMarginData {
   int? lotSize;
   int? tradeMargin;
   int? tradeTimingBy;
+  num? tradeMarginAmount;
   String? tradeTimingByValue;
   String? tradeAttribute;
   int? allowTrade;
@@ -61,6 +62,7 @@ class TradeMarginData {
     this.lotSize,
     this.tradeMargin,
     this.tradeTimingBy,
+    this.tradeMarginAmount,
     this.tradeTimingByValue,
     this.tradeAttribute,
     this.allowTrade,
@@ -79,6 +81,7 @@ class TradeMarginData {
         description: json["description"],
         lotSize: json["lotSize"],
         tradeMargin: json["tradeMargin"],
+        tradeMarginAmount: json["tradeMarginAmount"],
         tradeTimingBy: json["tradeTimingBy"],
         tradeTimingByValue: json["tradeTimingByValue"],
         tradeAttribute: json["tradeAttribute"],
@@ -98,6 +101,7 @@ class TradeMarginData {
         "description": description,
         "lotSize": lotSize,
         "tradeMargin": tradeMargin,
+        "tradeMarginAmount": tradeMarginAmount,
         "tradeTimingBy": tradeTimingBy,
         "tradeTimingByValue": tradeTimingByValue,
         "tradeAttribute": tradeAttribute,

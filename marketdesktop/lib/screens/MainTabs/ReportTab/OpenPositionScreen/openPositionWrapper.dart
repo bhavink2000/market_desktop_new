@@ -393,7 +393,7 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
               ),
               IgnorePointer(
                 child: valueBox(controller.arrPositionScriptList[index].tradeType == "buy" ? controller.arrPositionScriptList[index].scriptDataFromSocket.value.bid!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].scriptDataFromSocket.value.ask!.toStringAsFixed(2).toString(),
-                    45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
+                    45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor, index,
                     isBig: true),
               ),
               IgnorePointer(

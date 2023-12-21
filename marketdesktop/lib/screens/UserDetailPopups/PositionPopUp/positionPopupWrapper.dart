@@ -368,7 +368,7 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
               controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
               45,
               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
+              controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
               index,
             ),
           ),

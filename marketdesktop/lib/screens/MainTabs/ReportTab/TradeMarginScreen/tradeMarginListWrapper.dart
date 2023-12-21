@@ -420,7 +420,7 @@ class TradeMarginScreen extends BaseView<TradeMarginController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: 70.w,
+        width: 1800,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -498,9 +498,10 @@ class TradeMarginScreen extends BaseView<TradeMarginController> {
               valueBox(tradeValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
               valueBox(shortFullDateTime(tradeValue.expiryDate!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
               valueBox(tradeValue.tradeMargin!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+              valueBox(tradeValue.tradeMarginAmount!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
               valueBox(tradeValue.symbolName ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox((tradeValue.tradeAttribute ?? "").toUpperCase(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox((tradeValue.allowTradeValue ?? "").toUpperCase(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+              // valueBox((tradeValue.tradeAttribute ?? "").toUpperCase(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+              // valueBox((tradeValue.allowTradeValue ?? "").toUpperCase(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
             ],
           ),
         ),
@@ -518,10 +519,11 @@ class TradeMarginScreen extends BaseView<TradeMarginController> {
         titleBox("Exchange"),
         titleBox("Script", isLarge: true),
         titleBox("Expiry Date", isForDate: true),
-        titleBox("Trade Margin", isBig: true),
+        titleBox("Margin (%)", isBig: true),
+        titleBox("Margin (amount)", isForDate: true),
         titleBox("Description", isLarge: true),
-        titleBox("Trade Attribute", isBig: true),
-        titleBox("Allow Trade", isBig: true),
+        // titleBox("Trade Attribute", isBig: true),
+        // titleBox("Allow Trade", isBig: true),
       ],
     );
   }

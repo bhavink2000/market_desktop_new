@@ -11,7 +11,7 @@ class PercentOpenPositionController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
 
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
 
   Rx<UserData> selectedUser = UserData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;

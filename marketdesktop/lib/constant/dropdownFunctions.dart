@@ -24,6 +24,7 @@ List<AddMaster> arrFilterType = [];
 
 List<String> arrSortCount = ["5", "10", "15", "20"];
 List<String> arrPeriodList = ["Month", "Year", "Week"];
+List<String> arrPLTypeforAccount = ["All", "Only M2M", "Only Release"];
 List<String> arrLogType = ["All"];
 List<Type> arrTradeStatus = [];
 List<String> arrTradeAttribute = ["Fully", "Close"];
@@ -239,6 +240,75 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
               value: selectedProductType.value?.name == null ? null : selectedProductType.value,
               onChanged: (Type? value) {
                 selectedProductType.value = value!;
+              },
+              buttonStyleData: const ButtonStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                height: 40,
+                // width: 140,
+              ),
+              menuItemStyleData: const MenuItemStyleData(
+                height: 40,
+              ),
+            ),
+          ),
+        ));
+  });
+}
+
+Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
+  return Obx(() {
+    return Container(
+        width: width ?? 250,
+        // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton2<String>(
+              isExpanded: true,
+              iconStyleData: IconStyleData(
+                icon: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Image.asset(
+                    AppImages.arrowDown,
+                    height: 20,
+                    width: 20,
+                    color: AppColors().fontColor,
+                  ),
+                ),
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 150),
+              hint: Text(
+                '',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                ),
+              ),
+              items: arrPLTypeforAccount
+                  .map((String item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return arrPLTypeforAccount
+                    .map((String item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().darkText,
+                            ),
+                          ),
+                        ))
+                    .toList();
+              },
+              value: selectedPLType.value,
+              onChanged: (String? value) {
+                selectedPLType.value = value!;
               },
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),

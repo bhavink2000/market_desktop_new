@@ -155,7 +155,8 @@ class manualOrderController extends BaseController {
                 tradeType: isBuy.value ? "buy" : "sell",
                 exchangeId: selectExchangedropdownValue.value.exchangeId,
                 userId: selectedUser.value.userId!,
-                manuallyTradeAddedFor: selectedManualType.value.id);
+                manuallyTradeAddedFor: selectedManualType.value.id,
+                refPrice: isBuy.value ? selectedScriptDropDownValue.value.ask!.toDouble() : selectedScriptDropDownValue.value.bid!.toDouble());
 
             //longterm
             isApicall = false;

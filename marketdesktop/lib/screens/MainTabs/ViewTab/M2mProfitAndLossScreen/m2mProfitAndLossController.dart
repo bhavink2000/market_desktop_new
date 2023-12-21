@@ -16,7 +16,7 @@ class M2MProfitAndLossController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
 
   Rx<UserData> selectedUser = UserData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
@@ -58,7 +58,9 @@ class M2MProfitAndLossController extends BaseController {
       arrPlList.forEach((userObj) {
         for (var i = 0; i < userObj.childUserDataPosition!.length; i++) {
           if (socketData.data!.symbol == userObj.childUserDataPosition![i].symbolName) {
-            userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].tradeType!.toUpperCase() == "BUY" ? (double.parse(socketData.data!.bid.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].quantity! : (userObj.childUserDataPosition![i].price! - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].quantity!;
+            userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].tradeType!.toUpperCase() == "BUY"
+                ? (double.parse(socketData.data!.bid.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].quantity!
+                : (userObj.childUserDataPosition![i].price! - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].quantity!;
           }
         }
         userObj.totalProfitLossValue = 0.0;

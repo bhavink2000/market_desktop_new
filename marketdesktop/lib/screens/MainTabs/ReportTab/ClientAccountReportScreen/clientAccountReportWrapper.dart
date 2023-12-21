@@ -359,6 +359,33 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                       SizedBox(
                         height: 10,
                       ),
+                      Container(
+                        height: 35,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Container(
+                              child: Text("P/L Type:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().fontColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            plTypeForAccountDropDown(controller.selectedplType, width: 200),
+                            SizedBox(
+                              width: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -522,14 +549,16 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
               valueBox(scriptValue.avgPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(scriptValue.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              if (controller.selectedplType.value == "All" || controller.selectedplType.value == "Only Release") valueBox(scriptValue.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               // valueBox((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              if (controller.selectedplType.value != "Only Release") valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
 
-              valueBox((double.parse(scriptValue.profitLossValue!.toStringAsFixed(2)) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
+              if (controller.selectedplType.value != "Only Release")
+                valueBox((double.parse(scriptValue.profitLossValue!.toStringAsFixed(2)) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
 
-              valueBox(((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.profitLossValue!.toStringAsFixed(2))) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText, index),
+              if (controller.selectedplType.value == "All" && controller.selectedplType.value != "Only Release")
+                valueBox(((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.profitLossValue!.toStringAsFixed(2))) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                    AppColors().darkText, index),
             ],
           ),
         ),
@@ -553,11 +582,11 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
         titleBox("Net A Price"),
         titleBox("CMP"),
         titleBox("BROKRAGE"),
-        titleBox("RELEAS P/L"),
+        if (controller.selectedplType.value == "All" || controller.selectedplType.value == "Only Release") titleBox("RELEAS P/L"),
         // titleBox("RELEAS P/L WITH BROKRAGE", isLarge: true),
-        titleBox("MTM"),
-        titleBox("MTM WITH BORKRAGE", isForDate: true),
-        titleBox("TOTAL"),
+        if (controller.selectedplType.value != "Only Release") titleBox("MTM"),
+        if (controller.selectedplType.value != "Only Release") titleBox("MTM WITH BORKRAGE", isForDate: true),
+        if (controller.selectedplType.value == "All" && controller.selectedplType.value != "Only Release") titleBox("TOTAL"),
       ],
     );
   }

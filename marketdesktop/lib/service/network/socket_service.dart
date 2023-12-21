@@ -6,6 +6,7 @@ import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ManageTradeScreen/manageTradeController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/OpenPositionScreen/openPositionController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/SymbolWisePositionReportScreen/symbolWisePositionReportController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/WeeklyAdminScreen/weeklyAdminController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchController.dart';
@@ -64,11 +65,17 @@ class SocketService {
         bool isSymbolWisePlAvailable = Get.isRegistered<ProfitAndLossSummaryController>();
         bool isOpenPositionPopUpAvailable = Get.isRegistered<OpenPositionPopUpController>();
         bool isAccountSummaryNewAvailable = Get.isRegistered<ClientAccountReportController>();
+        bool isSymbolWisePositionAvailable = Get.isRegistered<SymbolWisePositionReportController>();
 
         if (isAccountSummaryNewAvailable) {
           var homeVC = Get.find<ClientAccountReportController>();
 
           homeVC.listenClientAccountScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+        }
+        if (isSymbolWisePositionAvailable) {
+          var homeVC = Get.find<SymbolWisePositionReportController>();
+
+          homeVC.listenSymbolWisePositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
         }
         if (isHomeVcAvailable) {
           var homeVC = Get.find<MarketWatchController>();

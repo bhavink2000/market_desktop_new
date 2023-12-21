@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/popUpFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
@@ -274,7 +275,7 @@ class PositionScreen extends BaseView<PositionController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: 1840,
+        width: 2000,
         color: Colors.white,
         child: Column(
           children: [
@@ -354,76 +355,96 @@ class PositionScreen extends BaseView<PositionController> {
           SizedBox(
             width: 5,
           ),
-          if (userData!.role == UserRollList.user)
-            Container(
-              margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
-              width: 180,
-              height: 35,
-              child: CustomButton(
-                isEnabled: true,
-                shimmerColor: AppColors().whiteColor,
-                title: "Square Off",
-                textSize: 14,
-                onPress: () {
-                  List<SymbolRequestData> arrSquare = [];
-                  for (var element in controller.arrPositionScriptList) {
-                    if (element.isSelected) {
-                      var price = element.totalQuantity! < 0 ? element.bid!.toStringAsFixed(2).toString() : element.ask!.toStringAsFixed(2).toString();
-                      var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
-                      arrSquare.add(temp);
-                    }
-                  }
-                  if (arrSquare.length > 0) {
-                    controller.squareOffPosition(arrSquare);
-                  } else {
-                    showWarningToast("Please select position");
-                  }
-                },
-                focusKey: controller.squareOffFocus,
-                borderColor: Colors.transparent,
-                focusShadowColor: AppColors().blueColor,
-                bgColor: AppColors().blueColor,
-                isFilled: true,
-                textColor: AppColors().whiteColor,
-                isTextCenter: true,
-                isLoading: controller.isApiCallRunning,
-              ),
+          // if (userData!.role == UserRollList.user)
+          Container(
+            margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
+            width: 180,
+            height: 35,
+            child: CustomButton(
+              isEnabled: true,
+              shimmerColor: AppColors().whiteColor,
+              title: "Square Off",
+              textSize: 14,
+              onPress: () {
+                showPermissionDialog(
+                    message: "Are you sure you want to Square off position?",
+                    acceptButtonTitle: "Yes",
+                    rejectButtonTitle: "No",
+                    yesClick: () {
+                      Get.back();
+                      List<SymbolRequestData> arrSquare = [];
+                      for (var element in controller.arrPositionScriptList) {
+                        if (element.isSelected) {
+                          var price = element.totalQuantity! < 0 ? element.bid!.toStringAsFixed(2).toString() : element.ask!.toStringAsFixed(2).toString();
+                          var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
+                          arrSquare.add(temp);
+                        }
+                      }
+                      if (arrSquare.length > 0) {
+                        controller.squareOffPosition(arrSquare);
+                      } else {
+                        showWarningToast("Please select position");
+                      }
+                    },
+                    noclick: () {
+                      Get.back();
+                    });
+              },
+              focusKey: controller.squareOffFocus,
+              borderColor: Colors.transparent,
+              focusShadowColor: AppColors().blueColor,
+              bgColor: AppColors().blueColor,
+              isFilled: true,
+              textColor: AppColors().whiteColor,
+              isTextCenter: true,
+              isLoading: controller.isApiCallRunning,
             ),
-          if (userData!.role == UserRollList.user)
-            Container(
-              margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
-              width: 180,
-              height: 35,
-              child: CustomButton(
-                isEnabled: true,
-                shimmerColor: AppColors().whiteColor,
-                title: "Roll Over",
-                textSize: 14,
-                onPress: () {
-                  List<SymbolRequestData> arrSquare = [];
-                  for (var element in controller.arrPositionScriptList) {
-                    if (element.isSelected) {
-                      var price = element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString();
-                      var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
-                      arrSquare.add(temp);
-                    }
-                  }
-                  if (arrSquare.length > 0) {
-                    controller.rollOverPosition(arrSquare);
-                  } else {
-                    showWarningToast("Please select position");
-                  }
-                },
-                focusKey: controller.squareOffFocus,
-                borderColor: Colors.transparent,
-                focusShadowColor: AppColors().blueColor,
-                bgColor: AppColors().blueColor,
-                isFilled: true,
-                textColor: AppColors().whiteColor,
-                isTextCenter: true,
-                isLoading: controller.isApiCallRunning,
-              ),
+          ),
+          // if (userData!.role == UserRollList.user)
+          Container(
+            margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
+            width: 180,
+            height: 35,
+            child: CustomButton(
+              isEnabled: true,
+              shimmerColor: AppColors().whiteColor,
+              title: "Roll Over",
+              textSize: 14,
+              onPress: () {
+                showPermissionDialog(
+                    message: "Are you sure you want to Roll over position?",
+                    acceptButtonTitle: "Yes",
+                    rejectButtonTitle: "No",
+                    yesClick: () {
+                      Get.back();
+                      List<SymbolRequestData> arrSquare = [];
+                      for (var element in controller.arrPositionScriptList) {
+                        if (element.isSelected) {
+                          var price = element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString();
+                          var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
+                          arrSquare.add(temp);
+                        }
+                      }
+                      if (arrSquare.length > 0) {
+                        controller.rollOverPosition(arrSquare);
+                      } else {
+                        showWarningToast("Please select position");
+                      }
+                    },
+                    noclick: () {
+                      Get.back();
+                    });
+              },
+              focusKey: controller.squareOffFocus,
+              borderColor: Colors.transparent,
+              focusShadowColor: AppColors().blueColor,
+              bgColor: AppColors().blueColor,
+              isFilled: true,
+              textColor: AppColors().whiteColor,
+              isTextCenter: true,
+              isLoading: controller.isApiCallRunning,
             ),
+          ),
           Text("Realised P&L : ",
               style: TextStyle(
                 fontSize: 12,
@@ -512,19 +533,19 @@ class PositionScreen extends BaseView<PositionController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              if (userData!.role == UserRollList.user)
-                valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: scriptValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
-                  controller.arrPositionScriptList[index].isSelected = !controller.arrPositionScriptList[index].isSelected;
-                  for (var element in controller.arrPositionScriptList) {
-                    if (element.isSelected) {
-                      controller.isAllSelected = true;
-                    } else {
-                      controller.isAllSelected = false;
-                      break;
-                    }
+              // if (userData!.role == UserRollList.user)
+              valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: scriptValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+                controller.arrPositionScriptList[index].isSelected = !controller.arrPositionScriptList[index].isSelected;
+                for (var element in controller.arrPositionScriptList) {
+                  if (element.isSelected) {
+                    controller.isAllSelected = true;
+                  } else {
+                    controller.isAllSelected = false;
+                    break;
                   }
-                  controller.update();
-                }),
+                }
+                controller.update();
+              }),
               if (userData!.role != UserRollList.user)
                 valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
                   isUserViewPopUpOpen = true;
@@ -584,7 +605,7 @@ class PositionScreen extends BaseView<PositionController> {
                   controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
                   45,
                   index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText,
+                  controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
                   index,
                 ),
               ),
@@ -614,22 +635,22 @@ class PositionScreen extends BaseView<PositionController> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // titleBox("", 0),
-        if (userData!.role == UserRollList.user)
-          titleBox("", isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
-            if (controller.isAllSelected) {
-              controller.arrPositionScriptList.forEach((element) {
-                element.isSelected = false;
-              });
-              controller.isAllSelected = false;
-              controller.update();
-            } else {
-              controller.arrPositionScriptList.forEach((element) {
-                element.isSelected = true;
-              });
-              controller.isAllSelected = true;
-              controller.update();
-            }
-          }),
+        // if (userData!.role == UserRollList.user)
+        titleBox("", isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+          if (controller.isAllSelected) {
+            controller.arrPositionScriptList.forEach((element) {
+              element.isSelected = false;
+            });
+            controller.isAllSelected = false;
+            controller.update();
+          } else {
+            controller.arrPositionScriptList.forEach((element) {
+              element.isSelected = true;
+            });
+            controller.isAllSelected = true;
+            controller.update();
+          }
+        }),
         if (userData!.role != UserRollList.user) titleBox("View", isSmall: true),
         if (userData!.role != UserRollList.user) titleBox("Parent User"),
         titleBox("Exchange"),

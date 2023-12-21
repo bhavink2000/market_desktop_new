@@ -587,9 +587,7 @@ class TradeListScreen extends BaseView<TradeListController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(controller.arrTrade[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: controller.arrTrade[index].userId!, userName: controller.arrTrade[index].userName!);
-              }),
+              if (userData!.role != UserRollList.user) valueBox(controller.arrTrade[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
               if (userData!.role != UserRollList.user) valueBox(controller.arrTrade[index].parentUserName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               // valueBox(controller.arrTrade[index].executionDateTime == null ? "" : shortFullDateTime(controller.arrTrade[index].executionDateTime!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
               valueBox(controller.arrTrade[index].exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
@@ -603,7 +601,8 @@ class TradeListScreen extends BaseView<TradeListController> {
               valueBox(controller.arrTrade[index].price.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.getPriceColor(controller.arrTrade[index].tradeType!, controller.arrTrade[index].currentPriceFromSocket, controller.arrTrade[index].price!.toDouble()), index),
               valueBox(shortFullDateTime(controller.arrTrade[index].createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
               if (userData!.role != UserRollList.user) valueBox(controller.arrTrade[index].orderTypeValue!.toString(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrTrade[index].currentPriceFromSocket.toString(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrTrade[index].currentPriceFromSocket.toString(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  controller.arrTrade[index].scriptDataFromSocket.value.close! < controller.arrTrade[index].currentPriceFromSocket ? AppColors().blueColor : AppColors().redColor, index),
 
               valueBox("0", 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
               valueBox(controller.arrTrade[index].ipAddress ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
@@ -621,7 +620,7 @@ class TradeListScreen extends BaseView<TradeListController> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // titleBox("", 0),
-        titleBox("User Name", isBig: true),
+        if (userData!.role != UserRollList.user) titleBox("User Name", isBig: true),
         if (userData!.role != UserRollList.user) titleBox("Parent User"),
         // titleBox("Execution Time", isForDate: true),
         titleBox(userData!.role != UserRollList.user ? "segment" : "seqment"),

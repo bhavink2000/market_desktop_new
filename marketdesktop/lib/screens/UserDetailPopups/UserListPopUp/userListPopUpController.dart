@@ -11,7 +11,7 @@ class UserListPopUpController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = true;
+  bool isFilterOpen = false;
   List<UserData> arrUserListData = [];
 
   Rx<AddMaster> selectedFilterType = AddMaster().obs;
