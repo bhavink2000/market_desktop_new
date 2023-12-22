@@ -21,6 +21,7 @@ import '../../../../customWidgets/appTextField.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../modelClass/getScriptFromSocket.dart';
+import '../../../../modelClass/ltpUpdateModelClass.dart';
 import '../../../../modelClass/myUserListModelClass.dart';
 import '../../../../modelClass/tabListModelClass.dart';
 import '../../../../modelClass/tabWiseSymbolListModelClass.dart';
@@ -46,6 +47,7 @@ class MarketWatchController extends BaseController {
   FocusNode textEditingFocus = FocusNode();
   FocusNode remarkFocus = FocusNode();
   List<ExchangeData> arrExchange = [];
+  List<LtpUpdateModel> arrLtpUpdate = [];
 
   List<GlobalSymbolData> arrAllScript = [];
   List<GlobalSymbolData> arrAllScriptForF5 = [];
@@ -1179,8 +1181,21 @@ class MarketWatchController extends BaseController {
             }
           }
         }
-
+        var ltpObj = LtpUpdateModel(symbolId: "", ltp: socketData.data!.ltp!, symbolTitle: socketData.data!.symbol, dateTime: DateTime.now());
+        var isAvailableObj = arrLtpUpdate.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolTitle);
+        if (isAvailableObj == null) {
+          arrLtpUpdate.add(ltpObj);
+        } else {
+          if (isAvailableObj.ltp != ltpObj.ltp) {
+            var index = arrLtpUpdate.indexWhere((element) => element.symbolTitle == ltpObj.symbolTitle);
+            arrLtpUpdate[index] = ltpObj;
+            // print(ltpObj.symbolTitle);
+            // print(ltpObj.ltp);
+          }
+        }
+        // print(arrLtpUpdate.length);
         var obj = arrScript.firstWhereOrNull((element) => socketData.data!.symbol == element.symbol);
+
         if (obj?.symbol == selectedScript.value?.symbol) {
           selectedScript.value = socketData.data!;
 

@@ -130,8 +130,8 @@ class SymbolData {
                 : null,
         // expiry: json["expiry"] ?? json["expiryDate"] ?? "",
         exchange: json["exchange"] ?? json["exchangeName"] ?? "",
-        name: json["name"] ?? json["symbolName"] ?? "",
-        symbol: json["symbol"] ?? json["symbolTitle"] ?? "",
+        name: json["name"] ?? json["symbolTitle"] ?? "",
+        symbol: json["symbol"] ?? json["symbolName"] ?? "",
         depth: json["depth"] == null ? null : Depth.fromJson(json["depth"]),
       );
 

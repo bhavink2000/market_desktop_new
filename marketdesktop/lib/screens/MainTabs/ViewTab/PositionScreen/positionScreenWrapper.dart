@@ -14,6 +14,10 @@ import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
+import '../../../MainContainerScreen/mainContainerController.dart';
+import '../ProfitAndLossScreen/profitAndLossController.dart';
+import '../TradeScreen/successTradeListController.dart';
+import '../TradeScreen/successTradeListWrapper.dart';
 
 class PositionScreen extends BaseView<PositionController> {
   const PositionScreen({Key? key}) : super(key: key);
@@ -558,9 +562,18 @@ class PositionScreen extends BaseView<PositionController> {
               IgnorePointer(
                 child: valueBox(controller.arrPositionScriptList[index].exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               ),
-              IgnorePointer(
-                child: valueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              ),
+              valueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true, isUnderlined: true, onClickValue: () {
+                isCommonScreenPopUpOpen = true;
+                currentOpenedScreen = ScreenViewNames.trades;
+                var tradeVC = Get.put(SuccessTradeListController());
+                tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrPositionScriptList[index].exchangeId, name: controller.arrPositionScriptList[index].exchangeName);
+                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId, symbolName: controller.arrPositionScriptList[index].symbolName, symbolTitle: controller.arrPositionScriptList[index].symbolTitle);
+                // tradeVC.update();
+                // tradeVC.getTradeList();
+                Get.delete<ProfitAndLossController>();
+                Get.back();
+                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades);
+              }),
               IgnorePointer(
                 child: valueBox(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, isBig: true),
               ),

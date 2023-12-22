@@ -72,6 +72,7 @@ class TradeData {
   Rx<ScriptData> scriptDataFromSocket = ScriptData().obs;
   num? profitLoss = 0.0;
   bool isSelected = false;
+  num? referencePrice;
 
   TradeData({
     this.tradeId,
@@ -107,6 +108,7 @@ class TradeData {
     this.updatedAt,
     this.profitLoss,
     this.oddLotTrade,
+    this.referencePrice,
   });
 
   factory TradeData.fromJson(Map<String, dynamic> json) => TradeData(
@@ -143,6 +145,7 @@ class TradeData {
       executionDateTime: json["executionDateTime"] == null || json["executionDateTime"] == "" ? null : DateTime.parse(json["executionDateTime"]),
       updatedAt: json["updatedAt"] == null || json["updatedAt"] == "" ? null : DateTime.parse(json["updatedAt"]),
       profitLoss: json["profitLoss"],
+      referencePrice: json["referencePrice"],
       oddLotTrade: json["oddLotTrade"]);
 
   Map<String, dynamic> toJson() => {
@@ -177,7 +180,8 @@ class TradeData {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "profitLoss": profitLoss,
-        "oddLotTrade": oddLotTrade
+        "oddLotTrade": oddLotTrade,
+        "referencePrice": referencePrice,
       };
 }
 

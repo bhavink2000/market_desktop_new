@@ -518,7 +518,7 @@ showPendingTradeInfoPopup() {
           ));
 }
 
-generalContainerPopup({Widget? view, String title = ""}) {
+generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons = false}) {
   showDialog<String>(
       context: Get.context!,
       // barrierColor: Colors.transparent,
@@ -571,6 +571,60 @@ Widget headerViewContent({String title = "", bool isFromMarket = false}) {
                 color: AppColors().blueColor,
               )),
           const Spacer(),
+          GestureDetector(
+            onTap: () {
+              // if (onCLickPDF != null) {
+              //   onCLickPDF();
+              // }
+            },
+            child: Image.asset(
+              AppImages.pdfIcon,
+              width: 30,
+              height: 30,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          GestureDetector(
+            onTap: () {
+              // if (onCLickExcell != null) {
+              //   onCLickExcell();
+              // }
+            },
+            child: Image.asset(
+              AppImages.excelIcon,
+              width: 25,
+              height: 25,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          GestureDetector(
+            onTap: () {
+              // if (onCLickFilter != null) {
+              //   onCLickFilter();
+              // }
+            },
+            child: RotatedBox(
+              quarterTurns: 1,
+              child: Icon(
+                Icons.tune,
+                size: 25,
+                color: AppColors().blueColor,
+              ),
+            ),
+            // child: Text("Filter",
+            //     style: TextStyle(
+            //       fontSize: 14,
+            //       fontFamily: CustomFonts.family1Medium,
+            //       color: AppColors().fontColor,
+            //     )),
+          ),
+          SizedBox(
+            width: 30,
+          ),
           if (isFromMarket == false)
             GestureDetector(
               onTap: () {

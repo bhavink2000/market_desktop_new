@@ -423,7 +423,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                           case 'SYMBOL':
                             {
                               return controller.arrListTitle[indexT].isSelected
-                                  ? ScriptBox(indexT, isLeftAlign: true, title: scriptValue.symbol ?? "", bgColor: controller.arrScript[index].ch! < 0 ? AppColors().redColor : AppColors().blueColor, index: index, isLarge: true, textColor: AppColors().whiteColor)
+                                  ? ScriptBox(indexT, isLeftAlign: true, title: scriptValue.name ?? "", bgColor: controller.arrScript[index].ch! < 0 ? AppColors().redColor : AppColors().blueColor, index: index, isBig: true, textColor: AppColors().whiteColor)
                                   : SizedBox();
                             }
                           case 'EXPIRY':
@@ -601,7 +601,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
               case 'SYMBOL':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? titleBox("SYMBOL", index, isLarge: true, hasFilterIcon: true)
+                      ? titleBox("SYMBOL", index, isBig: true, hasFilterIcon: true)
                       : SizedBox(
                           key: Key('$index'),
                         );

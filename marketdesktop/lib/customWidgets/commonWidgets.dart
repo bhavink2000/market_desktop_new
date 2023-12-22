@@ -97,7 +97,7 @@ Widget valueBox(String title, double width, Color? bgColor, Color? textColor, in
                                         ? ListCellWidth().bigForDate - 20
                                         : ListCellWidth().normal - 20,
                     child: Text(title,
-                        textAlign: TextAlign.start, style: TextStyle(fontSize: 12, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Regular, color: textColor != null ? textColor : AppColors().darkText, decoration: isUnderlined ? TextDecoration.underline : TextDecoration.none)),
+                        textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Regular, color: textColor != null ? textColor : AppColors().darkText, decoration: isUnderlined ? TextDecoration.underline : TextDecoration.none)),
                   ),
                 ),
                 // SizedBox(
@@ -275,3 +275,100 @@ Widget filterPanel(
     ),
   );
 }
+// Widget filterPanel(
+//   BuildContext context, {
+//   bool? isRecordDisplay = false,
+//   Function? onCLickFilter,
+//   Function? onCLickExcell,
+//   Function? onCLickPDF,
+//   double? bottomMargin,
+//   int? totalRecord,
+//   String name = "",
+// }) {
+//   return Container(
+//     width: 40,
+//     margin: EdgeInsets.only(bottom: bottomMargin ?? 2.h),
+//     decoration: BoxDecoration(color: AppColors().headerBgColor, border: Border(left: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().whiteColor, width: 1), right: BorderSide(color: AppColors().whiteColor, width: 1))),
+//     // color: Colors.red,
+//     child: Column(
+//       crossAxisAlignment: CrossAxisAlignment.center,
+//       children: [
+//         SizedBox(
+//           height: 30,
+//         ),
+//         GestureDetector(
+//           onTap: () {
+//             if (onCLickPDF != null) {
+//               onCLickPDF();
+//             }
+//           },
+//           child: Image.asset(
+//             AppImages.pdfIcon,
+//             width: 30,
+//             height: 30,
+//           ),
+//         ),
+//         SizedBox(
+//           height: 10,
+//         ),
+//         GestureDetector(
+//           onTap: () {
+//             if (onCLickExcell != null) {
+//               onCLickExcell();
+//             }
+//           },
+//           child: Image.asset(
+//             AppImages.excelIcon,
+//             width: 25,
+//             height: 25,
+//           ),
+//         ),
+//         SizedBox(
+//           height: 10,
+//         ),
+//         GestureDetector(
+//           onTap: () {
+//             if (onCLickFilter != null) {
+//               onCLickFilter();
+//             }
+//           },
+//           child: Row(
+//             children: [
+//               Container(
+//                 width: 3,
+//                 height: 50,
+//                 color: AppColors().blueColor,
+//               ),
+//               SizedBox(
+//                 width: 10,
+//               ),
+//               RotatedBox(
+//                 quarterTurns: 1,
+//                 child: Text(name != "" ? name : "Filter",
+//                     style: TextStyle(
+//                       fontSize: 12,
+//                       fontFamily: CustomFonts.family1Medium,
+//                       color: AppColors().fontColor,
+//                     )),
+//               )
+//             ],
+//           ),
+//         ),
+//         Spacer(),
+//         if (isRecordDisplay == true)
+//           RotatedBox(
+//             quarterTurns: 1,
+//             child: Text("Record : ${totalRecord ?? 0}",
+//                 style: TextStyle(
+//                   fontSize: 12,
+//                   fontFamily: CustomFonts.family1Medium,
+//                   color: AppColors().fontColor,
+//                 )),
+//           ),
+//         SizedBox(
+//           height: 10,
+//         ),
+//       ],
+//     ),
+//   );
+// }

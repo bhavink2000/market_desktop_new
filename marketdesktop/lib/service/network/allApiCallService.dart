@@ -699,7 +699,7 @@ class AllApiCallService {
       //print(_dio.options.headers);
       //print(payload);
       final data = await _dio.post(Api.getAllSymbolTabWiseList, data: payload);
-      //print(data.data);
+      print(data.data);
       return TabWiseSymbolListModel.fromJson(data.data);
     } catch (e) {
       return null;
