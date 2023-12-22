@@ -10,7 +10,7 @@ class ScriptMasterController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = false;
+
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
 

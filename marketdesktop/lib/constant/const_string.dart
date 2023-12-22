@@ -65,7 +65,7 @@ class ScreenViewNames {
   static const String weeklyAdmin = "Weekly Admin";
   static const String logsHistory = "Logs History";
   static const String scriptMaster = "Script Master";
-  static const String pAndlSummary = "P&L Summary";
+  static const String pAndlSummary = "Scriptwise P&L Summary";
   static const String userLogsNew = "User Logs New";
   static const String userwisePAndLSummary = "Userwise P&L Summary";
   static const String userScriptPositionTracking = "User Script Position Tracking";

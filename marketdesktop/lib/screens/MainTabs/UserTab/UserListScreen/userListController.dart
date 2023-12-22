@@ -11,7 +11,7 @@ class UserListController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = false;
+
   List<UserData> arrUserListData = [];
   int selectedUserIndex = -1;
   Rx<AddMaster> selectedFilterType = AddMaster().obs;

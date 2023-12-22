@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -61,41 +63,51 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
   isUserDetailPopUpOpen = true;
   Future.delayed(Duration(milliseconds: 200), () {
     Get.find<PositionPopUpController>().selectedUserId = userId;
+    var detailVC = Get.find<UserDetailsPopUpController>();
+    detailVC.userName = userName;
+    detailVC.userId = userId;
+    detailVC.userRoll = roll;
+    detailVC.getUSerInfo();
 
-    Get.find<UserDetailsPopUpController>().userName = userName;
-    Get.find<UserDetailsPopUpController>().userId = userId;
-    Get.find<UserDetailsPopUpController>().userRoll = roll;
-    Get.find<UserDetailsPopUpController>().getUSerInfo();
+    var positionVC = Get.find<PositionPopUpController>();
+    positionVC.getPositionList("");
 
-    Get.find<PositionPopUpController>().getPositionList("");
+    var tradeVC = Get.find<TradeListPopUpController>();
+    tradeVC.selectedUserId = userId;
+    tradeVC.getTradeList();
 
-    Get.find<TradeListPopUpController>().selectedUserId = userId;
-    Get.find<TradeListPopUpController>().getTradeList();
+    var creditVC = Get.find<CreditPopUpController>();
+    creditVC.selectedUserId = userId;
+    creditVC.getCreditList();
+    creditVC.getUSerInfo();
 
-    Get.find<CreditPopUpController>().selectedUserId = userId;
-    Get.find<CreditPopUpController>().getCreditList();
-    Get.find<CreditPopUpController>().getUSerInfo();
+    var summaryVc = Get.find<AccountSummaryPopUpController>();
+    summaryVc.selectedUserId = userId;
+    summaryVc.accountSummaryList();
 
-    Get.find<AccountSummaryPopUpController>().selectedUserId = userId;
-    Get.find<AccountSummaryPopUpController>().accountSummaryList();
+    var rejectionVC = Get.find<RejectionLogPopUpController>();
+    rejectionVC.selectedUserId = userId;
+    rejectionVC.rejectLogList();
 
-    Get.find<RejectionLogPopUpController>().selectedUserId = userId;
-    Get.find<RejectionLogPopUpController>().rejectLogList();
+    var groupSettingVc = Get.find<GroupSettingPopUpController>();
+    groupSettingVc.selectedUserId = userId;
+    groupSettingVc.groupSettingList();
 
-    Get.find<GroupSettingPopUpController>().selectedUserId = userId;
-    Get.find<GroupSettingPopUpController>().groupSettingList();
-
-    Get.find<QuantitySettingPopUpController>().selectedUserId = userId;
+    var qtySettingVC = Get.find<QuantitySettingPopUpController>();
+    qtySettingVC.selectedUserId = userId;
     // Get.find<QuantitySettingPopUpController>().quantitySettingList();
 
-    Get.find<BrkPopUpController>().selectedUserId = userId;
-    Get.find<BrkPopUpController>().getExchangeListUserWise(userId: userId);
+    var brkVC = Get.find<BrkPopUpController>();
+    brkVC.selectedUserId = userId;
+    brkVC.getExchangeListUserWise(userId: userId);
 
-    Get.find<UserListPopUpController>().selectedUserId = userId;
-    Get.find<UserListPopUpController>().getUserList();
+    var userListVc = Get.find<UserListPopUpController>();
+    userListVc.selectedUserId = userId;
+    userListVc.getUserList();
 
-    Get.find<ShareDetailPopUpController>().selectedUserId = userId;
-    Get.find<ShareDetailPopUpController>().getUSerInfo();
+    var shareVC = Get.find<ShareDetailPopUpController>();
+    shareVC.selectedUserId = userId;
+    shareVC.getUSerInfo();
   });
 
   showDialog<String>(
@@ -518,7 +530,7 @@ showPendingTradeInfoPopup() {
           ));
 }
 
-generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons = false}) {
+generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick}) {
   showDialog<String>(
       context: Get.context!,
       // barrierColor: Colors.transparent,
@@ -533,7 +545,7 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
                 height: 80.h,
                 child: Column(
                   children: [
-                    headerViewContent(title: title),
+                    headerViewContent(title: title, isFilterAvailable: isFilterAvailable, pdfClick: pdfClick, excelClick: excelClick, filterClick: filterClick),
                     Expanded(child: view!),
                   ],
                 ),
@@ -542,7 +554,7 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
           ));
 }
 
-Widget headerViewContent({String title = "", bool isFromMarket = false}) {
+Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick}) {
   return Container(
       width: 100.w,
       height: 40,
@@ -571,60 +583,65 @@ Widget headerViewContent({String title = "", bool isFromMarket = false}) {
                 color: AppColors().blueColor,
               )),
           const Spacer(),
-          GestureDetector(
-            onTap: () {
-              // if (onCLickPDF != null) {
-              //   onCLickPDF();
-              // }
-            },
-            child: Image.asset(
-              AppImages.pdfIcon,
-              width: 30,
-              height: 30,
+          if (isFilterAvailable)
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (pdfClick != null) {
+                      pdfClick();
+                    }
+                  },
+                  child: Image.asset(
+                    AppImages.pdfIcon,
+                    width: 30,
+                    height: 30,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (excelClick != null) {
+                      excelClick();
+                    }
+                  },
+                  child: Image.asset(
+                    AppImages.excelIcon,
+                    width: 25,
+                    height: 25,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (filterClick != null) {
+                      filterClick();
+                    }
+                  },
+                  child: RotatedBox(
+                    quarterTurns: 1,
+                    child: Icon(
+                      Icons.tune,
+                      size: 25,
+                      color: AppColors().blueColor,
+                    ),
+                  ),
+                  // child: Text("Filter",
+                  //     style: TextStyle(
+                  //       fontSize: 14,
+                  //       fontFamily: CustomFonts.family1Medium,
+                  //       color: AppColors().fontColor,
+                  //     )),
+                ),
+                SizedBox(
+                  width: 30,
+                ),
+              ],
             ),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          GestureDetector(
-            onTap: () {
-              // if (onCLickExcell != null) {
-              //   onCLickExcell();
-              // }
-            },
-            child: Image.asset(
-              AppImages.excelIcon,
-              width: 25,
-              height: 25,
-            ),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          GestureDetector(
-            onTap: () {
-              // if (onCLickFilter != null) {
-              //   onCLickFilter();
-              // }
-            },
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: Icon(
-                Icons.tune,
-                size: 25,
-                color: AppColors().blueColor,
-              ),
-            ),
-            // child: Text("Filter",
-            //     style: TextStyle(
-            //       fontSize: 14,
-            //       fontFamily: CustomFonts.family1Medium,
-            //       color: AppColors().fontColor,
-            //     )),
-          ),
-          SizedBox(
-            width: 30,
-          ),
           if (isFromMarket == false)
             GestureDetector(
               onTap: () {

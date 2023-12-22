@@ -14,7 +14,7 @@ class ManageTradeController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = false;
+
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
   int selectedOrderIndex = -1;

@@ -8,7 +8,7 @@ class LogHistoryController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = false;
+
   Rx<UserData> selectedUser = UserData().obs;
   RxString selectedLogType = "".obs;
   FocusNode submitFocus = FocusNode();

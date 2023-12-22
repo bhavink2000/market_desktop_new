@@ -16,7 +16,6 @@ class M2MProfitAndLossController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = false;
 
   Rx<UserData> selectedUser = UserData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;

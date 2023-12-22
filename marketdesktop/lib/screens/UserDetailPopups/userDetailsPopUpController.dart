@@ -46,6 +46,7 @@ class UserDetailsPopUpController extends BaseController {
   String userId = "";
   String userRoll = "";
   ProfileInfoData? selectedUserData;
+  bool isFilterAvailable = false;
   FocusNode mainFocus = FocusNode();
   final debouncer = Debouncer(milliseconds: 300);
   @override
@@ -98,7 +99,18 @@ class UserDetailsPopUpController extends BaseController {
         userRoll = userResponse.data!.role!;
         selectedUserData = userResponse.data;
         if (userResponse.data!.role == UserRollList.master || userResponse.data!.role == UserRollList.admin) {
-          arrMasterMenuList = ["Position", "Trades", "Group Settings", "Quantity Settings", "Brk", "Credit", "User List", "Account Summary", "Rejection Log", "Share Details"];
+          arrMasterMenuList = [
+            "Position",
+            "Trades",
+            "Group Settings",
+            "Quantity Settings",
+            "Brk",
+            "Credit",
+            "User List",
+            "Account Summary",
+            "Rejection Log",
+            "Share Details",
+          ];
 
           widgetOptions.add(const PositionPopUpScreen());
           widgetOptions.add(const TradeListPopUpScreen());
@@ -138,17 +150,79 @@ class UserDetailsPopUpController extends BaseController {
     }
   }
 
-  // KeyEventResult handleKeyEvent(FocusNode node, RawKeyEvent event) {
-  //   if (event.logicalKey.keyLabel == "Escape") {
-  //     debouncer.run(() async {
-  //       Get.back();
-  //       Get.delete<UserDetailsPopUpController>();
-  //     });
-  //   }
+  bool isShowFilter() {
+    switch (selectedMenuName) {
+      case "Position":
+        isFilterAvailable = true;
+        break;
+      case "Trades":
+        isFilterAvailable = true;
+        break;
+      case "Group Settings":
+        isFilterAvailable = false;
+        break;
+      case "Quantity Settings":
+        isFilterAvailable = true;
+        break;
+      case "Brk":
+        isFilterAvailable = false;
+        break;
+      case "Credit":
+        isFilterAvailable = true;
+        break;
+      case "User List":
+        isFilterAvailable = false;
+        break;
+      case "Account Summary":
+        isFilterAvailable = false;
+        break;
+      case "Rejection Log":
+        isFilterAvailable = true;
+        break;
+      case "Share Details":
+        isFilterAvailable = false;
+        break;
+      default:
+    }
+    return isFilterAvailable;
+  }
 
-  //   //print(event.logicalKey);
-  //   return event.logicalKey == LogicalKeyboardKey.escape ? KeyEventResult.handled : KeyEventResult.ignored;
-  // }
+  Function giveClickEvent() {
+    switch (selectedMenuName) {
+      case "Position":
+        Get.find<PositionPopUpController>().onCLickFilter();
+        break;
+      case "Trades":
+        Get.find<TradeListPopUpController>().onCLickFilter();
+        break;
+      case "Group Settings":
+        Get.find<GroupSettingPopUpController>().onCLickFilter();
+        break;
+      case "Quantity Settings":
+        Get.find<QuantitySettingPopUpController>().onCLickFilter();
+        break;
+      case "Brk":
+        Get.find<BrkPopUpController>().onCLickFilter();
+        break;
+      case "Credit":
+        Get.find<CreditPopUpController>().onCLickFilter();
+        break;
+      case "User List":
+        Get.find<UserListPopUpController>().onCLickFilter();
+        break;
+      case "Account Summary":
+        Get.find<AccountSummaryPopUpController>().onCLickFilter();
+        break;
+      case "Rejection Log":
+        Get.find<RejectionLogPopUpController>().onCLickFilter();
+        break;
+      case "Share Details":
+        Get.find<ShareDetailPopUpController>().onCLickFilter();
+        break;
+      default:
+    }
+    return () {};
+  }
 
   updateUnSelectedView() {
     if (Get.isRegistered<UserDetailsPopUpController>()) {

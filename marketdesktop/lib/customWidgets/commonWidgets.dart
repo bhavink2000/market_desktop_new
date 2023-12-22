@@ -199,64 +199,64 @@ Widget filterPanel(
         SizedBox(
           height: 30,
         ),
-        GestureDetector(
-          onTap: () {
-            if (onCLickPDF != null) {
-              onCLickPDF();
-            }
-          },
-          child: Image.asset(
-            AppImages.pdfIcon,
-            width: 30,
-            height: 30,
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        GestureDetector(
-          onTap: () {
-            if (onCLickExcell != null) {
-              onCLickExcell();
-            }
-          },
-          child: Image.asset(
-            AppImages.excelIcon,
-            width: 25,
-            height: 25,
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        GestureDetector(
-          onTap: () {
-            if (onCLickFilter != null) {
-              onCLickFilter();
-            }
-          },
-          child: Row(
-            children: [
-              Container(
-                width: 3,
-                height: 50,
-                color: AppColors().blueColor,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              RotatedBox(
-                quarterTurns: 1,
-                child: Text(name != "" ? name : "Filter",
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: CustomFonts.family1Medium,
-                      color: AppColors().fontColor,
-                    )),
-              )
-            ],
-          ),
-        ),
+        // GestureDetector(
+        //   onTap: () {
+        //     if (onCLickPDF != null) {
+        //       onCLickPDF();
+        //     }
+        //   },
+        //   child: Image.asset(
+        //     AppImages.pdfIcon,
+        //     width: 30,
+        //     height: 30,
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // GestureDetector(
+        //   onTap: () {
+        //     if (onCLickExcell != null) {
+        //       onCLickExcell();
+        //     }
+        //   },
+        //   child: Image.asset(
+        //     AppImages.excelIcon,
+        //     width: 25,
+        //     height: 25,
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // GestureDetector(
+        //   onTap: () {
+        //     if (onCLickFilter != null) {
+        //       onCLickFilter();
+        //     }
+        //   },
+        //   child: Row(
+        //     children: [
+        //       Container(
+        //         width: 3,
+        //         height: 50,
+        //         color: AppColors().blueColor,
+        //       ),
+        //       SizedBox(
+        //         width: 10,
+        //       ),
+        //       RotatedBox(
+        //         quarterTurns: 1,
+        //         child: Text(name != "" ? name : "Filter",
+        //             style: TextStyle(
+        //               fontSize: 12,
+        //               fontFamily: CustomFonts.family1Medium,
+        //               color: AppColors().fontColor,
+        //             )),
+        //       )
+        //     ],
+        //   ),
+        // ),
         Spacer(),
         if (isRecordDisplay == true)
           RotatedBox(

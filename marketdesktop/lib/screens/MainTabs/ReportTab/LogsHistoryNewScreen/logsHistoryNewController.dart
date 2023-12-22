@@ -12,7 +12,6 @@ class LogsHistoryNewController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = false;
 
   List<String> arrLogFor = ["Self", "Include Child User"];
   List<String> arrLogType = ["Bet", "Close Only", "Margin Square off", "User Status", "% Cash Margin", "Fresh Stop Loss", "Group Qty Settings"];

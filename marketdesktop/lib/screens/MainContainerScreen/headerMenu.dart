@@ -199,28 +199,6 @@ class MyMenuBar extends StatelessWidget {
           ),
         ],
       ),
-      // MenuEntry(
-      //   label: 'Dashboard',
-      //   // shortcut: const SingleActivator(LogicalKeyboardKey.f9, control: false),
-      //   onPressed: () {
-      //     var dashBoardVC = Get.find<MainContainerController>();
-      //     dashBoardVC.isCreateUserClick = false;
-      //     dashBoardVC.isNotificationSettingClick = false;
-      //     dashBoardVC.update();
-
-      //     if (!dashBoardVC.arrAvailableTabs.contains("Dashboard")) {
-      //       dashBoardVC.arrAvailableTabs.insert(0, "Dashboard");
-      //       var marketVC = Get.put(DashboardController());
-      //       dashBoardVC.arrAvailableController.insert(0, marketVC);
-      //       dashBoardVC.widgetOptions.insert(0, DashboardScreen());
-      //       dashBoardVC.selectedCurrentTabIndex = dashBoardVC.widgetOptions.indexWhere(
-      //         (element) => element is DashboardScreen,
-      //       );
-      //       dashBoardVC.selectedCurrentTab = "Dashboard";
-      //       dashBoardVC.update();
-      //     }
-      //   },
-      // ),
       MenuEntry(
         label: 'View',
         menuChildren: <MenuEntry>[
@@ -241,8 +219,8 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
 
                 currentOpenedScreen = ScreenViewNames.orders;
-                Get.put(TradeListController());
-                generalContainerPopup(view: TradeListScreen(), title: ScreenViewNames.orders);
+                var tradeVC = Get.put(TradeListController());
+                generalContainerPopup(view: TradeListScreen(), title: ScreenViewNames.orders, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
               });
             },
           ),
@@ -262,12 +240,12 @@ class MyMenuBar extends StatelessWidget {
               Future.delayed(Duration(milliseconds: 500), () {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.trades;
-                Get.put(SuccessTradeListController());
-                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades);
+
+                var tradeVC = Get.put(SuccessTradeListController());
+                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
               });
             },
           ),
-
           MenuEntry(
             label: ScreenViewNames.positions,
             shortcut: const SingleActivator(LogicalKeyboardKey.f6),
@@ -284,33 +262,11 @@ class MyMenuBar extends StatelessWidget {
               Future.delayed(Duration(milliseconds: 500), () {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.positions;
-                Get.put(PositionController());
-                generalContainerPopup(view: PositionScreen(), title: ScreenViewNames.positions);
+                var positionVc = Get.put(PositionController());
+                generalContainerPopup(view: PositionScreen(), title: ScreenViewNames.positions, isFilterAvailable: true, filterClick: positionVc.onCLickFilter);
               });
             },
           ),
-          // MenuEntry(
-          //   label: 'Dashboard',
-          //   // shortcut: const SingleActivator(LogicalKeyboardKey.f9, control: false),
-          //   onPressed: () {
-          //     var dashBoardVC = Get.find<MainContainerController>();
-          //     dashBoardVC.isCreateUserClick = false;
-          //     dashBoardVC.isNotificationSettingClick = false;
-          //     dashBoardVC.update();
-
-          //     if (!dashBoardVC.arrAvailableTabs.contains("Dashboard")) {
-          //       dashBoardVC.arrAvailableTabs.insert(0, "Dashboard");
-          //       var marketVC = Get.put(DashboardController());
-          //       dashBoardVC.arrAvailableController.insert(0, marketVC);
-          //       dashBoardVC.widgetOptions.insert(0, DashboardScreen());
-          //       dashBoardVC.selectedCurrentTabIndex = dashBoardVC.widgetOptions.indexWhere(
-          //         (element) => element is DashboardScreen,
-          //       );
-          //       dashBoardVC.selectedCurrentTab = "Dashboard";
-          //       dashBoardVC.update();
-          //     }
-          //   },
-          // ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.profitAndLoss,
@@ -320,41 +276,10 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.profitAndLoss;
-                Get.put(ProfitAndLossController());
-                generalContainerPopup(view: ProfitAndLossScreen(), title: ScreenViewNames.profitAndLoss);
+                var plVC = Get.put(ProfitAndLossController());
+                generalContainerPopup(view: ProfitAndLossScreen(), title: ScreenViewNames.profitAndLoss, isFilterAvailable: true, filterClick: plVC.onCLickFilter);
               },
             ),
-          // if (userData?.role != UserRollList.user &&
-          //     userData?.role != UserRollList.broker)
-          //   MenuEntry(
-          //     label: 'M2M Profit & Loss',
-          //     onPressed: () {
-          //       var dashBoardVC = Get.find<MainContainerController>();
-          //       dashBoardVC.isCreateUserClick = false;
-          //       dashBoardVC.isNotificationSettingClick = false;
-          //       dashBoardVC.update();
-          //       if (!dashBoardVC.arrAvailableTabs
-          //           .contains("M2M Profit & Loss")) {
-          //         dashBoardVC.arrAvailableTabs.insert(0, "M2M Profit & Loss");
-          //         var profitAndLossVC = Get.put(M2MProfitAndLossController());
-          //         dashBoardVC.arrAvailableController.insert(0, profitAndLossVC);
-          //         dashBoardVC.widgetOptions.insert(0, M2MProfitAndLossScreen());
-          //         dashBoardVC.selectedCurrentTabIndex =
-          //             dashBoardVC.widgetOptions.indexWhere(
-          //           (element) => element is M2MProfitAndLossScreen,
-          //         );
-          //         dashBoardVC.selectedCurrentTab = "M2M Profit & Loss";
-          //         dashBoardVC.update();
-          //       } else {
-          //         dashBoardVC.selectedCurrentTabIndex =
-          //             dashBoardVC.widgetOptions.indexWhere(
-          //           (element) => element is M2MProfitAndLossScreen,
-          //         );
-          //         dashBoardVC.selectedCurrentTab = "M2M Profit & Loss";
-          //         dashBoardVC.update();
-          //       }
-          //     },
-          //   ),
           MenuEntry(
             label: ScreenViewNames.rejectionLog,
             onPressed: () {
@@ -363,8 +288,8 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.rejectionLog;
-              Get.put(RejectionLogController());
-              generalContainerPopup(view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog);
+              var rejectionVC = Get.put(RejectionLogController());
+              generalContainerPopup(view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter);
             },
           ),
           MenuEntry(
@@ -418,8 +343,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userList;
-                Get.put(UserListController());
-                generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList);
+                var userListVC = Get.put(UserListController());
+                generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
               },
             ),
             // MenuEntry(
@@ -440,8 +365,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.openPosition;
-                Get.put(OpenPositionController());
-                generalContainerPopup(view: OpenPositionScreen(), title: ScreenViewNames.openPosition);
+                var openVc = Get.put(OpenPositionController());
+                generalContainerPopup(view: OpenPositionScreen(), title: ScreenViewNames.openPosition, isFilterAvailable: true, filterClick: openVc.onCLickFilter);
               },
             ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -453,8 +378,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.manageTrades;
-                Get.put(ManageTradeController());
-                generalContainerPopup(view: ManageTradeScreen(), title: ScreenViewNames.manageTrades);
+                var manageTradeVC = Get.put(ManageTradeController());
+                generalContainerPopup(view: ManageTradeScreen(), title: ScreenViewNames.manageTrades, isFilterAvailable: true, filterClick: manageTradeVC.onCLickFilter);
               },
             ),
           // if (userData?.role == UserRollList.master || userData?.role == UserRollList.superAdmin)
@@ -466,8 +391,8 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeLogs;
-              Get.put(TradeLogController());
-              generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs);
+              var tradeLogVC = Get.put(TradeLogController());
+              generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -479,8 +404,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.tradeAccount;
-                Get.put(TradeAccountController());
-                generalContainerPopup(view: TradeAccountScreen(), title: ScreenViewNames.tradeAccount);
+                var tradeAccountVC = Get.put(TradeAccountController());
+                generalContainerPopup(view: TradeAccountScreen(), title: ScreenViewNames.tradeAccount, isFilterAvailable: true, filterClick: tradeAccountVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -491,8 +416,8 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.clientAccountReport;
-              Get.put(ClientAccountReportController());
-              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
+              var clientAccountVC = Get.put(ClientAccountReportController());
+              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport, isFilterAvailable: true, filterClick: clientAccountVC.onCLickFilter);
             },
           ),
           MenuEntry(
@@ -503,8 +428,8 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeMargin;
-              Get.put(TradeMarginController());
-              generalContainerPopup(view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin);
+              var marginVC = Get.put(TradeMarginController());
+              generalContainerPopup(view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin, isFilterAvailable: true, filterClick: marginVC.onCLickFilter);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -516,8 +441,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.settelment;
-                Get.put(SettlementController());
-                generalContainerPopup(view: SettlementScreen(), title: ScreenViewNames.settelment);
+                var settlementVC = Get.put(SettlementController());
+                generalContainerPopup(view: SettlementScreen(), title: ScreenViewNames.settelment, isFilterAvailable: true, filterClick: settlementVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -529,8 +454,8 @@ class MyMenuBar extends StatelessWidget {
 
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.accountSummary;
-              Get.put(AccountSummaryController());
-              generalContainerPopup(view: AccountSummaryScreen(), title: ScreenViewNames.accountSummary);
+              var accountSummaryVC = Get.put(AccountSummaryController());
+              generalContainerPopup(view: AccountSummaryScreen(), title: ScreenViewNames.accountSummary, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter);
             },
           ),
           MenuEntry(
@@ -541,37 +466,11 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.billGenerate;
-              Get.put(BillGenerateController());
-              generalContainerPopup(view: BillGenerateScreen(), title: ScreenViewNames.billGenerate);
+              var billVc = Get.put(BillGenerateController());
+              generalContainerPopup(view: BillGenerateScreen(), title: ScreenViewNames.billGenerate, isFilterAvailable: true, filterClick: billVc.onCLickFilter);
             },
           ),
-          // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
-          //   MenuEntry(
-          //     label: '% Open Position',
-          //     onPressed: () {
-          //       var dashBoardVC = Get.find<MainContainerController>();
-          //       dashBoardVC.isCreateUserClick = false;
-          //       dashBoardVC.isNotificationSettingClick = false;
-          //       dashBoardVC.update();
-          //       if (!dashBoardVC.arrAvailableTabs.contains("% Open Position")) {
-          //         dashBoardVC.arrAvailableTabs.insert(0, "% Open Position");
-          //         var percentOpenPositionVC = Get.put(PercentOpenPositionController());
-          //         dashBoardVC.arrAvailableController.insert(0, percentOpenPositionVC);
-          //         dashBoardVC.widgetOptions.insert(0, PercentOpenPositionScreen());
-          //         dashBoardVC.selectedCurrentTabIndex = dashBoardVC.widgetOptions.indexWhere(
-          //           (element) => element is PercentOpenPositionScreen,
-          //         );
-          //         dashBoardVC.selectedCurrentTab = "% Open Position";
-          //         dashBoardVC.update();
-          //       } else {
-          //         dashBoardVC.selectedCurrentTabIndex = dashBoardVC.widgetOptions.indexWhere(
-          //           (element) => element is PercentOpenPositionScreen,
-          //         );
-          //         dashBoardVC.selectedCurrentTab = "% Open Position";
-          //         dashBoardVC.update();
-          //       }
-          //     },
-          //   ),
+
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.weeklyAdmin,
@@ -581,8 +480,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.weeklyAdmin;
-                Get.put(WeeklyAdminController());
-                generalContainerPopup(view: WeeklyAdminScreen(), title: ScreenViewNames.weeklyAdmin);
+                var weeklyVC = Get.put(WeeklyAdminController());
+                generalContainerPopup(view: WeeklyAdminScreen(), title: ScreenViewNames.weeklyAdmin, isFilterAvailable: true, filterClick: weeklyVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -593,8 +492,8 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.logsHistory;
-              Get.put(LogHistoryController());
-              generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory);
+              var logsVc = Get.put(LogHistoryController());
+              generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -607,12 +506,12 @@ class MyMenuBar extends StatelessWidget {
 
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.scriptMaster;
-                Get.put(ScriptMasterController());
-                generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster);
+                var masterVC = Get.put(ScriptMasterController());
+                generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
               },
             ),
           MenuEntry(
-            label: 'Scriptwise P&L Summary',
+            label: ScreenViewNames.pAndlSummary,
             onPressed: () {
               if (marketViewObj.isBuyOpen != -1) {
                 return;
@@ -620,44 +519,11 @@ class MyMenuBar extends StatelessWidget {
 
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.pAndlSummary;
-              Get.put(ProfitAndLossSummaryController());
-              generalContainerPopup(view: ProfitAndLossSummaryScreen(), title: ScreenViewNames.pAndlSummary);
+              var scriptVC = Get.put(ProfitAndLossSummaryController());
+              generalContainerPopup(view: ProfitAndLossSummaryScreen(), title: ScreenViewNames.pAndlSummary, isFilterAvailable: true, filterClick: scriptVC.onCLickFilter);
             },
           ),
-          // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
-          //   MenuEntry(
-          //     label: 'User Logs New',
-          //     onPressed: () {
-          //       if (marketViewObj.isBuyOpen != -1) {
-          //         return;
-          //       }
-          //       var dashBoardVC = Get.find<MainContainerController>();
-          //       dashBoardVC.isCreateUserClick = false;
-          //       dashBoardVC.isNotificationSettingClick = false;
-          //       dashBoardVC.update();
-          //       if (!dashBoardVC.arrAvailableTabs.contains("User Logs New")) {
-          //         dashBoardVC.arrAvailableTabs.insert(0, "User Logs New");
-          //         var logsHistoryVC = Get.put(LogsHistoryNewController());
-          //         dashBoardVC.arrAvailableController.insert(0, logsHistoryVC);
-          //         dashBoardVC.widgetOptions.insert(0, LogsHistoryNewScreen());
-          //         dashBoardVC.selectedCurrentTabIndex = dashBoardVC.widgetOptions.indexWhere(
-          //           (element) => element is LogsHistoryNewScreen,
-          //         );
-          //         dashBoardVC.selectedCurrentTab = "User Logs New";
-          //         dashBoardVC.updateSelectedView();
-          //         dashBoardVC.updateUnSelectedView();
-          //         dashBoardVC.update();
-          //       } else {
-          //         dashBoardVC.selectedCurrentTabIndex = dashBoardVC.widgetOptions.indexWhere(
-          //           (element) => element is LogsHistoryNewScreen,
-          //         );
-          //         dashBoardVC.selectedCurrentTab = "User Logs New";
-          //         dashBoardVC.updateSelectedView();
-          //         dashBoardVC.updateUnSelectedView();
-          //         dashBoardVC.update();
-          //       }
-          //     },
-          //   ),
+
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.userwisePAndLSummary,
@@ -667,8 +533,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userwisePAndLSummary;
-                Get.put(UserWisePLSummaryController());
-                generalContainerPopup(view: UserWisePLSummaryScreen(), title: ScreenViewNames.userwisePAndLSummary);
+                var userWiseVC = Get.put(UserWisePLSummaryController());
+                generalContainerPopup(view: UserWisePLSummaryScreen(), title: ScreenViewNames.userwisePAndLSummary, isFilterAvailable: true, filterClick: userWiseVC.onCLickFilter);
               },
             ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -680,8 +546,8 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userScriptPositionTracking;
-                Get.put(UserScriptPositionTrackController());
-                generalContainerPopup(view: UserScriptPositionTrackScreen(), title: ScreenViewNames.userScriptPositionTracking);
+                var trackingVC = Get.put(UserScriptPositionTrackController());
+                generalContainerPopup(view: UserScriptPositionTrackScreen(), title: ScreenViewNames.userScriptPositionTracking, isFilterAvailable: true, filterClick: trackingVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -692,8 +558,8 @@ class MyMenuBar extends StatelessWidget {
               }
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.symbolWisePositionReport;
-              Get.put(SymbolWisePositionReportController());
-              generalContainerPopup(view: SymbolWisePositionReportScreen(), title: ScreenViewNames.symbolWisePositionReport);
+              var symbolWiseVC = Get.put(SymbolWisePositionReportController());
+              generalContainerPopup(view: SymbolWisePositionReportScreen(), title: ScreenViewNames.symbolWisePositionReport, isFilterAvailable: true, filterClick: symbolWiseVC.onCLickFilter);
             },
           ),
         ],

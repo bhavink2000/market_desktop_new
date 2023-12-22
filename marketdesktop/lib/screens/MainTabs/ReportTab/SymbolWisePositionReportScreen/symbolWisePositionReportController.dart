@@ -16,7 +16,6 @@ class SymbolWisePositionReportController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
 
-  bool isFilterOpen = false;
   RxString fromDate = "".obs;
   RxString endDate = "".obs;
   Rx<UserData> selectedUser = UserData().obs;

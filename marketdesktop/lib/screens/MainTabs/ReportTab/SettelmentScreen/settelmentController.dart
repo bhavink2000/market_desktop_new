@@ -8,7 +8,7 @@ class SettlementController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = false;
+
   List<Profit> arrProfitList = [];
   List<Profit> arrLossList = [];
   String selectedUserId = "";

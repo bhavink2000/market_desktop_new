@@ -25,6 +25,11 @@ class BaseController extends GetxController {
   RxBool isHedaderDropdownOpen = false.obs;
   AllApiCallService service = AllApiCallService();
   List<GlobalSymbolData> arrExchangeWiseScript = [];
+  bool isFilterOpen = false;
+  onCLickFilter() {
+    isFilterOpen = !isFilterOpen;
+    update();
+  }
 }
 
 abstract class BaseViewModel<T extends BaseController> extends StatelessWidget {
@@ -105,15 +110,9 @@ abstract class BaseView<T extends BaseController> extends StatelessWidget {
                             SizedBox(
                               height: 1.h,
                             ),
-                            Text("Sensex",
-                                style:
-                                    TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                            Text("66498.84",
-                                style: TextStyle(
-                                    fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().greenColor)),
-                            Text("-215.64(-0.33%)",
-                                style:
-                                    TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().redColor)),
+                            Text("Sensex", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                            Text("66498.84", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().greenColor)),
+                            Text("-215.64(-0.33%)", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().redColor)),
                             SizedBox(
                               height: 1.h,
                             ),
@@ -122,10 +121,7 @@ abstract class BaseView<T extends BaseController> extends StatelessWidget {
                       );
                     }),
               ),
-              Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  child: Text("Fund",
-                      style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
+              Container(margin: const EdgeInsets.only(left: 10), child: Text("Fund", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
               Row(
                 children: [
                   Container(
@@ -148,11 +144,8 @@ abstract class BaseView<T extends BaseController> extends StatelessWidget {
                         SizedBox(
                           height: 1.h,
                         ),
-                        Text("Credit",
-                            style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                        Text("29497.82",
-                            style:
-                                TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().greenColor)),
+                        Text("Credit", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                        Text("29497.82", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().greenColor)),
                         SizedBox(
                           height: 1.h,
                         ),
@@ -179,11 +172,8 @@ abstract class BaseView<T extends BaseController> extends StatelessWidget {
                         SizedBox(
                           height: 1.h,
                         ),
-                        Text("Credit",
-                            style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                        Text("29497.82",
-                            style:
-                                TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().greenColor)),
+                        Text("Credit", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                        Text("29497.82", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().greenColor)),
                         SizedBox(
                           height: 1.h,
                         ),

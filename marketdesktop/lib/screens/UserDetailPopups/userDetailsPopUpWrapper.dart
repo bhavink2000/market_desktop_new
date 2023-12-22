@@ -16,51 +16,46 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
 
   @override
   Widget vBuilder(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          Get.back();
-          return Future.value(false);
-        },
-        child: Scaffold(
-            backgroundColor: AppColors().bgColor,
-            body: Column(
-              children: [
-                headerViewContent(context),
-                menuListContent(context),
-                Expanded(
-                    child: IndexedStack(
-                  index: controller.selectedCurrentTab,
-                  children: controller.widgetOptions,
-                )),
-                if (controller.selectedUserData != null)
-                  Container(
-                    height: 30,
-                    decoration: BoxDecoration(
-                        color: AppColors().whiteColor,
-                        border: Border(
-                          top: BorderSide(color: AppColors().lightOnlyText, width: 1),
-                        )),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                            "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal?.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance?.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
-                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
-                        const Spacer(),
-                        Text("Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                      ],
+    return Scaffold(
+        backgroundColor: AppColors().bgColor,
+        body: Column(
+          children: [
+            headerViewContent(isFilterAvailable: controller.isShowFilter()),
+            menuListContent(context),
+            Expanded(
+                child: IndexedStack(
+              index: controller.selectedCurrentTab,
+              children: controller.widgetOptions,
+            )),
+            if (controller.selectedUserData != null)
+              Container(
+                height: 30,
+                decoration: BoxDecoration(
+                    color: AppColors().whiteColor,
+                    border: Border(
+                      top: BorderSide(color: AppColors().lightOnlyText, width: 1),
+                    )),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 10,
                     ),
-                  )
-              ],
-            )));
+                    Text(
+                        "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal?.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance?.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
+                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                    const Spacer(),
+                    Text("Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+              )
+          ],
+        ));
   }
 
-  Widget headerViewContent(BuildContext context) {
+  Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = true, Function? filterClick, Function? pdfClick, Function? excelClick}) {
     return Container(
         width: 100.w,
         height: 40,
@@ -89,6 +84,63 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
                   color: AppColors().blueColor,
                 )),
             const Spacer(),
+            if (isFilterAvailable)
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (pdfClick != null) {
+                        pdfClick();
+                      }
+                    },
+                    child: Image.asset(
+                      AppImages.pdfIcon,
+                      width: 30,
+                      height: 30,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (excelClick != null) {
+                        excelClick();
+                      }
+                    },
+                    child: Image.asset(
+                      AppImages.excelIcon,
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.giveClickEvent();
+                    },
+                    child: RotatedBox(
+                      quarterTurns: 1,
+                      child: Icon(
+                        Icons.tune,
+                        size: 25,
+                        color: AppColors().blueColor,
+                      ),
+                    ),
+                    // child: Text("Filter",
+                    //     style: TextStyle(
+                    //       fontSize: 14,
+                    //       fontFamily: CustomFonts.family1Medium,
+                    //       color: AppColors().fontColor,
+                    //     )),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                ],
+              ),
             GestureDetector(
               onTap: () {
                 Get.back();

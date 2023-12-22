@@ -17,7 +17,7 @@ class UserWisePLSummaryController extends BaseController {
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  bool isFilterOpen = false;
+
   bool isApiCallRunning = false;
   bool isResetCall = false;
   Rx<UserData> selectedUser = UserData().obs;

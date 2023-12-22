@@ -13,7 +13,7 @@ class AccountSummaryPopUpController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = false;
+
   RxString fromDate = "".obs;
   RxString endDate = "".obs;
   AccountSummaryType? selectedAccountSummaryType = AccountSummaryType.pl;

@@ -11,7 +11,7 @@ class QuantitySettingPopUpController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-  bool isFilterOpen = false;
+
   TextEditingController lotMaxController = TextEditingController();
   FocusNode lotMaxFocus = FocusNode();
   TextEditingController qtyMaxController = TextEditingController();

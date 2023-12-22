@@ -16,8 +16,6 @@ class WeeklyAdminController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
 
-  bool isFilterOpen = false;
-
   Rx<UserData> selectedUser = UserData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
