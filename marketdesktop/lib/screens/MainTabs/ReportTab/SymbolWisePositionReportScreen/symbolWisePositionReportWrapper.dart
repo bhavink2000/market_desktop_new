@@ -5,6 +5,9 @@ import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
+import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/SymbolWisePositionReportScreen/symbolWisePositionReportController.dart';
 import 'package:paginable/paginable.dart';
 import 'package:shimmer/shimmer.dart';
@@ -264,7 +267,8 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                               width: 10,
                             ),
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
-                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
+                              await getScriptList(
+                                  exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
                             }, width: 200),
                             SizedBox(
@@ -452,19 +456,64 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               valueBox(scriptValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(scriptValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
+              valueBox(scriptValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
+                  isLarge: true),
 
-              valueBox(scriptValue.totalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox((scriptValue.totalQuantity! / 100).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+              valueBox(
+                  scriptValue.totalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
+                  isUnderlined: true, onClickValue: () {
+                isCommonScreenPopUpOpen = true;
+                Get.find<MainContainerController>().isInitCallRequired = false;
+                currentOpenedScreen = ScreenViewNames.clientAccountReport;
+                var tradeVC = Get.put(ClientAccountReportController());
+                tradeVC.selectedExchange.value =
+                    ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
+                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(
+                    symbolId: controller.arrSummaryList[index].symbolId,
+                    symbolName: controller.arrSummaryList[index].symbolName,
+                    symbolTitle: controller.arrSummaryList[index].symbolTitle);
+                // tradeVC.update();
+                // tradeVC.getTradeList();
 
-              valueBox(scriptValue.avgPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+                tradeVC.isPagingApiCall = false;
+                tradeVC.getAccountSummaryNewList("");
+                tradeVC.isPagingApiCall = true;
+                Get.find<MainContainerController>().isInitCallRequired = true;
+                Get.delete<SymbolWisePositionReportController>();
+                Get.back();
 
-              valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox((scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+                generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
+              }),
+              valueBox(scriptValue.totalShareQuantity!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index,
+                  isBig: true),
+
+              valueBox(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", 45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+
+              valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
+              valueBox(
+                  scriptValue.totalQuantity! != 0
+                      ? scriptValue.brokerageTotal! > 0
+                          ? (scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2)
+                          : scriptValue.avgPrice!.toStringAsFixed(2)
+                      : "0.00",
+                  45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText,
+                  index,
+                  isLarge: true),
+              valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
               // valueBox(scriptValue.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               // valueBox((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
+              valueBox((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), 45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(scriptValue.adminBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
             ],
           ),
         ),
@@ -485,7 +534,8 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
         titleBox("with BROKRAGE a price", isLarge: true),
         titleBox("CMP"),
         titleBox("P/L"),
-        // titleBox("P/L (%)"),
+        titleBox("P/L (%)"),
+        titleBox("BROKRAGE %"),
       ],
     );
   }

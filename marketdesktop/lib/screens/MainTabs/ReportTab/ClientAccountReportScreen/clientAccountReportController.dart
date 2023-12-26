@@ -8,6 +8,7 @@ import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
+import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import '../../../../constant/index.dart';
 import '../../../../modelClass/constantModelClass.dart';
 
@@ -57,8 +58,10 @@ class ClientAccountReportController extends BaseController {
     super.onInit();
 
     isApiCallRunning = true;
+    if (Get.find<MainContainerController>().isInitCallRequired) {
+      getAccountSummaryNewList("");
+    }
 
-    getAccountSummaryNewList("");
     getUserList();
     update();
   }

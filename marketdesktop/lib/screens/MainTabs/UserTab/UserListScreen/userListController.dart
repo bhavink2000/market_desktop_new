@@ -32,6 +32,7 @@ class UserListController extends BaseController {
   FocusNode clearFocus = FocusNode();
   double totalPL = 0.0;
   double totalPLPercentage = 0.0;
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -97,5 +98,11 @@ class UserListController extends BaseController {
         update();
       }
     }
+  }
+
+  updateUser() async {
+    arrUserListData.clear();
+    currentPage = 1;
+    getUserList(isFromClear: true);
   }
 }

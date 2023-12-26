@@ -168,7 +168,8 @@ class UserData {
         brkSharing: json["brkSharing"],
         brkSharingDownLine: json["brkSharingDownLine"],
         exchangeAllow: json["exchangeAllow"] == null ? [] : List<ExchangeAllow>.from(json["exchangeAllow"]!.map((x) => ExchangeAllow.fromJson(x))),
-        assignGroupData: json["assignGroupData"] == null ? [] : List<AssignGroupDatum>.from(json["assignGroupData"]!.map((x) => AssignGroupDatum.fromJson(x))),
+        assignGroupData:
+            json["assignGroupData"] == null ? [] : List<AssignGroupDatum>.from(json["assignGroupData"]!.map((x) => AssignGroupDatum.fromJson(x))),
         highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<String>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
         firstLogin: json["firstLogin"],
         changePasswordOnFirstLogin: json["changePasswordOnFirstLogin"],

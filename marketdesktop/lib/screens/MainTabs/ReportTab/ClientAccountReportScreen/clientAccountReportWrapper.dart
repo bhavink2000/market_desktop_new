@@ -559,6 +559,8 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
               if (controller.selectedplType.value == "All" && controller.selectedplType.value != "Only Release")
                 valueBox(((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.profitLossValue!.toStringAsFixed(2))) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                     AppColors().darkText, index),
+              if (userData!.role != UserRollList.user)
+                valueBox((((((scriptValue.profitLossValue! + scriptValue.profitLoss!) * scriptValue.profitAndLossSharing!) / 100) + scriptValue.adminBrokerageTotal!) * -1).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             ],
           ),
         ),
@@ -587,6 +589,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
         if (controller.selectedplType.value != "Only Release") titleBox("MTM"),
         if (controller.selectedplType.value != "Only Release") titleBox("MTM WITH BORKRAGE", isForDate: true),
         if (controller.selectedplType.value == "All" && controller.selectedplType.value != "Only Release") titleBox("TOTAL"),
+        if (userData!.role != UserRollList.user) titleBox("our %"),
       ],
     );
   }

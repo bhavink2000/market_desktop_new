@@ -7,12 +7,16 @@ import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/CreateUserScreen/createUserController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
 import 'package:paginable/paginable.dart';
+
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../constant/index.dart';
+import '../../../MainContainerScreen/mainContainerController.dart';
 
 class UserListScreen extends BaseView<UserListController> {
   const UserListScreen({Key? key}) : super(key: key);
@@ -206,7 +210,8 @@ class UserListScreen extends BaseView<UserListController> {
                             ),
                             Container(
                               width: 200,
-                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                              decoration:
+                                  BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                               child: TextFormField(
                                 textInputAction: TextInputAction.search,
                                 style: TextStyle(
@@ -352,7 +357,8 @@ class UserListScreen extends BaseView<UserListController> {
                   ? Container(
                       width: 100.w,
                       child: Center(
-                        child: Text("Users not found", style: TextStyle(fontSize: 20, fontFamily: CustomFonts.family1Medium, color: AppColors().lightOnlyText)),
+                        child: Text("Users not found",
+                            style: TextStyle(fontSize: 20, fontFamily: CustomFonts.family1Medium, color: AppColors().lightOnlyText)),
                       ))
                   : PaginableListView.builder(
                       loadMore: () async {
@@ -379,8 +385,14 @@ class UserListScreen extends BaseView<UserListController> {
                   child: Row(
                 children: [
                   totalContent(value: "Total", textColor: AppColors().darkText, width: 1200),
-                  totalContent(value: controller.totalPL.toStringAsFixed(2), textColor: controller.totalPL < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
-                  totalContent(value: controller.totalPLPercentage.toStringAsFixed(2), textColor: controller.totalPLPercentage < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
+                  totalContent(
+                      value: controller.totalPL.toStringAsFixed(2),
+                      textColor: controller.totalPL < 0 ? AppColors().redColor : AppColors().blueColor,
+                      width: 110),
+                  totalContent(
+                      value: controller.totalPLPercentage.toStringAsFixed(2),
+                      textColor: controller.totalPLPercentage < 0 ? AppColors().redColor : AppColors().blueColor,
+                      width: 110),
                 ],
               )),
             ),
@@ -398,7 +410,12 @@ class UserListScreen extends BaseView<UserListController> {
     return Container(
       width: width ?? 6.w,
       padding: EdgeInsets.only(left: 5),
-      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+      decoration: BoxDecoration(
+          color: AppColors().whiteColor,
+          border: Border(
+              top: BorderSide(color: AppColors().lightOnlyText, width: 1),
+              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
+              right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
       child: Text(value ?? "",
           style: TextStyle(
             fontSize: 12,
@@ -428,11 +445,28 @@ class UserListScreen extends BaseView<UserListController> {
           controller.update();
         },
         child: Container(
-          decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedUserIndex == index ? AppColors().darkText : Colors.transparent)),
+          decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(width: 1, color: controller.selectedUserIndex == index ? AppColors().darkText : Colors.transparent)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: AppImages.editUserImage, isSmall: true, onClickImage: () {}),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
+                  isImage: true, strImage: AppImages.editUserImage, isSmall: true, onClickImage: () async {
+                var dashbaordScreen = Get.find<MainContainerController>();
+                dashbaordScreen.isCreateUserClick = true;
+                dashbaordScreen.isNotificationSettingClick = false;
+                // dashbaordScreen.widgetOptions.clear();
+                // dashbaordScreen.arrAvailableController.clear();
+                // dashbaordScreen.arrAvailableTabs.clear();
+                Get.back();
+                await callForRoleList();
+                var createUserVC = Get.find<CreateUserController>();
+                createUserVC.selectedUserForEdit = null;
+                createUserVC.selectedUserForEdit = controller.arrUserListData[index];
+                createUserVC.fillUserDataForEdit();
+                dashbaordScreen.update();
+              }),
               // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
               //     isImage: true, isBig: true, strImage: AppImages.shareDetailsImage, onClickImage: () {
               //   controller.selectedUserIndex = index;
@@ -472,44 +506,95 @@ class UserListScreen extends BaseView<UserListController> {
                 ),
               ),
 
-              valueBox(controller.arrUserListData[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!, roll: controller.arrUserListData[index].role!);
+              valueBox(controller.arrUserListData[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index,
+                  isBig: true, isUnderlined: true, onClickValue: () {
+                showUserDetailsPopUp(
+                    userId: controller.arrUserListData[index].userId!,
+                    userName: controller.arrUserListData[index].userName!,
+                    roll: controller.arrUserListData[index].role!);
               }),
-              valueBox(controller.arrUserListData[index].parentUser ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrUserListData[index].roleName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrUserListData[index].name ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox("${controller.arrUserListData[index].profitAndLossSharing}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox("${controller.arrUserListData[index].brkSharing}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox(controller.arrUserListData[index].leverage!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+              valueBox(controller.arrUserListData[index].parentUser ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
+              valueBox(controller.arrUserListData[index].roleName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
+              valueBox(controller.arrUserListData[index].name ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index,
+                  isBig: true),
+              valueBox("${controller.arrUserListData[index].profitAndLossSharing}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().blueColor, index),
+              valueBox("${controller.arrUserListData[index].brkSharing}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().blueColor, index),
+              valueBox(controller.arrUserListData[index].leverage!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().blueColor, index),
 
-              valueBox(controller.arrUserListData[index].credit.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrUserListData[index].credit.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
               valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox(controller.arrUserListData[index].profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+              valueBox(controller.arrUserListData[index].profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().blueColor, index),
 
-              valueBox((controller.getPlPer(percentage: controller.arrUserListData[index].profitAndLossSharing!, pl: controller.arrUserListData[index].profitLoss!) * -1).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  controller.getPlPer(percentage: controller.arrUserListData[index].profitAndLossSharing!, pl: controller.arrUserListData[index].profitLoss!) > 0 ? AppColors().redColor : AppColors().blueColor, index),
+              valueBox(
+                  (controller.getPlPer(
+                              percentage: controller.arrUserListData[index].profitAndLossSharing!,
+                              pl: controller.arrUserListData[index].profitLoss!) *
+                          -1)
+                      .toStringAsFixed(2),
+                  45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  controller.getPlPer(
+                              percentage: controller.arrUserListData[index].profitAndLossSharing!,
+                              pl: controller.arrUserListData[index].profitLoss!) >
+                          0
+                      ? AppColors().redColor
+                      : AppColors().blueColor,
+                  index),
 
-              valueBox("${(controller.arrUserListData[index].profitLoss! / 100).toStringAsFixed(2)}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+              valueBox("${(controller.arrUserListData[index].profitLoss! / 100).toStringAsFixed(2)}%", 45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
 
-              valueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, isBig: true),
-              valueBox(controller.arrUserListData[index].role == UserRollList.user ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2) : "0", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().blueColor, index,
+              valueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), 45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index,
+                  isBig: true),
+              valueBox(
+                  controller.arrUserListData[index].role == UserRollList.user
+                      ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2)
+                      : "0",
+                  45,
+                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().blueColor,
+                  index,
                   isBig: true),
 
-              valueBox(controller.arrUserListData[index].balance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
+              valueBox(controller.arrUserListData[index].balance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().blueColor, index),
 
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: controller.arrUserListData[index].role == UserRollList.master ? false : true, switchValue: controller.arrUserListData[index].closeOnly!.obs),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
+                  isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
+                  isSwitch: controller.arrUserListData[index].role == UserRollList.master ? false : true,
+                  switchValue: controller.arrUserListData[index].closeOnly!.obs),
 
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].marginSquareOff!.obs, isBig: true),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].modifyOrder == 0 ? false.obs : true.obs),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
+                  isSwitch: true, switchValue: controller.arrUserListData[index].marginSquareOff!.obs, isBig: true),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
+                  isSwitch: true, switchValue: controller.arrUserListData[index].modifyOrder == 0 ? false.obs : true.obs),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
+                  isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs),
 
-              valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(controller.arrUserListData[index].deviceType ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrUserListData[index].deviceId ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(controller.arrUserListData[index].ipAddress ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index,
+                  isForDate: true),
+              valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index,
+                  isLarge: true),
+              valueBox(controller.arrUserListData[index].deviceType ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
+              valueBox(controller.arrUserListData[index].deviceId ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index,
+                  isBig: true),
+              valueBox(controller.arrUserListData[index].ipAddress ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                  AppColors().darkText, index),
 
               // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
               //     isImage: true, isBig: true, strImage: AppImages.shareDetailsImage, onClickImage: () {
@@ -632,7 +717,8 @@ class UserListScreen extends BaseView<UserListController> {
     var userValue = controller.arrUserListData[controller.selectedUserIndex];
     var tempString = "";
 
-    tempString = "Username : ${userValue.userName}\n Password : Please enter your password\n Servername  : ${serverName} \n iOS Link : https://www.apple.com \n Android Link : https://www.google.com \n Mac Link : https://www.appleMac.com \n Window Link : https://www.microsoft.com";
+    tempString =
+        "Username : ${userValue.userName}\n Password : Please enter your password\n Servername  : ${serverName} \n iOS Link : https://www.apple.com \n Android Link : https://www.google.com \n Mac Link : https://www.appleMac.com \n Window Link : https://www.microsoft.com";
     return Expanded(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,

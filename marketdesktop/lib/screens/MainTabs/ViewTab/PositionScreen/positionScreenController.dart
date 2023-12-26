@@ -10,6 +10,7 @@ import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
+import 'package:marketdesktop/modelClass/ltpUpdateModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import '../../../../constant/index.dart';
@@ -72,6 +73,9 @@ class PositionController extends BaseController {
 
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
+
+  List<LtpUpdateModel> arrLtpUpdate = [];
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -145,7 +149,10 @@ class PositionController extends BaseController {
     }
     isPagingApiCall = true;
     update();
-    var response = await service.positionListCall(currentPage, text, symbolId: selectedScriptFromFilter.value.symbolId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", userId: selectedUser.value.userId ?? "");
+    var response = await service.positionListCall(currentPage, text,
+        symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+        exchangeId: selectedExchange.value.exchangeId ?? "",
+        userId: selectedUser.value.userId ?? "");
     arrPositionScriptList.addAll(response!.data!);
     isPagingApiCall = false;
     isResetCall = false;
@@ -155,8 +162,11 @@ class PositionController extends BaseController {
     }
     for (var indexOfScript = 0; indexOfScript < arrPositionScriptList.length; indexOfScript++) {
       arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
-          ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
-          : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
+          ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) *
+              arrPositionScriptList[indexOfScript].totalQuantity!
+          : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) -
+                  double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) *
+              arrPositionScriptList[indexOfScript].totalQuantity!;
     }
     isApiCallRunning = false;
     update();
@@ -224,7 +234,18 @@ class PositionController extends BaseController {
   listenPositionScriptFromSocket(GetScriptFromSocket socketData) {
     if (socketData.status == true) {
       var obj = arrPositionScriptList.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);
-
+      var ltpObj = LtpUpdateModel(symbolId: "", ltp: socketData.data!.ltp!, symbolTitle: socketData.data!.symbol, dateTime: DateTime.now());
+      var isAvailableObj = arrLtpUpdate.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolTitle);
+      if (isAvailableObj == null) {
+        arrLtpUpdate.add(ltpObj);
+      } else {
+        if (isAvailableObj.ltp != ltpObj.ltp) {
+          var index = arrLtpUpdate.indexWhere((element) => element.symbolTitle == ltpObj.symbolTitle);
+          arrLtpUpdate[index] = ltpObj;
+          // print(ltpObj.symbolTitle);
+          // print(ltpObj.ltp);
+        }
+      }
       if (obj != null) {
         var indexOfScript = arrPositionScriptList.indexWhere((element) => element.symbolName == socketData.data?.symbol);
         if (indexOfScript != -1) {
@@ -236,8 +257,11 @@ class PositionController extends BaseController {
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
             arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
-                ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
-                : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
+                ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) *
+                    arrPositionScriptList[indexOfScript].totalQuantity!
+                : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) -
+                        double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) *
+                    arrPositionScriptList[indexOfScript].totalQuantity!;
           }
         }
         totalPL = 0.0;
@@ -273,6 +297,19 @@ class PositionController extends BaseController {
 
   String validateForm() {
     var msg = "";
+    if (selectedOrderType.value.id != "limit") {
+      var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrPositionScriptList[selectedScriptIndex].symbolName);
+      if (ltpObj == null) {
+        return "Not Allowed For Trade";
+      } else {
+        var difference = DateTime.now().difference(ltpObj.dateTime!);
+        var differenceInSeconds = difference.inSeconds;
+        if (differenceInSeconds >= 40) {
+          return "Not Allowed For Trade";
+        }
+      }
+    }
+
     if (userData!.role == UserRollList.user) {
       if (selectedOrderType.value.id == "market") {
         if (qtyController.text.isEmpty) {
@@ -342,7 +379,9 @@ class PositionController extends BaseController {
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
         productType: "longTerm",
-        refPrice: isFromBuy ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble() : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        refPrice: isFromBuy
+            ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble()
+            : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
       );
 
       //longterm
@@ -408,7 +447,9 @@ class PositionController extends BaseController {
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
         userId: selectedUser.value.userId!,
-        refPrice: isFromBuy ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble() : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        refPrice: isFromBuy
+            ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble()
+            : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
       );
 
       //longterm
@@ -714,7 +755,10 @@ class PositionController extends BaseController {
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                fillColor: AppColors().whiteColor,
+                                                contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
 
                                             widgetContainerDecoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(0),
@@ -767,7 +811,10 @@ class PositionController extends BaseController {
                                               incDecFactor: 0.05,
                                               isInt: false,
 
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                              numberFieldDecoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  fillColor: AppColors().whiteColor,
+                                                  contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
 
                                               widgetContainerDecoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(0),
@@ -1266,7 +1313,10 @@ class PositionController extends BaseController {
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                fillColor: AppColors().whiteColor,
+                                                contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
 
                                             widgetContainerDecoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(0),
@@ -1318,7 +1368,10 @@ class PositionController extends BaseController {
                                               initialValue: double.tryParse(priceController.text) ?? 0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                              numberFieldDecoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  fillColor: AppColors().whiteColor,
+                                                  contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
                                               widgetContainerDecoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,
@@ -1520,7 +1573,8 @@ class PositionController extends BaseController {
                   isExpanded: true,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.only(left: 15),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
+                    focusedBorder:
+                        OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
                   ),
                   hint: Text(
@@ -1535,7 +1589,8 @@ class PositionController extends BaseController {
                   items: arrOrderType
                       .map((Type item) => DropdownMenuItem<Type>(
                             value: item,
-                            child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                            child: Text(item.name ?? "",
+                                style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                           ))
                       .toList(),
                   selectedItemBuilder: (context) {
@@ -1612,7 +1667,8 @@ class PositionController extends BaseController {
                             items: arrValidaty
                                 .map((Type item) => DropdownMenuItem<Type>(
                                       value: item,
-                                      child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                                      child: Text(item.name ?? "",
+                                          style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                                     ))
                                 .toList(),
                             selectedItemBuilder: (context) {
@@ -1632,7 +1688,8 @@ class PositionController extends BaseController {
                             },
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 15),
-                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
                               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
                             ),
                             value: selectedValidity.value.id == null ? null : selectedValidity.value,
@@ -1667,7 +1724,8 @@ class PositionController extends BaseController {
               alignment: Alignment.bottomCenter,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(left: 15),
-                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
+                focusedBorder:
+                    OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
               ),
               hint: Text(
@@ -1681,7 +1739,8 @@ class PositionController extends BaseController {
               items: arrUserListOnlyClient
                   .map((UserData item) => DropdownMenuItem<UserData>(
                         value: item,
-                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.userName ?? "",
+                            style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {

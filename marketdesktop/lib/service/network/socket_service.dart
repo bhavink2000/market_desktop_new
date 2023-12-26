@@ -48,92 +48,103 @@ class SocketService {
       //   showWarningToast("Socket ready for listen");
       // });
 
-      channel?.stream.listen((event) {
-        // print(event);
-        bool isHomeVcAvailable = Get.isRegistered<MarketWatchController>();
-        bool isPositionAvailable = Get.isRegistered<PositionController>();
-        bool isPositionPopUpAvailable = Get.isRegistered<PositionPopUpController>();
-        bool isOpenPositionAvailable = Get.isRegistered<OpenPositionController>();
-        bool isTradePopUpAvailable = Get.isRegistered<TradeListPopUpController>();
-        bool isTradeAvailable = Get.isRegistered<TradeListController>();
-        bool isSuccessTradeAvailable = Get.isRegistered<SuccessTradeListController>();
-        bool isManageTradeAvailable = Get.isRegistered<ManageTradeController>();
+      channel?.stream.listen(
+        (event) {
+          // print(event);
+          bool isHomeVcAvailable = Get.isRegistered<MarketWatchController>();
+          bool isPositionAvailable = Get.isRegistered<PositionController>();
+          bool isPositionPopUpAvailable = Get.isRegistered<PositionPopUpController>();
+          bool isOpenPositionAvailable = Get.isRegistered<OpenPositionController>();
+          bool isTradePopUpAvailable = Get.isRegistered<TradeListPopUpController>();
+          bool isTradeAvailable = Get.isRegistered<TradeListController>();
+          bool isSuccessTradeAvailable = Get.isRegistered<SuccessTradeListController>();
+          bool isManageTradeAvailable = Get.isRegistered<ManageTradeController>();
 
-        bool isWeeklyAdminAvailable = Get.isRegistered<WeeklyAdminController>();
-        bool isUSerWisePlAvailable = Get.isRegistered<UserWisePLSummaryController>();
-        bool isPlAvailable = Get.isRegistered<ProfitAndLossController>();
-        bool isSymbolWisePlAvailable = Get.isRegistered<ProfitAndLossSummaryController>();
-        bool isOpenPositionPopUpAvailable = Get.isRegistered<OpenPositionPopUpController>();
-        bool isAccountSummaryNewAvailable = Get.isRegistered<ClientAccountReportController>();
-        bool isSymbolWisePositionAvailable = Get.isRegistered<SymbolWisePositionReportController>();
+          bool isWeeklyAdminAvailable = Get.isRegistered<WeeklyAdminController>();
+          bool isUSerWisePlAvailable = Get.isRegistered<UserWisePLSummaryController>();
+          bool isPlAvailable = Get.isRegistered<ProfitAndLossController>();
+          bool isSymbolWisePlAvailable = Get.isRegistered<ProfitAndLossSummaryController>();
+          bool isOpenPositionPopUpAvailable = Get.isRegistered<OpenPositionPopUpController>();
+          bool isAccountSummaryNewAvailable = Get.isRegistered<ClientAccountReportController>();
+          bool isSymbolWisePositionAvailable = Get.isRegistered<SymbolWisePositionReportController>();
 
-        if (isAccountSummaryNewAvailable) {
-          var homeVC = Get.find<ClientAccountReportController>();
+          if (isAccountSummaryNewAvailable) {
+            var homeVC = Get.find<ClientAccountReportController>();
 
-          homeVC.listenClientAccountScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isSymbolWisePositionAvailable) {
-          var homeVC = Get.find<SymbolWisePositionReportController>();
+            homeVC.listenClientAccountScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isSymbolWisePositionAvailable) {
+            var homeVC = Get.find<SymbolWisePositionReportController>();
 
-          homeVC.listenSymbolWisePositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isHomeVcAvailable) {
-          var homeVC = Get.find<MarketWatchController>();
+            homeVC.listenSymbolWisePositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isHomeVcAvailable) {
+            var homeVC = Get.find<MarketWatchController>();
 
-          homeVC.listenScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isTradeAvailable) {
-          var tradeVC = Get.find<TradeListController>();
-          tradeVC.listenTradeScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isSuccessTradeAvailable) {
-          var tradeVC = Get.find<SuccessTradeListController>();
-          tradeVC.listenSuccessTradeScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isManageTradeAvailable) {
-          var tradeVC = Get.find<ManageTradeController>();
-          tradeVC.listenSuccessTradeScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isPositionAvailable) {
-          var tradeVC = Get.find<PositionController>();
-          tradeVC.listenPositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isOpenPositionPopUpAvailable) {
-          var tradeVC = Get.find<OpenPositionPopUpController>();
-          tradeVC.listenPositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isUSerWisePlAvailable) {
-          var tradeVC = Get.find<UserWisePLSummaryController>();
-          tradeVC.listenUserWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isPlAvailable) {
-          var tradeVC = Get.find<ProfitAndLossController>();
-          tradeVC.listenUserWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isSymbolWisePlAvailable) {
-          var tradeVC = Get.find<ProfitAndLossSummaryController>();
-          tradeVC.listenSymbolWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isPositionPopUpAvailable) {
-          var tradeVC = Get.find<PositionPopUpController>();
-          tradeVC.listenPositionPopUpScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isTradePopUpAvailable) {
-          var tradeVC = Get.find<TradeListPopUpController>();
-          tradeVC.listenTradePopUpScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isOpenPositionAvailable) {
-          var tradeVC = Get.find<OpenPositionController>();
-          tradeVC.listenOpenPositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        if (isWeeklyAdminAvailable) {
-          var tradeVC = Get.find<WeeklyAdminController>();
-          tradeVC.listenWeeklyAdminScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
-        }
-        // else {
-        //   channel?.sink.close(status.goingAway);
-        // }
-      });
+            homeVC.listenScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isTradeAvailable) {
+            var tradeVC = Get.find<TradeListController>();
+            tradeVC.listenTradeScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isSuccessTradeAvailable) {
+            var tradeVC = Get.find<SuccessTradeListController>();
+            tradeVC.listenSuccessTradeScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isManageTradeAvailable) {
+            var tradeVC = Get.find<ManageTradeController>();
+            tradeVC.listenSuccessTradeScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isPositionAvailable) {
+            var tradeVC = Get.find<PositionController>();
+            tradeVC.listenPositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isOpenPositionPopUpAvailable) {
+            var tradeVC = Get.find<OpenPositionPopUpController>();
+            tradeVC.listenPositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isUSerWisePlAvailable) {
+            var tradeVC = Get.find<UserWisePLSummaryController>();
+            tradeVC.listenUserWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isPlAvailable) {
+            var tradeVC = Get.find<ProfitAndLossController>();
+            tradeVC.listenUserWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isSymbolWisePlAvailable) {
+            var tradeVC = Get.find<ProfitAndLossSummaryController>();
+            tradeVC.listenSymbolWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isPositionPopUpAvailable) {
+            var tradeVC = Get.find<PositionPopUpController>();
+            tradeVC.listenPositionPopUpScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isTradePopUpAvailable) {
+            var tradeVC = Get.find<TradeListPopUpController>();
+            tradeVC.listenTradePopUpScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isOpenPositionAvailable) {
+            var tradeVC = Get.find<OpenPositionController>();
+            tradeVC.listenOpenPositionScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          if (isWeeklyAdminAvailable) {
+            var tradeVC = Get.find<WeeklyAdminController>();
+            tradeVC.listenWeeklyAdminScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
+          // else {
+          //   channel?.sink.close(status.goingAway);
+          // }
+        },
+        onDone: () => {
+          // isMarketSocketConnected.value = false,
+          print('onDone: Will close WebSocket: ${channel?.closeReason}'),
+        },
+        onError: (err) => {
+          isMarketSocketConnected.value = false,
+          print('onError: Will close WebSocket: ${channel?.closeReason}'),
+        },
+        cancelOnError: false,
+      );
     } catch (e) {
       print(e);
       showWarningToast(e.toString());

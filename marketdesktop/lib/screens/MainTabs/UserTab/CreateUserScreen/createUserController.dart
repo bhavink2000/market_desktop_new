@@ -7,6 +7,7 @@ import 'package:marketdesktop/modelClass/brokerListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeAllowModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
+import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
@@ -66,6 +67,8 @@ class CreateUserController extends BaseController {
   List<groupListModelData> arrMastGroupListforOthers = [];
   List<groupListModelData> arrMastGroupListforNSE = [];
   List<groupListModelData> arrMastGroupListforMCX = [];
+  List<ExchangeAllowforMaster> arrSelectedExchangeListforMaster = [];
+  List<ExchangeAllow> arrSelectedExchangeListforClient = [];
   List<ExchangeAllow> arrSelectedExchangeList = [];
   List<String> arrHighLowBetweenTradeSelectedList = [];
   List<String> arrSelectedGroupListIDforOthers = [];
@@ -93,6 +96,8 @@ class CreateUserController extends BaseController {
   final debouncer = Debouncer(milliseconds: 200);
   FocusNode saveFocus = FocusNode();
   FocusNode cancelFocus = FocusNode();
+  UserData? selectedUserForEdit;
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -125,6 +130,187 @@ class CreateUserController extends BaseController {
       update();
     });
   }
+  //*********************************************************************** */
+  // Edit User Functions
+  //*********************************************************************** */
+
+  fillUserDataForEdit() async {
+    reseData();
+    if (selectedUserForEdit != null) {
+      if (selectedUserForEdit!.role == UserRollList.master) {
+        nameController.text = selectedUserForEdit!.name!;
+        userNameController.text = selectedUserForEdit!.userName!;
+        mobileNumberController.text = selectedUserForEdit!.phone!.toString();
+        creditController.text = selectedUserForEdit!.credit.toString().replaceAll(RegExp(r'\.0$'), '');
+        remarkController.text = selectedUserForEdit!.remark!;
+        isAutoSquareOff = selectedUserForEdit!.addMaster == 1 ? true : false;
+        isChangePasswordOnFirstLogin = selectedUserForEdit!.changePasswordOnFirstLogin!;
+        selectedUserType.value.roleId = selectedUserForEdit!.role;
+        isCloseOnly = selectedUserForEdit!.marketOrder == 1 ? true : false;
+        profitandLossController.text = selectedUserForEdit!.profitAndLossSharing.toString();
+        brkSharingMasterController.text = selectedUserForEdit!.brkSharing.toString();
+        if (selectedUserForEdit!.highLowBetweenTradeLimit != null) {
+          for (var element in selectedUserForEdit!.highLowBetweenTradeLimit!) {
+            for (var i = 0; i < arrExchange.length; i++) {
+              if (arrExchange[i].exchangeId == element) {
+                arrExchange[i].isHighLowTradeSelected = true;
+              }
+            }
+          }
+        }
+        if (selectedUserForEdit!.exchangeAllow != null) {
+          for (var i = 0; i < selectedUserForEdit!.exchangeAllow!.length; i++) {
+            for (var j = 0; j < arrExchange.length; j++) {
+              if (arrExchange[j].exchangeId == selectedUserForEdit!.exchangeAllow![i].exchangeId) {
+                arrExchange[j].isSelected = true;
+                for (var l = 0; l < arrExchange[j].arrGroupList.length; l++) {
+                  for (var k = 0; k < selectedUserForEdit!.exchangeAllow![i].groupId!.length; k++) {
+                    if (arrExchange[j].arrGroupList[l].groupId == selectedUserForEdit!.exchangeAllow![i].groupId![k]) {
+                      arrExchange[j].selectedItems.add(arrExchange[j].arrGroupList[l]);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (arrExchange.every((exchange) => exchange.isSelected)) {
+          isSelectedallExchangeinMaster.value = true;
+        }
+        if (userData!.highLowSLLimitPercentage == true) {
+          isSymbolWiseSL = true;
+        }
+        update();
+      } else if (selectedUserForEdit!.role == UserRollList.user) {
+        selectedUserType.value.roleId = selectedUserForEdit!.role;
+        nameController.text = selectedUserForEdit!.name!;
+        userNameController.text = selectedUserForEdit!.userName!;
+        mobileNumberController.text = selectedUserForEdit!.phone!.toString();
+        creditController.text = selectedUserForEdit!.credit.toString().replaceAll(RegExp(r'\.0$'), '');
+        remarkController.text = selectedUserForEdit!.remark!;
+        isAutoSquareOff = selectedUserForEdit!.autoSquareOff == 1 ? true : false;
+        cutoffController.text = selectedUserForEdit!.cutOff.toString();
+        isChangePasswordOnFirstLogin = selectedUserForEdit!.changePasswordOnFirstLogin!;
+        if (selectedUserForEdit!.highLowBetweenTradeLimit != null) {
+          for (var element in selectedUserForEdit!.highLowBetweenTradeLimit!) {
+            for (var i = 0; i < arrExchange.length; i++) {
+              if (arrExchange[i].exchangeId == element) {
+                arrExchange[i].isHighLowTradeSelected = true;
+              }
+            }
+          }
+        }
+        if (selectedUserForEdit != null && selectedUserForEdit!.exchangeAllow != null) {
+          for (var i = 0; i < selectedUserForEdit!.exchangeAllow!.length; i++) {
+            var currentExchangeId = selectedUserForEdit!.exchangeAllow![i].exchangeId;
+            var groupId = selectedUserForEdit!.exchangeAllow![i].groupId?[0];
+            for (var j = 0; j < arrExchange.length; j++) {
+              if (arrExchange[j].exchangeId == currentExchangeId) {
+                arrExchange[j].isSelected = true;
+                arrExchange[j].isTurnOverSelected = selectedUserForEdit!.exchangeAllow![i].isTurnoverWise;
+                arrExchange[j].isSymbolSelected = selectedUserForEdit!.exchangeAllow![i].isSymbolWise;
+                var groupData = await callforGroupList(currentExchangeId);
+
+                arrExchange[j].arrGroupList.clear();
+                arrExchange[j].arrGroupList.addAll(groupData);
+                if (groupId != null) {
+                  int index = arrExchange[j].arrGroupList.indexWhere((item) => item.groupId == groupId);
+                  if (index != -1) {
+                    arrExchange[j].isDropDownValueSelected.value = arrExchange[j].arrGroupList[index];
+                  } else {
+                    arrExchange[i].isDropDownValueSelected = arrExchange[i].arrGroupList.first.obs;
+                  }
+                } else {
+                  arrExchange[i].isDropDownValueSelected = arrExchange[i].arrGroupList.first.obs;
+                }
+              }
+            }
+          }
+        }
+
+        if (arrExchange.every((exchange) => exchange.isSelected)) {
+          isSelectedallExchangeinMaster.value = true;
+        }
+        if (userData!.highLowSLLimitPercentage == true) {
+          isSymbolWiseSL = true;
+        }
+
+        var selectedLeverageIndex = arrLeverageList.indexWhere((element) => element.name == selectedUserForEdit!.leverage!);
+        if (selectedLeverageIndex != -1) {
+          selectedLeverage.value = arrLeverageList[selectedLeverageIndex];
+        }
+        update();
+      }
+    }
+    update();
+  }
+
+  reseData() {
+    nameController.text = "";
+    userNameController.text = "";
+    passwordController.text = "";
+    retypePasswordController.text = "";
+    mobileNumberController.text = "";
+    cutoffController.text = "";
+    creditController.text = "";
+    remarkController.text = "";
+    selectedLeverage.value = arrLeverageList.first;
+    profitandLossController.text = "";
+    brokerageSharingController.text = "";
+    brkSharingMasterController.text = "";
+    isAutoSquareOff = false;
+    isModifyOrder = false;
+    isCloseOnly = false;
+    isIntraday = false;
+    isChangePasswordOnFirstLogin = false;
+    isSelectedallExchangeinMaster.value = false;
+    selectedBrokerType = BrokerListModelData().obs;
+    // selectedUserType.value = arrUserTypeList.first;
+    for (var i = 0; i < arrExchange.length; i++) {
+      if (arrExchange[i].isSelected == true) {
+        arrExchange[i].isSelected = false;
+      }
+      if (arrExchange[i].isTurnOverSelected == true) {
+        arrExchange[i].isTurnOverSelected = false;
+      }
+      if (arrExchange[i].isSymbolSelected == true) {
+        arrExchange[i].isSymbolSelected = false;
+      }
+      if (arrExchange[i].isHighLowTradeSelected == true) {
+        arrExchange[i].isHighLowTradeSelected = false;
+      }
+      if (arrExchange[i].isDropDownValueSelected.value.groupId != null) {
+        arrExchange[i].isDropDownValueSelected.value.groupId = null;
+      }
+      if (arrExchange[i].selectedItems.isNotEmpty) {
+        arrExchange[i].selectedItems.clear();
+      }
+      arrExchange[i].selectedItemsID.clear();
+      arrExchange[i].isDropDownValueSelectedID.value = "";
+      if (selectedUserType.value.roleId == UserRollList.user) {
+        if (!arrExchange[i].arrGroupList.any((group) => group.name == "Select Group")) {
+          arrExchange[i].arrGroupList.insert(0, groupListModelData(name: "Select Group"));
+        }
+
+        arrExchange[i].isDropDownValueSelected = arrExchange[i].arrGroupList.first.obs;
+      }
+      if (selectedUserType.value.roleId != UserRollList.user) {
+        arrExchange[i].arrGroupList.removeWhere((element) => element.name == "Select Group");
+      }
+    }
+    arrSelectedGroupListIDforOthers.clear();
+    arrSelectedGroupListIDforNSE.clear();
+    arrSelectedGroupListIDforMCX.clear();
+    arrSelectedDropDownValueClient.clear();
+    arrSelectedExchangeListforMaster.clear();
+    arrSelectedExchangeListforClient.clear();
+    arrHighLowBetweenTradeSelectedList.clear();
+    isCmpOrder = null;
+    isAdminManualOrder = null;
+    isDeleteTrade = null;
+    isExecutePendingOrder = null;
+    update();
+  }
 
   //*********************************************************************** */
   // Field Validation
@@ -140,16 +326,18 @@ class CreateUserController extends BaseController {
       msg = AppString.emptyUserName;
     } else if (userNameController.text.length < 4) {
       msg = AppString.rangeUserName;
-    } else if (passwordController.text.trim().isEmpty) {
-      msg = AppString.emptyPassword;
-    } else if (passwordController.text.trim().length < 6) {
-      msg = AppString.wrongPassword;
-    } else if (retypePasswordController.text.trim().isEmpty) {
-      msg = AppString.emptyConfirmPassword;
-    } else if (retypePasswordController.text.length < 6) {
-      msg = AppString.wrongRetypePassword;
-    } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
-      msg = AppString.passwordNotMatch;
+    } else if (selectedUserForEdit == null) {
+      if (passwordController.text.trim().isEmpty) {
+        msg = AppString.emptyPassword;
+      } else if (passwordController.text.trim().length < 6) {
+        msg = AppString.wrongPassword;
+      } else if (retypePasswordController.text.trim().isEmpty) {
+        msg = AppString.emptyConfirmPassword;
+      } else if (retypePasswordController.text.length < 6) {
+        msg = AppString.wrongRetypePassword;
+      } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
+        msg = AppString.passwordNotMatch;
+      }
     }
     // else if (mobileNumberController.text.trim().isEmpty) {
     //   msg = AppString.emptyMobileNumber;
@@ -159,11 +347,12 @@ class CreateUserController extends BaseController {
     // else if (cutoffController.text.trim().isEmpty) {
     //   msg = AppString.emptyCutOff;
     // }
-    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
+    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) ||
+        (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
       msg = AppString.cutOffValid;
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
-    } else if (arrSelectedExchangeList.isEmpty) {
+    } else if (arrSelectedExchangeListforClient.isEmpty) {
       msg = AppString.emptyExchangeGroup;
     } else if (selectedBrokerType.value.addMaster != null) {
       if (brokerageSharingController.text.trim().isEmpty) {
@@ -186,10 +375,12 @@ class CreateUserController extends BaseController {
       msg = AppString.emptyUserName;
     } else if (userNameController.text.length < 4) {
       msg = AppString.rangeUserName;
-    } else if (passwordController.text.trim().isEmpty) {
-      msg = AppString.emptyPassword;
-    } else if (passwordController.text.trim().length < 6) {
-      msg = AppString.wrongPassword;
+    } else if (selectedUserForEdit == null) {
+      if (passwordController.text.trim().isEmpty) {
+        msg = AppString.emptyPassword;
+      } else if (passwordController.text.trim().length < 6) {
+        msg = AppString.wrongPassword;
+      }
     }
     return msg;
   }
@@ -205,16 +396,18 @@ class CreateUserController extends BaseController {
       msg = AppString.emptyUserName;
     } else if (userNameController.text.length < 4) {
       msg = AppString.rangeUserName;
-    } else if (passwordController.text.trim().isEmpty) {
-      msg = AppString.emptyPassword;
-    } else if (passwordController.text.length < 6) {
-      msg = AppString.wrongPassword;
-    } else if (retypePasswordController.text.trim().isEmpty) {
-      msg = AppString.emptyConfirmPassword;
-    } else if (retypePasswordController.text.length < 6) {
-      msg = AppString.wrongRetypePassword;
-    } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
-      msg = AppString.passwordNotMatch;
+    } else if (selectedUserForEdit == null) {
+      if (passwordController.text.trim().isEmpty) {
+        msg = AppString.emptyPassword;
+      } else if (passwordController.text.length < 6) {
+        msg = AppString.wrongPassword;
+      } else if (retypePasswordController.text.trim().isEmpty) {
+        msg = AppString.emptyConfirmPassword;
+      } else if (retypePasswordController.text.length < 6) {
+        msg = AppString.wrongRetypePassword;
+      } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
+        msg = AppString.passwordNotMatch;
+      }
     } else if (mobileNumberController.text.trim().isEmpty) {
       msg = AppString.emptyMobileNumber;
     } else if (mobileNumberController.text.trim().length < 9) {
@@ -234,19 +427,21 @@ class CreateUserController extends BaseController {
       msg = AppString.emptyUserName;
     } else if (userNameController.text.length < 4) {
       msg = AppString.rangeUserName;
-    } else if (passwordController.text.trim().isEmpty) {
-      msg = AppString.emptyPassword;
-    } else if (passwordController.text.length < 6) {
-      msg = AppString.wrongPassword;
-    } else if (retypePasswordController.text.trim().isEmpty) {
-      msg = AppString.emptyConfirmPassword;
-    } else if (retypePasswordController.text.length < 6) {
-      msg = AppString.wrongRetypePassword;
-    } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
-      msg = AppString.passwordNotMatch;
+    } else if (selectedUserForEdit == null) {
+      if (passwordController.text.trim().isEmpty) {
+        msg = AppString.emptyPassword;
+      } else if (passwordController.text.length < 6) {
+        msg = AppString.wrongPassword;
+      } else if (retypePasswordController.text.trim().isEmpty) {
+        msg = AppString.emptyConfirmPassword;
+      } else if (retypePasswordController.text.length < 6) {
+        msg = AppString.wrongRetypePassword;
+      } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
+        msg = AppString.passwordNotMatch;
+      }
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
-    } else if (arrSelectedExchangeList.isEmpty) {
+    } else if (arrSelectedExchangeListforMaster.isEmpty) {
       msg = AppString.emptyExchangeGroup;
     } else if (profitandLossController.text.trim().isEmpty) {
       msg = AppString.emptyProfitLossSharing;
@@ -258,6 +453,81 @@ class CreateUserController extends BaseController {
       msg = "Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}";
     }
     return msg;
+  }
+
+  onSavePressed() {
+    try {
+      arrSelectedExchangeListforMaster.clear();
+      arrSelectedExchangeListforClient.clear();
+      for (var i = 0; i < arrExchange.length; i++) {
+        arrExchange[i].selectedItemsID.clear();
+        for (var k = 0; k < arrExchange[i].arrGroupList.length; k++) {
+          for (var l = 0; l < arrExchange[i].selectedItems.length; l++) {
+            if (arrExchange[i].arrGroupList[k].name == arrExchange[i].selectedItems[l].name) {
+              arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
+            }
+          }
+          if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name &&
+              arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty) {
+            arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
+          }
+        }
+
+        if (arrExchange[i].isSelected == true) {
+          if (selectedUserType.value.roleId == UserRollList.master) {
+            ExchangeAllowforMaster arrexchangeAllow = ExchangeAllowforMaster(
+              exchangeId: arrExchange[i].exchangeId,
+              groupId: arrExchange[i].selectedItemsID,
+            );
+            arrSelectedExchangeListforMaster.add(arrexchangeAllow);
+          } else {
+            ExchangeAllow arrexchangeAllow = ExchangeAllow(
+              exchangeId: arrExchange[i].exchangeId,
+              isTurnoverWise: arrExchange[i].isTurnOverSelected ?? false,
+              isSymbolWise: arrExchange[i].isHighLowTradeSelected ?? false,
+              groupId: arrExchange[i].selectedItemsID,
+            );
+            arrSelectedExchangeListforClient.add(arrexchangeAllow);
+          }
+        }
+      }
+      for (var i = 0; i < arrExchange.length; i++) {
+        if (arrExchange[i].isHighLowTradeSelected! == true) {
+          arrHighLowBetweenTradeSelectedList.add(arrExchange[i].exchangeId ?? "");
+        }
+      }
+      update();
+      if (Get.arguments != null) {
+        // callForEditUser();
+      } else {
+        if (selectedUserForEdit == null) {
+          if (selectedUserType.value.roleId == UserRollList.broker) {
+            callForCreateBrocker();
+          } else if (selectedUserType.value.roleId == UserRollList.master) {
+            callForCreateMaster();
+          } else if (selectedUserType.value.roleId == UserRollList.user) {
+            callForCreateUser();
+          } else if (selectedUserType.value.roleId == UserRollList.admin) {
+            callForCreateAdmin();
+          }
+        } else {
+          if (selectedUserForEdit!.role == UserRollList.broker) {
+            callForEditBrocker();
+          } else if (selectedUserForEdit!.role == UserRollList.master) {
+            callForEditMaster();
+          } else if (selectedUserForEdit!.role == UserRollList.user) {
+            callForEditUser();
+          } else if (selectedUserForEdit!.role == UserRollList.admin) {
+            callForCreateAdmin();
+          }
+        }
+      }
+
+      update();
+    } catch (e) {
+      print(e);
+      update();
+    }
   }
 
   //*********************************************************************** */
@@ -282,6 +552,7 @@ class CreateUserController extends BaseController {
     var response = await service.getGroupListCall(ExchangeId);
     if (response != null) {
       if (response.statusCode == 200) {
+        response.data!.insert(0, groupListModelData(name: "Select Group"));
         return response.data!;
       } else {
         showErrorToast(response.meta!.message ?? "");
@@ -356,7 +627,8 @@ class CreateUserController extends BaseController {
           arrSelectedGroupListIDforNSE.clear();
           arrSelectedGroupListIDforMCX.clear();
           arrSelectedDropDownValueClient.clear();
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrSelectedExchangeListforMaster.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           isCmpOrder = null;
           isAdminManualOrder = null;
@@ -370,7 +642,105 @@ class CreateUserController extends BaseController {
         } else {
           showErrorToast(response.message ?? "");
           isLoadingSave.value = false;
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          update();
+        }
+      } else {
+        showErrorToast(AppString.generalError);
+        isLoadingSave.value = false;
+        update();
+      }
+    } else {
+      showWarningToast(msg);
+    }
+  }
+
+  callForEditBrocker() async {
+    var msg = validateFieldForBrocker();
+    if (msg.isEmpty) {
+      nameFocus.unfocus();
+      userNameFocus.unfocus();
+      passwordFocus.unfocus();
+      isLoadingSave.value = true;
+      update();
+      var response = await service.editBrokerCall(
+        name: nameController.text.trim(),
+        userName: userNameController.text.trim(),
+        phone: mobileNumberController.text.trim(),
+        changePassword: isChangePasswordOnFirstLogin,
+        role: selectedUserType.value.roleId,
+      );
+      isLoadingSave.value = false;
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Get.back();
+          Get.find<UserListController>().updateUser();
+          showSuccessToast(response.meta?.message ?? "");
+          nameController.text = "";
+          userNameController.text = "";
+          passwordController.text = "";
+          retypePasswordController.text = "";
+          mobileNumberController.text = "";
+          cutoffController.text = "";
+          creditController.text = "";
+          remarkController.text = "";
+          selectedLeverage.value = arrLeverageList.first;
+          profitandLossController.text = "";
+          brokerageSharingController.text = "";
+          brkSharingMasterController.text = "";
+          isAutoSquareOff = false;
+          isModifyOrder = false;
+          isCloseOnly = false;
+          isIntraday = false;
+          isChangePasswordOnFirstLogin = false;
+          selectedBrokerType = BrokerListModelData().obs;
+          for (var i = 0; i < arrExchange.length; i++) {
+            if (arrExchange[i].isSelected == true) {
+              arrExchange[i].isSelected = false;
+            }
+            if (arrExchange[i].isTurnOverSelected == true) {
+              arrExchange[i].isTurnOverSelected = false;
+            }
+            if (arrExchange[i].isSymbolSelected == true) {
+              arrExchange[i].isSymbolSelected = false;
+            }
+            if (arrExchange[i].isHighLowTradeSelected == true) {
+              arrExchange[i].isHighLowTradeSelected = false;
+            }
+            if (arrExchange[i].isDropDownValueSelected.value != "") {
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
+            }
+            if (arrExchange[i].selectedItems != []) {
+              arrExchange[i].selectedItems.clear();
+            }
+          }
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          isCmpOrder = null;
+          isAdminManualOrder = null;
+          isDeleteTrade = null;
+          isExecutePendingOrder = null;
+          bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
+          if (isUserlistVcAvailable) {
+            Get.find<UserListController>().getUserList();
+          }
+          update();
+        } else {
+          showErrorToast(response.message ?? "");
+          isLoadingSave.value = false;
+          arrSelectedExchangeListforClient.clear();
+          arrSelectedExchangeListforMaster.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           arrSelectedGroupListIDforOthers.clear();
           arrSelectedGroupListIDforNSE.clear();
@@ -460,7 +830,8 @@ class CreateUserController extends BaseController {
           arrSelectedGroupListIDforNSE.clear();
           arrSelectedGroupListIDforMCX.clear();
           arrSelectedDropDownValueClient.clear();
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           isCmpOrder = null;
           isAdminManualOrder = null;
@@ -470,7 +841,110 @@ class CreateUserController extends BaseController {
         } else {
           showErrorToast(response.message ?? "");
           isLoadingSave.value = false;
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          update();
+        }
+      } else {
+        showErrorToast(AppString.generalError);
+        isLoadingSave.value = false;
+        update();
+      }
+    } else {
+      showWarningToast(msg);
+    }
+  }
+
+  callForEditAdmin() async {
+    var msg = validateFieldForAdmin();
+    if (msg.isEmpty) {
+      nameFocus.unfocus();
+      userNameFocus.unfocus();
+      passwordFocus.unfocus();
+      retypePasswordFocus.unfocus();
+      mobileNumberFocus.unfocus();
+      isLoadingSave.value = true;
+      update();
+      var response = await service.editAdminCall(
+        name: nameController.text.trim(),
+        userName: userNameController.text.trim(),
+        phone: mobileNumberController.text.trim(),
+        executePendingOrder: isExecutePendingOrder == null || isExecutePendingOrder == false ? 0 : 1,
+        deleteTrade: isDeleteTrade == null || isDeleteTrade == false ? 0 : 1,
+        manualOrder: isAdminManualOrder == null || isAdminManualOrder == false ? 0 : 1,
+        cmpOrder: isCmpOrder == null || isCmpOrder == false ? 0 : 1,
+        role: selectedUserType.value.roleId,
+      );
+      isLoadingSave.value = false;
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Get.back();
+          Get.find<UserListController>().updateUser();
+          showSuccessToast(response.meta?.message ?? "");
+          nameController.text = "";
+          userNameController.text = "";
+          passwordController.text = "";
+          retypePasswordController.text = "";
+          mobileNumberController.text = "";
+          cutoffController.text = "";
+          creditController.text = "";
+          remarkController.text = "";
+          selectedLeverage.value = arrLeverageList.first;
+          profitandLossController.text = "";
+          brokerageSharingController.text = "";
+          brkSharingMasterController.text = "";
+          isAutoSquareOff = false;
+          isModifyOrder = false;
+          isCloseOnly = false;
+          isIntraday = false;
+          isChangePasswordOnFirstLogin = false;
+          selectedBrokerType = BrokerListModelData().obs;
+          bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
+          if (isUserlistVcAvailable) {
+            Get.find<UserListController>().getUserList();
+          }
+          for (var i = 0; i < arrExchange.length; i++) {
+            if (arrExchange[i].isSelected == true) {
+              arrExchange[i].isSelected = false;
+            }
+            if (arrExchange[i].isTurnOverSelected == true) {
+              arrExchange[i].isTurnOverSelected = false;
+            }
+            if (arrExchange[i].isSymbolSelected == true) {
+              arrExchange[i].isSymbolSelected = false;
+            }
+            if (arrExchange[i].isHighLowTradeSelected == true) {
+              arrExchange[i].isHighLowTradeSelected = false;
+            }
+            if (arrExchange[i].isDropDownValueSelected.value != "") {
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
+            }
+            if (arrExchange[i].selectedItems != []) {
+              arrExchange[i].selectedItems.clear();
+            }
+          }
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          isCmpOrder = null;
+          isAdminManualOrder = null;
+          isDeleteTrade = null;
+          isExecutePendingOrder = null;
+          update();
+        } else {
+          showErrorToast(response.message ?? "");
+          isLoadingSave.value = false;
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           arrSelectedGroupListIDforOthers.clear();
           arrSelectedGroupListIDforNSE.clear();
@@ -518,7 +992,7 @@ class CreateUserController extends BaseController {
           cutOff: cutoffController.text.trim().isEmpty ? 0 : int.parse(cutoffController.text.trim()),
           leverage: selectedLeverage.value.id,
           remark: remarkController.text.trim(),
-          exchangeAllow: arrSelectedExchangeList,
+          exchangeAllow: arrSelectedExchangeListforClient,
           highLowBetweenTradeLimits: arrHighLowBetweenTradeSelectedList,
           autoSquareOff: isAutoSquareOff ? 1 : 0,
           modifyOrder: isModifyOrder ? 1 : 0,
@@ -538,7 +1012,9 @@ class CreateUserController extends BaseController {
           Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
           Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
           Get.find<UserDetailsPopUpController>().update();
-          isSymbolWiseSL = false;
+          if (userData!.highLowSLLimitPercentage == true) {
+            isSymbolWiseSL = true;
+          }
           nameController.text = "";
           userNameController.text = "";
           passwordController.text = "";
@@ -606,7 +1082,8 @@ class CreateUserController extends BaseController {
           arrSelectedGroupListIDforNSE.clear();
           arrSelectedGroupListIDforMCX.clear();
           arrSelectedDropDownValueClient.clear();
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           isCmpOrder = null;
           isAdminManualOrder = null;
@@ -616,7 +1093,143 @@ class CreateUserController extends BaseController {
         } else {
           showErrorToast(response.message ?? "");
           isLoadingSave.value = false;
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          update();
+        }
+      } else {
+        showErrorToast(AppString.generalError);
+        isLoadingSave.value = false;
+        update();
+      }
+    } else {
+      showWarningToast(msg);
+    }
+  }
+
+  callForEditUser() async {
+    var msg = validateFieldForUser();
+    if (msg.isNotEmpty) {
+      for (var i = 0; i < arrExchange.length; i++) {
+        arrExchange[i].selectedItemsID.clear();
+        arrExchange[i].isDropDownValueSelectedID.value = "";
+      }
+    }
+    if (msg.isEmpty) {
+      nameFocus.unfocus();
+      userNameFocus.unfocus();
+      passwordFocus.unfocus();
+      retypePasswordFocus.unfocus();
+      mobileNumberFocus.unfocus();
+      cutoffFocus.unfocus();
+      creditFocus.unfocus();
+      remarkFocus.unfocus();
+      brokerageSharingFocus.unfocus();
+      isLoadingSave.value = true;
+      update();
+      var response = await service.editUserCall(
+          userId: selectedUserForEdit!.userId,
+          name: nameController.text.trim(),
+          userName: userNameController.text.trim(),
+          // password: passwordController.text.trim(),
+          phone: mobileNumberController.text.trim(),
+          role: selectedUserType.value.roleId,
+          credit: int.parse(creditController.text.trim()),
+          cutOff: cutoffController.text.trim().isEmpty ? 0 : int.parse(cutoffController.text.trim()),
+          leverage: selectedLeverage.value.id,
+          remark: remarkController.text.trim(),
+          exchangeAllow: arrSelectedExchangeListforClient,
+          highLowBetweenTradeLimits: arrHighLowBetweenTradeSelectedList,
+          autoSquareOff: isAutoSquareOff ? 1 : 0,
+          modifyOrder: isModifyOrder ? 1 : 0,
+          closeOnly: isCloseOnly,
+          intraday: isIntraday ? 1 : 0,
+          symbolWiseSL: isSymbolWiseSL,
+          brokerId: selectedBrokerType.value.userId ?? "",
+          brkSharingDownLine: int.tryParse(brokerageSharingController.text) ?? 0,
+          changePassword: isChangePasswordOnFirstLogin);
+      isLoadingSave.value = false;
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Get.back();
+          showSuccessToast(response.meta?.message ?? "");
+          // selectedUserForEdit = null;
+          Get.find<UserListController>().updateUser();
+          showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
+          Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
+          Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
+          Get.find<UserDetailsPopUpController>().update();
+          if (userData!.highLowSLLimitPercentage == true) {
+            isSymbolWiseSL = true;
+          }
+          nameController.text = "";
+          userNameController.text = "";
+          passwordController.text = "";
+          retypePasswordController.text = "";
+          mobileNumberController.text = "";
+          cutoffController.text = "";
+          creditController.text = "";
+          remarkController.text = "";
+          selectedLeverage.value = arrLeverageList.first;
+          profitandLossController.text = "";
+          brkSharingMasterController.text = "";
+          isAutoSquareOff = false;
+          isModifyOrder = false;
+          isCloseOnly = false;
+          isIntraday = false;
+          isChangePasswordOnFirstLogin = false;
+          selectedBrokerType = BrokerListModelData().obs;
+          bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
+          if (isUserlistVcAvailable) {
+            Get.find<UserListController>().getUserList();
+          }
+          for (var i = 0; i < arrExchange.length; i++) {
+            if (arrExchange[i].isSelected == true) {
+              arrExchange[i].isSelected = false;
+            }
+            if (arrExchange[i].isTurnOverSelected == true) {
+              arrExchange[i].isTurnOverSelected = false;
+            }
+            if (arrExchange[i].isSymbolSelected == true) {
+              arrExchange[i].isSymbolSelected = false;
+            }
+            if (arrExchange[i].isHighLowTradeSelected == true) {
+              arrExchange[i].isHighLowTradeSelected = false;
+            }
+            if (arrExchange[i].isDropDownValueSelected.value != "") {
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
+            }
+            if (arrExchange[i].selectedItems.isNotEmpty) {
+              arrExchange[i].selectedItems.clear();
+            }
+            arrExchange[i].selectedItemsID.clear();
+            arrExchange[i].isDropDownValueSelectedID.value = "";
+          }
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          isCmpOrder = null;
+          isAdminManualOrder = null;
+          isDeleteTrade = null;
+          isExecutePendingOrder = null;
+          var userListVC = Get.find<UserListController>();
+          userListVC.getUserList();
+          userListVC.update();
+          update();
+        } else {
+          showErrorToast(response.message ?? "");
+          isLoadingSave.value = false;
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           arrSelectedGroupListIDforOthers.clear();
           arrSelectedGroupListIDforNSE.clear();
@@ -660,7 +1273,7 @@ class CreateUserController extends BaseController {
         leverage: selectedLeverage.value.id,
         remark: remarkController.text.trim(),
         symbolWiseSL: isSymbolWiseSL,
-        exchangeAllow: arrSelectedExchangeList,
+        exchangeAllow: arrSelectedExchangeListforMaster,
         highLowBetweenTradeLimits: arrHighLowBetweenTradeSelectedList,
         manualOrder: isCloseOnly ? 1 : 0,
         marketOrder: isCloseOnly ? 1 : 0,
@@ -675,7 +1288,9 @@ class CreateUserController extends BaseController {
         if (response.statusCode == 200) {
           Get.back();
           showSuccessToast(response.meta?.message ?? "");
-          isSymbolWiseSL = false;
+          if (userData!.highLowSLLimitPercentage == true) {
+            isSymbolWiseSL = true;
+          }
           nameController.text = "";
           userNameController.text = "";
           passwordController.text = "";
@@ -718,7 +1333,8 @@ class CreateUserController extends BaseController {
           arrSelectedGroupListIDforNSE.clear();
           arrSelectedGroupListIDforMCX.clear();
           arrSelectedDropDownValueClient.clear();
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           isCmpOrder = null;
           isAdminManualOrder = null;
@@ -732,7 +1348,131 @@ class CreateUserController extends BaseController {
         } else {
           showErrorToast(response.message ?? "");
           isLoadingSave.value = false;
-          arrSelectedExchangeList.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          update();
+        }
+      } else {
+        showErrorToast(AppString.generalError);
+        isLoadingSave.value = false;
+        update();
+      }
+    } else {
+      showWarningToast(msg);
+    }
+  }
+
+  callForEditMaster() async {
+    var msg = validateFieldForMaster();
+    if (msg.isEmpty) {
+      nameFocus.unfocus();
+      userNameFocus.unfocus();
+      passwordFocus.unfocus();
+      retypePasswordFocus.unfocus();
+      mobileNumberFocus.unfocus();
+      creditFocus.unfocus();
+      remarkFocus.unfocus();
+      profitandLossFocus.unfocus();
+      brokerageSharingFocus.unfocus();
+      isLoadingSave.value = true;
+      update();
+      var response = await service.editMasterCall(
+        userId: selectedUserForEdit!.userId,
+        name: nameController.text.trim(),
+        userName: userNameController.text.trim(),
+        // password: passwordController.text.trim(),
+        phone: mobileNumberController.text.trim(),
+        profitandLossSharingDownline: (userData!.profitAndLossSharingDownLine! - (num.tryParse(profitandLossController.text) ?? 0)).toInt(),
+        brkSharingDownline: (userData!.brkSharingDownLine! - (num.tryParse(brkSharingMasterController.text) ?? 0)).toInt(),
+        role: selectedUserType.value.roleId,
+        credit: int.parse(creditController.text.trim()),
+        leverage: selectedLeverage.value.id,
+        remark: remarkController.text.trim(),
+        symbolWiseSL: isSymbolWiseSL,
+        exchangeAllow: arrSelectedExchangeListforMaster,
+        highLowBetweenTradeLimits: arrHighLowBetweenTradeSelectedList,
+        manualOrder: isCloseOnly ? 1 : 0,
+        marketOrder: isCloseOnly ? 1 : 0,
+        addMaster: isAutoSquareOff ? 1 : 0,
+        modifyOrder: isModifyOrder ? 1 : 0,
+        profitandLossSharing: int.parse(profitandLossController.text.trim()),
+        brkSharing: int.parse(brkSharingMasterController.text.trim()),
+        changePassword: isChangePasswordOnFirstLogin,
+      );
+      isLoadingSave.value = false;
+      if (response != null) {
+        if (response.statusCode == 200) {
+          Get.back();
+          showSuccessToast(response.meta?.message ?? "");
+          // selectedUserForEdit = null;
+          Get.find<UserListController>().updateUser();
+          if (userData!.highLowSLLimitPercentage == true) {
+            isSymbolWiseSL = true;
+          }
+          nameController.text = "";
+          userNameController.text = "";
+          passwordController.text = "";
+          retypePasswordController.text = "";
+          mobileNumberController.text = "";
+          cutoffController.text = "";
+          creditController.text = "";
+          remarkController.text = "";
+          selectedLeverage.value = arrLeverageList.first;
+          profitandLossController.text = "";
+          brokerageSharingController.text = "";
+          brkSharingMasterController.text = "";
+          isAutoSquareOff = false;
+          isModifyOrder = false;
+          isCloseOnly = false;
+          isIntraday = false;
+          isChangePasswordOnFirstLogin = false;
+          selectedBrokerType = BrokerListModelData().obs;
+          for (var i = 0; i < arrExchange.length; i++) {
+            if (arrExchange[i].isSelected == true) {
+              arrExchange[i].isSelected = false;
+            }
+            if (arrExchange[i].isTurnOverSelected == true) {
+              arrExchange[i].isTurnOverSelected = false;
+            }
+            if (arrExchange[i].isSymbolSelected == true) {
+              arrExchange[i].isSymbolSelected = false;
+            }
+            if (arrExchange[i].isHighLowTradeSelected == true) {
+              arrExchange[i].isHighLowTradeSelected = false;
+            }
+            if (arrExchange[i].isDropDownValueSelected.value != "") {
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
+            }
+            if (arrExchange[i].selectedItems != []) {
+              arrExchange[i].selectedItems.clear();
+            }
+          }
+          arrSelectedGroupListIDforOthers.clear();
+          arrSelectedGroupListIDforNSE.clear();
+          arrSelectedGroupListIDforMCX.clear();
+          arrSelectedDropDownValueClient.clear();
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
+          arrHighLowBetweenTradeSelectedList.clear();
+          isCmpOrder = null;
+          isAdminManualOrder = null;
+          isDeleteTrade = null;
+          isExecutePendingOrder = null;
+          showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
+          Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
+          Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
+          Get.find<UserDetailsPopUpController>().update();
+          update();
+        } else {
+          showErrorToast(response.message ?? "");
+          isLoadingSave.value = false;
+          arrSelectedExchangeListforMaster.clear();
+          arrSelectedExchangeListforClient.clear();
           arrHighLowBetweenTradeSelectedList.clear();
           arrSelectedGroupListIDforOthers.clear();
           arrSelectedGroupListIDforNSE.clear();

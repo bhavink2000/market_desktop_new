@@ -541,7 +541,7 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 color: AppColors().whiteColor,
-                width: 90.w,
+                width: 95.w,
                 height: 80.h,
                 child: Column(
                   children: [

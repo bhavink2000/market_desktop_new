@@ -20,6 +20,7 @@ abstract class Api {
   static const brokerList = 'user/list-broker';
   static const groupList = 'group/list';
   static const createUser = 'user/create';
+  static const editUser = 'user/edit';
   static const positionList = 'position/list';
   static const openPositionList = 'symbol-position/list';
   static const changePassword = 'user/change-password';

@@ -418,7 +418,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                 searchController: userEditingController,
                 searchInnerWidgetHeight: 50,
                 searchInnerWidget: Container(
-                  height: 40,
+                  height: 30,
                   // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                   child: CustomTextField(
                     type: '',
@@ -460,15 +460,15 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
               hint: Text(
                 'Select User',
                 style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: CustomFonts.family1Medium,
+                  fontSize: 10,
+                  fontFamily: CustomFonts.family2Regular,
                   color: AppColors().darkText,
                 ),
               ),
               items: arrUserList
                   .map((UserData item) => DropdownMenuItem<UserData>(
                         value: item,
-                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -477,7 +477,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                           value: item,
                           child: Text(
                             item.userName ?? "",
-                            style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                           ),
                         ))
                     .toList();
@@ -493,7 +493,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 250),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 28,
               ),
             ),
           ),
@@ -637,12 +637,12 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                 hint: Text(
                   '',
-                  style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                  style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                 ),
                 items: arrSymbol
                     .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
                           value: item,
-                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -651,7 +651,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                             value: item.symbolTitle,
                             child: Text(
                               item.symbolTitle ?? "",
-                              style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                              style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
@@ -859,8 +859,8 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
             hint: Text(
               '',
               style: TextStyle(
-                fontSize: 14,
-                fontFamily: CustomFonts.family1Medium,
+                fontSize: 10,
+                fontFamily: CustomFonts.family2Regular,
                 color: AppColors().darkText,
               ),
             ),
@@ -870,8 +870,8 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                       child: Text(
                         item.name ?? "",
                         style: TextStyle(
-                          fontSize: 14,
-                          fontFamily: CustomFonts.family1Medium,
+                          fontSize: 10,
+                          fontFamily: CustomFonts.family2Regular,
                           color: AppColors().darkText,
                         ),
                       ),
@@ -884,8 +884,8 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                         child: Text(
                           item.name ?? "",
                           style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: CustomFonts.family1Medium,
+                            fontSize: 10,
+                            fontFamily: CustomFonts.family2Regular,
                             color: AppColors().darkText,
                           ),
                         ),
@@ -1595,7 +1595,7 @@ getScriptList({String exchangeId = "", List<GlobalSymbolData>? arrSymbol}) async
 
 getUserList() async {
   var response = await service.getMyUserListCall();
-  arrUserList = response!.data ?? [];
+  arrUserList = response?.data ?? [];
 }
 
 callForBrokerList() async {

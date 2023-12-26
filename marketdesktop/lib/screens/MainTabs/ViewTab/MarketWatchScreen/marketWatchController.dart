@@ -2,19 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'dart:ui';
 import 'package:floating_dialog/floating_dialog.dart';
+import 'package:marketdesktop/service/database/dbService.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/incrimentField.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+import 'package:window_size/window_size.dart';
 import '../../../../constant/index.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../customWidgets/appTextField.dart';
@@ -118,12 +115,18 @@ class MarketWatchController extends BaseController {
   bool isQuantityUpdate = false;
   RxBool isValidQty = true.obs;
   int isFilterClicked = 0;
-  Size screenSize = Size(0, 0);
+  Size screenSize = const Size(0, 0);
   int marketWatchScreenIndex = -1;
+  DbService dbSerivice = DbService();
+  List<Map<String, dynamic>> arrCurrentWatchListOrder = [];
+  List<List<Map<String, dynamic>>> arrWatchListsOrder = [];
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    await dbSerivice.initDatabase();
+    arrCurrentWatchListOrder.addAll(await dbSerivice.readScripts((selectedPortfolio + 1).toString()));
 
     priceController.text = "0.0";
     arrValidaty = constantValues!.productType ?? [];
@@ -137,9 +140,10 @@ class MarketWatchController extends BaseController {
     } else if (userData!.role == UserRollList.user) {
       arrOrderType.add(Type(name: "Intraday", id: "123"));
     }
-    Future.delayed(Duration(milliseconds: 100), () {
-      screenSize = Platform.isWindows ? WidgetsBinding.instance.window.physicalSize : WidgetsBinding.instance.platformDispatcher.displays.first.size;
-      maxWidth = screenSize.width > 1410 ? screenSize.width : 1410; //
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      Screen? size = await getCurrentScreen();
+      screenSize = Size(size!.frame.width, size!.frame.height);
+      maxWidth = size.frame.width > 1410 ? size.frame.width : 1410; //
 
       selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
       update();
@@ -174,6 +178,7 @@ class MarketWatchController extends BaseController {
   void onClose() async {
     // var MainVC = Get.find<MainContainerController>();
     // MainVC.focusNode.requestFocus();
+
     socket.channel?.sink.close(status.normalClosure);
   }
 
@@ -222,7 +227,7 @@ class MarketWatchController extends BaseController {
     var response = await service.allSymbolListCall(1, "", isFromF5 ? selectedExchangeForF5.value.exchangeId ?? "" : selectedExchange.value.exchangeId ?? "");
     if (isFromF5) {
       arrAllScriptForF5 = response!.data ?? [];
-      var temp = arrAllScriptForF5.firstWhereOrNull((element) => element.symbolId == arrSymbol[selectedScriptIndex].symbolId!);
+      var temp = arrAllScriptForF5.firstWhereOrNull((element) => element.symbolId == selectedSymbol!.symbolId);
       selectedSymbolForF5.value = temp ?? GlobalSymbolData();
 
       update();
@@ -539,6 +544,9 @@ class MarketWatchController extends BaseController {
       var temp = arrPreScript.removeAt(preIndex);
       arrPreScript.insert(i, temp);
     }
+
+    storeScripsInDB();
+
     update();
   }
 
@@ -850,6 +858,20 @@ class MarketWatchController extends BaseController {
 
   String validateForm() {
     var msg = "";
+    if (selectedOrderType.value.id != "limit") {
+      var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == selectedScript.value!.symbol);
+
+      if (ltpObj == null) {
+        return "Not Allowed For Trade";
+      } else {
+        var difference = DateTime.now().difference(ltpObj.dateTime!);
+        var differenceInSeconds = difference.inSeconds;
+        if (differenceInSeconds >= 40) {
+          return "Not Allowed For Trade";
+        }
+      }
+    }
+
     if (userData!.role == UserRollList.user) {
       if (selectedOrderType.value.id == "market") {
         if (qtyController.text.isEmpty) {
@@ -909,13 +931,13 @@ class MarketWatchController extends BaseController {
         if (currentScrollOffset - scrollTo < listViewHeight) {
           listScroll.animateTo(
             scrollTo,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         } else {
           listScroll.animateTo(
             currentScrollOffset - listViewHeight,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         }
@@ -938,7 +960,7 @@ class MarketWatchController extends BaseController {
           if (currentScrollOffset != maxScrollExtent) {
             listScroll.animateTo(
               scrollOffset,
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
           }
@@ -946,7 +968,7 @@ class MarketWatchController extends BaseController {
           if (currentScrollOffset != maxScrollExtent) {
             listScroll.animateTo(
               maxScrollExtent,
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
             );
           }
@@ -955,13 +977,13 @@ class MarketWatchController extends BaseController {
         if (currentScrollOffset - scrollTo < listViewHeight) {
           listScroll.animateTo(
             scrollTo,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         } else {
           listScroll.animateTo(
             currentScrollOffset - listViewHeight,
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           );
         }
@@ -1138,16 +1160,34 @@ class MarketWatchController extends BaseController {
     update();
     if (response?.statusCode == 200) {
       var arrTemp = [];
-      arrSymbol = response!.data!;
+      arrSymbol = response!.data!.toSet().toList();
+      for (int i = 0; i < arrCurrentWatchListOrder.length; i++) {
+        arrScript.add(ScriptData());
+        arrPreScript.add(ScriptData());
+      }
       try {
-        arrSymbol.forEach((element) {
-          arrScript.add(ScriptData.fromJson(element.toJson()));
-          arrPreScript.add(ScriptData.fromJson(element.toJson()));
-        });
+        for (int i = 0; i < arrSymbol.length; i++) {
+          var index = arrCurrentWatchListOrder.indexWhere((it) => it.values.toList().last == arrSymbol[i].symbol);
+          if (index != -1) {
+            arrScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
+            arrPreScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
+          } else {
+            var position = arrCurrentWatchListOrder.length;
+            Map<String, dynamic> newItem = {position.toString(): arrSymbol[i].symbol};
+            if (position == 0) {
+              arrCurrentWatchListOrder = [newItem];
+            } else {
+              arrCurrentWatchListOrder.add(newItem);
+            }
+            dbSerivice.addScript((selectedPortfolio + 1).toString(), arrSymbol[i].symbol!, position);
+            arrScript.add(ScriptData.fromJson(arrSymbol[i].toJson()));
+            arrPreScript.add(ScriptData.fromJson(arrSymbol[i].toJson()));
+          }
+        }
 
         update();
       } catch (e) {
-        //print(e);
+        print(e);
       }
       for (var element in response.data!) {
         if (!socket.arrSymbolNames.contains(element.symbolName)) {
@@ -1245,9 +1285,11 @@ class MarketWatchController extends BaseController {
       // showSuccessToast(response?.meta?.message ?? "");
       isAddDeleteApiLoading = false;
       var symbolNmae = "";
+      var symbol = "";
       arrSymbol.removeWhere((element) {
         if (element.userTabSymbolId == tabSymbolId) {
           symbolNmae = element.symbolName!;
+          symbol = element.symbol!;
           return true;
         } else {
           return false;
@@ -1269,6 +1311,7 @@ class MarketWatchController extends BaseController {
           // selectedScriptIndex = selectedScriptIndex + 1;
         }
       }
+      storeScripsInDB();
       update();
       // await getSymbolListTabWise();
     }
@@ -1332,7 +1375,7 @@ class MarketWatchController extends BaseController {
             arrPreScript.add(ScriptData.fromJson(response.data!.toJson()));
           }
         }
-
+        storeScripsInDB();
         isFilterClicked = 0;
         var arrTemp = [];
 
@@ -1348,408 +1391,15 @@ class MarketWatchController extends BaseController {
     }
   }
 
-  buySellPopupDialogOld({bool isFromBuy = true, Function? CancelClick, Function? DeleteClick}) {
-    showDialog<String>(
-        context: Get.context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) => FloatingDialog(
-              // titlePadding: EdgeInsets.zero,
-              // backgroundColor: AppColors().bgColor,
-              // surfaceTintColor: AppColors().bgColor,
-              // insetPadding: EdgeInsets.symmetric(
-              //   horizontal: 20.w,
-              //   vertical: 32.h,
-              // ),
-              enableDragAnimation: false,
-              child: StatefulBuilder(builder: (context, setState) {
-                return Container(
-                  width: 890,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  clipBehavior: Clip.hardEdge,
-                  child: IntrinsicHeight(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          // width: 55.w,
-                          color: AppColors().bgColor,
-                          height: 41,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Image.asset(
-                                AppImages.appLogo,
-                                width: 22,
-                                height: 22,
-                                color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                isFromBuy ? "Buy Order" : "Sell Order",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
-                                  fontFamily: CustomFonts.family1Medium,
-                                ),
-                              ),
-
-                              Spacer(),
-                              // SizedBox(
-                              //   width: 4.3.w,
-                              // ),
-                              GestureDetector(
-                                onTap: () {
-                                  isBuyOpen = -1;
-                                  //  focusNode.requestFocus();
-                                  update();
-                                  Get.back();
-                                },
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  padding: EdgeInsets.all(10),
-                                  child: Image.asset(
-                                    AppImages.closeIcon,
-                                    color: AppColors().redColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Exchange",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
-                                          ),
-                                        ),
-                                        exchangeTypeDropDown(selectedExchangeFromPopup, isFromPopUp: true)
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          child: Text(
-                                            "Order Type",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
-                                            ),
-                                          ),
-                                        ),
-                                        orderTypeListDropDown()
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Obx(() {
-                                          print(isValidQty.value);
-                                          return Text(
-                                            isValidQty.value ? "Quantity" : "Invalid Quantity",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: isValidQty.value
-                                                  ? AppColors().whiteColor
-                                                  : isFromBuy
-                                                      ? AppColors().redColor
-                                                      : AppColors().blueColor,
-                                              fontFamily: CustomFonts.family1Regular,
-                                            ),
-                                          );
-                                        }),
-                                        Container(
-                                          width: 100,
-                                          height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
-                                          child: CustomTextField(
-                                            regex: "[0-9]",
-                                            type: '',
-                                            focusBorderColor: AppColors().redColor,
-                                            keyBoardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
-                                            isEnabled: true,
-                                            isOptional: false,
-                                            isNoNeededCapital: true,
-                                            inValidMsg: AppString.emptyMobileNumber,
-                                            placeHolderMsg: "",
-                                            labelMsg: "",
-                                            emptyFieldMsg: AppString.emptyMobileNumber,
-                                            controller: qtyController,
-                                            focus: qtyFocus,
-                                            isSecure: false,
-                                            keyboardButtonType: TextInputAction.next,
-                                            onChange: () {
-                                              if (qtyController.text.isNotEmpty) {
-                                                if (selectedSymbol?.oddLotTrade == 1) {
-                                                  var temp = (num.parse(qtyController.text) / selectedScript.value!.ls!);
-                                                  lotController.text = temp.toStringAsFixed(2);
-                                                  isValidQty.value = true;
-                                                } else {
-                                                  var temp = (num.parse(qtyController.text) / selectedScript.value!.ls!);
-
-                                                  print(temp);
-                                                  if ((num.parse(qtyController.text) % selectedScript.value!.ls!) == 0) {
-                                                    lotController.text = temp.toStringAsFixed(0);
-                                                    isValidQty.value = true;
-                                                  } else {
-                                                    isValidQty.value = false;
-                                                  }
-                                                }
-
-                                                setState(() {});
-                                              }
-                                            },
-                                            maxLength: 10,
-                                            isShowPrefix: false,
-                                            isShowSufix: false,
-                                            suffixIcon: null,
-                                            prefixIcon: null,
-                                            borderColor: AppColors().lightText,
-                                            roundCorner: 0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          child: Text(
-                                            "Lot",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 100,
-                                          height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                          child: NumberInputWithIncrementDecrementOwn(
-                                            incIconSize: 18,
-                                            decIconSize: 18,
-                                            validator: (value) {
-                                              return null;
-                                            },
-                                            onDecrement: (newValue) {
-                                              isValidQty = true.obs;
-                                              setState(() {});
-                                            },
-                                            onIncrement: (newValue) {
-                                              isValidQty = true.obs;
-                                              setState(() {});
-                                            },
-                                            onChanged: (newValue) {},
-                                            autovalidateMode: AutovalidateMode.disabled,
-                                            fractionDigits: 2,
-                                            textAlign: TextAlign.left,
-
-                                            initialValue: 1,
-                                            incDecFactor: 1,
-                                            isInt: true,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: CustomFonts.family1Regular,
-                                              color: AppColors().darkText,
-                                            ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
-
-                                            widgetContainerDecoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(0),
-                                              color: AppColors().whiteColor,
-                                            ),
-                                            controller: lotController,
-                                            min: 1,
-                                            // max: 1000000000000,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Price",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
-                                          ),
-                                        ),
-                                        Obx(() {
-                                          return Container(
-                                            width: 210,
-                                            height: 40,
-                                            margin: EdgeInsets.symmetric(
-                                              vertical: 5,
-                                            ),
-                                            child: NumberInputWithIncrementDecrementOwn(
-                                              incIconSize: 18,
-                                              decIconSize: 18,
-                                              validator: (value) {
-                                                return null;
-                                              },
-                                              onChanged: (newValue) {},
-                                              autovalidateMode: AutovalidateMode.disabled,
-                                              fractionDigits: 2,
-                                              textAlign: TextAlign.left,
-                                              enabled: selectedOrderType.value.name != "Market",
-                                              initialValue: double.tryParse(priceController.text) ?? 0.0,
-                                              incDecFactor: 0.05,
-                                              isInt: false,
-
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
-
-                                              widgetContainerDecoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(0),
-                                                color: AppColors().whiteColor,
-                                              ),
-                                              controller: priceController,
-                                              // min: 1,
-                                              // max: 1000000000000,
-                                            ),
-                                          );
-                                        }),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Symbol",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
-                                          ),
-                                        ),
-                                        ScriptDropdownFromPopupDropDown(selectedScriptFromPopup)
-                                      ],
-                                    ),
-                                    Obx(() {
-                                      return SizedBox(
-                                        width: selectedOrderType.value.name != "Market" ? 0 : 10,
-                                      );
-                                    }),
-                                    validityListDropDown(),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 210,
-                                              height: 42,
-                                              child: CustomButton(
-                                                isEnabled: true,
-                                                shimmerColor: AppColors().whiteColor,
-                                                title: "Submit",
-                                                borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
-                                                focusShadowColor: AppColors().whiteColor,
-                                                textSize: 16,
-                                                focusKey: SubmitFocus,
-                                                onPress: () {
-                                                  initiateTrade(isFromBuy);
-                                                },
-                                                bgColor: AppColors().grayLightLine,
-                                                isFilled: true,
-                                                textColor: AppColors().darkText,
-                                                isTextCenter: true,
-                                                isLoading: false,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            SizedBox(
-                                              width: 210,
-                                              height: 42,
-                                              child: CustomButton(
-                                                isEnabled: true,
-                                                shimmerColor: AppColors().whiteColor,
-                                                focusKey: CancelFocus,
-                                                borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
-                                                focusShadowColor: AppColors().whiteColor,
-                                                title: "Cancel",
-                                                textSize: 16,
-                                                // buttonWidth: 36.w,
-                                                onPress: () {
-                                                  // selectedExchangeFromPopup.value = ExchangeData();
-                                                  // selectedOrderType = Type().obs;
-                                                  // selectedScriptFromPopup.value = ScriptData();
-                                                  // qtyController.text = "";
-                                                  // priceController.text = "";
-                                                  // selectedUser.value = "";
-                                                  // selectedValidity.value = "";
-                                                  // remarkController.text = "";
-                                                  isBuyOpen = -1;
-                                                  // focusNode.requestFocus();
-                                                  update();
-                                                  Get.back();
-                                                },
-                                                bgColor: AppColors().whiteColor,
-                                                isFilled: true,
-                                                textColor: AppColors().darkText,
-                                                isTextCenter: true,
-                                                isLoading: false,
-                                              ),
-                                            ),
-                                            // SizedBox(width: 5.w,),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }),
-            ));
+  storeScripsInDB() {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      arrCurrentWatchListOrder.clear();
+      for (int i = 0; i < arrScript.length; i++) {
+        Map<String, dynamic> newItem = {i.toString(): arrScript[i].symbol};
+        arrCurrentWatchListOrder.add(newItem);
+      }
+      dbSerivice.bulkUpdate((selectedPortfolio + 1).toString(), arrCurrentWatchListOrder);
+    });
   }
 
   buySellPopupDialog({bool isFromBuy = true, Function? CancelClick, Function? DeleteClick}) {
@@ -1782,7 +1432,7 @@ class MarketWatchController extends BaseController {
                           height: 40,
                           child: Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Image.asset(
@@ -1791,7 +1441,7 @@ class MarketWatchController extends BaseController {
                                 height: 22,
                                 color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
 
@@ -1805,7 +1455,7 @@ class MarketWatchController extends BaseController {
                                 ),
                               ),
 
-                              Spacer(),
+                              const Spacer(),
                               // SizedBox(
                               //   width: 4.3.w,
                               // ),
@@ -1819,7 +1469,7 @@ class MarketWatchController extends BaseController {
                                 child: Container(
                                   width: 40,
                                   height: 40,
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   child: Image.asset(
                                     AppImages.closeIcon,
                                     color: AppColors().redColor,
@@ -1836,7 +1486,7 @@ class MarketWatchController extends BaseController {
                         Expanded(
                           child: Container(
                             color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
@@ -1896,7 +1546,7 @@ class MarketWatchController extends BaseController {
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          margin: const EdgeInsets.symmetric(vertical: 5),
                                           child: CustomTextField(
                                             regex: "[0-9]",
                                             type: '',
@@ -1963,7 +1613,7 @@ class MarketWatchController extends BaseController {
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                                           child: NumberInputWithIncrementDecrementOwn(
                                             incIconSize: 18,
                                             decIconSize: 18,
@@ -1991,7 +1641,7 @@ class MarketWatchController extends BaseController {
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: const EdgeInsets.only(bottom: 8, left: 20)),
 
                                             widgetContainerDecoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(0),
@@ -2026,7 +1676,7 @@ class MarketWatchController extends BaseController {
                                           return Container(
                                             width: 210,
                                             height: 40,
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                               vertical: 5,
                                             ),
                                             child: NumberInputWithIncrementDecrementOwn(
@@ -2043,7 +1693,7 @@ class MarketWatchController extends BaseController {
                                               initialValue: double.tryParse(priceController.text) ?? 0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: const EdgeInsets.only(bottom: 8, left: 20)),
                                               widgetContainerDecoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,
@@ -2075,7 +1725,7 @@ class MarketWatchController extends BaseController {
                                         exchangeTypeDropDown(selectedExchangeFromPopup, isFromPopUp: true)
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Column(
@@ -2100,11 +1750,11 @@ class MarketWatchController extends BaseController {
                                     ),
                                     Column(
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(left: 10),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -2129,7 +1779,7 @@ class MarketWatchController extends BaseController {
                                                   isLoading: false,
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 10,
                                               ),
                                               SizedBox(
@@ -2218,7 +1868,7 @@ class MarketWatchController extends BaseController {
                           height: 40,
                           child: Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Image.asset(
@@ -2227,7 +1877,7 @@ class MarketWatchController extends BaseController {
                                 height: 22,
                                 color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
 
@@ -2241,7 +1891,7 @@ class MarketWatchController extends BaseController {
                                 ),
                               ),
 
-                              Spacer(),
+                              const Spacer(),
                               // SizedBox(
                               //   width: 4.3.w,
                               // ),
@@ -2255,7 +1905,7 @@ class MarketWatchController extends BaseController {
                                 child: Container(
                                   width: 40,
                                   height: 40,
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   child: Image.asset(
                                     AppImages.closeIcon,
                                     color: AppColors().redColor,
@@ -2272,7 +1922,7 @@ class MarketWatchController extends BaseController {
                         Expanded(
                           child: Container(
                             color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
@@ -2332,7 +1982,7 @@ class MarketWatchController extends BaseController {
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          margin: const EdgeInsets.symmetric(vertical: 5),
                                           child: CustomTextField(
                                             regex: "[0-9]",
                                             type: '',
@@ -2399,7 +2049,7 @@ class MarketWatchController extends BaseController {
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                                          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                                           child: NumberInputWithIncrementDecrementOwn(
                                             incIconSize: 18,
                                             decIconSize: 18,
@@ -2427,7 +2077,7 @@ class MarketWatchController extends BaseController {
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: const EdgeInsets.only(bottom: 8, left: 20)),
 
                                             widgetContainerDecoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(0),
@@ -2462,7 +2112,7 @@ class MarketWatchController extends BaseController {
                                           return Container(
                                             width: 210,
                                             height: 40,
-                                            margin: EdgeInsets.symmetric(
+                                            margin: const EdgeInsets.symmetric(
                                               vertical: 5,
                                             ),
                                             child: NumberInputWithIncrementDecrementOwn(
@@ -2479,7 +2129,7 @@ class MarketWatchController extends BaseController {
                                               initialValue: double.tryParse(priceController.text) ?? 0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: const EdgeInsets.only(bottom: 8, left: 20)),
                                               widgetContainerDecoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,
@@ -2511,7 +2161,7 @@ class MarketWatchController extends BaseController {
                                         exchangeTypeDropDown(selectedExchangeFromPopup, isFromPopUp: true)
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Column(
@@ -2536,11 +2186,11 @@ class MarketWatchController extends BaseController {
                                     ),
                                     Column(
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 20,
                                         ),
                                         Padding(
-                                          padding: EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(left: 10),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
@@ -2569,7 +2219,7 @@ class MarketWatchController extends BaseController {
                                                   isLoading: false,
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 10,
                                               ),
                                               SizedBox(
@@ -2646,7 +2296,7 @@ class MarketWatchController extends BaseController {
                   icon: Padding(
                       padding: const EdgeInsets.only(right: 5),
                       child: isFromPopUp
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Icon(
                               Icons.keyboard_arrow_down_outlined,
                               size: 25,
@@ -2721,16 +2371,16 @@ class MarketWatchController extends BaseController {
       ignoring: true,
       child: Container(
         width: 210,
-        margin: EdgeInsets.symmetric(vertical: 5),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Obx(() {
           return Center(
             child: DropdownButtonHideUnderline(
               child: DropdownButton2<ScriptData>(
                 isExpanded: true,
-                iconStyleData: IconStyleData(
+                iconStyleData: const IconStyleData(
                   icon: Padding(
-                    padding: const EdgeInsets.only(right: 10),
+                    padding: EdgeInsets.only(right: 10),
                     // child: Image.asset(
                     //   AppImages.arrowDown,
                     //   height: 20,
@@ -2739,7 +2389,7 @@ class MarketWatchController extends BaseController {
                     // ),
                   ),
                 ),
-                dropdownStyleData: DropdownStyleData(maxHeight: 150),
+                dropdownStyleData: const DropdownStyleData(maxHeight: 150),
                 hint: Text(
                   selectedSymbol?.symbolName ?? "",
                   maxLines: 1,
@@ -2816,7 +2466,7 @@ class MarketWatchController extends BaseController {
   Widget allScriptListDropDown() {
     return Container(
         width: 250,
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
         decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
         child: Center(
           child: DropdownButtonHideUnderline(
@@ -2825,7 +2475,7 @@ class MarketWatchController extends BaseController {
               iconStyleData: IconStyleData(
                 icon: isScriptApiGoing
                     ? Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         width: 15,
                         height: 15,
                         child: Center(
@@ -2836,7 +2486,7 @@ class MarketWatchController extends BaseController {
                         ),
                       )
                     : Container(
-                        margin: EdgeInsets.only(right: 5),
+                        margin: const EdgeInsets.only(right: 5),
                         child: Icon(
                           Icons.keyboard_arrow_down_outlined,
                           size: 25,
@@ -2898,7 +2548,7 @@ class MarketWatchController extends BaseController {
                   textEditingController.clear();
                 }
               },
-              dropdownStyleData: DropdownStyleData(maxHeight: 250),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 250),
               hint: Text(
                 'Script',
                 style: TextStyle(
@@ -3013,16 +2663,16 @@ class MarketWatchController extends BaseController {
         child: Container(
             width: 210,
             height: 40,
-            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
             child: Center(
               child: DropdownButtonHideUnderline(
                 child: DropdownButtonFormField<Type>(
                   isExpanded: true,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(left: 15),
+                    contentPadding: const EdgeInsets.only(left: 15),
                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
                   ),
                   hint: Text(
                     isFromAdmin ? "Market" : 'Order Type',
@@ -3079,7 +2729,7 @@ class MarketWatchController extends BaseController {
   Widget validityListDropDown() {
     return Obx(() {
       return selectedOrderType.value.name != "Market"
-          ? SizedBox()
+          ? const SizedBox()
           : Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -3095,7 +2745,7 @@ class MarketWatchController extends BaseController {
                 Container(
                     width: 210,
                     height: 40,
-                    margin: EdgeInsets.symmetric(vertical: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
                     decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
                     child: Center(
                       child: DropdownButtonHideUnderline(
@@ -3131,9 +2781,9 @@ class MarketWatchController extends BaseController {
                                 .toList();
                           },
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 15),
+                            contentPadding: const EdgeInsets.only(left: 15),
                             focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                            enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
                           ),
                           value: selectedValidity.value.id == null ? null : selectedValidity.value,
                           onChanged: (Type? value) {
@@ -3165,9 +2815,9 @@ class MarketWatchController extends BaseController {
               menuMaxHeight: 130,
               alignment: Alignment.bottomCenter,
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 15),
+                contentPadding: const EdgeInsets.only(left: 15),
                 focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
               ),
               hint: Text(
                 userData!.role == UserRollList.user ? userData!.userName! : 'Select User',
@@ -3220,7 +2870,7 @@ class MarketWatchController extends BaseController {
   Widget allScriptListDropDownForF5() {
     return Container(
         width: 250,
-        margin: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
         decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
         child: Center(
           child: DropdownButtonHideUnderline(
@@ -3229,7 +2879,7 @@ class MarketWatchController extends BaseController {
               iconStyleData: IconStyleData(
                 icon: isScriptApiGoing
                     ? Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         width: 15,
                         height: 15,
                         child: Center(
@@ -3240,7 +2890,7 @@ class MarketWatchController extends BaseController {
                         ),
                       )
                     : Container(
-                        margin: EdgeInsets.only(right: 5),
+                        margin: const EdgeInsets.only(right: 5),
                         child: Icon(
                           Icons.keyboard_arrow_down_outlined,
                           size: 25,
@@ -3302,7 +2952,7 @@ class MarketWatchController extends BaseController {
                   textEditingController.clear();
                 }
               },
-              dropdownStyleData: DropdownStyleData(maxHeight: 250),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 250),
               hint: Text(
                 'Script',
                 style: TextStyle(
@@ -3387,7 +3037,7 @@ class MarketWatchController extends BaseController {
     return Container(
       width: 210,
       height: 40,
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
       child: Obx(() {
         return Center(

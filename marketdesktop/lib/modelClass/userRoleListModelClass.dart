@@ -52,9 +52,10 @@ class userRoleListData {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
       };
+  @override
   bool operator ==(dynamic other) {
     if (other is userRoleListData) {
-      return this.roleId == other.roleId;
+      return roleId == other.roleId;
     } else {
       return false;
     }

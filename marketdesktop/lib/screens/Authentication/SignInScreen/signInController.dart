@@ -44,10 +44,16 @@ class SignInController extends BaseController {
     serverController.text = "bazaar";
     userNameController.text = "prem";
     passwordController.text = "123456";
+    await windowManager.setMinimumSize(Size(400, 490));
     await windowManager.setSize(Size(400, 490), animate: false);
-    Future.delayed(Duration(milliseconds: 100), () {
+    await windowManager.setResizable(false);
+    await windowManager.setMaximizable(false);
+
+    Future.delayed(Duration(milliseconds: 100), () async {
       windowManager.center(animate: true);
+      await windowManager.setMovable(false);
     });
+
     CancelToken().cancel();
     var response = await service.getServerNameCall();
     if (response?.statusCode == 200) {
@@ -99,7 +105,8 @@ class SignInController extends BaseController {
       passwordFocus.unfocus();
       isLoadingSignIn.value = true;
       update();
-      var response = await service.signInCall(userName: userNameController.text.trim(), password: passwordController.text.trim(), serverName: serverController.text.trim());
+      var response = await service.signInCall(
+          userName: userNameController.text.trim(), password: passwordController.text.trim(), serverName: serverController.text.trim());
 
       if (response != null) {
         if (response.statusCode == 200) {

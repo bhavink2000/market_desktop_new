@@ -50,6 +50,7 @@ class MainContainerScreen extends BaseView<MainContainerController> {
                     Expanded(
                       child: Container(
                         // width: 90.w,
+                        margin: EdgeInsets.only(left: 9),
                         height: 50,
                         child: MyMenuBar(),
                       ),

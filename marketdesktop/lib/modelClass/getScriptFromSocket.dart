@@ -118,7 +118,7 @@ class ScriptData {
         "tsq": tsq,
         "ts": ts,
         "ls": ls,
-        "expiry": expiry!.toIso8601String(),
+        "expiry": expiry?.toIso8601String(),
         "exchange": exchange,
         "name": name,
         "symbol": symbol,
@@ -126,34 +126,34 @@ class ScriptData {
       };
   bool operator ==(dynamic other) {
     if (other is ScriptData) {
-      return this.symbol == other.symbol;
+      return symbol == other.symbol;
     } else {
       return false;
     }
   }
 
   copyObject(ScriptData other) {
-    this.bid = other.bid;
-    this.ask = other.ask;
-    this.ch = other.ch;
-    this.chp = other.chp;
-    this.ltp = other.ltp;
-    this.open = other.open;
-    this.high = other.high;
-    this.low = other.low;
-    this.close = other.close;
-    this.volume = other.volume;
-    this.oi = other.oi;
-    this.tbq = other.tbq;
-    this.tsq = other.tsq;
-    this.ts = other.ts;
-    this.ls = other.ls;
-    this.expiry = other.expiry;
-    this.exchange = other.exchange;
-    this.name = other.name;
-    this.symbol = other.symbol;
-    this.depth = other.depth;
-    this.lut = other.lut;
+    bid = other.bid;
+    ask = other.ask;
+    ch = other.ch;
+    chp = other.chp;
+    ltp = other.ltp;
+    open = other.open;
+    high = other.high;
+    low = other.low;
+    close = other.close;
+    volume = other.volume;
+    oi = other.oi;
+    tbq = other.tbq;
+    tsq = other.tsq;
+    ts = other.ts;
+    ls = other.ls;
+    expiry = other.expiry;
+    exchange = other.exchange;
+    name = other.name;
+    symbol = other.symbol;
+    depth = other.depth;
+    lut = other.lut;
   }
 }
 

@@ -67,6 +67,13 @@ dependencies:
   marquee: ^2.2.3
   check_vpn_connection: ^0.0.2
   spinner_date_time_picker: ^0.0.8
+  sqflite: ^2.3.0
+  sqflite_common_ffi: any
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding.git
+      path: plugins/window_size
+      ref: 6c66ad23ee79749f30a8eece542cf54eaf157ed8
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:marketdesktop/constant/utilities.dart';
@@ -6,6 +7,7 @@ import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/MainTabs/DashboardTab/dashboardController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/AccountSummaryScreen/accountSummaryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogHistoryScreen/logHistoryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogsHistoryNewScreen/logsHistoryNewController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ManageTradeScreen/manageTradeController.dart';
@@ -34,6 +36,7 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/RejectionLogScreen/reject
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/SuperAdminTradePopUp/superAdminTradePopUpController.dart';
+import 'package:window_size/window_size.dart';
 import '../../constant/index.dart';
 import 'package:get/get.dart';
 import 'package:window_manager/window_manager.dart';
@@ -71,6 +74,7 @@ class MainContainerController extends BaseController {
   bool isToolBarVisible = false;
   final FocusNode focusNode = FocusNode();
   bool isKeyPressActive = false;
+  bool isInitCallRequired = true;
   final debouncer = Debouncer(milliseconds: 300);
   RxDouble? pl;
 
@@ -90,10 +94,44 @@ class MainContainerController extends BaseController {
     super.onInit();
     Get.put(CreateUserController());
     Get.put(NotificationSettingsController());
-    await windowManager.setMinimumSize(Size(1280, 800));
+    if (Platform.isMacOS) {
+      await windowManager.setMinimumSize(Size(1280, 800));
+      // // setWindowMinSize(const Size(1280, 800));
+      // await windowManager.center(animate: true);
+      await windowManager.setAlignment(Alignment.topCenter, animate: false);
+      await windowManager.setMovable(true);
+      await windowManager.setResizable(true);
+      await windowManager.setMaximizable(true);
 
-    await windowManager.maximize();
+      await windowManager.maximize();
+      Screen? size = await getCurrentScreen();
+      print(size);
+      await windowManager.setSize(Size(size!.frame.width, size!.frame.height - 50));
+    } else {
+      setWindowMinSize(const Size(1280, 800));
+      Future.delayed(Duration(milliseconds: 100), () async {
+        Screen? size = await getCurrentScreen();
+        print(size);
+        await windowManager.setSize(Size(size!.frame.width, size!.frame.height - 50));
+        Future.delayed(const Duration(milliseconds: 100), () async {
+          await windowManager.center(animate: true);
+          await windowManager.setResizable(true);
+          await windowManager.setMaximizable(true);
+          await windowManager.maximize();
+          update();
+          Future.delayed(const Duration(milliseconds: 500), () async {
+            setWindowMinSize(const Size(1280, 800));
+            update();
+          });
+        });
+      });
+    }
+
     Timer.periodic(const Duration(seconds: 5), (timer) {
+      if (Platform.isWindows) {
+        setWindowMinSize(const Size(1280, 800));
+      }
+
       getOwnProfile();
       getConstantLisT();
     });
@@ -263,6 +301,8 @@ class MainContainerController extends BaseController {
           await Get.delete<manualOrderController>();
         } else if (currentOpenedScreen == ScreenViewNames.symbolWisePositionReport) {
           await Get.delete<SymbolWisePositionReportController>();
+        } else if (currentOpenedScreen == ScreenViewNames.clientAccountReport) {
+          await Get.delete<ClientAccountReportController>();
         }
 
         currentOpenedScreen = ScreenViewNames.marketWatch;
@@ -405,6 +445,8 @@ class MainContainerController extends BaseController {
           marketVC.arrScript.removeAt(marketVC.selectedScriptIndex);
           marketVC.arrPreScript.removeAt(marketVC.selectedScriptIndex);
           // selectedScriptIndex = selectedScriptIndex + 1;
+          marketVC.arrCurrentWatchListOrder.clear();
+          marketVC.storeScripsInDB();
           marketVC.update();
         }
       }
@@ -413,6 +455,8 @@ class MainContainerController extends BaseController {
         if (marketVC.selectedScriptIndex != -1 && marketVC.isScripDetailOpen == false) {
           marketVC.arrScript.insert(marketVC.selectedScriptIndex + 1, ScriptData());
           marketVC.arrPreScript.insert(marketVC.selectedScriptIndex + 1, ScriptData());
+          marketVC.storeScripsInDB();
+
           // selectedScriptIndex = -1;
           marketVC.isFilterClicked = 0;
           marketVC.update();
@@ -426,8 +470,8 @@ class MainContainerController extends BaseController {
 
           marketVC.selectedScript.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
-          marketVC.scrollToIndex(marketVC.selectedScriptIndex);
-          // marketVC.update();
+          marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
+          marketVC.update();
           var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];

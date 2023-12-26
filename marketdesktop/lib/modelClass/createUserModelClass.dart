@@ -1,3 +1,5 @@
+import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
+
 class CreateUserModel {
   Meta? meta;
   Data? data;
@@ -75,8 +77,7 @@ class Data {
         profitAndLossSharing: json["profitAndLossSharing"],
         brkSharing: json["brkSharing"],
         exchangeAllow: json["exchangeAllow"] == null ? [] : List<dynamic>.from(json["exchangeAllow"]!.map((x) => x)),
-        highLowBetweenTradeLimit:
-            json["highLowBetweenTradeLimit"] == null ? [] : List<dynamic>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
+        highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<dynamic>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
         firstLogin: json["firstLogin"],
         changePasswordOnFirstLogin: json["changePasswordOnFirstLogin"],
         role: json["role"],
@@ -95,8 +96,7 @@ class Data {
         "profitAndLossSharing": profitAndLossSharing,
         "brkSharing": brkSharing,
         "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow!.map((x) => x)),
-        "highLowBetweenTradeLimit":
-            highLowBetweenTradeLimit == null ? [] : List<dynamic>.from(highLowBetweenTradeLimit!.map((x) => x)),
+        "highLowBetweenTradeLimit": highLowBetweenTradeLimit == null ? [] : List<dynamic>.from(highLowBetweenTradeLimit!.map((x) => x)),
         "firstLogin": firstLogin,
         "changePasswordOnFirstLogin": changePasswordOnFirstLogin,
         "role": role,

@@ -424,7 +424,10 @@ showPermissionDialog({String? message, String? acceptButtonTitle, String? reject
                           width: 120,
                           height: 35,
                           // color: AppColors().extralightGrayThemeColor,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.transparent, width: 1), color: AppColors().redColor),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.transparent, width: 1),
+                              color: AppColors().redColor),
                           child: TextButton(
                             // style: ButtonStyle(
 
@@ -448,7 +451,10 @@ showPermissionDialog({String? message, String? acceptButtonTitle, String? reject
                           width: 120,
                           height: 35,
                           // color: AppColors().extralightGrayThemeColor,
-                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.transparent, width: 1), color: AppColors().blueColor),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.transparent, width: 1),
+                              color: AppColors().blueColor),
                           child: TextButton(
                             onPressed: () {
                               if (yesClick == null) {

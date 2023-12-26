@@ -44,6 +44,7 @@ class AccountSummaryNewListData {
   String? symbolTitle;
   String? symbolName;
   String? exchangeName;
+  String? exchangeId;
   String? symbolId;
   num? profitLoss;
   num? brokerageTotal;
@@ -68,6 +69,9 @@ class AccountSummaryNewListData {
   DateTime? updatedAt;
   double? currentPriceFromSocket = 0.0;
   double? profitLossValue = 0.0;
+  num? profitAndLossSharing = 0.0;
+  num? adminBrokerageTotal;
+  num? totalShareQuantity = 0.0;
   Rx<ScriptData> scriptDataFromSocket = ScriptData().obs;
 
   AccountSummaryNewListData({
@@ -79,6 +83,7 @@ class AccountSummaryNewListData {
     this.symbolTitle,
     this.symbolName,
     this.exchangeName,
+    this.exchangeId,
     this.symbolId,
     this.profitLoss,
     this.brokerageTotal,
@@ -101,6 +106,9 @@ class AccountSummaryNewListData {
     this.tradeData,
     this.createdAt,
     this.updatedAt,
+    this.profitAndLossSharing,
+    this.totalShareQuantity,
+    this.adminBrokerageTotal,
   });
 
   factory AccountSummaryNewListData.fromJson(Map<String, dynamic> json) => AccountSummaryNewListData(
@@ -112,6 +120,7 @@ class AccountSummaryNewListData {
         symbolTitle: json["symbolTitle"],
         symbolName: json["symbolName"],
         exchangeName: json["exchangeName"],
+        exchangeId: json["exchangeId"],
         symbolId: json["symbolId"],
         profitLoss: json["profitLoss"],
         brokerageTotal: json["brokerageTotal"],
@@ -122,6 +131,8 @@ class AccountSummaryNewListData {
         sellTotalLot: json["sellTotalLot"],
         sellPrice: json["sellPrice"],
         sellTotalPrice: json["sellTotalPrice"],
+        totalShareQuantity: json["totalShareQuantity"] ?? 0.0,
+        adminBrokerageTotal: json["adminBrokerageTotal"],
         ask: json["ask"] == "" || json["ask"] == null ? 0.0 : json["ask"],
         bid: json["bid"] == "" || json["bid"] == null ? 0.0 : json["bid"],
         ltp: json["ltp"] == "" || json["ltp"] == null ? 0.0 : json["ltp"],
@@ -129,7 +140,8 @@ class AccountSummaryNewListData {
         totalQuantity: json["totalQuantity"],
         totalLot: json["totalLot"],
         avgPrice: json["avgPrice"],
-        positionBrokerageTotal: json["positionBrokerageTotal"],
+        profitAndLossSharing: json["profitAndLossSharing"] ?? 0.0,
+        positionBrokerageTotal: json["positionBrokerageTotal"] ?? 0.0,
         positionData: json["positionData"] == null ? [] : List<PositionDatum>.from(json["positionData"]!.map((x) => PositionDatum.fromJson(x))),
         tradeData: json["tradeData"] == null ? [] : List<TradeDatum>.from(json["tradeData"]!.map((x) => TradeDatum.fromJson(x))),
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
@@ -153,6 +165,7 @@ class AccountSummaryNewListData {
         "buyTotalPrice": buyTotalPrice,
         "buyPrice": buyPrice,
         "sellTotalLot": sellTotalLot,
+        "exchangeId": exchangeId,
         "sellPrice": sellPrice,
         "sellTotalPrice": sellTotalPrice,
         "sellTotalQuantity": sellTotalQuantity,
@@ -162,6 +175,9 @@ class AccountSummaryNewListData {
         "ask": ask,
         "bid": bid,
         "ltp": ltp,
+        "adminBrokerageTotal": adminBrokerageTotal,
+        "totalShareQuantity": totalShareQuantity,
+        "profitAndLossSharing": profitAndLossSharing,
         "positionBrokerageTotal": positionBrokerageTotal,
         "positionData": positionData == null ? [] : List<dynamic>.from(positionData!.map((x) => x.toJson())),
         "tradeData": tradeData == null ? [] : List<dynamic>.from(tradeData!.map((x) => x.toJson())),

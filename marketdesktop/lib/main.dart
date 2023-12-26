@@ -11,6 +11,7 @@ import 'package:marketdesktop/service/network/socket_io_service.dart';
 import 'package:marketdesktop/service/network/socket_service.dart';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 import 'constant/const_string.dart';
 import 'modelClass/constantModelClass.dart';
@@ -56,6 +57,12 @@ void main() async {
   Timer.periodic(const Duration(seconds: 2), (timer) {
     internetConnectivity();
   });
+
+  if (Platform.isWindows) {
+    sqfliteFfiInit();
+
+    databaseFactory = databaseFactoryFfi;
+  }
   runApp(const MyApp());
 }
 
@@ -81,6 +88,7 @@ ConstantData? constantValues;
 
 bool currentDarkModeOn = false;
 bool isAccessTokenExpired = false;
+bool isScoketDisconnted = false;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

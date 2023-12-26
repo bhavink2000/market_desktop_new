@@ -8,6 +8,7 @@ import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
+import 'package:marketdesktop/modelClass/ltpUpdateModelClass.dart';
 import 'package:marketdesktop/modelClass/myTradeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
@@ -59,6 +60,8 @@ class TradeListController extends BaseController {
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
 
+  List<LtpUpdateModel> arrLtpUpdate = [];
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -75,7 +78,10 @@ class TradeListController extends BaseController {
       // }
     });
     listcontroller.addListener(() async {
-      if ((listcontroller.position.pixels > listcontroller.position.maxScrollExtent / 2.5 && totalPage > 1 && pageNumber < totalPage && !isLocalDataLoading)) {
+      if ((listcontroller.position.pixels > listcontroller.position.maxScrollExtent / 2.5 &&
+          totalPage > 1 &&
+          pageNumber < totalPage &&
+          !isLocalDataLoading)) {
         isLocalDataLoading = true;
         pageNumber++;
         String strFromDate = "";
@@ -88,7 +94,15 @@ class TradeListController extends BaseController {
         }
         update();
         var response = await service.getMyTradeListCall(
-            status: "pending", page: pageNumber, text: "", userId: selectedUser.value.userId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", startDate: strFromDate, endDate: strToDate, orderType: selectedOrderType.value.id ?? "");
+            status: "pending",
+            page: pageNumber,
+            text: "",
+            userId: selectedUser.value.userId ?? "",
+            symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+            exchangeId: selectedExchange.value.exchangeId ?? "",
+            startDate: strFromDate,
+            endDate: strToDate,
+            orderType: selectedOrderType.value.id ?? "");
         if (response != null) {
           if (response.statusCode == 200) {
             totalPage = response.meta?.totalPage ?? 0;
@@ -143,7 +157,15 @@ class TradeListController extends BaseController {
     }
 
     var response = await service.getMyTradeListCall(
-        status: "pending", page: pageNumber, text: "", userId: selectedUser.value.userId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", startDate: strFromDate, endDate: strToDate, orderType: selectedOrderType.value.id ?? "");
+        status: "pending",
+        page: pageNumber,
+        text: "",
+        userId: selectedUser.value.userId ?? "",
+        symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+        exchangeId: selectedExchange.value.exchangeId ?? "",
+        startDate: strFromDate,
+        endDate: strToDate,
+        orderType: selectedOrderType.value.id ?? "");
     isLocalDataLoading = false;
     isApiCallRunning = false;
     isResetCall = false;
@@ -233,7 +255,9 @@ class TradeListController extends BaseController {
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: arrTrade[selectedOrderIndex].exchangeId,
         productType: arrTrade[selectedOrderIndex].productTypeMain!,
-        refPrice: isFromBuy ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble() : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        refPrice: isFromBuy
+            ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble()
+            : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
       );
 
       if (response != null) {
@@ -260,6 +284,17 @@ class TradeListController extends BaseController {
   }
 
   pendingToSuccessTrade(bool isFromBuy) async {
+    var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrTrade[selectedOrderIndex].symbolName);
+    if (ltpObj == null) {
+      showWarningToast("Not Allowed For Trade");
+      return;
+    } else {
+      var difference = DateTime.now().difference(ltpObj.dateTime!);
+      var differenceInSeconds = difference.inSeconds;
+      if (differenceInSeconds >= 40) {
+        showWarningToast("Not Allowed For Trade");
+      }
+    }
     var response = await service.modifyTradeCall(
       tradeId: arrTrade[selectedOrderIndex].tradeId!,
       symbolId: arrTrade[selectedOrderIndex].symbolId!,
@@ -272,7 +307,9 @@ class TradeListController extends BaseController {
       tradeType: isFromBuy ? "buy" : "sell",
       exchangeId: arrTrade[selectedOrderIndex].exchangeId,
       productType: arrTrade[selectedOrderIndex].productTypeMain!,
-      refPrice: isFromBuy ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble() : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
+      refPrice: isFromBuy
+          ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble()
+          : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
     );
 
     if (response != null) {
@@ -307,11 +344,25 @@ class TradeListController extends BaseController {
     if (socketData.status == true) {
       var obj = arrTrade.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);
 
+      var ltpObj = LtpUpdateModel(symbolId: "", ltp: socketData.data!.ltp!, symbolTitle: socketData.data!.symbol, dateTime: DateTime.now());
+      var isAvailableObj = arrLtpUpdate.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolTitle);
+      if (isAvailableObj == null) {
+        arrLtpUpdate.add(ltpObj);
+      } else {
+        if (isAvailableObj.ltp != ltpObj.ltp) {
+          var index = arrLtpUpdate.indexWhere((element) => element.symbolTitle == ltpObj.symbolTitle);
+          arrLtpUpdate[index] = ltpObj;
+          // print(ltpObj.symbolTitle);
+          // print(ltpObj.ltp);
+        }
+      }
+
       if (obj != null) {
         for (var i = 0; i < arrTrade.length; i++) {
           if (arrTrade[i].symbolName == socketData.data!.symbol) {
             arrTrade[i].scriptDataFromSocket.value = socketData.data!;
-            arrTrade[i].currentPriceFromSocket = arrTrade[i].tradeType == "buy" ? double.parse(socketData.data!.ask.toString()) : double.parse(socketData.data!.bid.toString());
+            arrTrade[i].currentPriceFromSocket =
+                arrTrade[i].tradeType == "buy" ? double.parse(socketData.data!.ask.toString()) : double.parse(socketData.data!.bid.toString());
           }
         }
       }
@@ -637,7 +688,10 @@ class TradeListController extends BaseController {
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                fillColor: AppColors().whiteColor,
+                                                contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
 
                                             widgetContainerDecoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(0),
@@ -689,7 +743,10 @@ class TradeListController extends BaseController {
                                               initialValue: double.tryParse(priceController.text) ?? 0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                              numberFieldDecoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  fillColor: AppColors().whiteColor,
+                                                  contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
                                               widgetContainerDecoration: BoxDecoration(
                                                 borderRadius: BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,

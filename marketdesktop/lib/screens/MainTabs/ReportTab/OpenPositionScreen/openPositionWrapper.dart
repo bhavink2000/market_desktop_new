@@ -54,7 +54,7 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -124,14 +124,14 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
                                 child: Text("Username:",
                                     style: TextStyle(
                                       fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
+                                      fontFamily: CustomFonts.family2Regular,
                                       color: AppColors().fontColor,
                                     )),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 200),
+                              userListDropDown(controller.selectedUser, width: 150),
                               SizedBox(
                                 width: 30,
                               ),
@@ -151,7 +151,7 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
                               child: Text("Exchange:",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
+                                    fontFamily: CustomFonts.family2Regular,
                                     color: AppColors().fontColor,
                                   )),
                             ),
@@ -161,7 +161,7 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
                               await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
-                            }, width: 200),
+                            }, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -181,14 +181,14 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
                               child: Text("Symbols:",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
+                                    fontFamily: CustomFonts.family2Regular,
                                     color: AppColors().fontColor,
                                   )),
                             ),
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 200),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -202,7 +202,7 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 70,
+                            width: 10,
                           ),
                           SizedBox(
                             width: 80,
