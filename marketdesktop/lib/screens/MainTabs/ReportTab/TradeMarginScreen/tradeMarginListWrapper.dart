@@ -222,7 +222,9 @@ class TradeMarginScreen extends BaseView<TradeMarginController> {
                               onPress: () {
                                 controller.selectedExchange.value = ExchangeData();
                                 controller.searchController.clear();
-                                controller.tradeMarginList(isFromFilter: true, isFromClear: true);
+                                controller.arrTradeMargin.clear();
+                                controller.update();
+                                // controller.tradeMarginList(isFromFilter: true, isFromClear: true);
                               },
                               focusKey: controller.clearFocus,
                               borderColor: AppColors().blueColor,

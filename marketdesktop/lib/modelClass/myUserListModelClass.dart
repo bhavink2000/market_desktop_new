@@ -89,6 +89,7 @@ class UserData {
   String? deviceType;
   num? profitLoss;
   num? brokerageTotal;
+  bool? freshLimitSL;
 
   UserData({
     this.status,
@@ -149,6 +150,7 @@ class UserData {
     this.deviceType,
     this.profitLoss,
     this.brokerageTotal,
+    this.freshLimitSL,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
@@ -168,8 +170,7 @@ class UserData {
         brkSharing: json["brkSharing"],
         brkSharingDownLine: json["brkSharingDownLine"],
         exchangeAllow: json["exchangeAllow"] == null ? [] : List<ExchangeAllow>.from(json["exchangeAllow"]!.map((x) => ExchangeAllow.fromJson(x))),
-        assignGroupData:
-            json["assignGroupData"] == null ? [] : List<AssignGroupDatum>.from(json["assignGroupData"]!.map((x) => AssignGroupDatum.fromJson(x))),
+        assignGroupData: json["assignGroupData"] == null ? [] : List<AssignGroupDatum>.from(json["assignGroupData"]!.map((x) => AssignGroupDatum.fromJson(x))),
         highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<String>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
         firstLogin: json["firstLogin"],
         changePasswordOnFirstLogin: json["changePasswordOnFirstLogin"],
@@ -211,6 +212,7 @@ class UserData {
         deviceType: json["deviceType"],
         profitLoss: json["profitLoss"],
         brokerageTotal: json["brokerageTotal"],
+        freshLimitSL: json["freshLimitSL"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -272,6 +274,7 @@ class UserData {
         "deviceType": deviceType,
         "profitLoss": profitLoss,
         "brokerageTotal": brokerageTotal,
+        "freshLimitSL": freshLimitSL,
       };
 }
 

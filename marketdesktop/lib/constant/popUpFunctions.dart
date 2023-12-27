@@ -493,8 +493,8 @@ showMarketTimingPopup() {
             child: Container(
               // width: 30.w,
               // height: 28.h,
-              width: 500,
-              height: 670,
+              width: 400,
+              height: 580,
               decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: MarketTimingScreen(),
             ),

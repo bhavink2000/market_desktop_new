@@ -455,7 +455,7 @@ class PositionScreen extends BaseView<PositionController> {
                 fontFamily: CustomFonts.family1Medium,
                 color: AppColors().darkText,
               )),
-          Text(userData!.profitLoss!.toStringAsFixed(2),
+          Text((userData!.profitLoss! - userData!.brokerageTotal!).toStringAsFixed(2),
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: CustomFonts.family1Medium,
@@ -501,6 +501,21 @@ class PositionScreen extends BaseView<PositionController> {
                 color: AppColors().darkText,
               )),
           Text(userData!.tradeMarginBalance!.toStringAsFixed(2),
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: CustomFonts.family1Medium,
+                color: AppColors().darkText,
+              )),
+          SizedBox(
+            width: 50,
+          ),
+          Text("Equity : ",
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: CustomFonts.family1Medium,
+                color: AppColors().darkText,
+              )),
+          Text(((userData!.credit! + controller.totalPosition.value + userData!.profitLoss!) - userData!.brokerageTotal!).toStringAsFixed(2),
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: CustomFonts.family1Medium,

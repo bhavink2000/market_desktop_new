@@ -87,6 +87,7 @@ class CreateUserController extends BaseController {
   bool? isExecutePendingOrder;
   bool isChangePasswordOnFirstLogin = false;
   RxBool isSelectedallExchangeinMaster = false.obs;
+  RxBool isFreshLimitSL = false.obs;
   bool isEyeOpenPassword = true;
   bool isEyeOpenRetypePassword = true;
   RxBool isLoadingSave = false.obs;
@@ -148,6 +149,7 @@ class CreateUserController extends BaseController {
         selectedUserType.value.roleId = selectedUserForEdit!.role;
         isCloseOnly = selectedUserForEdit!.marketOrder == 1 ? true : false;
         profitandLossController.text = selectedUserForEdit!.profitAndLossSharing.toString();
+        isFreshLimitSL.value = selectedUserForEdit?.freshLimitSL ?? false;
         brkSharingMasterController.text = selectedUserForEdit!.brkSharing.toString();
         if (selectedUserForEdit!.highLowBetweenTradeLimit != null) {
           for (var element in selectedUserForEdit!.highLowBetweenTradeLimit!) {
@@ -347,8 +349,7 @@ class CreateUserController extends BaseController {
     // else if (cutoffController.text.trim().isEmpty) {
     //   msg = AppString.emptyCutOff;
     // }
-    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) ||
-        (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
+    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
       msg = AppString.cutOffValid;
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
@@ -467,8 +468,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
             }
           }
-          if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name &&
-              arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty) {
+          if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name && arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty) {
             arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
           }
         }
@@ -1001,7 +1001,8 @@ class CreateUserController extends BaseController {
           symbolWiseSL: isSymbolWiseSL,
           brokerId: selectedBrokerType.value.userId ?? "",
           brkSharingDownLine: int.tryParse(brokerageSharingController.text) ?? 0,
-          changePassword: isChangePasswordOnFirstLogin);
+          changePassword: isChangePasswordOnFirstLogin,
+          freshLimitSL: isFreshLimitSL.value);
       isLoadingSave.value = false;
       if (response != null) {
         if (response.statusCode == 200) {
@@ -1152,7 +1153,8 @@ class CreateUserController extends BaseController {
           symbolWiseSL: isSymbolWiseSL,
           brokerId: selectedBrokerType.value.userId ?? "",
           brkSharingDownLine: int.tryParse(brokerageSharingController.text) ?? 0,
-          changePassword: isChangePasswordOnFirstLogin);
+          changePassword: isChangePasswordOnFirstLogin,
+          freshLimitSL: isFreshLimitSL.value);
       isLoadingSave.value = false;
       if (response != null) {
         if (response.statusCode == 200) {

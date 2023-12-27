@@ -197,7 +197,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                                   showWarningToast("Please selected script for cut");
                                                 }
                                               },
-                                              label: 'Cut',
+                                              label: 'Cut    (Ctrl + x)',
                                             ),
 
                                             ContextMenuButtonItem(
@@ -219,7 +219,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                                   controller.storeScripsInDB();
                                                 }
                                               },
-                                              label: 'Paste',
+                                              label: 'Paste    (Ctr + v)',
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
@@ -239,7 +239,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                                   controller.storeScripsInDB();
                                                 }
                                               },
-                                              label: 'Undo',
+                                              label: 'Undo    (ctrl + z)',
                                             ),
 
                                             ContextMenuButtonItem(

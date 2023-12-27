@@ -59,7 +59,7 @@ class ScreenViewNames {
   static const String tradeMargin = "Trade Margin";
   static const String tradeLogs = "Trade Logs";
   static const String settelment = "Settlement";
-  static const String accountSummary = "Account Summary";
+  static const String accountSummary = "Credit History";
   static const String billGenerate = "Bill Generate";
   static const String percentopenPosition = "% Open Position";
   static const String weeklyAdmin = "Weekly Admin";

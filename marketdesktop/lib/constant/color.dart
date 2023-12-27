@@ -12,7 +12,7 @@ class AppColors {
   var headerBgColor = currentDarkModeOn ? const Color.fromRGBO(17, 17, 17, 1.0) : const Color.fromRGBO(235, 236, 237, 1);
   // var blueColor = const Color.fromRGBO(39, 94, 224, 1.0);
   // var redColor = const Color.fromRGBO(206, 90, 82, 1);
-  var blueColor = const Color.fromRGBO(0, 0, 255, 1.0);
+  var blueColor = const Color.fromRGBO(33, 115, 253, 1.0);
   var redColor = const Color.fromRGBO(255, 0, 0, 1);
   var pinkColor = const Color(0xffFB7CD7);
 
@@ -32,5 +32,6 @@ class AppColors {
   var grayLightLine = currentDarkModeOn ? const Color.fromARGB(255, 96, 96, 96) : const Color.fromRGBO(235, 235, 235, 1);
   var contentBg = currentDarkModeOn ? const Color.fromARGB(255, 31, 33, 33) : const Color.fromRGBO(250, 250, 250, 1);
   var slideGrayBG = const Color.fromRGBO(224, 224, 224, 1);
+  var iconsColor = const Color.fromRGBO(57, 57, 57, 1);
   //235, 236, 237, 1
 }

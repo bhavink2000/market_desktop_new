@@ -35,7 +35,7 @@ class TradeMarginController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    tradeMarginList(isFromFilter: true);
+    // tradeMarginList(isFromFilter: true);
   }
 
   tradeMarginList({bool isFromFilter = false, bool isFromClear = false}) async {

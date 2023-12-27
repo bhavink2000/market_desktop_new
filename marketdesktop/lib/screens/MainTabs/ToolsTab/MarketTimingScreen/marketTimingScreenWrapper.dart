@@ -47,12 +47,12 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                     ),
                     if (controller.timingData?.data == null && controller.selectedExchangedropdownValue!.value!.exchangeId == null)
                       Container(
-                        height: 500,
+                        // height: 580,
                         child: Center(child: Text("Please select exchange.")),
                       ),
                     if (controller.timingData?.data == null && controller.selectedExchangedropdownValue!.value!.exchangeId != null)
                       Container(
-                        height: 500,
+                        // height: 580,
                         child: Center(child: Text("No data found")),
                       ),
                     if (controller.timingData?.data != null) customCalender(),
@@ -294,8 +294,8 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
     return Column(
       children: [
         Container(
-          height: controller.screenSize!.width > 1280 ? 450 : 350,
-          width: 500,
+          height: controller.screenSize!.width > 1280 ? 360 : 350,
+          width: 400,
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: AppColors().footerColor, boxShadow: [
             BoxShadow(
               color: AppColors().fontColor.withOpacity(0),
@@ -304,7 +304,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               blurRadius: 10,
             ),
           ]),
-          margin: EdgeInsets.only(top: 2.h, left: 5, right: 5),
+          margin: EdgeInsets.only(top: 10, left: 5, right: 5),
           child: Column(
             children: [
               customCalenderHeader(),
@@ -318,7 +318,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                   }
                 },
                 showOnlyCurrentMonthDate: false,
-                height: 40.h,
+                height: 307,
                 selectedDateTime: controller.currentDate2,
                 targetDateTime: controller.targetDateTime,
                 customGridViewPhysics: NeverScrollableScrollPhysics(),
@@ -420,7 +420,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
           Expanded(
             child: Container(
               height: 5.7.h,
-              decoration: BoxDecoration(color: AppColors().greenColor, borderRadius: BorderRadius.circular(5)),
+              decoration: BoxDecoration(color: AppColors().blueColor, borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text(
                   controller.timingData!.data!.startTime! + " - " + controller.timingData!.data!.endTime!,

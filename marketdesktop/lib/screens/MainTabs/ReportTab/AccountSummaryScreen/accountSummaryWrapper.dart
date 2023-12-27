@@ -287,85 +287,85 @@ class AccountSummaryScreen extends BaseView<AccountSummaryController> {
                             SizedBox(
                               width: 55,
                             ),
-                            Container(
-                              width: 200,
-                              child: Column(
-                                children: <Widget>[
-                                  ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: const Text(
-                                      'P/L',
-                                    ),
-                                    horizontalTitleGap: 0,
-                                    dense: true,
-                                    visualDensity: VisualDensity(vertical: -3),
-                                    titleTextStyle: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
-                                      color: AppColors().fontColor,
-                                    ),
-                                    leading: Radio<AccountSummaryType>(
-                                      value: AccountSummaryType.pl,
-                                      activeColor: AppColors().darkText,
-                                      groupValue: controller.selectedAccountSummaryType ?? null,
-                                      onChanged: (AccountSummaryType? value) {
-                                        controller.selectedAccountSummaryType = value;
-                                        controller.selectedType = constantValues!.transactionType![2];
-                                        controller.update();
-                                      },
-                                    ),
-                                  ),
-                                  ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: const Text(
-                                      'Brk',
-                                    ),
-                                    horizontalTitleGap: 0,
-                                    dense: true,
-                                    visualDensity: VisualDensity(vertical: -3),
-                                    titleTextStyle: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
-                                      color: AppColors().fontColor,
-                                    ),
-                                    leading: Radio<AccountSummaryType>(
-                                      value: AccountSummaryType.brk,
-                                      activeColor: AppColors().darkText,
-                                      groupValue: controller.selectedAccountSummaryType ?? null,
-                                      onChanged: (AccountSummaryType? value) {
-                                        controller.selectedAccountSummaryType = value;
-                                        controller.selectedType = constantValues!.transactionType![1];
-                                        controller.update();
-                                      },
-                                    ),
-                                  ),
-                                  ListTile(
-                                    contentPadding: EdgeInsets.zero,
-                                    title: const Text(
-                                      'Credit',
-                                    ),
-                                    horizontalTitleGap: 0,
-                                    dense: true,
-                                    visualDensity: VisualDensity(vertical: -3),
-                                    titleTextStyle: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
-                                      color: AppColors().fontColor,
-                                    ),
-                                    leading: Radio<AccountSummaryType>(
-                                      value: AccountSummaryType.credit,
-                                      activeColor: AppColors().darkText,
-                                      groupValue: controller.selectedAccountSummaryType ?? null,
-                                      onChanged: (AccountSummaryType? value) {
-                                        controller.selectedAccountSummaryType = value;
-                                        controller.selectedType = constantValues!.transactionType!.first;
-                                        controller.update();
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   width: 200,
+                            //   child: Column(
+                            //     children: <Widget>[
+                            //       ListTile(
+                            //         contentPadding: EdgeInsets.zero,
+                            //         title: const Text(
+                            //           'P/L',
+                            //         ),
+                            //         horizontalTitleGap: 0,
+                            //         dense: true,
+                            //         visualDensity: VisualDensity(vertical: -3),
+                            //         titleTextStyle: TextStyle(
+                            //           fontSize: 12,
+                            //           fontFamily: CustomFonts.family1Regular,
+                            //           color: AppColors().fontColor,
+                            //         ),
+                            //         leading: Radio<AccountSummaryType>(
+                            //           value: AccountSummaryType.pl,
+                            //           activeColor: AppColors().darkText,
+                            //           groupValue: controller.selectedAccountSummaryType ?? null,
+                            //           onChanged: (AccountSummaryType? value) {
+                            //             controller.selectedAccountSummaryType = value;
+                            //             controller.selectedType = constantValues!.transactionType![2];
+                            //             controller.update();
+                            //           },
+                            //         ),
+                            //       ),
+                            //       ListTile(
+                            //         contentPadding: EdgeInsets.zero,
+                            //         title: const Text(
+                            //           'Brk',
+                            //         ),
+                            //         horizontalTitleGap: 0,
+                            //         dense: true,
+                            //         visualDensity: VisualDensity(vertical: -3),
+                            //         titleTextStyle: TextStyle(
+                            //           fontSize: 12,
+                            //           fontFamily: CustomFonts.family1Regular,
+                            //           color: AppColors().fontColor,
+                            //         ),
+                            //         leading: Radio<AccountSummaryType>(
+                            //           value: AccountSummaryType.brk,
+                            //           activeColor: AppColors().darkText,
+                            //           groupValue: controller.selectedAccountSummaryType ?? null,
+                            //           onChanged: (AccountSummaryType? value) {
+                            //             controller.selectedAccountSummaryType = value;
+                            //             controller.selectedType = constantValues!.transactionType![1];
+                            //             controller.update();
+                            //           },
+                            //         ),
+                            //       ),
+                            //       ListTile(
+                            //         contentPadding: EdgeInsets.zero,
+                            //         title: const Text(
+                            //           'Credit',
+                            //         ),
+                            //         horizontalTitleGap: 0,
+                            //         dense: true,
+                            //         visualDensity: VisualDensity(vertical: -3),
+                            //         titleTextStyle: TextStyle(
+                            //           fontSize: 12,
+                            //           fontFamily: CustomFonts.family1Regular,
+                            //           color: AppColors().fontColor,
+                            //         ),
+                            //         leading: Radio<AccountSummaryType>(
+                            //           value: AccountSummaryType.credit,
+                            //           activeColor: AppColors().darkText,
+                            //           groupValue: controller.selectedAccountSummaryType ?? null,
+                            //           onChanged: (AccountSummaryType? value) {
+                            //             controller.selectedAccountSummaryType = value;
+                            //             controller.selectedType = constantValues!.transactionType!.first;
+                            //             controller.update();
+                            //           },
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -550,23 +550,31 @@ class AccountSummaryScreen extends BaseView<AccountSummaryController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(controller.arrAccountSummary[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: controller.arrAccountSummary[index].userId!, userName: controller.arrAccountSummary[index].userName ?? "");
-              }),
-              valueBox(controller.arrAccountSummary[index].symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(controller.arrAccountSummary[index].quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].tradeType ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].positionDataAveragePrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(controller.arrAccountSummary[index].type ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].transactionType ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, onClickValue: () {
-                controller.tradeID = controller.arrAccountSummary[index].tradeId!;
-                controller.getTradeDetail();
-              }),
-              valueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].positionDataQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
+              //   showUserDetailsPopUp(userId: controller.arrAccountSummary[index].userId!, userName: controller.arrAccountSummary[index].userName ?? "");
+              // }),
+              // valueBox(controller.arrAccountSummary[index].symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
+              // valueBox(controller.arrAccountSummary[index].quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].tradeType ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].positionDataAveragePrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].type ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].transactionType ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
+              // valueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, onClickValue: () {
+              //   controller.tradeID = controller.arrAccountSummary[index].tradeId!;
+              //   controller.getTradeDetail();
+              // }),
+              // valueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              // valueBox(controller.arrAccountSummary[index].positionDataQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+
+              valueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
+              valueBox(controller.arrAccountSummary[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox((controller.arrAccountSummary[index].amount! + controller.arrAccountSummary[index].closing!).toStringAsFixed(2), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrAccountSummary[index].comment ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrAccountSummary[index].fromUserName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             ],
           ),
         ),
@@ -580,19 +588,27 @@ class AccountSummaryScreen extends BaseView<AccountSummaryController> {
       children: [
         // titleBox("", 0),
 
-        titleBox("Date Time", isBig: true),
-        titleBox("Username"),
-        titleBox("Symbol Name", isLarge: true),
-        titleBox("Qty"),
-        titleBox("Trade Type"),
-        titleBox("Price"),
-        titleBox("Average Price", isBig: true),
+        // titleBox("Date Time"),
+        // titleBox("Username"),
+        // titleBox("Symbol Name", isLarge: true),
+        // titleBox("Qty"),
+        // titleBox("Trade Type"),
+        // titleBox("Price"),
+        // titleBox("Average Price"),
 
-        titleBox("Type"),
-        titleBox("Transaction Type", isForDate: true),
+        // titleBox("Type"),
+        // titleBox("Transaction Type", isForDate: true),
+        // titleBox("Amount"),
+        // titleBox("Closing"),
+        // titleBox("Open Qty"),
+
+        titleBox("Date Time", isForDate: true),
+        titleBox("Username"),
+        titleBox("Opening"),
         titleBox("Amount"),
         titleBox("Closing"),
-        titleBox("Open Qty"),
+        titleBox("Comment"),
+        titleBox("Action By"),
       ],
     );
   }

@@ -317,6 +317,7 @@ class MainContainerController extends BaseController {
     // RawKeyboard.instance.addListener((event) {
 
     // });
+
     var marketVC = Get.find<MarketWatchController>();
 
     if (event.isKeyPressed(LogicalKeyboardKey.f1) || event.isKeyPressed(LogicalKeyboardKey.numpadAdd)) {
@@ -505,6 +506,53 @@ class MainContainerController extends BaseController {
         //   marketVC.scrollToIndex(marketVC.selectedScriptIndex);
         //   marketVC.update();
         // }
+      }
+    } else if (event.isMetaPressed && event.isKeyPressed(LogicalKeyboardKey.keyX)) {
+      if (marketVC.isBuyOpen == -1 && marketVC.isScripDetailOpen == false) {
+        if (marketVC.selectedScriptIndex > 0) {}
+        if (marketVC.selectedScriptIndex != -1) {
+          marketVC.selectedIndexforCut = marketVC.selectedScriptIndex;
+          marketVC.selectedIndexforUndo = marketVC.selectedScriptIndex;
+          marketVC.update();
+        } else {
+          showWarningToast("Please selected script for cut");
+        }
+      }
+    } else if (event.isMetaPressed && event.isKeyPressed(LogicalKeyboardKey.keyV)) {
+      if (marketVC.isBuyOpen == -1 && marketVC.isScripDetailOpen == false) {
+        if (marketVC.selectedScriptIndex > 0) {}
+        if (marketVC.selectedIndexforCut != -1) {
+          final ScriptData item = marketVC.arrScript.removeAt(marketVC.selectedIndexforCut);
+
+          marketVC.arrScript.insert(marketVC.selectedScriptIndex, item);
+
+          final ScriptData preItem = marketVC.arrPreScript.removeAt(marketVC.selectedIndexforCut);
+
+          marketVC.arrPreScript.insert(marketVC.selectedScriptIndex, preItem);
+
+          marketVC.selectedIndexforCut = -1;
+
+          marketVC.selectedIndexforPaste = marketVC.selectedScriptIndex;
+
+          marketVC.storeScripsInDB();
+          marketVC.update();
+        }
+      }
+    } else if (event.isMetaPressed && event.isKeyPressed(LogicalKeyboardKey.keyZ)) {
+      if (marketVC.selectedIndexforUndo != -1) {
+        final ScriptData item = marketVC.arrScript.removeAt(marketVC.selectedIndexforPaste);
+
+        marketVC.arrScript.insert(marketVC.selectedIndexforUndo, item);
+
+        final ScriptData preItem = marketVC.arrPreScript.removeAt(marketVC.selectedIndexforPaste);
+
+        marketVC.arrPreScript.insert(marketVC.selectedIndexforUndo, preItem);
+        marketVC.selectedIndexforCut = -1;
+        marketVC.selectedIndexforPaste = -1;
+        marketVC.selectedIndexforUndo = -1;
+
+        marketVC.storeScripsInDB();
+        marketVC.update();
       }
     }
   }

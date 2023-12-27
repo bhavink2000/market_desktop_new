@@ -45,19 +45,19 @@ class SignInScreen extends BaseView<SignInController> {
                           ),
                           Row(
                             children: [
-                              Container(
-                                child: Image.asset(
-                                  AppImages.appLogo,
-                                  width: 22,
-                                  height: 22,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Text("Login",
-                                  style: TextStyle(
-                                      fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                              // Container(
+                              //   child: Image.asset(
+                              //     AppImages.appLogo,
+                              //     width: 22,
+                              //     height: 22,
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   width: 2.w,
+                              // ),
+                              // Text("Login",
+                              //     style: TextStyle(
+                              //         fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                               Spacer(),
                               GestureDetector(
                                 onTap: () {
@@ -74,20 +74,24 @@ class SignInScreen extends BaseView<SignInController> {
                             ],
                           ),
                           SizedBox(
-                            height: 2.h,
+                            height: 5.h,
                           ),
                           Center(
-                            child: Image.asset(
-                              AppImages.appLogo,
-                              width: 96,
-                              height: 77,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 75),
+                              child: Image.asset(
+                                AppImages.appLoginLogo,
+                              ),
                             ),
                           ),
-                          Center(
-                            child: Text("BAZAAR 2.0",
-                                style: TextStyle(
-                                    fontSize: 40, fontFamily: CustomFonts.family1ExtraBold, color: AppColors().blueColor)),
+                          SizedBox(
+                            height: 5.h,
                           ),
+                          // Center(
+                          //   child: Text("BAZAAR 2.0",
+                          //       style: TextStyle(
+                          //           fontSize: 40, fontFamily: CustomFonts.family1ExtraBold, color: AppColors().blueColor)),
+                          // ),
                           SizedBox(
                             height: 3.h,
                           ),
@@ -112,10 +116,25 @@ class SignInScreen extends BaseView<SignInController> {
                             },
                             keyboardButtonType: TextInputAction.next,
                             maxLength: 64,
-                            suffixIcon: Image.asset(
-                              AppImages.earthIcon,
-                              width: 22,
-                              height: 22,
+                            isLogin: true,
+                            suffixIcon: SizedBox(
+                              width: 35,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 2,
+                                    height: 25,
+                                    color: AppColors().grayBorderColor,
+                                    margin: EdgeInsets.only(right: 10),
+                                  ),
+                                  Image.asset(
+                                    AppImages.earthIcon,
+                                    width: 22,
+                                    height: 22,
+                                    color: AppColors().iconsColor,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -140,13 +159,28 @@ class SignInScreen extends BaseView<SignInController> {
                             isSecure: false,
                             keyboardButtonType: TextInputAction.next,
                             maxLength: 64,
+                            isLogin: true,
                             onDoneClick: () {
                               controller.callForSignIn(context);
                             },
-                            suffixIcon: Image.asset(
-                              AppImages.userIcon,
-                              width: 22,
-                              height: 22,
+                            suffixIcon: SizedBox(
+                              width: 35,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 2,
+                                    height: 25,
+                                    color: AppColors().grayBorderColor,
+                                    margin: EdgeInsets.only(right: 10),
+                                  ),
+                                  Image.asset(
+                                    AppImages.userIcon,
+                                    width: 22,
+                                    height: 22,
+                                    color: AppColors().iconsColor,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           SizedBox(
@@ -169,6 +203,7 @@ class SignInScreen extends BaseView<SignInController> {
                             focus: controller.passwordFocus,
                             isSecure: controller.isEyeOpen,
                             maxLength: 20,
+                            isLogin: true,
                             keyboardButtonType: TextInputAction.done,
                             onDoneClick: () {
                               controller.callForSignIn(context);
@@ -178,10 +213,24 @@ class SignInScreen extends BaseView<SignInController> {
                                 controller.isEyeOpen = !controller.isEyeOpen;
                                 controller.update();
                               },
-                              child: Image.asset(
-                                controller.isEyeOpen ? AppImages.eyeCloseIcon : AppImages.eyeOpenIcon,
-                                width: 22,
-                                height: 22,
+                              child: SizedBox(
+                                width: 35,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: 2,
+                                      height: 25,
+                                      color: AppColors().grayBorderColor,
+                                      margin: EdgeInsets.only(right: 10),
+                                    ),
+                                    Image.asset(
+                                      controller.isEyeOpen ? AppImages.eyeCloseIcon : AppImages.eyeOpenIcon,
+                                      width: 22,
+                                      height: 22,
+                                      color: AppColors().iconsColor,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -192,7 +241,7 @@ class SignInScreen extends BaseView<SignInController> {
                             return CustomButton(
                               isEnabled: true,
                               shimmerColor: AppColors().whiteColor,
-                              title: "LOGIN",
+                              title: "Log In",
                               textSize: 16,
                               // fontFamily: CustomFonts.family1Medium,
                               onPress: () async {

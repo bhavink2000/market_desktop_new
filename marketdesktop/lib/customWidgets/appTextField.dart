@@ -40,6 +40,7 @@ class CustomTextField extends StatefulWidget {
     this.focusBorderColor,
     this.isShowPrefix = true,
     this.isShowSufix = true,
+    this.isLogin = false,
   }) : super(key: key);
   final String? regex;
   final String type;
@@ -72,6 +73,7 @@ class CustomTextField extends StatefulWidget {
   final bool? isNoHorizontalPadding;
   final bool isShowPrefix;
   final bool isShowSufix;
+  final bool isLogin;
   @override
   State<CustomTextField> createState() => _CustomTextField();
 }
@@ -103,10 +105,9 @@ class _CustomTextField extends State<CustomTextField> {
           cursorColor: AppColors().grayColor,
           controller: widget.controller,
           focusNode: widget.focus,
-          textCapitalization:
-              ((widget.isSecure) || (widget.isNoNeededCapital != null) || widget.keyBoardType == TextInputType.url)
-                  ? TextCapitalization.none
-                  : TextCapitalization.sentences,
+          textCapitalization: ((widget.isSecure) || (widget.isNoNeededCapital != null) || widget.keyBoardType == TextInputType.url)
+              ? TextCapitalization.none
+              : TextCapitalization.sentences,
           readOnly: widget.isReadOnly ?? false,
           onTap: () {
             if (widget.onTap != null) {
@@ -158,7 +159,7 @@ class _CustomTextField extends State<CustomTextField> {
                   : widget.suffixIcon != null
                       ? Container(
                           padding: widget.suffixIcon != null
-                              ? const EdgeInsets.only(left: 20, right: 20)
+                              ? EdgeInsets.only(left: 20, right: widget.isLogin ? 10 : 20)
                               : const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
                           child: widget.suffixIcon ?? const SizedBox(),
                         )
@@ -183,13 +184,11 @@ class _CustomTextField extends State<CustomTextField> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.roundCorner != null ? widget.roundCorner! : 1),
-                borderSide: BorderSide(
-                    color: widget.focusBorderColor != null ? widget.focusBorderColor! : AppColors().borderColor, width: 1),
+                borderSide: BorderSide(color: widget.focusBorderColor != null ? widget.focusBorderColor! : AppColors().borderColor, width: 1),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.roundCorner != null ? widget.roundCorner! : 4),
-                borderSide:
-                    BorderSide(color: widget.borderColor != null ? widget.borderColor! : AppColors().grayBorderColor, width: 1),
+                borderSide: BorderSide(color: widget.borderColor != null ? widget.borderColor! : AppColors().grayBorderColor, width: 1),
               ),
               disabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(widget.roundCorner != null ? widget.roundCorner! : 100.w),

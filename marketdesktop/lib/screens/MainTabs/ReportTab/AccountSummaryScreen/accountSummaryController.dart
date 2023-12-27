@@ -36,6 +36,7 @@ class AccountSummaryController extends BaseController {
     // TODO: implement onInit
     super.onInit();
     isApiCallRunning = true;
+    selectedType = constantValues!.transactionType!.first;
     accountSummaryList();
   }
 

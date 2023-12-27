@@ -8,13 +8,17 @@ class DbService {
   factory DbService() => _instance;
   DbService._internal();
   static Database? _database;
+  int tabLenght = 5;
 
   Future<Database?> get database async {
     return _database!;
   }
 
-  Future<void> initDatabase() async {
+  Future<void> initDatabase(int length) async {
     try {
+      if (tabLenght < length) {
+        tabLenght = length;
+      }
       await closeDatabase();
       if (userData != null) {
         dbName = userData!.userId!;
@@ -29,7 +33,7 @@ class DbService {
 
   void _createDb(Database db, int newVersion) async {
     try {
-      for (int i = 1; i <= 5; i++) {
+      for (int i = 1; i <= tabLenght; i++) {
         await db.execute('''
         CREATE TABLE watchList$i (
           position INTEGER PRIMARY KEY,

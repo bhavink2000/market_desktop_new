@@ -54,6 +54,8 @@ class AccountSummaryData {
   int? status;
   DateTime? createdAt;
   DateTime? updatedAt;
+  String? comment;
+  String? fromUserName;
 
   AccountSummaryData({
     this.transactionId,
@@ -77,6 +79,8 @@ class AccountSummaryData {
     this.status,
     this.createdAt,
     this.updatedAt,
+    this.comment,
+    this.fromUserName,
   });
 
   factory AccountSummaryData.fromJson(Map<String, dynamic> json) => AccountSummaryData(
@@ -89,6 +93,8 @@ class AccountSummaryData {
         tradeId: json["tradeId"],
         transactionType: json["transactionType"],
         amount: json["amount"],
+        comment: json["comment"],
+        fromUserName: json["fromUserName"],
         quantity: int.tryParse(json["quantity"].toString()) ?? 0,
         price: num.tryParse(json["price"].toString()) ?? 0.00,
         total: num.tryParse(json["total"].toString()) ?? 0.00,
@@ -125,6 +131,8 @@ class AccountSummaryData {
         "status": status,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "fromUserName": fromUserName,
+        "comment": comment,
       };
 }
 

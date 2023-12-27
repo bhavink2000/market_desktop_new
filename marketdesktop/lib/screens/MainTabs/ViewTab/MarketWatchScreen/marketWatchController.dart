@@ -125,8 +125,6 @@ class MarketWatchController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    await dbSerivice.initDatabase();
-    arrCurrentWatchListOrder.addAll(await dbSerivice.readScripts((selectedPortfolio + 1).toString()));
 
     priceController.text = "0.0";
     arrValidaty = constantValues!.productType ?? [];
@@ -1142,6 +1140,8 @@ class MarketWatchController extends BaseController {
       if (response.statusCode == 200) {
         arrTabList = response.data ?? [];
         if (arrTabList.isNotEmpty) {
+          await dbSerivice.initDatabase(arrTabList.length);
+          arrCurrentWatchListOrder.addAll(await dbSerivice.readScripts((selectedPortfolio + 1).toString()));
           selectedTab = arrTabList[0];
           getSymbolListTabWise();
         }
@@ -2812,6 +2812,7 @@ class MarketWatchController extends BaseController {
           child: DropdownButtonHideUnderline(
             child: DropdownButtonFormField<UserData>(
               isExpanded: false,
+
               menuMaxHeight: 130,
               alignment: Alignment.bottomCenter,
               decoration: InputDecoration(
@@ -2822,15 +2823,16 @@ class MarketWatchController extends BaseController {
               hint: Text(
                 userData!.role == UserRollList.user ? userData!.userName! : 'Select User',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
               ),
+
               items: arrUserListOnlyClient
                   .map((UserData item) => DropdownMenuItem<UserData>(
                         value: item,
-                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -2840,7 +2842,7 @@ class MarketWatchController extends BaseController {
                           child: Text(
                             item.userName ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
