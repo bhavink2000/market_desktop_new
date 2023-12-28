@@ -243,7 +243,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     hint: Text(
                       'Select Exchange',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontFamily: CustomFonts.family1Medium,
                         color: AppColors().darkText,
                       ),
@@ -251,7 +251,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     items: arrExchange
                         .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
                               value: item,
-                              child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                              child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                             ))
                         .toList(),
                     selectedItemBuilder: (context) {
@@ -260,7 +260,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                                 value: item,
                                 child: Text(
                                   item.name ?? "",
-                                  style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                                  style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                                 ),
                               ))
                           .toList();
@@ -278,7 +278,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     ),
                     dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                     menuItemStyleData: const MenuItemStyleData(
-                      height: 35,
+                      height: 30,
                     ),
                   ),
                 ),
@@ -373,12 +373,12 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                       dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                       hint: Text(
                         '',
-                        style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                       ),
                       items: controller.arrMainScript
                           .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
                                 value: item,
-                                child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                                child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
                               ))
                           .toList(),
                       selectedItemBuilder: (context) {
@@ -387,7 +387,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                                   value: item.symbolTitle,
                                   child: Text(
                                     item.symbolTitle ?? "",
-                                    style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                                   ),
                                 ))
                             .toList();
@@ -407,7 +407,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         // width: 140,
                       ),
                       menuItemStyleData: const MenuItemStyleData(
-                        height: 35,
+                        height: 30,
                       ),
                     ),
                   ),
@@ -443,65 +443,68 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
               child: Obx(() {
                 return Center(
                   child: DropdownButtonHideUnderline(
-                    child: DropdownButtonFormField<Type>(
-                      isExpanded: false,
-                      menuMaxHeight: 400,
-                      // alignment: Alignment.topCenter,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(left: 15),
-                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
-                        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1.5)),
-                        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1)),
-                      ),
+                    child: ButtonTheme(
+                      alignedDropdown: true,
+                      child: DropdownButtonFormField<Type>(
+                        isExpanded: false,
+                        menuMaxHeight: 400,
+                        // alignment: Alignment.topCenter,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 15),
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
+                          disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1.5)),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1)),
+                        ),
 
-                      hint: Text(
-                        'Select Trade display for',
-                        style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
-                      ),
-                      items: constantValues!.manuallyTradeAddedFor!
-                          .map((Type item) => DropdownMenuItem<Type>(
-                                value: item,
-                                child: Text(
-                                  item.name ?? "",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: CustomFonts.family1Medium,
-                                    color: AppColors().darkText,
-                                  ),
-                                ),
-                              ))
-                          .toList(),
-                      selectedItemBuilder: (context) {
-                        return constantValues!.manuallyTradeAddedFor!
+                        hint: Text(
+                          'Select Trade display for',
+                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
+                        ),
+                        items: constantValues!.manuallyTradeAddedFor!
                             .map((Type item) => DropdownMenuItem<Type>(
                                   value: item,
                                   child: Text(
                                     item.name ?? "",
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontFamily: CustomFonts.family1Medium,
                                       color: AppColors().darkText,
                                     ),
                                   ),
                                 ))
-                            .toList();
-                      },
-                      value: controller.selectedManualType.value.name != null ? controller.selectedManualType.value : null,
-                      onChanged: (Type? value) {
-                        // setState(() {
-                        controller.selectedManualType.value = value!;
+                            .toList(),
+                        selectedItemBuilder: (context) {
+                          return constantValues!.manuallyTradeAddedFor!
+                              .map((Type item) => DropdownMenuItem<Type>(
+                                    value: item,
+                                    child: Text(
+                                      item.name ?? "",
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: CustomFonts.family1Medium,
+                                        color: AppColors().darkText,
+                                      ),
+                                    ),
+                                  ))
+                              .toList();
+                        },
+                        value: controller.selectedManualType.value.name != null ? controller.selectedManualType.value : null,
+                        onChanged: (Type? value) {
+                          // setState(() {
+                          controller.selectedManualType.value = value!;
 
-                        // controller.update();
-                        // });
-                      },
-                      // buttonStyleData: const ButtonStyleData(
-                      //   padding: EdgeInsets.symmetric(horizontal: 0),
-                      //   height: 40,
-                      //   // width: 140,
-                      // ),
-                      // menuItemStyleData: const MenuItemStyleData(
-                      //   height: 40,
-                      // ),
+                          // controller.update();
+                          // });
+                        },
+                        // buttonStyleData: const ButtonStyleData(
+                        //   padding: EdgeInsets.symmetric(horizontal: 0),
+                        //   height: 40,
+                        //   // width: 140,
+                        // ),
+                        // menuItemStyleData: const MenuItemStyleData(
+                        //   height: 40,
+                        // ),
+                      ),
                     ),
                   ),
                 );
@@ -669,7 +672,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
     //         incDecFactor: 1,
     //         isInt: true,
     //         style: TextStyle(
-    //           fontSize: 14,
+    //           fontSize: 12,
     //           fontFamily: CustomFonts.family1Regular,
     //           color: AppColors().darkText,
     //         ),
@@ -758,7 +761,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
               incDecFactor: 1,
               isInt: true,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 fontFamily: CustomFonts.family1Regular,
                 color: AppColors().darkText,
               ),
@@ -848,7 +851,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     Text(
                       shortFullDateTime(controller.fromDate.value!),
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontFamily: CustomFonts.family1Medium,
                         color: AppColors().darkText,
                       ),

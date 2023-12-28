@@ -64,6 +64,7 @@ class ExchangeData {
   List<groupListModelData> arrGroupList = [];
   GlobalKey key = GlobalKey();
   FocusNode focusNode = FocusNode();
+  bool isCallPut = false;
 
   ExchangeData({
     this.exchangeId,
@@ -86,6 +87,7 @@ class ExchangeData {
     this.isSelected = false,
     this.isHighLowTradeSelected,
     this.isExchangeAllowed,
+    this.isCallPut = false,
   });
 
   factory ExchangeData.fromJson(Map<String, dynamic> json) => ExchangeData(
@@ -104,6 +106,7 @@ class ExchangeData {
         autoLotSize: json["autoLotSize"],
         autoLotSizeValue: json["autoLotSizeValue"],
         status: json["status"],
+        isCallPut: json["isCallPut"],
         isTurnOverSelected: false,
         isSymbolSelected: false,
         isSelected: false,
@@ -127,6 +130,7 @@ class ExchangeData {
         "autoLotSize": autoLotSize,
         "autoLotSizeValue": autoLotSizeValue,
         "status": status,
+        "isCallPut": isCallPut,
       };
 }
 

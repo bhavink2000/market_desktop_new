@@ -349,7 +349,8 @@ class CreateUserController extends BaseController {
     // else if (cutoffController.text.trim().isEmpty) {
     //   msg = AppString.emptyCutOff;
     // }
-    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
+    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) ||
+        (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
       msg = AppString.cutOffValid;
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
@@ -468,7 +469,8 @@ class CreateUserController extends BaseController {
               arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
             }
           }
-          if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name && arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty) {
+          if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name &&
+              arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty) {
             arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
           }
         }

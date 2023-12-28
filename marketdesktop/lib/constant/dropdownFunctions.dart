@@ -73,7 +73,7 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -81,7 +81,7 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
               items: arrSortType
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -91,7 +91,7 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
                           child: Text(
                             item,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -109,7 +109,7 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -142,7 +142,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -150,7 +150,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
               items: arrFilterType
                   .map((AddMaster item) => DropdownMenuItem<AddMaster>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -160,7 +160,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -178,7 +178,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -211,7 +211,7 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -219,7 +219,7 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
               items: constantValues!.productTypeForAccount!
                   .map((Type item) => DropdownMenuItem<Type>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -229,7 +229,7 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -247,7 +247,7 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -280,7 +280,7 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -288,7 +288,7 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
               items: arrPLTypeforAccount
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -298,7 +298,7 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
                           child: Text(
                             item,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -316,7 +316,7 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -349,7 +349,7 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -357,7 +357,7 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
               items: arrSortCount
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -367,7 +367,7 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
                           child: Text(
                             item,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -385,7 +385,7 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -493,7 +493,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 250),
               menuItemStyleData: const MenuItemStyleData(
-                height: 28,
+                height: 30,
               ),
             ),
           ),
@@ -526,7 +526,7 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -534,7 +534,7 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
               items: arrPeriodList
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -544,7 +544,7 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
                           child: Text(
                             item,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -562,7 +562,7 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -671,7 +671,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                   // width: 140,
                 ),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
+                  height: 30,
                 ),
               ),
             ),
@@ -742,7 +742,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                 hint: Text(
                   '',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: CustomFonts.family1Medium,
                     color: AppColors().darkText,
                   ),
@@ -750,7 +750,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                 items: arrAllScript
                     .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
                           value: item,
-                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -760,7 +760,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                             child: Text(
                               item.symbolTitle ?? "",
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontFamily: CustomFonts.family1Medium,
                                 color: AppColors().darkText,
                               ),
@@ -783,7 +783,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                   // width: 140,
                 ),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
+                  height: 30,
                 ),
               ),
             ),
@@ -909,7 +909,7 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
               // width: 140,
             ),
             menuItemStyleData: const MenuItemStyleData(
-              height: 40,
+              height: 30,
             ),
           ),
         ),
@@ -943,7 +943,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -951,7 +951,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
               items: arrTradeStatus
                   .map((Type item) => DropdownMenuItem<Type>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -961,7 +961,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -979,7 +979,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -1012,7 +1012,7 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1020,7 +1020,7 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
               items: arrTradeAttribute
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1030,7 +1030,7 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
                           child: Text(
                             item,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -1048,7 +1048,7 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -1081,7 +1081,7 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1089,7 +1089,7 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
               items: arrLogType
                   .map((String item) => DropdownMenuItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1099,7 +1099,7 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
                           child: Text(
                             item,
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -1117,7 +1117,7 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -1185,7 +1185,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1193,7 +1193,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
               items: arrUserTypeList
                   .map((userRoleListData item) => DropdownMenuItem<userRoleListData>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1203,7 +1203,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -1223,7 +1223,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                 height: 40,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -1239,40 +1239,43 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
         decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButtonFormField<BrokerListModelData>(
-              focusNode: FocusNode(),
-              padding: EdgeInsets.zero,
-              key: new GlobalKey(),
-              menuMaxHeight: 250,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(left: 5),
-                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
-                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
-              ),
-              value: selectedBrokerType.value,
-              icon: const Icon(Icons.arrow_drop_down),
-              elevation: 16,
-              style: TextStyle(color: AppColors().darkText),
-              onChanged: (BrokerListModelData? value) {
-                // This is called when the user selects an item.
-                selectedBrokerType.value = value!;
-                onChange!();
-              },
-              selectedItemBuilder: (context) {
-                return arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>((BrokerListModelData item) {
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: DropdownButtonFormField<BrokerListModelData>(
+                focusNode: FocusNode(),
+                padding: EdgeInsets.zero,
+                key: new GlobalKey(),
+                menuMaxHeight: 250,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.only(left: 5),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
+                  enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                ),
+                value: selectedBrokerType.value,
+                icon: const Icon(Icons.arrow_drop_down),
+                elevation: 16,
+                style: TextStyle(color: AppColors().darkText),
+                onChanged: (BrokerListModelData? value) {
+                  // This is called when the user selects an item.
+                  selectedBrokerType.value = value!;
+                  onChange!();
+                },
+                selectedItemBuilder: (context) {
+                  return arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>((BrokerListModelData item) {
+                    return DropdownMenuItem<BrokerListModelData>(
+                      value: item,
+                      child: Text(item.name ?? ""),
+                    );
+                  }).toList();
+                },
+                isExpanded: true,
+                items: arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>((BrokerListModelData item) {
                   return DropdownMenuItem<BrokerListModelData>(
                     value: item,
                     child: Text(item.name ?? ""),
                   );
-                }).toList();
-              },
-              isExpanded: true,
-              items: arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>((BrokerListModelData item) {
-                return DropdownMenuItem<BrokerListModelData>(
-                  value: item,
-                  child: Text(item.name ?? ""),
-                );
-              }).toList(),
+                }).toList(),
+              ),
             ),
             // child: DropdownButton2<BrokerListModelData>(
             //   isExpanded: true,
@@ -1291,7 +1294,7 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
             //   hint: Text(
             //     '',
             //     style: TextStyle(
-            //       fontSize: 14,
+            //       fontSize: 12,
             //       fontFamily: CustomFonts.family1Medium,
             //       color: AppColors().darkText,
             //     ),
@@ -1300,7 +1303,7 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
             //       .map((BrokerListModelData item) => DropdownMenuItem<BrokerListModelData>(
             //             value: item,
             //             child: Text(item.name ?? "",
-            //                 style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+            //                 style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
             //           ))
             //       .toList(),
             //   selectedItemBuilder: (context) {
@@ -1310,7 +1313,7 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
             //               child: Text(
             //                 item.name ?? "",
             //                 style: TextStyle(
-            //                   fontSize: 14,
+            //                   fontSize: 12,
             //                   fontFamily: CustomFonts.family1Regular,
             //                   color: AppColors().darkText,
             //                 ),
@@ -1365,7 +1368,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1373,7 +1376,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
               items: arrStatuslist
                   .map((AddMaster item) => DropdownMenuItem<AddMaster>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1383,7 +1386,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -1404,7 +1407,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -1437,7 +1440,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1445,7 +1448,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
               items: constantValues!.orderTypeFilter!
                   .map((Type item) => DropdownMenuItem<Type>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1455,7 +1458,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -1476,7 +1479,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),

@@ -90,6 +90,8 @@ class UserData {
   num? profitLoss;
   num? brokerageTotal;
   bool? freshLimitSL;
+  num? ourProfitAndLossSharing;
+  num? ourBrkSharing;
 
   UserData({
     this.status,
@@ -151,6 +153,8 @@ class UserData {
     this.profitLoss,
     this.brokerageTotal,
     this.freshLimitSL,
+    this.ourProfitAndLossSharing,
+    this.ourBrkSharing,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) => UserData(
@@ -213,6 +217,8 @@ class UserData {
         profitLoss: json["profitLoss"],
         brokerageTotal: json["brokerageTotal"],
         freshLimitSL: json["freshLimitSL"],
+        ourProfitAndLossSharing: json["ourProfitAndLossSharing"],
+        ourBrkSharing: json["ourBrkSharing"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -275,6 +281,8 @@ class UserData {
         "profitLoss": profitLoss,
         "brokerageTotal": brokerageTotal,
         "freshLimitSL": freshLimitSL,
+        "ourProfitAndLossSharing": ourProfitAndLossSharing,
+        "ourBrkSharing": ourBrkSharing,
       };
 }
 

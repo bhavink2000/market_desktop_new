@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:floating_dialog/floating_dialog.dart';
+import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/service/database/dbService.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -17,6 +18,7 @@ import '../../../../customWidgets/appButton.dart';
 import '../../../../customWidgets/appTextField.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
+import '../../../../modelClass/expiryListModelClass.dart';
 import '../../../../modelClass/getScriptFromSocket.dart';
 import '../../../../modelClass/ltpUpdateModelClass.dart';
 import '../../../../modelClass/myUserListModelClass.dart';
@@ -53,6 +55,8 @@ class MarketWatchController extends BaseController {
   RxList<ScriptData> arrPreScript = RxList<ScriptData>();
   List<SymbolData> arrSymbol = [];
   List<Type> arrOrderType = [];
+  List<expiryData> arrExpiry = [];
+  List<StrikePriceData> arrStrikePrice = [];
   ScrollController sheetController = ScrollController();
   final debouncer = Debouncer(milliseconds: 300);
   final slowDebouncer = Debouncer(milliseconds: 200);
@@ -118,6 +122,9 @@ class MarketWatchController extends BaseController {
   Size screenSize = const Size(0, 0);
   int marketWatchScreenIndex = -1;
   DbService dbSerivice = DbService();
+  Rx<expiryData> selectedExpiry = expiryData().obs;
+  Rx<Type> selectedCallPut = Type().obs;
+  Rx<StrikePriceData> selectedStrikePrice = StrikePriceData().obs;
   List<Map<String, dynamic>> arrCurrentWatchListOrder = [];
   List<List<Map<String, dynamic>>> arrWatchListsOrder = [];
 
@@ -212,6 +219,26 @@ class MarketWatchController extends BaseController {
     }
   }
 
+  getExpiryList() async {
+    var response = await service.expiryListCall(selectedExchangeForF5.value.exchangeId!, selectedSymbolForF5.value!.symbolId!);
+    if (response != null) {
+      if (response.statusCode == 200) {
+        arrExpiry = response.data ?? [];
+        update();
+      }
+    }
+  }
+
+  getStrikePriceList() async {
+    var response = await service.strikePriceListCall(selectedExchangeForF5.value.exchangeId!, selectedSymbolForF5.value!.symbolId!, selectedCallPut.value.id!, shortDateForBackend(selectedExpiry.value.expiryDate!));
+    if (response != null) {
+      if (response.statusCode == 200) {
+        arrStrikePrice = response.data ?? [];
+        update();
+      }
+    }
+  }
+
   getScriptList({bool isFromF5 = false}) async {
     isScriptApiGoing = true;
     if (isFromF5) {
@@ -220,7 +247,10 @@ class MarketWatchController extends BaseController {
     } else {
       arrAllScript.clear();
     }
-
+    arrExpiry.clear();
+    selectedExpiry.value = expiryData();
+    selectedCallPut.value = Type();
+    selectedStrikePrice.value = StrikePriceData();
     update();
     var response = await service.allSymbolListCall(1, "", isFromF5 ? selectedExchangeForF5.value.exchangeId ?? "" : selectedExchange.value.exchangeId ?? "");
     if (isFromF5) {
@@ -228,6 +258,7 @@ class MarketWatchController extends BaseController {
       var temp = arrAllScriptForF5.firstWhereOrNull((element) => element.symbolId == selectedSymbol!.symbolId);
       selectedSymbolForF5.value = temp ?? GlobalSymbolData();
 
+      getExpiryList();
       update();
     } else {
       arrAllScript = response!.data ?? [];
@@ -1184,7 +1215,7 @@ class MarketWatchController extends BaseController {
             arrPreScript.add(ScriptData.fromJson(arrSymbol[i].toJson()));
           }
         }
-
+        storeScripsInDB();
         update();
       } catch (e) {
         print(e);
@@ -1339,6 +1370,7 @@ class MarketWatchController extends BaseController {
 
       selectedScriptForF5.value!.copyObject(newObj);
       selectedScriptForF5.value!.lut = DateTime.now();
+
       arrTemp.add(response.data!.name!);
       var txt = {"symbols": arrTemp};
       socket.connectScript(jsonEncode(txt));
@@ -1449,7 +1481,7 @@ class MarketWatchController extends BaseController {
                                 isFromBuy ? "Buy Order" : "Sell Order",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                                   fontFamily: CustomFonts.family1Medium,
                                 ),
@@ -1637,7 +1669,7 @@ class MarketWatchController extends BaseController {
                                             incDecFactor: 1,
                                             isInt: true,
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 12,
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
@@ -1885,7 +1917,7 @@ class MarketWatchController extends BaseController {
                                 isFromBuy ? "Buy Order" : "Sell Order",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 12,
                                   color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                                   fontFamily: CustomFonts.family1Medium,
                                 ),
@@ -2073,7 +2105,7 @@ class MarketWatchController extends BaseController {
                                             incDecFactor: 1,
                                             isInt: true,
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: 12,
                                               fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
@@ -2282,7 +2314,7 @@ class MarketWatchController extends BaseController {
     return IgnorePointer(
       ignoring: isFromPopUp,
       child: Container(
-        width: 210,
+        width: 130,
         height: 40,
         margin: EdgeInsets.symmetric(horizontal: isFromPopUp ? 0 : 10, vertical: 5),
         decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
@@ -2356,7 +2388,7 @@ class MarketWatchController extends BaseController {
                   // width: 140,
                 ),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
+                  height: 30,
                 ),
               ),
             ),
@@ -2453,7 +2485,7 @@ class MarketWatchController extends BaseController {
                   // width: 140,
                 ),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
+                  height: 30,
                 ),
               ),
             ),
@@ -2465,9 +2497,14 @@ class MarketWatchController extends BaseController {
 
   Widget allScriptListDropDown() {
     return Container(
-        width: 250,
+        width: 220,
         margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+        decoration: BoxDecoration(
+            border: Border.all(
+              color: AppColors().lightOnlyText,
+              width: 1,
+            ),
+            color: AppColors().whiteColor),
         child: Center(
           child: DropdownButtonHideUnderline(
             child: DropdownButton2<GlobalSymbolData>(
@@ -2552,7 +2589,7 @@ class MarketWatchController extends BaseController {
               hint: Text(
                 'Script',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -2584,7 +2621,7 @@ class MarketWatchController extends BaseController {
                               child: Row(
                                 children: [
                                   Center(
-                                    child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().borderColor)),
+                                    child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().borderColor)),
                                   ),
                                   const Spacer(),
                                   item.isApiCallRunning
@@ -2620,7 +2657,7 @@ class MarketWatchController extends BaseController {
                           child: Text(
                             item.symbolTitle ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -2649,7 +2686,7 @@ class MarketWatchController extends BaseController {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
@@ -2667,58 +2704,61 @@ class MarketWatchController extends BaseController {
             decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
             child: Center(
               child: DropdownButtonHideUnderline(
-                child: DropdownButtonFormField<Type>(
-                  isExpanded: true,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.only(left: 15),
-                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
-                  ),
-                  hint: Text(
-                    isFromAdmin ? "Market" : 'Order Type',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: CustomFonts.family1Medium,
-                      color: AppColors().darkText,
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButtonFormField<Type>(
+                    isExpanded: true,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(left: 15),
+                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
+                      enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
                     ),
-                  ),
+                    hint: Text(
+                      isFromAdmin ? "Market" : 'Order Type',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: CustomFonts.family1Medium,
+                        color: AppColors().darkText,
+                      ),
+                    ),
 
-                  items: arrOrderType
-                      .map((Type item) => DropdownMenuItem<Type>(
-                            value: item,
-                            child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
-                          ))
-                      .toList(),
-                  selectedItemBuilder: (context) {
-                    return arrOrderType
+                    items: arrOrderType
                         .map((Type item) => DropdownMenuItem<Type>(
                               value: item,
-                              child: Text(
-                                item.name ?? "",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: CustomFonts.family1Medium,
-                                  color: AppColors().darkText,
-                                ),
-                              ),
+                              child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                             ))
-                        .toList();
-                  },
-                  value: selectedOrderType.value.id == null ? null : selectedOrderType.value,
-                  onChanged: (Type? value) {
-                    selectedOrderType.value = value!;
-                    update();
+                        .toList(),
+                    selectedItemBuilder: (context) {
+                      return arrOrderType
+                          .map((Type item) => DropdownMenuItem<Type>(
+                                value: item,
+                                child: Text(
+                                  item.name ?? "",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Medium,
+                                    color: AppColors().darkText,
+                                  ),
+                                ),
+                              ))
+                          .toList();
+                    },
+                    value: selectedOrderType.value.id == null ? null : selectedOrderType.value,
+                    onChanged: (Type? value) {
+                      selectedOrderType.value = value!;
+                      update();
 
-                    // focusNode.requestFocus();
-                  },
-                  // buttonStyleData: const ButtonStyleData(
-                  //   padding: EdgeInsets.symmetric(horizontal: 0),
-                  //   height: 40,
-                  //   // width: 140,
-                  // ),
-                  // menuItemStyleData: const MenuItemStyleData(
-                  //   height: 40,
-                  // ),
+                      // focusNode.requestFocus();
+                    },
+                    // buttonStyleData: const ButtonStyleData(
+                    //   padding: EdgeInsets.symmetric(horizontal: 0),
+                    //   height: 40,
+                    //   // width: 140,
+                    // ),
+                    // menuItemStyleData: const MenuItemStyleData(
+                    //   height: 40,
+                    // ),
+                  ),
                 ),
               ),
             )),
@@ -2749,48 +2789,51 @@ class MarketWatchController extends BaseController {
                     decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
                     child: Center(
                       child: DropdownButtonHideUnderline(
-                        child: DropdownButtonFormField<Type>(
-                          isExpanded: true,
-                          hint: Text(
-                            'Validity',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: CustomFonts.family1Medium,
-                              color: AppColors().darkText,
+                        child: ButtonTheme(
+                          alignedDropdown: true,
+                          child: DropdownButtonFormField<Type>(
+                            isExpanded: true,
+                            hint: Text(
+                              'Validity',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().darkText,
+                              ),
                             ),
-                          ),
-                          items: arrValidaty
-                              .map((Type item) => DropdownMenuItem<Type>(
-                                    value: item,
-                                    child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
-                                  ))
-                              .toList(),
-                          selectedItemBuilder: (context) {
-                            return arrValidaty
+                            items: arrValidaty
                                 .map((Type item) => DropdownMenuItem<Type>(
                                       value: item,
-                                      child: Text(
-                                        item.name ?? "",
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
+                                      child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                                     ))
-                                .toList();
-                          },
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.only(left: 15),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                            enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
-                          ),
-                          value: selectedValidity.value.id == null ? null : selectedValidity.value,
-                          onChanged: (Type? value) {
-                            selectedValidity.value = value!;
+                                .toList(),
+                            selectedItemBuilder: (context) {
+                              return arrValidaty
+                                  .map((Type item) => DropdownMenuItem<Type>(
+                                        value: item,
+                                        child: Text(
+                                          item.name ?? "",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: CustomFonts.family1Medium,
+                                            color: AppColors().darkText,
+                                          ),
+                                        ),
+                                      ))
+                                  .toList();
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(left: 15),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
+                              enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                            ),
+                            value: selectedValidity.value.id == null ? null : selectedValidity.value,
+                            onChanged: (Type? value) {
+                              selectedValidity.value = value!;
 
-                            // focusNode.requestFocus();
-                          },
+                              // focusNode.requestFocus();
+                            },
+                          ),
                         ),
                       ),
                     )),
@@ -2810,309 +2853,594 @@ class MarketWatchController extends BaseController {
             color: AppColors().whiteColor,
           ),
           child: DropdownButtonHideUnderline(
-            child: DropdownButtonFormField<UserData>(
-              isExpanded: false,
+            child: ButtonTheme(
+              alignedDropdown: true,
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButtonFormField<UserData>(
+                  isExpanded: false,
 
-              menuMaxHeight: 130,
-              alignment: Alignment.bottomCenter,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.only(left: 15),
-                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
-              ),
-              hint: Text(
-                userData!.role == UserRollList.user ? userData!.userName! : 'Select User',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().darkText,
+                  menuMaxHeight: 130,
+                  alignment: Alignment.bottomCenter,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(left: 0),
+                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
+                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                  ),
+                  hint: Text(
+                    userData!.role == UserRollList.user ? userData!.userName! : 'Select User',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: CustomFonts.family1Medium,
+                      color: AppColors().darkText,
+                    ),
+                  ),
+
+                  items: arrUserListOnlyClient
+                      .map((UserData item) => DropdownMenuItem<UserData>(
+                            value: item,
+                            child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                          ))
+                      .toList(),
+                  selectedItemBuilder: (context) {
+                    return arrUserListOnlyClient
+                        .map((UserData item) => DropdownMenuItem<UserData>(
+                              value: item,
+                              child: Text(
+                                item.userName ?? "",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: CustomFonts.family1Medium,
+                                  color: AppColors().darkText,
+                                ),
+                              ),
+                            ))
+                        .toList();
+                  },
+                  value: selectedUser.value.userId == null ? null : selectedUser.value,
+
+                  onChanged: (UserData? value) {
+                    selectedUser.value = value!;
+                  },
+                  // buttonStyleData: ButtonStyleData(
+                  //   padding: EdgeInsets.symmetric(horizontal: 0),
+                  //   height: 40,
+
+                  // ),
+                  // dropdownStyleData: DropdownStyleData(maxHeight: 150),
+                  // menuItemStyleData: const MenuItemStyleData(
+                  //   height: 40,
+                  // ),
                 ),
               ),
-
-              items: arrUserListOnlyClient
-                  .map((UserData item) => DropdownMenuItem<UserData>(
-                        value: item,
-                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
-                      ))
-                  .toList(),
-              selectedItemBuilder: (context) {
-                return arrUserListOnlyClient
-                    .map((UserData item) => DropdownMenuItem<UserData>(
-                          value: item,
-                          child: Text(
-                            item.userName ?? "",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1Medium,
-                              color: AppColors().darkText,
-                            ),
-                          ),
-                        ))
-                    .toList();
-              },
-              value: selectedUser.value.userId == null ? null : selectedUser.value,
-
-              onChanged: (UserData? value) {
-                selectedUser.value = value!;
-              },
-              // buttonStyleData: ButtonStyleData(
-              //   padding: EdgeInsets.symmetric(horizontal: 0),
-              //   height: 40,
-
-              // ),
-              // dropdownStyleData: DropdownStyleData(maxHeight: 150),
-              // menuItemStyleData: const MenuItemStyleData(
-              //   height: 40,
-              // ),
             ),
           ));
     });
   }
 
   Widget allScriptListDropDownForF5() {
-    return Container(
-        width: 250,
-        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-        child: Center(
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<GlobalSymbolData>(
-              isExpanded: true,
-              iconStyleData: IconStyleData(
-                icon: isScriptApiGoing
-                    ? Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        width: 15,
-                        height: 15,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: AppColors().darkText,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("SYMBOL", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+        Container(
+            width: 160,
+            height: 30,
+            margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+            decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2<GlobalSymbolData>(
+                  isExpanded: true,
+                  iconStyleData: IconStyleData(
+                    icon: isScriptApiGoing
+                        ? Container(
+                            margin: const EdgeInsets.only(right: 10),
+                            width: 15,
+                            height: 15,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors().darkText,
+                              ),
+                            ),
+                          )
+                        : Container(
+                            margin: const EdgeInsets.only(right: 5),
+                            child: Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              size: 20,
+                              color: AppColors().fontColor,
+                            ),
+                            // child: Image.asset(
+                            //   AppImages.arrowDown,
+                            //   height: 20,
+                            //   width: 20,
+                            //   color: AppColors().fontColor,
+                            // ),
                           ),
-                        ),
-                      )
-                    : Container(
-                        margin: const EdgeInsets.only(right: 5),
-                        child: Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          size: 25,
-                          color: AppColors().fontColor,
-                        ),
-                        // child: Image.asset(
-                        //   AppImages.arrowDown,
-                        //   height: 20,
-                        //   width: 20,
-                        //   color: AppColors().fontColor,
-                        // ),
-                      ),
-              ),
-              dropdownSearchData: DropdownSearchData(
-                searchController: textEditingController,
-                searchInnerWidgetHeight: 50,
-                searchInnerWidget: Container(
-                  height: 40,
-                  // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
-                  child: CustomTextField(
-                    type: '',
-                    keyBoardType: TextInputType.text,
-                    isEnabled: true,
-                    isOptional: false,
-                    inValidMsg: "",
-                    placeHolderMsg: "Search Script",
-                    emptyFieldMsg: "",
-                    controller: textEditingController,
-                    focus: textEditingFocus,
-                    isSecure: false,
-                    borderColor: AppColors().grayLightLine,
-                    keyboardButtonType: TextInputAction.done,
-                    maxLength: 64,
-                    prefixIcon: Image.asset(
-                      AppImages.searchIcon,
-                      height: 20,
-                      width: 20,
-                    ),
-                    suffixIcon: Container(
-                      child: GestureDetector(
-                        onTap: () {
-                          textEditingController.clear();
-                        },
-                        child: Image.asset(
-                          AppImages.crossIcon,
+                  ),
+                  dropdownSearchData: DropdownSearchData(
+                    searchController: textEditingController,
+                    searchInnerWidgetHeight: 30,
+                    searchInnerWidget: Container(
+                      height: 30,
+                      // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
+                      child: CustomTextField(
+                        type: '',
+                        keyBoardType: TextInputType.text,
+                        isEnabled: true,
+                        isOptional: false,
+                        inValidMsg: "",
+                        placeHolderMsg: "Search Script",
+                        emptyFieldMsg: "",
+                        controller: textEditingController,
+                        focus: textEditingFocus,
+                        isSecure: false,
+                        borderColor: AppColors().grayLightLine,
+                        keyboardButtonType: TextInputAction.done,
+                        maxLength: 64,
+                        prefixIcon: Image.asset(
+                          AppImages.searchIcon,
                           height: 20,
                           width: 20,
                         ),
+                        suffixIcon: Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              textEditingController.clear();
+                            },
+                            child: Image.asset(
+                              AppImages.crossIcon,
+                              height: 20,
+                              width: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    searchMatchFn: (item, searchValue) {
+                      return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                    },
+                  ),
+                  onMenuStateChange: (isOpen) {
+                    if (!isOpen) {
+                      textEditingController.clear();
+                    }
+                  },
+                  dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+                  hint: Container(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Text(
+                      'Script',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: CustomFonts.family1Medium,
+                        color: AppColors().darkText,
                       ),
                     ),
                   ),
-                ),
-                searchMatchFn: (item, searchValue) {
-                  return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
-                },
-              ),
-              onMenuStateChange: (isOpen) {
-                if (!isOpen) {
-                  textEditingController.clear();
-                }
-              },
-              dropdownStyleData: const DropdownStyleData(maxHeight: 250),
-              hint: Text(
-                'Script',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().darkText,
-                ),
-              ),
-              items: arrAllScriptForF5
-                  .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
-                        value: item,
-                        child: StatefulBuilder(builder: (context, menuSetState) {
-                          return Container(
-                            color: Colors.transparent,
-                            child: Row(
-                              children: [
-                                Center(
-                                  child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().borderColor)),
+                  items: arrAllScriptForF5
+                      .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
+                            value: item,
+                            alignment: AlignmentDirectional.centerStart,
+                            child: StatefulBuilder(builder: (context, menuSetState) {
+                              return Container(
+                                color: Colors.transparent,
+                                child: Text(item.symbolTitle ?? "", maxLines: 1, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().blueColor)),
+                              );
+                            }),
+                          ))
+                      .toList(),
+                  selectedItemBuilder: (context) {
+                    return arrAllScriptForF5
+                        .map((GlobalSymbolData item) => DropdownMenuItem<String>(
+                              value: item.symbolTitle,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  item.symbolTitle ?? "",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Medium,
+                                    color: AppColors().darkText,
+                                  ),
                                 ),
-                                // const Spacer(),
-                                // item.isApiCallRunning
-                                //     ? SizedBox(
-                                //         width: 15,
-                                //         height: 15,
-                                //         child: CircularProgressIndicator(
-                                //           strokeWidth: 2,
-                                //           color: AppColors().blueColor,
-                                //         ))
-                                //     : arrSymbol.firstWhereOrNull((element) => element.symbolId == item.symbolId) != null
-                                //         ? Icon(
-                                //             Icons.check_box,
-                                //             color: AppColors().blueColor,
-                                //             size: 18,
-                                //           )
-                                //         : Icon(
-                                //             Icons.check_box_outline_blank,
-                                //             color: AppColors().lightText,
-                                //             size: 18,
-                                //           )
-                              ],
-                            ),
-                          );
-                        }),
-                      ))
-                  .toList(),
-              selectedItemBuilder: (context) {
-                return arrAllScriptForF5
-                    .map((GlobalSymbolData item) => DropdownMenuItem<String>(
-                          value: item.symbolTitle,
-                          child: Text(
-                            item.symbolTitle ?? "",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: CustomFonts.family1Medium,
-                              color: AppColors().darkText,
-                            ),
-                          ),
-                        ))
-                    .toList();
-              },
-              value: selectedSymbolForF5.value?.symbolId == null ? null : selectedSymbolForF5.value!,
-              onChanged: (GlobalSymbolData? value) {
-                selectedSymbolForF5.value = value!;
-                getselectedSymbolDetailFromF5PopUp(value.symbolId!);
-              },
-              buttonStyleData: const ButtonStyleData(
-                padding: EdgeInsets.symmetric(horizontal: 0),
-                height: 40,
-                // width: 140,
+                              ),
+                            ))
+                        .toList();
+                  },
+                  value: selectedSymbolForF5.value?.symbolId == null ? null : selectedSymbolForF5.value!,
+                  onChanged: (GlobalSymbolData? value) {
+                    selectedSymbolForF5.value = value!;
+                    if (selectedExchangeForF5.value.isCallPut) {
+                      arrExpiry.clear();
+                      selectedExpiry.value = expiryData();
+                      selectedCallPut.value = Type();
+                      arrStrikePrice.clear();
+                      selectedStrikePrice.value = StrikePriceData();
+                      getExpiryList();
+                    } else {
+                      getselectedSymbolDetailFromF5PopUp(value.symbolId!);
+                    }
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    height: 30,
+                    width: 160,
+                  ),
+                  menuItemStyleData: const MenuItemStyleData(
+                    height: 30,
+                  ),
+                ),
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 40,
-              ),
-            ),
-          ),
-        ));
+            )),
+      ],
+    );
   }
 
   Widget exchangeTypeDropDownForF5(
     Rx<ExchangeData> value,
   ) {
-    return Container(
-      width: 210,
-      height: 40,
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
-      child: Obx(() {
-        return Center(
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton2<ExchangeData>(
-              isExpanded: true,
-              onMenuStateChange: (isOpen) {},
-              iconStyleData: IconStyleData(
-                icon: Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: Icon(
-                      Icons.keyboard_arrow_down_outlined,
-                      size: 25,
-                      color: AppColors().fontColor,
-                    )),
-              ),
-              hint: Text(
-                "Exchange",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().darkText,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(padding: EdgeInsets.only(left: 10), child: Text("EXCHANGE", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
+        Container(
+          width: 90,
+          height: 30,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+          child: Obx(() {
+            return Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2<ExchangeData>(
+                  isExpanded: true,
+                  onMenuStateChange: (isOpen) {},
+                  iconStyleData: IconStyleData(
+                    icon: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          size: 20,
+                          color: AppColors().fontColor,
+                        )),
+                  ),
+                  hint: Text(
+                    "Exchange",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: CustomFonts.family1Medium,
+                      color: AppColors().darkText,
+                    ),
+                  ),
+                  items: arrExchange
+                      .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                            value: item,
+                            child: Container(
+                              padding: EdgeInsets.only(left: 5),
+                              child: Text(
+                                item.name ?? "",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: CustomFonts.family1Medium,
+                                  color: AppColors().darkText,
+                                ),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  selectedItemBuilder: (context) {
+                    return arrExchange
+                        .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                              value: item,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  item.name ?? "",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Medium,
+                                    color: AppColors().darkText,
+                                  ),
+                                ),
+                              ),
+                            ))
+                        .toList();
+                  },
+                  value: value.value.exchangeId != null ? value.value : null,
+                  onChanged: (ExchangeData? newSelectedValue) {
+                    // setState(() {
+                    value.value = newSelectedValue!;
+                    //focusNode.requestFocus();
+                    update();
+                    getScriptList(isFromF5: true);
+                    // });
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    height: 40,
+                    width: 100,
+                  ),
+                  menuItemStyleData: const MenuItemStyleData(
+                    height: 30,
+                  ),
                 ),
               ),
-              items: arrExchange
-                  .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
-                        value: item,
-                        child: Text(
-                          item.name ?? "",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: CustomFonts.family1Medium,
-                            color: AppColors().darkText,
-                          ),
-                        ),
-                      ))
-                  .toList(),
-              selectedItemBuilder: (context) {
-                return arrExchange
-                    .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
-                          value: item,
-                          child: Text(
-                            item.name ?? "",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1Medium,
-                              color: AppColors().darkText,
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget expiryTypeDropDownForF5() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(padding: EdgeInsets.only(left: 10), child: Text("EXPIRY", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
+        Container(
+          width: 110,
+          height: 30,
+          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+          child: Obx(() {
+            return Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2<expiryData>(
+                  isExpanded: true,
+                  onMenuStateChange: (isOpen) {},
+                  iconStyleData: IconStyleData(
+                    icon: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          size: 20,
+                          color: AppColors().fontColor,
+                        )),
+                  ),
+                  hint: Text(
+                    "",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: CustomFonts.family1Medium,
+                      color: AppColors().darkText,
+                    ),
+                  ),
+                  items: arrExpiry
+                      .map((expiryData item) => DropdownMenuItem<expiryData>(
+                            value: item,
+                            child: Text(
+                              shortDate(item.expiryDate!),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().darkText,
+                              ),
                             ),
-                          ),
-                        ))
-                    .toList();
-              },
-              value: value.value.exchangeId != null ? value.value : null,
-              onChanged: (ExchangeData? newSelectedValue) {
-                // setState(() {
-                value.value = newSelectedValue!;
-                //focusNode.requestFocus();
-                update();
-                getScriptList(isFromF5: true);
-                // });
-              },
-              buttonStyleData: const ButtonStyleData(
-                padding: EdgeInsets.symmetric(horizontal: 0),
-                height: 40,
-                // width: 140,
+                          ))
+                      .toList(),
+                  selectedItemBuilder: (context) {
+                    return arrExpiry
+                        .map((expiryData item) => DropdownMenuItem<expiryData>(
+                              value: item,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  shortDate(item.expiryDate!),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Medium,
+                                    color: AppColors().darkText,
+                                  ),
+                                ),
+                              ),
+                            ))
+                        .toList();
+                  },
+                  value: selectedExpiry.value.name == null ? null : selectedExpiry.value,
+                  onChanged: (expiryData? newSelectedValue) {
+                    // });
+                    selectedExpiry.value = newSelectedValue!;
+                    selectedCallPut.value = Type();
+                    arrStrikePrice.clear();
+                    selectedStrikePrice.value = StrikePriceData();
+                    update();
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    height: 40,
+                    width: 120,
+                  ),
+                  menuItemStyleData: const MenuItemStyleData(
+                    height: 30,
+                  ),
+                ),
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget callPutTypeDropDownForF5() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("CE/PE", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+        Container(
+          width: 80,
+          height: 30,
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+          child: Obx(() {
+            return Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton2<Type>(
+                  isExpanded: true,
+                  onMenuStateChange: (isOpen) {},
+                  iconStyleData: IconStyleData(
+                    icon: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          size: 20,
+                          color: AppColors().fontColor,
+                        )),
+                  ),
+                  hint: Text(
+                    "",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: CustomFonts.family1Medium,
+                      color: AppColors().darkText,
+                    ),
+                  ),
+                  items: constantValues!.instrumentType!
+                      .map((Type item) => DropdownMenuItem<Type>(
+                            value: item,
+                            child: Text(
+                              item.name ?? "",
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().darkText,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  selectedItemBuilder: (context) {
+                    return constantValues!.instrumentType!
+                        .map((Type item) => DropdownMenuItem<Type>(
+                              value: item,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Text(
+                                  item.name ?? "",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Medium,
+                                    color: AppColors().darkText,
+                                  ),
+                                ),
+                              ),
+                            ))
+                        .toList();
+                  },
+                  value: selectedCallPut.value.id == null ? null : selectedCallPut.value,
+                  onChanged: (Type? newSelectedValue) {
+                    // });
+                    selectedCallPut.value = newSelectedValue!;
+                    arrStrikePrice.clear();
+                    selectedStrikePrice.value = StrikePriceData();
+                    update();
+                    getStrikePriceList();
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    height: 40,
+                    width: 120,
+                  ),
+                  menuItemStyleData: const MenuItemStyleData(
+                    height: 30,
+                  ),
+                ),
               ),
-            ),
+            );
+          }),
+        ),
+      ],
+    );
+  }
+
+  Widget strikePriceTypeDropDownForF5() {
+    return Container(
+      padding: EdgeInsets.only(left: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("STRIKE", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Container(
+            width: 80,
+            height: 30,
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+            child: Obx(() {
+              return Center(
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2<StrikePriceData>(
+                    isExpanded: true,
+                    onMenuStateChange: (isOpen) {},
+                    iconStyleData: IconStyleData(
+                      icon: Padding(
+                          padding: const EdgeInsets.only(right: 5),
+                          child: Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            size: 20,
+                            color: AppColors().fontColor,
+                          )),
+                    ),
+                    hint: Text(
+                      "",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: CustomFonts.family1Medium,
+                        color: AppColors().darkText,
+                      ),
+                    ),
+                    items: arrStrikePrice
+                        .map((StrikePriceData item) => DropdownMenuItem<StrikePriceData>(
+                              value: item,
+                              child: Text(
+                                item.strikePrice!.toString(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: CustomFonts.family1Medium,
+                                  color: AppColors().darkText,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    selectedItemBuilder: (context) {
+                      return arrStrikePrice
+                          .map((StrikePriceData item) => DropdownMenuItem<StrikePriceData>(
+                                value: item,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    item.strikePrice!.toString(),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Medium,
+                                      color: AppColors().darkText,
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          .toList();
+                    },
+                    value: selectedStrikePrice.value.symbolId == null ? null : selectedStrikePrice.value,
+                    onChanged: (StrikePriceData? newSelectedValue) {
+                      // });
+                      selectedStrikePrice.value = newSelectedValue!;
+                      getselectedSymbolDetailFromF5PopUp(newSelectedValue.symbolId!);
+                    },
+                    buttonStyleData: const ButtonStyleData(
+                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      height: 40,
+                      width: 120,
+                    ),
+                    menuItemStyleData: const MenuItemStyleData(
+                      height: 30,
+                    ),
+                  ),
+                ),
+              );
+            }),
           ),
-        );
-      }),
+        ],
+      ),
     );
   }
 }

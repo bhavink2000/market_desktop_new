@@ -31,6 +31,9 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
               children: [
                 controller.exchangeTypeDropDownForF5(controller.selectedExchangeForF5),
                 controller.allScriptListDropDownForF5(),
+                if (controller.selectedExchangeForF5.value.isCallPut) controller.expiryTypeDropDownForF5(),
+                if (controller.selectedExchangeForF5.value.isCallPut) controller.callPutTypeDropDownForF5(),
+                if (controller.selectedExchangeForF5.value.isCallPut) controller.strikePriceTypeDropDownForF5(),
               ],
             ),
             Container(
@@ -67,67 +70,31 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                             ],
                           ),
                           Spacer(),
-                          Container(
-                            // width: 23.5.w,
-                            // color: AppColors().redColor,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                SizedBox(
-                                  width: 3.4.w,
-                                ),
-                                Column(
-                                  children: [
-                                    Text("Open", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
-                                    Text(controller.selectedScriptForF5.value!.open.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 2.5.w,
-                                ),
-                                Column(
-                                  children: [
-                                    Text("High", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
-                                    Text(controller.selectedScriptForF5.value!.high.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 2.4.w,
-                                ),
-                                Column(
-                                  children: [
-                                    Text("Low", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
-                                    Text(controller.selectedScriptForF5.value!.low.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 2.4.w,
-                                ),
-                                Column(
-                                  children: [
-                                    Text("Prev. close", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
-                                    Text(controller.selectedScriptForF5.value!.close.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
                           SizedBox(
                             width: 2.w,
                           )
                         ],
                       ),
                     ),
-                    if (controller.selectedScriptForF5.value!.depth != null)
-                      Container(
-                        // margin: EdgeInsets.symmetric(
-                        //   horizontal: 5.w,
-                        // ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                    Container(
+                      // margin: EdgeInsets.symmetric(
+                      //   horizontal: 5.w,
+                      // ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (controller.selectedScriptForF5.value!.depth != null)
                             Container(
-                              width: 12.w,
+                              width: 11.95.w,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2), // changes position of shadow
+                                ),
+                              ]),
                               child: Column(
                                 // crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -140,11 +107,11 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                       ),
                                       Container(
                                         width: 4.w,
-                                        child: Text("Order", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
+                                        child: Text("Order", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
                                       ),
                                       Container(
-                                        width: 4.w,
-                                        child: Text("Qty", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
+                                        width: 2.9.w,
+                                        child: Text("Qty", textAlign: TextAlign.right, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
                                       ),
                                     ],
                                   ),
@@ -168,9 +135,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                     child: Row(
                                       children: [
                                         Text("Total", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().blueColor)),
-                                        SizedBox(
-                                          width: 5.5.w,
-                                        ),
+                                        Spacer(),
                                         Text(controller.getTotal(true).toStringAsFixed(2), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().blueColor)),
                                       ],
                                     ),
@@ -178,11 +143,22 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                 ],
                               ),
                             ),
+                          if (controller.selectedScriptForF5.value!.depth != null)
                             SizedBox(
                               width: 10,
                             ),
+                          if (controller.selectedScriptForF5.value!.depth != null)
                             Container(
-                              width: 12.w,
+                              width: 11.95.w,
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 0,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 2), // changes position of shadow
+                                ),
+                              ]),
                               child: Column(
                                 children: [
                                   Row(
@@ -193,11 +169,11 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                       ),
                                       Container(
                                         width: 4.w,
-                                        child: Text("Order", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
+                                        child: Text("Order", textAlign: TextAlign.center, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
                                       ),
                                       Container(
-                                        width: 4.w,
-                                        child: Text("Qty", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
+                                        width: 2.9.w,
+                                        child: Text("Qty", textAlign: TextAlign.right, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText)),
                                       ),
                                     ],
                                   ),
@@ -222,9 +198,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                     child: Row(
                                       children: [
                                         Text("Total", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor)),
-                                        SizedBox(
-                                          width: 5.5.w,
-                                        ),
+                                        Spacer(),
                                         Text(controller.getTotal(false).toStringAsFixed(2), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor)),
                                       ],
                                     ),
@@ -232,25 +206,63 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                 ],
                               ),
                             ),
-                            Expanded(
-                              // width: 30.w,
-                              child: ListView(
-                                physics: const NeverScrollableScrollPhysics(),
-                                clipBehavior: Clip.hardEdge,
-                                shrinkWrap: true,
-                                controller: controller.sheetController,
-                                children: [
-                                  sheetList("Lot Size", controller.selectedScriptForF5.value!.ls!.toString(), 0),
-                                  sheetList("LTP", controller.selectedScriptForF5.value!.ltp!.toString(), 1),
-                                  sheetList("Volume", controller.selectedScriptForF5.value!.volume!.toString(), 2),
-                                  sheetList("Avg. Price", "Key Not found", 3),
-                                  // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                          if (controller.selectedScriptForF5.value!.depth == null) Spacer(),
+                          if (controller.selectedScriptForF5.value!.depth == null) Spacer(),
+                          Expanded(
+                            // width: 30.w,
+                            child: ListView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              clipBehavior: Clip.hardEdge,
+                              shrinkWrap: true,
+                              controller: controller.sheetController,
+                              children: [
+                                sheetList("Lot Size", controller.selectedScriptForF5.value!.ls!.toString(), 0),
+                                sheetList("LTP", controller.selectedScriptForF5.value!.ltp!.toString(), 1),
+                                sheetList("Volume", controller.selectedScriptForF5.value!.volume!.toString(), 2),
+                                sheetList("Avg. Price", "--", 3),
+                                // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            // width: 30.w,
+                            child: ListView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              clipBehavior: Clip.hardEdge,
+                              shrinkWrap: true,
+                              controller: controller.sheetController,
+                              children: [
+                                sheetList("Open", controller.selectedScriptForF5.value!.open.toString().toString(), 0, width: 50),
+                                sheetList("High", controller.selectedScriptForF5.value!.high!.toString(), 1, width: 50),
+                                sheetList("Low", controller.selectedScriptForF5.value!.low!.toString(), 2, width: 50),
+                                sheetList("Close", controller.selectedScriptForF5.value!.close.toString(), 3, width: 50),
+                                // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
+                              ],
+                            ),
+                          )
+                        ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          // width: 30,
+                          child: Image.asset(
+                            controller.selectedScriptForF5.value!.ch! < 0 ? AppImages.marketUpIcon : AppImages.marketDownIcon,
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                        Text("INDICATOR", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 )),
           ],
@@ -259,20 +271,22 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
     });
   }
 
-  Widget sheetList(String name, String value, int index) {
-    Color backgroundColor = index % 2 == 0 ? AppColors().headerBgColor : AppColors().contentBg;
+  Widget sheetList(String name, String value, int index, {double width = 80}) {
     return Container(
-      width: 100.w,
+      // width: 100.w,
       height: 35,
-      color: backgroundColor,
+      // color: backgroundColor,
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 2.w,
+          horizontal: 1.w,
         ),
         child: Row(
           children: [
-            Text(name.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
-            const Spacer(),
+            SizedBox(width: width, child: Text(name.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText))),
+            Text(":", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+            SizedBox(
+              width: 20,
+            ),
             Text(value.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().blueColor)),
           ],
         ),
@@ -287,8 +301,8 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(width: 4.w, child: Text(bid.toString(), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: fontColors))),
-          Container(width: 4.w, padding: EdgeInsets.only(left: 13), child: Text(order.toString(), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: fontColors))),
-          Container(width: 4.w, child: Text(Qty.toString(), style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: fontColors))),
+          Container(width: 4.w, padding: EdgeInsets.only(left: 13), child: Text(order.toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: fontColors))),
+          Container(width: 2.9.w, child: Text(Qty.toString(), textAlign: TextAlign.right, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: fontColors))),
         ],
       ),
     );
@@ -296,12 +310,12 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
 
   Widget headerViewContentForScriptDetail(BuildContext context) {
     return Container(
-        height: 40,
+        height: 45,
+        margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
+          gradient: AppColors().customGradient,
+          color: AppColors().redColor,
+        ),
         child: Row(
           children: [
             SizedBox(
@@ -319,7 +333,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                 style: TextStyle(
                   fontSize: 16,
                   fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
+                  color: AppColors().darkText,
                 )),
             Spacer(),
             GestureDetector(
@@ -331,9 +345,14 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                 Get.back();
               },
               child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  gradient: AppColors().customReverseGradient,
+                  color: AppColors().redColor,
+                ),
                 width: 3.h,
                 height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
+                padding: EdgeInsets.all(0.85.h),
                 child: Image.asset(
                   AppImages.closeIcon,
                   color: AppColors().redColor,

@@ -108,7 +108,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               hint: Text(
                 'Select Exchange',
                 maxLines: 1,
-                style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
+                style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
               ),
               items: controller.arrExchangeList
                   .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
@@ -116,7 +116,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                         child: Text(
                           item.name ?? "",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                             fontFamily: CustomFonts.family1Medium,
                             color: AppColors().darkText,
                           ),
@@ -130,7 +130,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -151,7 +151,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 54,
+                height: 30,
               ),
             ),
           ),
@@ -375,7 +375,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
             child: Text(
               '  No Selected Date',
               maxLines: 1,
-              style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
+              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
             ),
           ),
       ],
@@ -393,7 +393,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               Text(
                 DateFormat('EEE').format(controller.currentDate2).toUpperCase(),
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().blueColor,
                 ),
@@ -425,7 +425,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                 child: Text(
                   controller.timingData!.data!.startTime! + " - " + controller.timingData!.data!.endTime!,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: CustomFonts.family1Medium,
                     color: AppColors().whiteColor,
                   ),

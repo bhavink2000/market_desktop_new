@@ -47,6 +47,9 @@ class UserListController extends BaseController {
   num getPlPer({num? percentage, num? pl}) {
     var temp1 = pl! * percentage!;
     var temp2 = temp1 / 100;
+    if (pl != 0) {
+      temp2 = temp2 * -1;
+    }
 
     return temp2;
   }

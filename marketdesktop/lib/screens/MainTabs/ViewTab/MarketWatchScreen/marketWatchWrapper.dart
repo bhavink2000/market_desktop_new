@@ -30,8 +30,11 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
               children: [
                 // headerViewContent(title: "Market Watch", isFromMarket: true),
                 Container(
+                  decoration: BoxDecoration(
+                    gradient: AppColors().customGradient,
+                    color: AppColors().whiteColor,
+                  ),
                   height: 45,
-                  color: AppColors().whiteColor,
                   child: Row(
                     children: [
                       controller.exchangeTypeDropDown(controller.selectedExchange),
@@ -284,9 +287,10 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                   if (oldIndex < newIndex) {
                                     newIndex -= 1;
                                   }
-                                  if (controller.selectedScriptIndex == oldIndex) {
-                                    controller.selectedScriptIndex = newIndex;
-                                    controller.selectedScript.value = controller.arrScript[controller.selectedScriptIndex];
+                                  if (controller.selectedScriptIndex != -1) {
+                                    controller.selectedScriptIndex = -1;
+                                    controller.selectedScript.value = ScriptData();
+                                    // controller.selectedScript.value = controller.arrScript[controller.selectedScriptIndex];
                                     controller.update();
                                   }
                                   final ScriptData item = controller.arrScript.removeAt(oldIndex);
@@ -296,7 +300,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                   final ScriptData preItem = controller.arrPreScript.removeAt(oldIndex);
 
                                   controller.arrPreScript.insert(newIndex, preItem);
-
+                                  controller.update();
                                   controller.storeScripsInDB();
                                 },
                               );
@@ -973,7 +977,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
 
   Widget searchBox() {
     return Container(
-      width: 270,
+      width: 200,
       // height: 4.h,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
@@ -1035,7 +1039,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                   return InkWell(
                     onTap: () => onSelected(controller.arrSearchedScript.elementAt(index)),
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Text(
                         option,
                         style: TextStyle(

@@ -66,41 +66,44 @@ class ConstantData {
   List<Type>? productTypeForAccount;
   List<RoleDatum>? roleData;
   SettingData? settingData;
+  List<Type>? instrumentType;
 
-  ConstantData(
-      {this.tradeAttribute,
-      this.allowTrade,
-      this.symbolStatus,
-      this.tradeTimingBy,
-      this.orderType,
-      this.tradeType,
-      this.productType,
-      this.highLowBetweenTradeLimit,
-      this.oddLotTrade,
-      this.autoLotTrade,
-      this.exchangeStatus,
-      this.brockerageType,
-      this.autoTickSize,
-      this.weekDays,
-      this.cmpOrder,
-      this.manualOrder,
-      this.addMaster,
-      this.modifyOrder,
-      this.autoSquareOff,
-      this.lotWise,
-      this.allPositionClose,
-      this.intraday,
-      this.leverageList,
-      this.status,
-      this.userFilterType,
-      this.serverName,
-      this.transactionType,
-      this.roleData,
-      this.settingData,
-      this.orderTypeFilter,
-      this.manuallyTradeAddedFor,
-      this.productTypeForAccount,
-      this.tradeStatusFilter});
+  ConstantData({
+    this.tradeAttribute,
+    this.allowTrade,
+    this.symbolStatus,
+    this.tradeTimingBy,
+    this.orderType,
+    this.tradeType,
+    this.productType,
+    this.highLowBetweenTradeLimit,
+    this.oddLotTrade,
+    this.autoLotTrade,
+    this.exchangeStatus,
+    this.brockerageType,
+    this.autoTickSize,
+    this.weekDays,
+    this.cmpOrder,
+    this.manualOrder,
+    this.addMaster,
+    this.modifyOrder,
+    this.autoSquareOff,
+    this.lotWise,
+    this.allPositionClose,
+    this.intraday,
+    this.leverageList,
+    this.status,
+    this.userFilterType,
+    this.serverName,
+    this.transactionType,
+    this.roleData,
+    this.settingData,
+    this.orderTypeFilter,
+    this.manuallyTradeAddedFor,
+    this.productTypeForAccount,
+    this.tradeStatusFilter,
+    this.instrumentType,
+  });
 
   factory ConstantData.fromJson(Map<String, dynamic> json) => ConstantData(
         tradeAttribute: json["tradeAttribute"] == null ? [] : List<String>.from(json["tradeAttribute"]!.map((x) => x)),
@@ -136,6 +139,7 @@ class ConstantData {
         tradeStatusFilter: json["tradeStatusFilter"] == null ? [] : List<Type>.from(json["tradeStatusFilter"]!.map((x) => Type.fromJson(x))),
         manuallyTradeAddedFor: json["manuallyTradeAddedFor"] == null ? [] : List<Type>.from(json["manuallyTradeAddedFor"]!.map((x) => Type.fromJson(x))),
         productTypeForAccount: json["productTypeForAccount"] == null ? [] : List<Type>.from(json["productTypeForAccount"]!.map((x) => Type.fromJson(x))),
+        instrumentType: json["instrumentType"] == null ? [] : List<Type>.from(json["instrumentType"]!.map((x) => Type.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -171,6 +175,7 @@ class ConstantData {
         "tradeStatusFilter": tradeStatusFilter == null ? [] : List<dynamic>.from(tradeStatusFilter!.map((x) => x.toJson())),
         "manuallyTradeAddedFor": manuallyTradeAddedFor == null ? [] : List<dynamic>.from(manuallyTradeAddedFor!.map((x) => x.toJson())),
         "productTypeForAccount": productTypeForAccount == null ? [] : List<dynamic>.from(productTypeForAccount!.map((x) => x.toJson())),
+        "instrumentType": instrumentType == null ? [] : List<dynamic>.from(instrumentType!.map((x) => x.toJson())),
       };
 }
 

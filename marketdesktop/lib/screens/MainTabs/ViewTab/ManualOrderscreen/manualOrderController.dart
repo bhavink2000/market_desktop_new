@@ -263,7 +263,7 @@ class manualOrderController extends BaseController {
                 hint: Text(
                   'Select User',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: CustomFonts.family1Medium,
                     color: AppColors().darkText,
                   ),
@@ -271,7 +271,7 @@ class manualOrderController extends BaseController {
                 items: arrUserListOnlyClient
                     .map((UserData item) => DropdownMenuItem<UserData>(
                           value: item,
-                          child: Text(item.userName ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                          child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -280,7 +280,7 @@ class manualOrderController extends BaseController {
                             value: item,
                             child: Text(
                               item.userName ?? "",
-                              style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
@@ -296,7 +296,7 @@ class manualOrderController extends BaseController {
                 ),
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 35,
+                  height: 30,
                 ),
               ),
             ),

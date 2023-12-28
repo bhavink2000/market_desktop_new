@@ -33,5 +33,18 @@ class AppColors {
   var contentBg = currentDarkModeOn ? const Color.fromARGB(255, 31, 33, 33) : const Color.fromRGBO(250, 250, 250, 1);
   var slideGrayBG = const Color.fromRGBO(224, 224, 224, 1);
   var iconsColor = const Color.fromRGBO(57, 57, 57, 1);
+  var gradientStart = const Color.fromRGBO(162, 196, 254, 1);
+  var gradientEnd = const Color.fromRGBO(232, 240, 255, 1);
   //235, 236, 237, 1
+
+  var customGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [const Color.fromRGBO(162, 196, 254, 1), const Color.fromRGBO(232, 240, 255, 1)],
+  );
+  var customReverseGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [const Color.fromRGBO(232, 240, 255, 1), const Color.fromRGBO(162, 196, 254, 1)],
+  );
 }

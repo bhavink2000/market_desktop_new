@@ -55,7 +55,7 @@ class LogsHistoryNewController extends BaseController {
                 hint: Text(
                   '',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: CustomFonts.family1Medium,
                     color: AppColors().darkText,
                   ),
@@ -63,7 +63,7 @@ class LogsHistoryNewController extends BaseController {
                 items: arrLogType
                     .map((String item) => DropdownMenuItem<String>(
                           value: item,
-                          child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                          child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -73,7 +73,7 @@ class LogsHistoryNewController extends BaseController {
                             child: Text(
                               item,
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontFamily: CustomFonts.family1Medium,
                                 color: AppColors().darkText,
                               ),
@@ -92,7 +92,7 @@ class LogsHistoryNewController extends BaseController {
                   // width: 140,
                 ),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
+                  height: 30,
                 ),
               ),
             ),
@@ -124,7 +124,7 @@ class LogsHistoryNewController extends BaseController {
                 hint: Text(
                   '',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                     fontFamily: CustomFonts.family1Medium,
                     color: AppColors().darkText,
                   ),
@@ -132,7 +132,7 @@ class LogsHistoryNewController extends BaseController {
                 items: arrLogFor
                     .map((String item) => DropdownMenuItem<String>(
                           value: item,
-                          child: Text(item, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                          child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -142,7 +142,7 @@ class LogsHistoryNewController extends BaseController {
                             child: Text(
                               item,
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontFamily: CustomFonts.family1Medium,
                                 color: AppColors().darkText,
                               ),
@@ -160,7 +160,7 @@ class LogsHistoryNewController extends BaseController {
                   // width: 140,
                 ),
                 menuItemStyleData: const MenuItemStyleData(
-                  height: 40,
+                  height: 30,
                 ),
               ),
             ),

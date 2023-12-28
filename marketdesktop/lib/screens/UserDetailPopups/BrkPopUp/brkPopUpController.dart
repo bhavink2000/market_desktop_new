@@ -258,7 +258,7 @@ class BrkPopUpController extends BaseController {
                 // width: 140,
               ),
               menuItemStyleData: const MenuItemStyleData(
-                height: 40,
+                height: 30,
               ),
             ),
           ),
