@@ -55,7 +55,19 @@ Widget titleBox(String title, {bool isBig = false, bool isSmall = false, bool is
 }
 
 Widget valueBox(String title, double width, Color? bgColor, Color? textColor, int index,
-    {bool isBig = false, isUnderlined = false, bool isLarge = false, bool isSmall = false, bool isForDate = false, bool isExtraLarge = false, Function? onClickValue, Function? onClickImage, bool isImage = false, RxBool? switchValue, bool isSwitch = false, String? strImage = ""}) {
+    {bool isBig = false,
+    isUnderlined = false,
+    bool isLarge = false,
+    bool isSmall = false,
+    bool isForDate = false,
+    bool isExtraLarge = false,
+    Function? onClickValue,
+    Function? onClickImage,
+    Function? onSwitchChanged,
+    bool isImage = false,
+    RxBool? switchValue,
+    bool isSwitch = false,
+    String? strImage = ""}) {
   return isImage == false && isSwitch == false
       ? IgnorePointer(
           ignoring: onClickValue == null,
@@ -137,6 +149,9 @@ Widget valueBox(String title, double width, Color? bgColor, Color? textColor, in
                         activeColor: AppColors().blueColor,
                         onChanged: (bool value) async {
                           switchValue.value = value;
+                          if (onSwitchChanged != null) {
+                            onSwitchChanged(value);
+                          }
                         },
                       ),
                     ),

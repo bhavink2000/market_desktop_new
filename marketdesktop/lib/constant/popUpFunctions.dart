@@ -297,11 +297,14 @@ showChangePasswordPopUp({String selectedUserId = ""}) {
             //   vertical: 32.h,
             // ),
             enableDragAnimation: false,
-            child: Container(
-              width: 420,
-              height: 270,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-              child: ChangePasswordScreen(),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: 420,
+                height: 280,
+                color: Colors.transparent,
+                child: ChangePasswordScreen(),
+              ),
             ),
           ));
 }
@@ -433,13 +436,12 @@ showScriptDetailPopUp() {
             // ),
             enableDragAnimation: false,
             child: StatefulBuilder(builder: (context, setState) {
-              return Container(
-                // width: 30.w,
-                // height: 28.h,
-                width: 50.w,
-
-                decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-                child: ScriptDetailPopUpScreen(),
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  width: 50.w,
+                  child: ScriptDetailPopUpScreen(),
+                ),
               );
             }),
           ));
@@ -462,13 +464,14 @@ showAboutUsPopup() {
             //   vertical: 32.h,
             // ),
             enableDragAnimation: false,
-            child: Container(
-              // width: 30.w,
-              // height: 28.h,
-              width: 950,
-              height: 340,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-              child: AboutUsPopUpScreen(),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: 950,
+                height: 340,
+                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: Colors.transparent, width: 1)),
+                child: AboutUsPopUpScreen(),
+              ),
             ),
           ));
 }
@@ -554,15 +557,13 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
           ));
 }
 
-Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick}) {
+Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick, Function? closeClick}) {
   return Container(
       width: 100.w,
       height: 40,
       decoration: BoxDecoration(
-          color: AppColors().whiteColor,
-          border: Border(
-            bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-          )),
+        gradient: AppColors().customGradient,
+      ),
       child: Row(
         children: [
           const SizedBox(
@@ -580,7 +581,7 @@ Widget headerViewContent({String title = "", bool isFromMarket = false, bool isF
               style: TextStyle(
                 fontSize: 16,
                 fontFamily: CustomFonts.family1Medium,
-                color: AppColors().blueColor,
+                color: AppColors().darkText,
               )),
           const Spacer(),
           if (isFilterAvailable)
@@ -645,14 +646,23 @@ Widget headerViewContent({String title = "", bool isFromMarket = false, bool isF
           if (isFromMarket == false)
             GestureDetector(
               onTap: () {
-                isCommonScreenPopUpOpen = false;
+                if (closeClick != null) {
+                  closeClick();
+                } else {
+                  isCommonScreenPopUpOpen = false;
 
-                Get.find<MainContainerController>().onKeyHite();
+                  Get.find<MainContainerController>().onKeyHite();
+                }
               },
               child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  gradient: AppColors().customReverseGradient,
+                  color: AppColors().redColor,
+                ),
                 width: 3.h,
                 height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
+                padding: EdgeInsets.all(0.85.h),
                 child: Image.asset(
                   AppImages.closeIcon,
                   color: AppColors().redColor,

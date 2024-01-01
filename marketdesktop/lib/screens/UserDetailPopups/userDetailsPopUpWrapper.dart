@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marketdesktop/constant/index.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -20,7 +21,18 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
         backgroundColor: AppColors().bgColor,
         body: Column(
           children: [
-            headerViewContent(isFilterAvailable: controller.isShowFilter()),
+            // headerViewContent(isFilterAvailable: controller.isShowFilter()),
+            headerViewContent(
+                title: "User Details [${controller.userName}]",
+                isFilterAvailable: controller.isShowFilter(),
+                isFromMarket: false,
+                filterClick: () {
+                  controller.giveClickEvent();
+                },
+                closeClick: () {
+                  Get.back();
+                  controller.deleteAllController();
+                }),
             menuListContent(context),
             Expanded(
                 child: IndexedStack(
@@ -55,113 +67,113 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
         ));
   }
 
-  Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = true, Function? filterClick, Function? pdfClick, Function? excelClick}) {
-    return Container(
-        width: 100.w,
-        height: 40,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text("User Details [${controller.userName}]",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            const Spacer(),
-            if (isFilterAvailable)
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (pdfClick != null) {
-                        pdfClick();
-                      }
-                    },
-                    child: Image.asset(
-                      AppImages.pdfIcon,
-                      width: 30,
-                      height: 30,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (excelClick != null) {
-                        excelClick();
-                      }
-                    },
-                    child: Image.asset(
-                      AppImages.excelIcon,
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      controller.giveClickEvent();
-                    },
-                    child: RotatedBox(
-                      quarterTurns: 1,
-                      child: Icon(
-                        Icons.tune,
-                        size: 25,
-                        color: AppColors().blueColor,
-                      ),
-                    ),
-                    // child: Text("Filter",
-                    //     style: TextStyle(
-                    //       fontSize: 14,
-                    //       fontFamily: CustomFonts.family1Medium,
-                    //       color: AppColors().fontColor,
-                    //     )),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                ],
-              ),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                controller.deleteAllController();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
-        ));
-  }
+  // Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = true, Function? filterClick, Function? pdfClick, Function? excelClick}) {
+  //   return Container(
+  //       width: 100.w,
+  //       height: 40,
+  //       decoration: BoxDecoration(
+  //           color: AppColors().whiteColor,
+  //           border: Border(
+  //             bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
+  //           )),
+  //       child: Row(
+  //         children: [
+  //           const SizedBox(
+  //             width: 10,
+  //           ),
+  //           Image.asset(
+  //             AppImages.appLogo,
+  //             width: 3.h,
+  //             height: 3.h,
+  //           ),
+  //           const SizedBox(
+  //             width: 10,
+  //           ),
+  //           Text("User Details [${controller.userName}]",
+  //               style: TextStyle(
+  //                 fontSize: 16,
+  //                 fontFamily: CustomFonts.family1Medium,
+  //                 color: AppColors().blueColor,
+  //               )),
+  //           const Spacer(),
+  //           if (isFilterAvailable)
+  //             Row(
+  //               children: [
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     if (pdfClick != null) {
+  //                       pdfClick();
+  //                     }
+  //                   },
+  //                   child: Image.asset(
+  //                     AppImages.pdfIcon,
+  //                     width: 30,
+  //                     height: 30,
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   width: 20,
+  //                 ),
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     if (excelClick != null) {
+  //                       excelClick();
+  //                     }
+  //                   },
+  //                   child: Image.asset(
+  //                     AppImages.excelIcon,
+  //                     width: 25,
+  //                     height: 25,
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   width: 20,
+  //                 ),
+  //                 GestureDetector(
+  //                   onTap: () {
+  //                     controller.giveClickEvent();
+  //                   },
+  //                   child: RotatedBox(
+  //                     quarterTurns: 1,
+  //                     child: Icon(
+  //                       Icons.tune,
+  //                       size: 25,
+  //                       color: AppColors().blueColor,
+  //                     ),
+  //                   ),
+  //                   // child: Text("Filter",
+  //                   //     style: TextStyle(
+  //                   //       fontSize: 14,
+  //                   //       fontFamily: CustomFonts.family1Medium,
+  //                   //       color: AppColors().fontColor,
+  //                   //     )),
+  //                 ),
+  //                 SizedBox(
+  //                   width: 30,
+  //                 ),
+  //               ],
+  //             ),
+  //           GestureDetector(
+  //             onTap: () {
+  //               Get.back();
+  //               controller.deleteAllController();
+  //             },
+  //             child: Container(
+  //               width: 3.h,
+  //               height: 3.h,
+  //               padding: EdgeInsets.all(0.5.h),
+  //               child: Image.asset(
+  //                 AppImages.closeIcon,
+  //                 color: AppColors().redColor,
+  //               ),
+  //             ),
+  //           ),
+  //           const SizedBox(
+  //             width: 10,
+  //           ),
+  //         ],
+  //       ));
+  // }
 
   Widget menuListContent(BuildContext context) {
     return Container(

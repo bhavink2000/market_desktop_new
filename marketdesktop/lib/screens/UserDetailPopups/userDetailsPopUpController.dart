@@ -98,7 +98,7 @@ class UserDetailsPopUpController extends BaseController {
       if (userResponse.statusCode == 200) {
         userRoll = userResponse.data!.role!;
         selectedUserData = userResponse.data;
-        if (userResponse.data!.role == UserRollList.master || userResponse.data!.role == UserRollList.admin) {
+        if (userResponse.data!.role == UserRollList.master || userResponse.data!.role == UserRollList.admin || userResponse.data!.role == UserRollList.superAdmin) {
           arrMasterMenuList = [
             "Position",
             "Trades",

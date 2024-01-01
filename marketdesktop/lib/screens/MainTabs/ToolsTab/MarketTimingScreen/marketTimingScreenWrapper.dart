@@ -37,7 +37,14 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                 Expanded(
                     child: Column(
                   children: [
-                    headerViewContent(context),
+                    headerViewContent(
+                        title: "Market Timing",
+                        isFilterAvailable: false,
+                        isFromMarket: false,
+                        closeClick: () {
+                          Get.back();
+                          Get.delete<MarketTimingController>();
+                        }),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -189,57 +196,6 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
         ),
       ),
     );
-  }
-
-  Widget headerViewContent(BuildContext context) {
-    return Container(
-        width: 100.w,
-        height: 40,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text("Market Timings",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                Get.delete<MarketTimingController>();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
-        ));
   }
 
   Widget customCalenderHeader() {

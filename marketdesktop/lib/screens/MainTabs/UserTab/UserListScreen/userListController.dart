@@ -54,6 +54,10 @@ class UserListController extends BaseController {
     return temp2;
   }
 
+  updateUserStatus(Map<String, Object?>? payload) async {
+    await service.userChangeStatusCall(payload: payload);
+  }
+
   getUserList({bool isFromClear = false, bool isFromButtons = false}) async {
     if (isPagingApiCall) {
       return;

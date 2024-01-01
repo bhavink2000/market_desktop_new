@@ -45,6 +45,7 @@ TextEditingController userEditingController = TextEditingController();
 FocusNode userEditingFocus = FocusNode();
 bool isSuperAdminPopUpOpen = false;
 bool isCommonScreenPopUpOpen = false;
+
 String currentOpenedScreen = ScreenViewNames.marketWatch;
 final List<Map<String, dynamic>> _roles = arrLeverageList.map((e) => e.toJson()).toList();
 

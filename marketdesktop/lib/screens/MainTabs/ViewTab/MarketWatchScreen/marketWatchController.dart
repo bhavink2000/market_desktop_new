@@ -2314,7 +2314,7 @@ class MarketWatchController extends BaseController {
     return IgnorePointer(
       ignoring: isFromPopUp,
       child: Container(
-        width: 130,
+        width: isFromPopUp ? 210 : 130,
         height: 40,
         margin: EdgeInsets.symmetric(horizontal: isFromPopUp ? 0 : 10, vertical: 5),
         decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),

@@ -26,7 +26,14 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
         },
         child: Column(
           children: [
-            headerViewContent(context),
+            headerViewContent(
+                title: "Open Position",
+                isFilterAvailable: false,
+                isFromMarket: false,
+                closeClick: () {
+                  Get.back();
+                  Get.delete<OpenPositionPopUpController>();
+                }),
             Expanded(
               child: Row(
                 children: [
@@ -42,57 +49,6 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                   ),
                 ],
               ),
-            ),
-          ],
-        ));
-  }
-
-  Widget headerViewContent(BuildContext context) {
-    return Container(
-        width: 100.w,
-        height: 35,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text("Open Position",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                Get.delete<OpenPositionPopUpController>();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
             ),
           ],
         ));

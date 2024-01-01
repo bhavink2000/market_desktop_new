@@ -26,7 +26,14 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
           onTap: () {},
           child: Column(
             children: [
-              headerViewContent(context),
+              headerViewContent(
+                  title: "User Wise Profit & Loss Summary",
+                  isFilterAvailable: false,
+                  isFromMarket: false,
+                  closeClick: () {
+                    Get.back();
+                    Get.delete<UserWisePLSummaryPopUpController>();
+                  }),
               Expanded(
                 child: Row(
                   children: [
@@ -45,57 +52,6 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
               ),
             ],
           ),
-        ));
-  }
-
-  Widget headerViewContent(BuildContext context) {
-    return Container(
-        width: 100.w,
-        height: 4.h,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text("User Wise Profit & Loss Summary",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                Get.delete<UserWisePLSummaryPopUpController>();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
         ));
   }
 
@@ -296,13 +252,10 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
+          valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
             showUserDetailsPopUp(userId: plObj.userId!, userName: plObj.userName!);
           }),
-          valueBox(
-              plObj.userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              isBig: true, isUnderlined: true, onClickValue: () {
+          valueBox(plObj.userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true, isUnderlined: true, onClickValue: () {
             showUserDetailsPopUp(userId: plObj.userId!, userName: plObj.userName!);
           }),
           valueBox(
@@ -316,9 +269,7 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
                       : AppColors().darkText,
               index,
               isBig: true),
-          valueBox(plObj.childUserBrokerageTotal!.toStringAsFixed(2), 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              isBig: true),
+          valueBox(plObj.childUserBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           valueBox(
               plObj.totalProfitLossValue.toStringAsFixed(2),
               45,
@@ -341,18 +292,8 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
                       : AppColors().darkText,
               index,
               isBig: true),
-          valueBox(
-              plObj.role == UserRollList.master
-                  ? plObj.profitAndLossSharing.toString()
-                  : plObj.profitAndLossSharingDownLine.toString(),
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
-              isBig: true),
-          valueBox(plObj.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText, index,
-              isBig: true),
+          valueBox(plObj.role == UserRollList.master ? plObj.profitAndLossSharing.toString() : plObj.profitAndLossSharingDownLine.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+          valueBox(plObj.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           valueBox(
               plObj.netPL.toStringAsFixed(2),
               45,

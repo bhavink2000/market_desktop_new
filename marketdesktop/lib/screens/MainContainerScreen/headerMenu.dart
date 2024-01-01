@@ -66,8 +66,7 @@ import '../MainTabs/ViewTab/ProfitAndLossScreen/profitAndLossController.dart';
 import '../MainTabs/ViewTab/ProfitAndLossScreen/profitAndLossWrapper.dart';
 
 class MenuEntry {
-  const MenuEntry({required this.label, this.shortcut, this.onPressed, this.menuChildren})
-      : assert(menuChildren == null || onPressed == null, 'onPressed is ignored if menuChildren are provided');
+  const MenuEntry({required this.label, this.shortcut, this.onPressed, this.menuChildren}) : assert(menuChildren == null || onPressed == null, 'onPressed is ignored if menuChildren are provided');
   final String label;
 
   final MenuSerializableShortcut? shortcut;
@@ -226,8 +225,7 @@ class MyMenuBar extends StatelessWidget {
 
                 currentOpenedScreen = ScreenViewNames.orders;
                 var tradeVC = Get.put(TradeListController());
-                generalContainerPopup(
-                    view: TradeListScreen(), title: ScreenViewNames.orders, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
+                generalContainerPopup(view: TradeListScreen(), title: ScreenViewNames.orders, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
               });
             },
           ),
@@ -249,8 +247,7 @@ class MyMenuBar extends StatelessWidget {
                 currentOpenedScreen = ScreenViewNames.trades;
 
                 var tradeVC = Get.put(SuccessTradeListController());
-                generalContainerPopup(
-                    view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
+                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
               });
             },
           ),
@@ -271,8 +268,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.positions;
                 var positionVc = Get.put(PositionController());
-                generalContainerPopup(
-                    view: PositionScreen(), title: ScreenViewNames.positions, isFilterAvailable: true, filterClick: positionVc.onCLickFilter);
+                generalContainerPopup(view: PositionScreen(), title: ScreenViewNames.positions, isFilterAvailable: true, filterClick: positionVc.onCLickFilter);
               });
             },
           ),
@@ -286,8 +282,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.profitAndLoss;
                 var plVC = Get.put(ProfitAndLossController());
-                generalContainerPopup(
-                    view: ProfitAndLossScreen(), title: ScreenViewNames.profitAndLoss, isFilterAvailable: true, filterClick: plVC.onCLickFilter);
+                generalContainerPopup(view: ProfitAndLossScreen(), title: ScreenViewNames.profitAndLoss, isFilterAvailable: true, filterClick: plVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -299,8 +294,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.rejectionLog;
               var rejectionVC = Get.put(RejectionLogController());
-              generalContainerPopup(
-                  view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter);
+              generalContainerPopup(view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter);
             },
           ),
           MenuEntry(
@@ -355,8 +349,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userList;
                 var userListVC = Get.put(UserListController());
-                generalContainerPopup(
-                    view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
+                generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
               },
             ),
             // MenuEntry(
@@ -378,8 +371,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.openPosition;
                 var openVc = Get.put(OpenPositionController());
-                generalContainerPopup(
-                    view: OpenPositionScreen(), title: ScreenViewNames.openPosition, isFilterAvailable: true, filterClick: openVc.onCLickFilter);
+                generalContainerPopup(view: OpenPositionScreen(), title: ScreenViewNames.openPosition, isFilterAvailable: true, filterClick: openVc.onCLickFilter);
               },
             ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -392,11 +384,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.manageTrades;
                 var manageTradeVC = Get.put(ManageTradeController());
-                generalContainerPopup(
-                    view: ManageTradeScreen(),
-                    title: ScreenViewNames.manageTrades,
-                    isFilterAvailable: true,
-                    filterClick: manageTradeVC.onCLickFilter);
+                generalContainerPopup(view: ManageTradeScreen(), title: ScreenViewNames.manageTrades, isFilterAvailable: true, filterClick: manageTradeVC.onCLickFilter);
               },
             ),
           // if (userData?.role == UserRollList.master || userData?.role == UserRollList.superAdmin)
@@ -409,8 +397,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeLogs;
               var tradeLogVC = Get.put(TradeLogController());
-              generalContainerPopup(
-                  view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter);
+              generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -423,11 +410,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.tradeAccount;
                 var tradeAccountVC = Get.put(TradeAccountController());
-                generalContainerPopup(
-                    view: TradeAccountScreen(),
-                    title: ScreenViewNames.tradeAccount,
-                    isFilterAvailable: true,
-                    filterClick: tradeAccountVC.onCLickFilter);
+                generalContainerPopup(view: TradeAccountScreen(), title: ScreenViewNames.tradeAccount, isFilterAvailable: true, filterClick: tradeAccountVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -439,11 +422,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.clientAccountReport;
               var clientAccountVC = Get.put(ClientAccountReportController());
-              generalContainerPopup(
-                  view: ClientAccountReportScreen(),
-                  title: ScreenViewNames.clientAccountReport,
-                  isFilterAvailable: true,
-                  filterClick: clientAccountVC.onCLickFilter);
+              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport, isFilterAvailable: true, filterClick: clientAccountVC.onCLickFilter);
             },
           ),
           MenuEntry(
@@ -455,8 +434,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeMargin;
               var marginVC = Get.put(TradeMarginController());
-              generalContainerPopup(
-                  view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin, isFilterAvailable: true, filterClick: marginVC.onCLickFilter);
+              generalContainerPopup(view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin, isFilterAvailable: true, filterClick: marginVC.onCLickFilter);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -469,8 +447,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.settelment;
                 var settlementVC = Get.put(SettlementController());
-                generalContainerPopup(
-                    view: SettlementScreen(), title: ScreenViewNames.settelment, isFilterAvailable: true, filterClick: settlementVC.onCLickFilter);
+                generalContainerPopup(view: SettlementScreen(), title: ScreenViewNames.settelment, isFilterAvailable: true, filterClick: settlementVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -483,11 +460,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.accountSummary;
               var accountSummaryVC = Get.put(AccountSummaryController());
-              generalContainerPopup(
-                  view: AccountSummaryScreen(),
-                  title: ScreenViewNames.accountSummary,
-                  isFilterAvailable: true,
-                  filterClick: accountSummaryVC.onCLickFilter);
+              generalContainerPopup(view: AccountSummaryScreen(), title: ScreenViewNames.accountSummary, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter);
             },
           ),
           MenuEntry(
@@ -499,25 +472,24 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.billGenerate;
               var billVc = Get.put(BillGenerateController());
-              generalContainerPopup(
-                  view: BillGenerateScreen(), title: ScreenViewNames.billGenerate, isFilterAvailable: true, filterClick: billVc.onCLickFilter);
+              generalContainerPopup(view: BillGenerateScreen(), title: ScreenViewNames.billGenerate, isFilterAvailable: true, filterClick: billVc.onCLickFilter);
             },
           ),
 
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
-            MenuEntry(
-              label: ScreenViewNames.weeklyAdmin,
-              onPressed: () {
-                if (marketViewObj.isBuyOpen != -1) {
-                  return;
-                }
-                isCommonScreenPopUpOpen = true;
-                currentOpenedScreen = ScreenViewNames.weeklyAdmin;
-                var weeklyVC = Get.put(WeeklyAdminController());
-                generalContainerPopup(
-                    view: WeeklyAdminScreen(), title: ScreenViewNames.weeklyAdmin, isFilterAvailable: true, filterClick: weeklyVC.onCLickFilter);
-              },
-            ),
+          // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          //   MenuEntry(
+          //     label: ScreenViewNames.weeklyAdmin,
+          //     onPressed: () {
+          //       if (marketViewObj.isBuyOpen != -1) {
+          //         return;
+          //       }
+          //       isCommonScreenPopUpOpen = true;
+          //       currentOpenedScreen = ScreenViewNames.weeklyAdmin;
+          //       var weeklyVC = Get.put(WeeklyAdminController());
+          //       generalContainerPopup(
+          //           view: WeeklyAdminScreen(), title: ScreenViewNames.weeklyAdmin, isFilterAvailable: true, filterClick: weeklyVC.onCLickFilter);
+          //     },
+          //   ),
           MenuEntry(
             label: ScreenViewNames.logsHistory,
             onPressed: () {
@@ -527,8 +499,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.logsHistory;
               var logsVc = Get.put(LogHistoryController());
-              generalContainerPopup(
-                  view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter);
+              generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -542,8 +513,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.scriptMaster;
                 var masterVC = Get.put(ScriptMasterController());
-                generalContainerPopup(
-                    view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
+                generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -556,11 +526,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.pAndlSummary;
               var scriptVC = Get.put(ProfitAndLossSummaryController());
-              generalContainerPopup(
-                  view: ProfitAndLossSummaryScreen(),
-                  title: ScreenViewNames.pAndlSummary,
-                  isFilterAvailable: true,
-                  filterClick: scriptVC.onCLickFilter);
+              generalContainerPopup(view: ProfitAndLossSummaryScreen(), title: ScreenViewNames.pAndlSummary, isFilterAvailable: true, filterClick: scriptVC.onCLickFilter);
             },
           ),
 
@@ -574,11 +540,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userwisePAndLSummary;
                 var userWiseVC = Get.put(UserWisePLSummaryController());
-                generalContainerPopup(
-                    view: UserWisePLSummaryScreen(),
-                    title: ScreenViewNames.userwisePAndLSummary,
-                    isFilterAvailable: true,
-                    filterClick: userWiseVC.onCLickFilter);
+                generalContainerPopup(view: UserWisePLSummaryScreen(), title: ScreenViewNames.userwisePAndLSummary, isFilterAvailable: true, filterClick: userWiseVC.onCLickFilter);
               },
             ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -591,11 +553,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userScriptPositionTracking;
                 var trackingVC = Get.put(UserScriptPositionTrackController());
-                generalContainerPopup(
-                    view: UserScriptPositionTrackScreen(),
-                    title: ScreenViewNames.userScriptPositionTracking,
-                    isFilterAvailable: true,
-                    filterClick: trackingVC.onCLickFilter);
+                generalContainerPopup(view: UserScriptPositionTrackScreen(), title: ScreenViewNames.userScriptPositionTracking, isFilterAvailable: true, filterClick: trackingVC.onCLickFilter);
               },
             ),
           MenuEntry(
@@ -607,11 +565,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.symbolWisePositionReport;
               var symbolWiseVC = Get.put(SymbolWisePositionReportController());
-              generalContainerPopup(
-                  view: SymbolWisePositionReportScreen(),
-                  title: ScreenViewNames.symbolWisePositionReport,
-                  isFilterAvailable: true,
-                  filterClick: symbolWiseVC.onCLickFilter);
+              generalContainerPopup(view: SymbolWisePositionReportScreen(), title: ScreenViewNames.symbolWisePositionReport, isFilterAvailable: true, filterClick: symbolWiseVC.onCLickFilter);
             },
           ),
         ],

@@ -516,12 +516,47 @@ class UserListScreen extends BaseView<UserListController> {
 
               valueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
 
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: controller.arrUserListData[index].role == UserRollList.master ? false : true, switchValue: controller.arrUserListData[index].closeOnly!.obs),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs, onSwitchChanged: (value) {
+                final payload = {
+                  "userId": controller.arrUserListData[index].userId,
+                  "bet": value,
+                  "logStatus": "bet",
+                };
+                controller.updateUserStatus(payload);
+              }),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: controller.arrUserListData[index].role == UserRollList.master ? false : true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
+                final payload = {
+                  "userId": controller.arrUserListData[index].userId,
+                  "closeOnly": value,
+                  "logStatus": "closeOnly",
+                };
+                controller.updateUserStatus(payload);
+              }),
 
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].marginSquareOff!.obs, isBig: true),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].modifyOrder == 0 ? false.obs : true.obs),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].autoSquareOff == 0 ? false.obs : true.obs, isBig: true, onSwitchChanged: (value) {
+                final payload = {
+                  "userId": controller.arrUserListData[index].userId,
+                  "autoSquareOff": value,
+                  "logStatus": "autoSquareOff",
+                };
+                controller.updateUserStatus(payload);
+              }),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].viewOnly!.obs, onSwitchChanged: (value) {
+                final payload = {
+                  "userId": controller.arrUserListData[index].userId,
+                  "viewOnly": value,
+                  "logStatus": "viewOnly",
+                };
+                controller.updateUserStatus(payload);
+              }),
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs, onSwitchChanged: (value) {
+                final payload = {
+                  "userId": controller.arrUserListData[index].userId,
+                  "status": value,
+                  "logStatus": "status",
+                };
+                controller.updateUserStatus(payload);
+              }),
 
               valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
               valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),

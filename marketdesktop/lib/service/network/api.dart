@@ -64,4 +64,5 @@ abstract class Api {
   static const symbolWisePositionReport = 'symbol-wise-position-report/list';
   static const expiryList = 'symbol/expiry-list';
   static const strikePriceList = 'symbol/strike-price-list';
+  static const userChangeStatus = 'user/change-status';
 }

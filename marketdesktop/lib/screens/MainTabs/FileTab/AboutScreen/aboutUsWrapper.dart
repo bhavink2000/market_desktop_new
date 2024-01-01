@@ -11,74 +11,17 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
 
   @override
   Widget vBuilder(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          Get.back();
-          return Future.value(false);
-        },
-        child: Container(
-          color: AppColors().lightOnlyText.withOpacity(0.3),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              headerViewContent(context),
-              versionView(),
-              componentView(),
-            ],
-          ),
-        ));
-  }
-
-  Widget headerViewContent(BuildContext context) {
     return Container(
-        width: 100.w,
-        height: 4.h,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text("About",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                Get.delete<AboutUsPopUpController>();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
-        ));
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          headerViewContent(title: "About", isFilterAvailable: false, isFromMarket: false),
+          versionView(),
+          componentView(),
+        ],
+      ),
+    );
   }
 
   Widget versionView() {
@@ -110,6 +53,9 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
           Spacer(),
           Column(
             children: [
+              SizedBox(
+                height: 10,
+              ),
               Center(
                 child: Image.asset(
                   AppImages.appLogo,
@@ -118,11 +64,7 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
                 ),
               ),
               Center(
-                child: Text("BAZAAR 2.0",
-                    style: TextStyle(
-                        fontSize: 40,
-                        fontFamily: CustomFonts.family1ExtraBold,
-                        color: AppColors().blueColor)),
+                child: Text("BAZAAR 2.0", style: TextStyle(fontSize: 40, fontFamily: CustomFonts.family1ExtraBold, color: AppColors().blueColor)),
               ),
             ],
           )
@@ -220,9 +162,7 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
                     ),
                     SizedBox(
                       width: 10.w,
-                      child: Text(
-                          controller.packageInfo.version +
-                              " (${controller.packageInfo.buildNumber})",
+                      child: Text(controller.packageInfo.version + " (${controller.packageInfo.buildNumber})",
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: CustomFonts.family1SemiBold,
