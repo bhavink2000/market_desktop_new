@@ -57,7 +57,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -138,7 +138,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                               child: Obx(() {
                                 return Container(
                                   height: 4.h,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -151,12 +151,12 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.fromDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -214,7 +214,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                               child: Obx(() {
                                 return Container(
                                   height: 4.h,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -227,12 +227,12 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.endDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -275,7 +275,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                             SizedBox(
                               width: 10,
                             ),
-                            exchangeTypeDropDown(controller.selectedExchange, width: 200),
+                            exchangeTypeDropDown(controller.selectedExchange, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -302,7 +302,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, width: 200),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -315,9 +315,6 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,
@@ -435,31 +432,17 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(shortFullDateTime(logValue.createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isBig: true),
-            valueBox(
-                logValue.status ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isBig: true),
-            valueBox(logValue.userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText,
-                index,
-                isUnderlined: true),
-            valueBox(logValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isBig: true),
-            valueBox(logValue.tradeTypeValue ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
-            valueBox(logValue.quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
-            valueBox(logValue.price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
+            valueBox(shortFullDateTime(logValue.createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            valueBox(logValue.status ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            valueBox(logValue.userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true),
+            valueBox(logValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            valueBox(logValue.tradeTypeValue ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            valueBox(logValue.quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            valueBox(logValue.price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             // valueBox("58 980.00", 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
             //     isBig: true),
-            valueBox(logValue.ipAddress ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText,
-                index),
-            valueBox(logValue.deviceId ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText,
-                index,
-                isBig: true),
+            valueBox(logValue.ipAddress ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            valueBox(logValue.deviceId ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ],
         ),
       ),

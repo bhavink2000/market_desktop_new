@@ -54,7 +54,7 @@ class PositionScreen extends BaseView<PositionController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -130,7 +130,7 @@ class PositionScreen extends BaseView<PositionController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 200),
+                              userListDropDown(controller.selectedUser, width: 150),
                               SizedBox(
                                 width: 30,
                               ),
@@ -160,7 +160,7 @@ class PositionScreen extends BaseView<PositionController> {
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
                               await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
-                            }, width: 200),
+                            }, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -187,7 +187,7 @@ class PositionScreen extends BaseView<PositionController> {
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 200),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -200,9 +200,6 @@ class PositionScreen extends BaseView<PositionController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,

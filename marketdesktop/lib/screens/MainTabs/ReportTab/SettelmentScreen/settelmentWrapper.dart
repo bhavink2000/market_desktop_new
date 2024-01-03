@@ -45,7 +45,7 @@ class SettlementScreen extends BaseView<SettlementController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -117,7 +117,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 200),
+                            userListDropDown(controller.selectedUser, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -145,7 +145,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                               width: 10,
                             ),
                             Container(
-                              width: 200,
+                              width: 150,
                               decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                               child: CustomTextField(
                                 type: 'Search',
@@ -155,6 +155,11 @@ class SettlementScreen extends BaseView<SettlementController> {
                                 inValidMsg: "",
                                 placeHolderMsg: "Search",
                                 emptyFieldMsg: "",
+                                fontStyle: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family1Regular,
+                                  color: AppColors().fontColor,
+                                ),
                                 controller: controller.searchController,
                                 focus: controller.searchFocus,
                                 isSecure: false,
@@ -177,9 +182,6 @@ class SettlementScreen extends BaseView<SettlementController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,

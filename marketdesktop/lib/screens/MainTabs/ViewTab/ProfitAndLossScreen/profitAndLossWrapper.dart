@@ -41,7 +41,7 @@ class ProfitAndLossScreen extends BaseView<ProfitAndLossController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 380 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -92,6 +92,9 @@ class ProfitAndLossScreen extends BaseView<ProfitAndLossController> {
                   color: AppColors().slideGrayBG,
                   child: Column(
                     children: [
+                      SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         height: 4.h,
                         child: Row(
@@ -109,7 +112,7 @@ class ProfitAndLossScreen extends BaseView<ProfitAndLossController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser),
+                            userListDropDown(controller.selectedUser, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -123,11 +126,8 @@ class ProfitAndLossScreen extends BaseView<ProfitAndLossController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: 70,
-                          ),
-                          SizedBox(
-                            width: 6.w,
-                            height: 3.h,
+                            width: 80,
+                            height: 35,
                             child: CustomButton(
                               isEnabled: true,
                               shimmerColor: AppColors().whiteColor,
@@ -147,8 +147,8 @@ class ProfitAndLossScreen extends BaseView<ProfitAndLossController> {
                             width: 1.w,
                           ),
                           SizedBox(
-                            width: 6.w,
-                            height: 3.h,
+                            width: 80,
+                            height: 35,
                             child: CustomButton(
                               isEnabled: true,
                               shimmerColor: AppColors().whiteColor,

@@ -163,8 +163,8 @@ class BrkPopUpController extends BaseController {
               ),
               dropdownSearchData: DropdownSearchData(
                 searchController: exchangeEditingController,
-                searchInnerWidgetHeight: 50,
-                searchInnerWidget: Container(
+                searchBarWidgetHeight: 50,
+                searchBarWidget: Container(
                   height: 40,
                   // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                   child: CustomTextField(
@@ -214,8 +214,9 @@ class BrkPopUpController extends BaseController {
                 ),
               ),
               items: arrExchange
-                  .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                  .map((ExchangeData item) => DropdownItem<ExchangeData>(
                         value: item,
+                        height: 30,
                         child: Text(
                           item.name ?? "",
                           style: TextStyle(
@@ -256,9 +257,6 @@ class BrkPopUpController extends BaseController {
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
                 // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
               ),
             ),
           ),

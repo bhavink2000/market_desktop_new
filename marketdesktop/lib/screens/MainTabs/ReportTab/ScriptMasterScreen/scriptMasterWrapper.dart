@@ -44,7 +44,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -116,7 +116,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
                             SizedBox(
                               width: 10,
                             ),
-                            exchangeTypeDropDown(controller.selectedExchange, width: 200),
+                            exchangeTypeDropDown(controller.selectedExchange, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -144,7 +144,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
                               width: 10,
                             ),
                             Container(
-                              width: 200,
+                              width: 150,
                               decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                               child: TextFormField(
                                 textInputAction: TextInputAction.search,
@@ -185,10 +185,8 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
                         height: 10,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 110,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,

@@ -80,9 +80,14 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
                 ),
               ),
               items: arrSortType
-                  .map((String item) => DropdownMenuItem<String>(
+                  .map((String item) => DropdownItem<String>(
                         value: item,
-                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        height: 40,
+                        child: Text(
+                          item,
+                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -109,9 +114,9 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
                 height: 40,
                 // width: 140,
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
+              // menuItemStyleData: const MenuItemStyleData(
+              //   height: 30,
+              // ),
             ),
           ),
         ));
@@ -149,9 +154,14 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                 ),
               ),
               items: arrFilterType
-                  .map((AddMaster item) => DropdownMenuItem<AddMaster>(
+                  .map((AddMaster item) => DropdownItem<AddMaster>(
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor)),
+                        height: 30,
+                        child: Text(
+                          item.name ?? "",
+                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -176,11 +186,11 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                // width: 140,
+                width: 135,
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
+              // menuItemStyleData: const MenuItemStyleData(
+              //   height: 30,
+              // ),
             ),
           ),
         ));
@@ -218,7 +228,8 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
                 ),
               ),
               items: constantValues!.productTypeForAccount!
-                  .map((Type item) => DropdownMenuItem<Type>(
+                  .map((Type item) => DropdownItem<Type>(
+                        height: 30,
                         value: item,
                         child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
@@ -246,9 +257,6 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
                 // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
               ),
             ),
           ),
@@ -287,8 +295,9 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
                 ),
               ),
               items: arrPLTypeforAccount
-                  .map((String item) => DropdownMenuItem<String>(
+                  .map((String item) => DropdownItem<String>(
                         value: item,
+                        height: 30,
                         child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -315,9 +324,6 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
                 // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
               ),
             ),
           ),
@@ -356,8 +362,9 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
                 ),
               ),
               items: arrSortCount
-                  .map((String item) => DropdownMenuItem<String>(
+                  .map((String item) => DropdownItem<String>(
                         value: item,
+                        height: 30,
                         child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -385,9 +392,6 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
                 height: 40,
                 // width: 140,
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
             ),
           ),
         ));
@@ -405,20 +409,17 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
             child: DropdownButton2<UserData>(
               isExpanded: true,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownSearchData: DropdownSearchData(
                 searchController: userEditingController,
-                searchInnerWidgetHeight: 50,
-                searchInnerWidget: Container(
+                searchBarWidgetHeight: 50,
+                searchBarWidget: Container(
                   height: 30,
                   // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                   child: CustomTextField(
@@ -427,7 +428,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                     isEnabled: true,
                     isOptional: false,
                     inValidMsg: "",
-                    placeHolderMsg: "Search User",
+                    placeHolderMsg: "Search",
                     emptyFieldMsg: "",
                     controller: userEditingController,
                     focus: userEditingFocus,
@@ -435,11 +436,8 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                     borderColor: AppColors().grayLightLine,
                     keyboardButtonType: TextInputAction.done,
                     maxLength: 64,
-                    prefixIcon: Image.asset(
-                      AppImages.searchIcon,
-                      height: 20,
-                      width: 20,
-                    ),
+                    isShowPrefix: false,
+                    fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                     suffixIcon: Container(
                       child: GestureDetector(
                         onTap: () {
@@ -467,8 +465,9 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                 ),
               ),
               items: arrUserList
-                  .map((UserData item) => DropdownMenuItem<UserData>(
+                  .map((UserData item) => DropdownItem<UserData>(
                         value: item,
+                        height: 30,
                         child: Text(item.userName ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -490,12 +489,9 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                // width: 140,
+                width: 135,
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 250),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
             ),
           ),
         ));
@@ -533,8 +529,9 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
                 ),
               ),
               items: arrPeriodList
-                  .map((String item) => DropdownMenuItem<String>(
+                  .map((String item) => DropdownItem<String>(
                         value: item,
+                        height: 30,
                         child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -562,9 +559,6 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
                 height: 40,
                 // width: 140,
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
             ),
           ),
         ));
@@ -582,21 +576,18 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
               child: DropdownButton2<GlobalSymbolData>(
                 isExpanded: true,
                 iconStyleData: IconStyleData(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      AppImages.arrowDown,
-                      height: 20,
-                      width: 20,
-                      color: AppColors().fontColor,
-                    ),
+                  icon: Image.asset(
+                    AppImages.arrowDown,
+                    height: 20,
+                    width: 20,
+                    color: AppColors().fontColor,
                   ),
                 ),
                 dropdownSearchData: DropdownSearchData(
                   searchController: scriptEditingController,
-                  searchInnerWidgetHeight: 50,
-                  searchInnerWidget: Container(
-                    height: 40,
+                  searchBarWidgetHeight: 50,
+                  searchBarWidget: Container(
+                    height: 30,
                     // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                     child: CustomTextField(
                       type: '',
@@ -604,7 +595,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                       isEnabled: true,
                       isOptional: false,
                       inValidMsg: "",
-                      placeHolderMsg: "Search Script",
+                      placeHolderMsg: "Search",
                       emptyFieldMsg: "",
                       controller: scriptEditingController,
                       focus: scriptEditingFocus,
@@ -612,11 +603,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                       borderColor: AppColors().grayLightLine,
                       keyboardButtonType: TextInputAction.done,
                       maxLength: 64,
-                      prefixIcon: Image.asset(
-                        AppImages.searchIcon,
-                        height: 20,
-                        width: 20,
-                      ),
+                      isShowPrefix: false,
+                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                       suffixIcon: Container(
                         child: GestureDetector(
                           onTap: () {
@@ -624,8 +612,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                           },
                           child: Image.asset(
                             AppImages.crossIcon,
-                            height: 20,
-                            width: 20,
+                            height: 15,
+                            width: 15,
                           ),
                         ),
                       ),
@@ -641,8 +629,9 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                   style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                 ),
                 items: arrSymbol
-                    .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
+                    .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
                           value: item,
+                          height: 30,
                           child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
                         ))
                     .toList(),
@@ -669,10 +658,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                 buttonStyleData: const ButtonStyleData(
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   height: 40,
-                  // width: 140,
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 30,
+                  width: 135,
                 ),
               ),
             ),
@@ -686,21 +672,18 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
               child: DropdownButton2<GlobalSymbolData>(
                 isExpanded: true,
                 iconStyleData: IconStyleData(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      AppImages.arrowDown,
-                      height: 20,
-                      width: 20,
-                      color: AppColors().fontColor,
-                    ),
+                  icon: Image.asset(
+                    AppImages.arrowDown,
+                    height: 20,
+                    width: 20,
+                    color: AppColors().fontColor,
                   ),
                 ),
                 dropdownSearchData: DropdownSearchData(
                   searchController: scriptEditingController,
-                  searchInnerWidgetHeight: 50,
-                  searchInnerWidget: Container(
-                    height: 40,
+                  searchBarWidgetHeight: 50,
+                  searchBarWidget: Container(
+                    height: 30,
                     // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                     child: CustomTextField(
                       type: '',
@@ -708,7 +691,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                       isEnabled: true,
                       isOptional: false,
                       inValidMsg: "",
-                      placeHolderMsg: "Search Script",
+                      placeHolderMsg: "Search",
                       emptyFieldMsg: "",
                       controller: scriptEditingController,
                       focus: scriptEditingFocus,
@@ -716,11 +699,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                       borderColor: AppColors().grayLightLine,
                       keyboardButtonType: TextInputAction.done,
                       maxLength: 64,
-                      prefixIcon: Image.asset(
-                        AppImages.searchIcon,
-                        height: 20,
-                        width: 20,
-                      ),
+                      isShowPrefix: false,
+                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                       suffixIcon: Container(
                         child: GestureDetector(
                           onTap: () {
@@ -728,8 +708,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                           },
                           child: Image.asset(
                             AppImages.crossIcon,
-                            height: 20,
-                            width: 20,
+                            height: 15,
+                            width: 15,
                           ),
                         ),
                       ),
@@ -749,8 +729,9 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                   ),
                 ),
                 items: arrAllScript
-                    .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
+                    .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
                           value: item,
+                          height: 30,
                           child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                         ))
                     .toList(),
@@ -781,10 +762,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                 buttonStyleData: const ButtonStyleData(
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   height: 40,
-                  // width: 140,
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 30,
+                  width: 135,
                 ),
               ),
             ),
@@ -803,21 +781,18 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
           child: DropdownButton2<ExchangeData>(
             isExpanded: true,
             iconStyleData: IconStyleData(
-              icon: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Image.asset(
-                  AppImages.arrowDown,
-                  height: 20,
-                  width: 20,
-                  color: AppColors().fontColor,
-                ),
+              icon: Image.asset(
+                AppImages.arrowDown,
+                height: 20,
+                width: 20,
+                color: AppColors().fontColor,
               ),
             ),
             dropdownSearchData: DropdownSearchData(
               searchController: exchangeEditingController,
-              searchInnerWidgetHeight: 50,
-              searchInnerWidget: Container(
-                height: 40,
+              searchBarWidgetHeight: 50,
+              searchBarWidget: Container(
+                height: 30,
                 // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                 child: CustomTextField(
                   type: '',
@@ -825,7 +800,7 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                   isEnabled: true,
                   isOptional: false,
                   inValidMsg: "",
-                  placeHolderMsg: "Search Exchange",
+                  placeHolderMsg: "Search",
                   emptyFieldMsg: "",
                   controller: exchangeEditingController,
                   focus: exchangeEditingFocus,
@@ -833,11 +808,8 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                   borderColor: AppColors().grayLightLine,
                   keyboardButtonType: TextInputAction.done,
                   maxLength: 64,
-                  prefixIcon: Image.asset(
-                    AppImages.searchIcon,
-                    height: 20,
-                    width: 20,
-                  ),
+                  isShowPrefix: false,
+                  fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                   suffixIcon: Container(
                     child: GestureDetector(
                       onTap: () {
@@ -845,8 +817,8 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                       },
                       child: Image.asset(
                         AppImages.crossIcon,
-                        height: 20,
-                        width: 20,
+                        height: 15,
+                        width: 15,
                       ),
                     ),
                   ),
@@ -866,8 +838,9 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
               ),
             ),
             items: arrExchange
-                .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                .map((ExchangeData item) => DropdownItem<ExchangeData>(
                       value: item,
+                      height: 30,
                       child: Text(
                         item.name ?? "",
                         style: TextStyle(
@@ -907,10 +880,7 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
             buttonStyleData: const ButtonStyleData(
               padding: EdgeInsets.symmetric(horizontal: 0),
               height: 40,
-              // width: 140,
-            ),
-            menuItemStyleData: const MenuItemStyleData(
-              height: 30,
+              width: 135,
             ),
           ),
         ),
@@ -930,14 +900,11 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
             child: DropdownButton2<Type>(
               isExpanded: true,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
@@ -950,8 +917,9 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                 ),
               ),
               items: arrTradeStatus
-                  .map((Type item) => DropdownMenuItem<Type>(
+                  .map((Type item) => DropdownItem<Type>(
                         value: item,
+                        height: 30,
                         child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -977,10 +945,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
+                width: 135,
               ),
             ),
           ),
@@ -1019,8 +984,9 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
                 ),
               ),
               items: arrTradeAttribute
-                  .map((String item) => DropdownMenuItem<String>(
+                  .map((String item) => DropdownItem<String>(
                         value: item,
+                        height: 30,
                         child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -1048,9 +1014,6 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
                 height: 40,
                 // width: 140,
               ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
             ),
           ),
         ));
@@ -1068,14 +1031,11 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
             child: DropdownButton2<String>(
               isExpanded: true,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
@@ -1088,8 +1048,9 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
                 ),
               ),
               items: arrLogType
-                  .map((String item) => DropdownMenuItem<String>(
+                  .map((String item) => DropdownItem<String>(
                         value: item,
+                        height: 30,
                         child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
@@ -1115,10 +1076,7 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
+                width: 135,
               ),
             ),
           ),
@@ -1192,8 +1150,9 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                 ),
               ),
               items: arrUserTypeList
-                  .map((userRoleListData item) => DropdownMenuItem<userRoleListData>(
+                  .map((userRoleListData item) => DropdownItem<userRoleListData>(
                         value: item,
+                        height: 30,
                         child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
@@ -1219,13 +1178,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                   onChange();
                 }
               },
-              buttonStyleData: const ButtonStyleData(
-                padding: EdgeInsets.symmetric(horizontal: 0),
-                height: 40,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
-              ),
+              buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 40, width: 135),
             ),
           ),
         ));
@@ -1375,8 +1328,9 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                 ),
               ),
               items: arrStatuslist
-                  .map((AddMaster item) => DropdownMenuItem<AddMaster>(
+                  .map((AddMaster item) => DropdownItem<AddMaster>(
                         value: item,
+                        height: 30,
                         child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
@@ -1405,10 +1359,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
+                width: 135,
               ),
             ),
           ),
@@ -1427,14 +1378,11 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
             child: DropdownButton2<Type>(
               isExpanded: true,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
@@ -1447,8 +1395,9 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                 ),
               ),
               items: constantValues!.orderTypeFilter!
-                  .map((Type item) => DropdownMenuItem<Type>(
+                  .map((Type item) => DropdownItem<Type>(
                         value: item,
+                        height: 30,
                         child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
@@ -1477,10 +1426,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
+                width: 135,
               ),
             ),
           ),

@@ -49,7 +49,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -129,7 +129,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -142,12 +142,12 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.fromDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -205,7 +205,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -218,12 +218,12 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.endDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 12,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -267,10 +267,9 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                               width: 10,
                             ),
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
-                              await getScriptList(
-                                  exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
+                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
-                            }, width: 200),
+                            }, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -297,7 +296,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 200),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -310,9 +309,6 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 30,
@@ -456,22 +452,15 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               valueBox(scriptValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(scriptValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                  isLarge: true),
+              valueBox(scriptValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
 
-              valueBox(
-                  scriptValue.totalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                  isUnderlined: true, onClickValue: () {
+              valueBox(scriptValue.totalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
                 isCommonScreenPopUpOpen = true;
                 Get.find<MainContainerController>().isInitCallRequired = false;
                 currentOpenedScreen = ScreenViewNames.clientAccountReport;
                 var tradeVC = Get.put(ClientAccountReportController());
-                tradeVC.selectedExchange.value =
-                    ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
-                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(
-                    symbolId: controller.arrSummaryList[index].symbolId,
-                    symbolName: controller.arrSummaryList[index].symbolName,
-                    symbolTitle: controller.arrSummaryList[index].symbolTitle);
+                tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
+                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrSummaryList[index].symbolId, symbolName: controller.arrSummaryList[index].symbolName, symbolTitle: controller.arrSummaryList[index].symbolTitle);
                 // tradeVC.update();
                 // tradeVC.getTradeList();
 
@@ -484,15 +473,11 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
 
                 generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
               }),
-              valueBox(scriptValue.totalShareQuantity!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText, index,
-                  isBig: true),
+              valueBox(scriptValue.totalShareQuantity!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
 
-              valueBox(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", 45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
 
-              valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText, index),
+              valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(
                   scriptValue.totalQuantity! != 0
                       ? scriptValue.brokerageTotal! > 0
@@ -504,16 +489,12 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                   AppColors().darkText,
                   index,
                   isLarge: true),
-              valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText, index),
+              valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               // valueBox(scriptValue.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               // valueBox((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText, index),
-              valueBox((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), 45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(scriptValue.adminBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText, index),
+              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(scriptValue.adminBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             ],
           ),
         ),

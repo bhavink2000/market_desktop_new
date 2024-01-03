@@ -37,8 +37,12 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                   height: 45,
                   child: Row(
                     children: [
+                      Focus(focusNode: controller.tempFocus.value, child: Container()),
                       controller.exchangeTypeDropDown(controller.selectedExchange),
                       controller.allScriptListDropDown(),
+                      if (controller.selectedExchange.value.isCallPut) controller.expiryTypeDropDown(),
+                      if (controller.selectedExchange.value.isCallPut) controller.callPutTypeDropDown(),
+                      if (controller.selectedExchange.value.isCallPut) controller.strikePriceTypeDropDown(),
                       searchBox(),
                       const Spacer(),
                       GestureDetector(
@@ -992,16 +996,22 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
             inValidMsg: "",
             placeHolderMsg: "Search",
             emptyFieldMsg: "",
+            fontStyle: TextStyle(
+              fontSize: 10,
+              fontFamily: CustomFonts.family1Medium,
+              color: AppColors().darkText,
+            ),
             controller: searchEditingController,
             focus: searchFocus,
+            focusBorderColor: AppColors().redColor,
             isSecure: false,
             borderColor: AppColors().grayLightLine,
             keyboardButtonType: TextInputAction.search,
             maxLength: 64,
             prefixIcon: Image.asset(
               AppImages.searchIcon,
-              height: 20,
-              width: 20,
+              height: 15,
+              width: 15,
             ),
             onTap: () {
               searchFocus.requestFocus();
@@ -1029,7 +1039,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
             ),
             child: Container(
               height: 250,
-              width: 13.w, // <-- Right here !
+              width: 200, // <-- Right here !
               child: ListView.builder(
                 padding: EdgeInsets.zero,
                 itemCount: options.length,

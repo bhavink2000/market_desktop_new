@@ -61,8 +61,9 @@ class LogsHistoryNewController extends BaseController {
                   ),
                 ),
                 items: arrLogType
-                    .map((String item) => DropdownMenuItem<String>(
+                    .map((String item) => DropdownItem<String>(
                           value: item,
+                          height: 30,
                           child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                         ))
                     .toList(),
@@ -90,9 +91,6 @@ class LogsHistoryNewController extends BaseController {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   height: 40,
                   // width: 140,
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 30,
                 ),
               ),
             ),
@@ -130,8 +128,9 @@ class LogsHistoryNewController extends BaseController {
                   ),
                 ),
                 items: arrLogFor
-                    .map((String item) => DropdownMenuItem<String>(
+                    .map((String item) => DropdownItem<String>(
                           value: item,
+                          height: 30,
                           child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                         ))
                     .toList(),
@@ -158,9 +157,6 @@ class LogsHistoryNewController extends BaseController {
                   padding: EdgeInsets.symmetric(horizontal: 0),
                   height: 40,
                   // width: 140,
-                ),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 30,
                 ),
               ),
             ),

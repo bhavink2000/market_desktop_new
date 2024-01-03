@@ -219,8 +219,8 @@ class manualOrderController extends BaseController {
                 ),
                 dropdownSearchData: DropdownSearchData(
                   searchController: userSearchController,
-                  searchInnerWidgetHeight: 50,
-                  searchInnerWidget: Container(
+                  searchBarWidgetHeight: 50,
+                  searchBarWidget: Container(
                     height: 40,
                     // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                     child: CustomTextField(
@@ -269,8 +269,9 @@ class manualOrderController extends BaseController {
                   ),
                 ),
                 items: arrUserListOnlyClient
-                    .map((UserData item) => DropdownMenuItem<UserData>(
+                    .map((UserData item) => DropdownItem<UserData>(
                           value: item,
+                          height: 30,
                           child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                         ))
                     .toList(),
@@ -295,9 +296,6 @@ class manualOrderController extends BaseController {
                   // width: 140,
                 ),
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
-                menuItemStyleData: const MenuItemStyleData(
-                  height: 30,
-                ),
               ),
             ),
           ));

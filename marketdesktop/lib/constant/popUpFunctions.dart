@@ -560,7 +560,7 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
 Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick, Function? closeClick}) {
   return Container(
       width: 100.w,
-      height: 40,
+      height: 35,
       decoration: BoxDecoration(
         gradient: AppColors().customGradient,
       ),

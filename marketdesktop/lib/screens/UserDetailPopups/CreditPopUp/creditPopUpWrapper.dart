@@ -278,9 +278,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(shortFullDateTime(controller.arrCreditList[index].createdAt!), 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isBig: true),
+            valueBox(shortFullDateTime(controller.arrCreditList[index].createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
             valueBox(
               controller.arrCreditList[index].transactionType ?? "",
               45,
@@ -288,11 +286,8 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
               AppColors().darkText,
               index,
             ),
-            valueBox(controller.arrCreditList[index].amount!.toStringAsFixed(2), 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            valueBox(controller.arrCreditList[index].comment ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isBig: true),
+            valueBox(controller.arrCreditList[index].amount!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            valueBox(controller.arrCreditList[index].comment ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ],
         ),
       ),
@@ -325,7 +320,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -398,10 +393,8 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                                 width: 10,
                               ),
                               Container(
-                                width: 200,
-                                decoration: BoxDecoration(
-                                    color: AppColors().whiteColor,
-                                    border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                                width: 150,
+                                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                                 child: TextFormField(
                                   controller: controller.amountController,
                                   textInputAction: TextInputAction.done,
@@ -458,10 +451,8 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                                 width: 10,
                               ),
                               Container(
-                                width: 200,
-                                decoration: BoxDecoration(
-                                    color: AppColors().whiteColor,
-                                    border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                                width: 150,
+                                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                                 child: TextFormField(
                                   textInputAction: TextInputAction.done,
                                   controller: controller.commentController,
@@ -514,9 +505,9 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                                 width: 10,
                               ),
                               Container(
-                                width: 200,
+                                width: 150,
                                 // height: 50,
-                                child: Row(
+                                child: Column(
                                   children: <Widget>[
                                     SizedBox(
                                       width: 100,

@@ -31,6 +31,7 @@ class CustomTextField extends StatefulWidget {
     this.fillColor,
     this.keyboardButtonType,
     this.onTap,
+    this.fontStyle,
     this.onChange,
     this.onDoneClick,
     this.isReadOnly,
@@ -65,6 +66,7 @@ class CustomTextField extends StatefulWidget {
   final Color? borderColor;
   final Color? focusBorderColor;
   final TextInputAction? keyboardButtonType;
+  final TextStyle? fontStyle;
   final Function? onTap;
   final Function? onChange;
   final Function? onDoneClick;
@@ -96,7 +98,11 @@ class _CustomTextField extends State<CustomTextField> {
               widget.onDoneClick!();
             }
           },
-          style: widget.focus.hasFocus ? TextStyles().textFieldFocusText : TextStyles().textFieldText,
+          style: widget.fontStyle != null
+              ? widget.fontStyle
+              : widget.focus.hasFocus
+                  ? TextStyles().textFieldFocusText
+                  : TextStyles().textFieldText,
           enabled: widget.isEnabled,
           scrollPadding: EdgeInsets.only(bottom: 10.h),
           autofillHints: const [AutofillHints.email],
@@ -105,9 +111,7 @@ class _CustomTextField extends State<CustomTextField> {
           cursorColor: AppColors().grayColor,
           controller: widget.controller,
           focusNode: widget.focus,
-          textCapitalization: ((widget.isSecure) || (widget.isNoNeededCapital != null) || widget.keyBoardType == TextInputType.url)
-              ? TextCapitalization.none
-              : TextCapitalization.sentences,
+          textCapitalization: ((widget.isSecure) || (widget.isNoNeededCapital != null) || widget.keyBoardType == TextInputType.url) ? TextCapitalization.none : TextCapitalization.sentences,
           readOnly: widget.isReadOnly ?? false,
           onTap: () {
             if (widget.onTap != null) {
@@ -158,19 +162,19 @@ class _CustomTextField extends State<CustomTextField> {
                   ? null
                   : widget.suffixIcon != null
                       ? Container(
-                          padding: widget.suffixIcon != null
-                              ? EdgeInsets.only(left: 20, right: widget.isLogin ? 10 : 20)
-                              : const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
+                          padding: widget.suffixIcon != null ? EdgeInsets.only(left: 20, right: widget.isLogin ? 10 : 20) : const EdgeInsets.only(top: 0, bottom: 0, left: 0, right: 0),
                           child: widget.suffixIcon ?? const SizedBox(),
                         )
                       : null,
               fillColor: widget.fillColor ?? AppColors().footerColor,
               filled: true,
-              hintStyle: TextStyle(
-                fontFamily: CustomFonts.family1Medium,
-                fontSize: 14,
-                color: AppColors().placeholderColor,
-              ),
+              hintStyle: widget.fontStyle != null
+                  ? widget.fontStyle
+                  : TextStyle(
+                      fontFamily: CustomFonts.family1Medium,
+                      fontSize: 14,
+                      color: AppColors().placeholderColor,
+                    ),
               hintText: widget.placeHolderMsg,
               labelText: widget.labelMsg,
               labelStyle: TextStyle(

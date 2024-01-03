@@ -199,8 +199,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     ),
                     dropdownSearchData: DropdownSearchData(
                       searchController: controller.exchangeSearchController,
-                      searchInnerWidgetHeight: 50,
-                      searchInnerWidget: Container(
+                      searchBarWidgetHeight: 50,
+                      searchBarWidget: Container(
                         height: 40,
                         // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                         child: CustomTextField(
@@ -249,8 +249,9 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                       ),
                     ),
                     items: arrExchange
-                        .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                        .map((ExchangeData item) => DropdownItem<ExchangeData>(
                               value: item,
+                              height: 30,
                               child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                             ))
                         .toList(),
@@ -277,9 +278,6 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                       // width: 140,
                     ),
                     dropdownStyleData: const DropdownStyleData(maxHeight: 250),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 30,
-                    ),
                   ),
                 ),
               );
@@ -329,8 +327,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                       ),
                       dropdownSearchData: DropdownSearchData(
                         searchController: controller.scriptSearchController,
-                        searchInnerWidgetHeight: 50,
-                        searchInnerWidget: Container(
+                        searchBarWidgetHeight: 50,
+                        searchBarWidget: Container(
                           height: 40,
                           // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                           child: CustomTextField(
@@ -376,8 +374,9 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                       ),
                       items: controller.arrMainScript
-                          .map((GlobalSymbolData item) => DropdownMenuItem<GlobalSymbolData>(
+                          .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
                                 value: item,
+                                height: 30,
                                 child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
                               ))
                           .toList(),
@@ -405,9 +404,6 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         padding: EdgeInsets.symmetric(horizontal: 0),
                         height: 40,
                         // width: 140,
-                      ),
-                      menuItemStyleData: const MenuItemStyleData(
-                        height: 30,
                       ),
                     ),
                   ),

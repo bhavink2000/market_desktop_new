@@ -47,7 +47,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -127,7 +127,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -140,12 +140,12 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.fromDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -203,7 +203,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -216,12 +216,12 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.endDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -266,7 +266,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 200),
+                              userListDropDown(controller.selectedUser, width: 150),
                               SizedBox(
                                 width: 30,
                               ),
@@ -296,7 +296,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
                               await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
-                            }, width: 200),
+                            }, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -323,7 +323,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 200),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -350,7 +350,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            tradeStatusListDropDown(controller.selectedTradeStatus, width: 200),
+                            tradeStatusListDropDown(controller.selectedTradeStatus, width: 150),
                             SizedBox(
                               width: 30,
                             ),

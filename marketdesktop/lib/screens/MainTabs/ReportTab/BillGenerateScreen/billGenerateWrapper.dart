@@ -44,7 +44,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -125,7 +125,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -138,12 +138,12 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.fromDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -201,7 +201,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -214,12 +214,12 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.endDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -264,7 +264,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 200),
+                              userListDropDown(controller.selectedUser, width: 150),
                               SizedBox(
                                 width: 30,
                               ),
@@ -280,9 +280,6 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,

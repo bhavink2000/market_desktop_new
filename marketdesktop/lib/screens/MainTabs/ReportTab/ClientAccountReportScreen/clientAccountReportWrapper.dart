@@ -46,7 +46,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -126,7 +126,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -139,12 +139,12 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.fromDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -202,7 +202,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -215,12 +215,12 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                                   child: Row(
                                     children: [
                                       const SizedBox(
-                                        width: 15,
+                                        width: 5,
                                       ),
                                       Text(
                                         controller.endDate.value,
                                         style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 10,
                                           fontFamily: CustomFonts.family1Medium,
                                           color: AppColors().darkText,
                                         ),
@@ -265,7 +265,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 200),
+                              userListDropDown(controller.selectedUser, width: 150),
                               SizedBox(
                                 width: 30,
                               ),
@@ -295,7 +295,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
                               await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
-                            }, width: 200),
+                            }, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -322,7 +322,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 200),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -349,7 +349,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                             SizedBox(
                               width: 10,
                             ),
-                            productTypeForAccountDropDown(controller.selectedProductType, width: 200),
+                            productTypeForAccountDropDown(controller.selectedProductType, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -376,7 +376,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                             SizedBox(
                               width: 10,
                             ),
-                            plTypeForAccountDropDown(controller.selectedplType, width: 200),
+                            plTypeForAccountDropDown(controller.selectedplType, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -389,9 +389,6 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 30,

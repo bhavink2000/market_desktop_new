@@ -118,8 +118,9 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                 style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
               ),
               items: controller.arrExchangeList
-                  .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                  .map((ExchangeData item) => DropdownItem<ExchangeData>(
                         value: item,
+                        height: 30,
                         child: Text(
                           item.name ?? "",
                           style: TextStyle(
@@ -156,9 +157,6 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 54,
                 // width: 140,
-              ),
-              menuItemStyleData: const MenuItemStyleData(
-                height: 30,
               ),
             ),
           ),

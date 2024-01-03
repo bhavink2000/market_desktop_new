@@ -45,7 +45,7 @@ class LogsHistoryNewScreen extends BaseView<LogsHistoryNewController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -143,7 +143,7 @@ class LogsHistoryNewScreen extends BaseView<LogsHistoryNewController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 200),
+                            userListDropDown(controller.selectedUser, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -206,7 +206,7 @@ class LogsHistoryNewScreen extends BaseView<LogsHistoryNewController> {
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(
@@ -282,7 +282,7 @@ class LogsHistoryNewScreen extends BaseView<LogsHistoryNewController> {
                               child: Obx(() {
                                 return Container(
                                   height: 35,
-                                  width: 200,
+                                  width: 150,
                                   decoration: BoxDecoration(
                                       color: AppColors().whiteColor,
                                       border: Border.all(

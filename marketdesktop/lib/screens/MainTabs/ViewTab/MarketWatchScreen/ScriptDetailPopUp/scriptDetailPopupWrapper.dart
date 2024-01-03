@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:get/get.dart';
 import 'package:marketdesktop/screens/BaseController/baseController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchController.dart';
@@ -30,7 +29,10 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                 if (controller.selectedExchangeForF5.value.isCallPut) controller.callPutTypeDropDownForF5(),
                 if (controller.selectedExchangeForF5.value.isCallPut) controller.strikePriceTypeDropDownForF5(),
                 Spacer(),
-                PriceView()
+                Visibility(
+                  visible: false,
+                  child: PriceView(),
+                )
               ],
             ),
             Container(
@@ -171,6 +173,9 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                             ),
                           if (controller.selectedScriptForF5.value!.depth == null) Spacer(),
                           if (controller.selectedScriptForF5.value!.depth == null) Spacer(),
+                          SizedBox(
+                            width: 35,
+                          ),
                           Expanded(
                             // width: 30.w,
                             child: ListView(
@@ -183,6 +188,11 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                 sheetList("LTP", controller.selectedScriptForF5.value!.ltp!.toString(), 1),
                                 sheetList("Volume", controller.selectedScriptForF5.value!.volume!.toString(), 2),
                                 sheetList("Avg. Price", "--", 3),
+                                sheetList(
+                                  "L. CRKT",
+                                  controller.selectedScriptForF5.value!.close.toString(),
+                                  4,
+                                ),
                                 // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
                               ],
                             ),
@@ -195,10 +205,12 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                               shrinkWrap: true,
                               controller: controller.sheetController,
                               children: [
-                                sheetList("Open", controller.selectedScriptForF5.value!.open.toString().toString(), 0, width: 50),
-                                sheetList("High", controller.selectedScriptForF5.value!.high!.toString(), 1, width: 50),
-                                sheetList("Low", controller.selectedScriptForF5.value!.low!.toString(), 2, width: 50),
-                                sheetList("Close", controller.selectedScriptForF5.value!.close.toString(), 3, width: 50),
+                                sheetList("Open", controller.selectedScriptForF5.value!.open.toString().toString(), 0, width: 70),
+                                sheetList("High", controller.selectedScriptForF5.value!.high!.toString(), 1, width: 70),
+                                sheetList("Low", controller.selectedScriptForF5.value!.low!.toString(), 2, width: 70),
+                                sheetList("Close", controller.selectedScriptForF5.value!.close.toString(), 3, width: 70),
+
+                                sheetList("U. CRKT", controller.selectedScriptForF5.value!.close.toString(), 4, width: 70),
                                 // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
                               ],
                             ),
@@ -311,7 +323,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
 
   Widget headerViewContentForScriptDetail(BuildContext context) {
     return Container(
-        height: 45,
+        height: 35,
         margin: EdgeInsets.only(bottom: 10),
         decoration: BoxDecoration(
           gradient: AppColors().customGradient,
@@ -330,7 +342,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
             SizedBox(
               width: 10,
             ),
-            Text("Market Picture",
+            Text("Market Picture (${controller.selectedScriptForF5.value?.symbol ?? ""})",
                 style: TextStyle(
                   fontSize: 16,
                   fontFamily: CustomFonts.family1Medium,

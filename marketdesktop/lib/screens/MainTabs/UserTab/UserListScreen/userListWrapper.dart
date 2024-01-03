@@ -53,7 +53,7 @@ class UserListScreen extends BaseView<UserListController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -127,7 +127,7 @@ class UserListScreen extends BaseView<UserListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            filterTypeDropDown(controller.selectedFilterType, width: 200),
+                            filterTypeDropDown(controller.selectedFilterType, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -154,7 +154,7 @@ class UserListScreen extends BaseView<UserListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userTypeDropDown(controller.selectedUserType, height: 35, width: 200),
+                            userTypeDropDown(controller.selectedUserType, height: 35, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -181,7 +181,7 @@ class UserListScreen extends BaseView<UserListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            statusListDropDown(controller.selectUserStatusdropdownValue, height: 35, width: 200),
+                            statusListDropDown(controller.selectUserStatusdropdownValue, height: 35, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -209,7 +209,7 @@ class UserListScreen extends BaseView<UserListController> {
                               width: 10,
                             ),
                             Container(
-                              width: 200,
+                              width: 150,
                               decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                               child: TextFormField(
                                 textInputAction: TextInputAction.search,
@@ -252,9 +252,6 @@ class UserListScreen extends BaseView<UserListController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,
@@ -524,7 +521,7 @@ class UserListScreen extends BaseView<UserListController> {
                 };
                 controller.updateUserStatus(payload);
               }),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: controller.arrUserListData[index].role == UserRollList.master ? false : true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
+              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
                 final payload = {
                   "userId": controller.arrUserListData[index].userId,
                   "closeOnly": value,

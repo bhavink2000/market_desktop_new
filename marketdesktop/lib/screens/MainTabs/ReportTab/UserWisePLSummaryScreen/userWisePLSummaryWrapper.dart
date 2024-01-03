@@ -44,7 +44,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 330 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -115,7 +115,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 200),
+                            userListDropDown(controller.selectedUser, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -128,9 +128,6 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,

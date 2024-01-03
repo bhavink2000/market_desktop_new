@@ -63,7 +63,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
           )),
-          width: controller.isFilterOpen ? 380 : 0,
+          width: controller.isFilterOpen ? 270 : 0,
           duration: Duration(milliseconds: 100),
           child: Offstage(
             offstage: !controller.isFilterOpen,
@@ -150,9 +150,6 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 70,
-                          ),
                           SizedBox(
                             width: 80,
                             height: 35,
@@ -474,10 +471,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
-                isImage: true,
-                strImage: quantityValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-                isSmall: true, onClickImage: () {
+            valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: quantityValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
               controller.arrQuantitySetting[index].isSelected = !controller.arrQuantitySetting[index].isSelected;
               for (var element in controller.arrQuantitySetting) {
                 if (element.isSelected) {
@@ -489,11 +483,8 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
               }
               controller.update();
             }),
-            valueBox(quantityValue.symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isBig: true),
-            valueBox(quantityValue.lotMax.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
+            valueBox(quantityValue.symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            valueBox(quantityValue.lotMax.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             valueBox(
               quantityValue.quantityMax.toString(),
               45,
@@ -515,9 +506,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
               AppColors().darkText,
               index,
             ),
-            valueBox(quantityValue.updatedAt != null ? shortFullDateTime(quantityValue.updatedAt!) : "", 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isBig: true),
+            valueBox(quantityValue.updatedAt != null ? shortFullDateTime(quantityValue.updatedAt!) : "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ],
         ),
       ),
@@ -529,8 +518,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         // titleBox("", 0),
-        titleBox("", isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-            onClickImage: () {
+        titleBox("", isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, onClickImage: () {
           if (controller.isAllSelected) {
             controller.arrQuantitySetting.forEach((element) {
               element.isSelected = false;
@@ -557,14 +545,13 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
 
   Widget searchBox() {
     return Container(
-      width: 270,
+      width: 150,
       height: 35,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
       decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
       child: Autocomplete<GlobalSymbolData>(
         displayStringForOption: (GlobalSymbolData option) => option.symbolTitle!,
-        fieldViewBuilder:
-            (BuildContext context, TextEditingController control, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
+        fieldViewBuilder: (BuildContext context, TextEditingController control, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
           return CustomTextField(
             type: 'Search',
             keyBoardType: TextInputType.text,
