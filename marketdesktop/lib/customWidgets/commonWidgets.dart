@@ -193,6 +193,13 @@ Widget valueBox(String title, double width, Color? bgColor, Color? textColor, in
             );
 }
 
+var commonFocusBorder = InputDecoration(
+  fillColor: Colors.white,
+  filled: true,
+  contentPadding: const EdgeInsets.only(left: 0),
+  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 2)),
+  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().lightOnlyText, width: 1)),
+);
 Widget filterPanel(
   BuildContext context, {
   bool? isRecordDisplay = false,

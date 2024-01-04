@@ -356,7 +356,7 @@ class TradeListScreen extends BaseView<TradeListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            orderTypeDropDown(controller.selectedOrderType, width: 150, height: 35, onChange: () {
+                            orderTypeDropDown(controller.selectedOrderType, width: 150, onChange: () {
                               print(controller.selectedOrderType.value.id);
                             }),
                             SizedBox(

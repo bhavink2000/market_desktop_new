@@ -196,109 +196,105 @@ class manualOrderController extends BaseController {
       return Container(
 
           // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors().grayLightLine,
-                width: 1.5,
-              ),
-              borderRadius: BorderRadius.circular(3)),
+
           child: Center(
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2<UserData>(
-                isExpanded: true,
-                iconStyleData: IconStyleData(
-                  icon: Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Image.asset(
-                      AppImages.arrowDown,
-                      height: 20,
-                      width: 20,
-                      color: AppColors().fontColor,
-                    ),
-                  ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButtonFormField2<UserData>(
+            isExpanded: true,
+            decoration: commonFocusBorder,
+            iconStyleData: IconStyleData(
+              icon: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
-                dropdownSearchData: DropdownSearchData(
-                  searchController: userSearchController,
-                  searchBarWidgetHeight: 50,
-                  searchBarWidget: Container(
-                    height: 40,
-                    // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
-                    child: CustomTextField(
-                      type: '',
-                      keyBoardType: TextInputType.text,
-                      isEnabled: true,
-                      isOptional: false,
-                      inValidMsg: "",
-                      placeHolderMsg: "Search User",
-                      emptyFieldMsg: "",
-                      controller: userSearchController,
-                      focus: userSearchFocus,
-                      isSecure: false,
-                      borderColor: AppColors().grayLightLine,
-                      keyboardButtonType: TextInputAction.done,
-                      maxLength: 64,
-                      prefixIcon: Image.asset(
-                        AppImages.searchIcon,
+              ),
+            ),
+            dropdownSearchData: DropdownSearchData(
+              searchController: userSearchController,
+              searchBarWidgetHeight: 50,
+              searchBarWidget: Container(
+                height: 40,
+                // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
+                child: CustomTextField(
+                  type: '',
+                  keyBoardType: TextInputType.text,
+                  isEnabled: true,
+                  isOptional: false,
+                  inValidMsg: "",
+                  placeHolderMsg: "Search User",
+                  emptyFieldMsg: "",
+                  controller: userSearchController,
+                  focus: userSearchFocus,
+                  isSecure: false,
+                  borderColor: AppColors().grayLightLine,
+                  keyboardButtonType: TextInputAction.done,
+                  maxLength: 64,
+                  prefixIcon: Image.asset(
+                    AppImages.searchIcon,
+                    height: 20,
+                    width: 20,
+                  ),
+                  suffixIcon: Container(
+                    child: GestureDetector(
+                      onTap: () {
+                        userEditingController.clear();
+                      },
+                      child: Image.asset(
+                        AppImages.crossIcon,
                         height: 20,
                         width: 20,
                       ),
-                      suffixIcon: Container(
-                        child: GestureDetector(
-                          onTap: () {
-                            userEditingController.clear();
-                          },
-                          child: Image.asset(
-                            AppImages.crossIcon,
-                            height: 20,
-                            width: 20,
-                          ),
-                        ),
-                      ),
                     ),
                   ),
-                  searchMatchFn: (item, searchValue) {
-                    return item.value!.name.toString().toLowerCase().startsWith(searchValue.toLowerCase());
-                  },
                 ),
-                hint: Text(
-                  'Select User',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: CustomFonts.family1Medium,
-                    color: AppColors().darkText,
-                  ),
-                ),
-                items: arrUserListOnlyClient
-                    .map((UserData item) => DropdownItem<UserData>(
-                          value: item,
-                          height: 30,
-                          child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
-                        ))
-                    .toList(),
-                selectedItemBuilder: (context) {
-                  return arrUserListOnlyClient
-                      .map((UserData item) => DropdownMenuItem<UserData>(
-                            value: item,
-                            child: Text(
-                              item.userName ?? "",
-                              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
-                            ),
-                          ))
-                      .toList();
-                },
-                value: selectedUser.value.userId == null ? null : selectedUser.value,
-                onChanged: (UserData? value) {
-                  selectedUser.value = value!;
-                },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
-                  height: 40,
-                  // width: 140,
-                ),
-                dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+              ),
+              searchMatchFn: (item, searchValue) {
+                return item.value!.name.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+              },
+            ),
+            hint: Text(
+              'Select User',
+              style: TextStyle(
+                fontSize: 12,
+                fontFamily: CustomFonts.family1Medium,
+                color: AppColors().darkText,
               ),
             ),
-          ));
+            items: arrUserListOnlyClient
+                .map((UserData item) => DropdownItem<UserData>(
+                      value: item,
+                      height: 30,
+                      child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                    ))
+                .toList(),
+            selectedItemBuilder: (context) {
+              return arrUserListOnlyClient
+                  .map((UserData item) => DropdownMenuItem<UserData>(
+                        value: item,
+                        child: Text(
+                          item.userName ?? "",
+                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                        ),
+                      ))
+                  .toList();
+            },
+            value: selectedUser.value.userId == null ? null : selectedUser.value,
+            onChanged: (UserData? value) {
+              selectedUser.value = value!;
+            },
+            buttonStyleData: const ButtonStyleData(
+              padding: EdgeInsets.symmetric(horizontal: 0),
+              height: 40,
+              // width: 140,
+            ),
+            dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+          ),
+        ),
+      ));
     });
   }
 }

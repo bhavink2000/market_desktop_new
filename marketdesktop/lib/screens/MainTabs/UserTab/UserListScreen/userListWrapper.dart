@@ -154,7 +154,7 @@ class UserListScreen extends BaseView<UserListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userTypeDropDown(controller.selectedUserType, height: 35, width: 150),
+                            userTypeDropDown(controller.selectedUserType, height: 30, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -181,7 +181,7 @@ class UserListScreen extends BaseView<UserListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            statusListDropDown(controller.selectUserStatusdropdownValue, height: 35, width: 150),
+                            statusListDropDown(controller.selectUserStatusdropdownValue, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -210,7 +210,7 @@ class UserListScreen extends BaseView<UserListController> {
                             ),
                             Container(
                               width: 150,
-                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1), borderRadius: BorderRadius.circular(5)),
                               child: TextFormField(
                                 textInputAction: TextInputAction.search,
                                 style: TextStyle(

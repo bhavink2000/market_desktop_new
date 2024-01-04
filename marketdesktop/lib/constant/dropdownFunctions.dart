@@ -54,11 +54,12 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
+            child: DropdownButtonFormField2<String>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -128,27 +129,25 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<AddMaster>(
+            child: DropdownButtonFormField2<AddMaster>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 10,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -159,7 +158,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                         height: 30,
                         child: Text(
                           item.name ?? "",
-                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor),
+                          style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ))
@@ -171,7 +170,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -186,7 +185,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                width: 135,
+                // width: 135,
               ),
               // menuItemStyleData: const MenuItemStyleData(
               //   height: 30,
@@ -202,20 +201,18 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<Type>(
+            child: DropdownButtonFormField2<Type>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
@@ -269,20 +266,18 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
+            child: DropdownButtonFormField2<String>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
@@ -336,11 +331,12 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
+            child: DropdownButtonFormField2<String>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -403,11 +399,12 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<UserData>(
+            child: DropdownButtonFormField2<UserData>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Image.asset(
                   AppImages.arrowDown,
@@ -477,7 +474,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                           value: item,
                           child: Text(
                             item.userName ?? "",
-                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                            style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                           ),
                         ))
                     .toList();
@@ -488,8 +485,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
               },
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
-                height: 40,
-                width: 135,
+                height: 30,
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 250),
             ),
@@ -503,11 +499,12 @@ Widget timePeriodDropDown(RxString selectedPeriod) {
     return Container(
         width: 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
+            child: DropdownButtonFormField2<String>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -570,11 +567,12 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
     if (arrSymbol != null && arrSymbol.isNotEmpty) {
       return Container(
           width: width ?? 250,
-          decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+          height: 30,
           child: Center(
             child: DropdownButtonHideUnderline(
-              child: DropdownButton2<GlobalSymbolData>(
+              child: DropdownButtonFormField2<GlobalSymbolData>(
                 isExpanded: true,
+                decoration: commonFocusBorder,
                 iconStyleData: IconStyleData(
                   icon: Image.asset(
                     AppImages.arrowDown,
@@ -655,22 +653,19 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
 
                   selectedScriptFromFilter.value = value!;
                 },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
-                  height: 40,
-                  width: 135,
-                ),
+                buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
               ),
             ),
           ));
     } else {
       return Container(
           width: width ?? 250,
-          decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+          height: 30,
           child: Center(
             child: DropdownButtonHideUnderline(
-              child: DropdownButton2<GlobalSymbolData>(
+              child: DropdownButtonFormField2<GlobalSymbolData>(
                 isExpanded: true,
+                decoration: commonFocusBorder,
                 iconStyleData: IconStyleData(
                   icon: Image.asset(
                     AppImages.arrowDown,
@@ -722,17 +717,13 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                 hint: Text(
                   '',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: CustomFonts.family1Medium,
-                    color: AppColors().darkText,
-                  ),
+                  style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                 ),
                 items: arrAllScript
                     .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
                           value: item,
                           height: 30,
-                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -741,11 +732,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                             value: item.symbolTitle,
                             child: Text(
                               item.symbolTitle ?? "",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: CustomFonts.family1Medium,
-                                color: AppColors().darkText,
-                              ),
+                              style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
@@ -759,11 +746,7 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
 
                   selectedScriptFromFilter.value = value!;
                 },
-                buttonStyleData: const ButtonStyleData(
-                  padding: EdgeInsets.symmetric(horizontal: 0),
-                  height: 40,
-                  width: 135,
-                ),
+                buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
               ),
             ),
           ));
@@ -774,12 +757,13 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
 Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChange, double width = 210}) {
   return Container(
     width: width,
-    decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+    height: 30,
     child: Obx(() {
       return Center(
         child: DropdownButtonHideUnderline(
-          child: DropdownButton2<ExchangeData>(
+          child: DropdownButtonFormField2<ExchangeData>(
             isExpanded: true,
+            decoration: commonFocusBorder,
             iconStyleData: IconStyleData(
               icon: Image.asset(
                 AppImages.arrowDown,
@@ -880,7 +864,7 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
             buttonStyleData: const ButtonStyleData(
               padding: EdgeInsets.symmetric(horizontal: 0),
               height: 40,
-              width: 135,
+              // width: 135,
             ),
           ),
         ),
@@ -893,12 +877,12 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
   return Obx(() {
     return Container(
         width: width ?? 250,
-        // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<Type>(
+            child: DropdownButtonFormField2<Type>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Image.asset(
                   AppImages.arrowDown,
@@ -911,7 +895,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 10,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -920,7 +904,7 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -930,8 +914,8 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1Medium,
+                              fontSize: 10,
+                              fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
                           ),
@@ -944,8 +928,8 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
               },
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
-                height: 40,
-                width: 135,
+                // height: 25,
+                // width: 135,
               ),
             ),
           ),
@@ -958,11 +942,12 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
+            child: DropdownButtonFormField2<String>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -1025,11 +1010,12 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
     return Container(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+        height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
+            child: DropdownButtonFormField2<String>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Image.asset(
                   AppImages.arrowDown,
@@ -1076,7 +1062,6 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                width: 135,
               ),
             ),
           ),
@@ -1086,65 +1071,29 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
 
 Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? width, double? height, Function? onChange, FocusNode? focus}) {
   dropdownUserTypeKey = GlobalKey();
-//  return Obx(() {
-//       return Container(
-//           width: width ?? 250,
-//           height: height ?? 30,
-//           padding: EdgeInsets.symmetric(horizontal: 15),
-//           decoration: BoxDecoration(
-//               border: Border.all(color: focus!.hasFocus ? AppColors().blueColor : AppColors().lightOnlyText, width: 1),
-//               color: AppColors().whiteColor),
-//           child: DropdownButton<userRoleListData>(
-//             focusNode: focus,
-//             key: dropdownUserTypeKey,
-//             value: selectUserdropdownValue.value,
-//             icon: const Icon(Icons.arrow_drop_down),
-//             elevation: 16,
-//             style: TextStyle(color: AppColors().darkText),
-//             underline: Container(
-//               height: 2,
-//               color: Colors.transparent,
-//             ),
-//             onChanged: (userRoleListData? value) {
-//               // This is called when the user selects an item.
-//               selectUserdropdownValue.value = value!;
-//             },
-//             isExpanded: true,
-//             items: arrUserTypeList.map<DropdownMenuItem<userRoleListData>>((userRoleListData value) {
-//               return DropdownMenuItem<userRoleListData>(
-//                 value: value,
-//                 child: Text(value.name!),
-//               );
-//             }).toList(),
-//           )
-//           );
-//     });
 
   return Obx(() {
     return Container(
         width: width ?? 250,
         height: height ?? 30,
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<userRoleListData>(
+            child: DropdownButtonFormField2<userRoleListData>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 10,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1153,7 +1102,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                   .map((userRoleListData item) => DropdownItem<userRoleListData>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1163,7 +1112,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -1178,7 +1127,7 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                   onChange();
                 }
               },
-              buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 40, width: 135),
+              buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 40),
             ),
           ),
         ));
@@ -1190,7 +1139,6 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
     return Container(
         width: width ?? 250,
         height: height ?? 30,
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Center(
           child: DropdownButtonHideUnderline(
             child: ButtonTheme(
@@ -1200,11 +1148,7 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
                 padding: EdgeInsets.zero,
                 key: new GlobalKey(),
                 menuMaxHeight: 250,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 5),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
-                  enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
-                ),
+                decoration: commonFocusBorder,
                 value: selectedBrokerType.value,
                 icon: const Icon(Icons.arrow_drop_down),
                 elevation: 16,
@@ -1231,7 +1175,7 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
                 }).toList(),
               ),
             ),
-            // child: DropdownButton2<BrokerListModelData>(
+            // child: DropdownButtonFormField2<BrokerListModelData>(
             //   isExpanded: true,
             //   iconStyleData: IconStyleData(
             //     icon: Padding(
@@ -1302,27 +1246,24 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
     return Container(
         width: width ?? 250,
         height: height ?? 30,
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<AddMaster>(
+            child: DropdownButtonFormField2<AddMaster>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 10,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1331,7 +1272,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                   .map((AddMaster item) => DropdownItem<AddMaster>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1341,7 +1282,7 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -1359,7 +1300,6 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                width: 135,
               ),
             ),
           ),
@@ -1372,11 +1312,11 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
     return Container(
         width: width ?? 250,
         height: height ?? 30,
-        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<Type>(
+            child: DropdownButtonFormField2<Type>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
                 icon: Image.asset(
                   AppImages.arrowDown,
@@ -1389,7 +1329,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
               hint: Text(
                 '',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 10,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 ),
@@ -1398,7 +1338,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1408,7 +1348,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                           child: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontFamily: CustomFonts.family1Regular,
                               color: AppColors().darkText,
                             ),
@@ -1426,7 +1366,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
-                width: 135,
+                // width: 135,
               ),
             ),
           ),

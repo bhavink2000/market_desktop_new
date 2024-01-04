@@ -39,7 +39,7 @@ class LogsHistoryNewController extends BaseController {
           decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
           child: Center(
             child: DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
+              child: DropdownButtonFormField2<String>(
                 isExpanded: true,
                 iconStyleData: IconStyleData(
                   icon: Padding(
@@ -106,7 +106,7 @@ class LogsHistoryNewController extends BaseController {
           decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
           child: Center(
             child: DropdownButtonHideUnderline(
-              child: DropdownButton2<String>(
+              child: DropdownButtonFormField2<String>(
                 isExpanded: true,
                 iconStyleData: IconStyleData(
                   icon: Padding(

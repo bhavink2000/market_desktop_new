@@ -146,7 +146,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                             ),
                             Container(
                               width: 150,
-                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1), borderRadius: BorderRadius.circular(5)),
                               child: CustomTextField(
                                 type: 'Search',
                                 keyBoardType: TextInputType.text,

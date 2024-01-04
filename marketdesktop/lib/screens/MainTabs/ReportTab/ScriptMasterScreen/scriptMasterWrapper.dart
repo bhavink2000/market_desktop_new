@@ -145,7 +145,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
                             ),
                             Container(
                               width: 150,
-                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1), borderRadius: BorderRadius.circular(5)),
                               child: TextFormField(
                                 textInputAction: TextInputAction.search,
                                 controller: controller.searchController,

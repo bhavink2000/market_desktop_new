@@ -148,7 +148,7 @@ class BrkPopUpController extends BaseController {
       child: Obx(() {
         return Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<ExchangeData>(
+            child: DropdownButtonFormField2<ExchangeData>(
               isExpanded: true,
               iconStyleData: IconStyleData(
                 icon: Padding(

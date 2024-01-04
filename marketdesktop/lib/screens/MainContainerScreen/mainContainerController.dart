@@ -349,17 +349,7 @@ class MainContainerController extends BaseController {
           marketVC.isBuyOpen = 1;
           debouncer.run(() async {
             isKeyPressActive = true;
-            // if (userData?.role == UserRollList.master && userData?.marketOrder == 1) {
-            //   marketVC.adminBuySellPopupDialog(isFromBuy: true);
-            // } else if (userData?.role == UserRollList.admin && userData?.manualOrder == 1) {
-            //   marketVC.adminBuySellPopupDialog(isFromBuy: true);
-            // } else if (userData?.role == UserRollList.user) {
-            //   marketVC.buySellPopupDialog(isFromBuy: true);
-            // } else if (userData?.role == UserRollList.superAdmin) {
-            //   marketVC.adminBuySellPopupDialog(isFromBuy: true);
-            // } else {
-            //   marketVC.isBuyOpen = -1;
-            // }
+
             marketVC.adminBuySellPopupDialog(isFromBuy: true);
             Future.delayed(Duration(milliseconds: 100), () {});
           });
@@ -386,16 +376,7 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptFromPopup.value = marketVC.arrScript[marketVC.selectedScriptIndex];
           debouncer.run(() async {
             isKeyPressActive = true;
-            // if (userData?.role == UserRollList.master && userData?.marketOrder == 1) {
-            //   marketVC.adminBuySellPopupDialog(isFromBuy: false);
-            // } else if (userData?.role == UserRollList.admin && userData?.manualOrder == 1) {
-            //   marketVC.adminBuySellPopupDialog(isFromBuy: false);
-            // } else if (userData?.role == UserRollList.user) {
-            //   marketVC.buySellPopupDialog(isFromBuy: false);
-            // } else if (userData?.role == UserRollList.superAdmin) {
-            //   marketVC.adminBuySellPopupDialog(isFromBuy: false);
-            // }
-            // Future.delayed(Duration(milliseconds: 100), () {});
+
             marketVC.adminBuySellPopupDialog(isFromBuy: false);
             Future.delayed(Duration(milliseconds: 100), () {});
           });
@@ -582,21 +563,8 @@ class MainContainerController extends BaseController {
           positionVc.isValidQty = true.obs;
           debouncer.run(() async {
             isKeyPressActive = true;
-            if (userData?.role == UserRollList.master && userData?.marketOrder == 1) {
-              positionVc.popUpfocusNode.requestFocus();
-              positionVc.adminBuySellPopupDialog(isFromBuy: true);
-            } else if (userData?.role == UserRollList.admin && userData?.manualOrder == 1) {
-              positionVc.popUpfocusNode.requestFocus();
-              positionVc.adminBuySellPopupDialog(isFromBuy: true);
-            } else if (userData?.role == UserRollList.user) {
-              positionVc.buySellPopupDialog(isFromBuy: true);
-            } else if (userData?.role == UserRollList.superAdmin) {
-              positionVc.popUpfocusNode.requestFocus();
-              positionVc.adminBuySellPopupDialog(isFromBuy: true);
-            } else {
-              positionVc.isBuyOpen = -1;
-            }
 
+            positionVc.buySellPopupDialog(isFromBuy: true);
             Future.delayed(Duration(milliseconds: 100), () {
               positionVc.popUpfocusNode.requestFocus();
             });
@@ -618,16 +586,7 @@ class MainContainerController extends BaseController {
           debouncer.run(() async {
             isKeyPressActive = true;
 
-            if (userData?.role == UserRollList.master && userData?.marketOrder == 1) {
-              positionVc.adminBuySellPopupDialog(isFromBuy: false);
-            } else if (userData?.role == UserRollList.admin && userData?.manualOrder == 1) {
-              positionVc.adminBuySellPopupDialog(isFromBuy: false);
-            } else if (userData?.role == UserRollList.user) {
-              positionVc.buySellPopupDialog(isFromBuy: false);
-            } else if (userData?.role == UserRollList.superAdmin) {
-              positionVc.popUpfocusNode.requestFocus();
-              positionVc.adminBuySellPopupDialog(isFromBuy: false);
-            }
+            positionVc.buySellPopupDialog(isFromBuy: false);
             Future.delayed(Duration(milliseconds: 100), () {
               positionVc.popUpfocusNode.requestFocus();
             });

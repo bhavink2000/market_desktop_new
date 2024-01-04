@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,8 +37,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                   children: [
                     Expanded(
                       child: Center(
-                        child: Text("Create User",
-                            style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().whiteColor)),
+                        child: Text("Create User", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().whiteColor)),
                       ),
                     ),
                     GestureDetector(
@@ -68,8 +68,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          child: Text("Select user Type",
-                              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                          child: Text("Select user Type", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                         ),
                         SizedBox(
                           height: 10,
@@ -157,8 +156,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                             height: 3.h,
                           ),
                         Container(
-                          child: Text("User Details",
-                              style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                          child: Text("User Details", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                         ),
                         SizedBox(
                           height: 10,
@@ -171,8 +169,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      child: Text("Name*",
-                                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                      child: Text("Name*", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -217,8 +214,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
-                                      child: Text("UserName*",
-                                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                      child: Text("UserName*", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                     ),
                                     SizedBox(
                                       height: 10,
@@ -270,8 +266,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Password*",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Password*", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -331,8 +326,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          child: Text("Retype Password*",
-                                              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                          child: Text("Retype Password*", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                         ),
                                         SizedBox(
                                           height: 10,
@@ -447,8 +441,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Mobile Number",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Mobile Number", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -487,14 +480,11 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           },
                                         ),
                                       ),
-                                      if (controller.selectedUserType.value.roleId != UserRollList.broker &&
-                                          controller.selectedUserType.value.roleId == UserRollList.master)
+                                      if (controller.selectedUserType.value.roleId != UserRollList.broker && controller.selectedUserType.value.roleId == UserRollList.master)
                                         Container(
                                           width: 23.w,
                                           // color: Colors.red,
-                                          child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "",
-                                              maxLines: 5,
-                                              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: Colors.transparent)),
+                                          child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "", maxLines: 5, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: Colors.transparent)),
                                         ),
                                     ],
                                   ),
@@ -556,8 +546,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Cut Off(%)",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Cut Off(%)", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -613,8 +602,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Credit*",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Credit*", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -656,9 +644,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                       Container(
                                         width: 23.w,
                                         // color: Colors.red,
-                                        child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "",
-                                            maxLines: 5,
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "", maxLines: 5, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                     ],
                                   ),
@@ -676,8 +662,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Credit*",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Credit*", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -719,9 +704,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                       Container(
                                         width: 23.w,
                                         // color: Colors.red,
-                                        child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "",
-                                            maxLines: 5,
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "", maxLines: 5, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                     ],
                                   ),
@@ -732,8 +715,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Remark",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Remark", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -788,8 +770,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Remark",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Remark", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -824,9 +805,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                       Container(
                                         width: 23.w,
                                         // color: Colors.red,
-                                        child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "",
-                                            maxLines: 5,
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: Colors.transparent)),
+                                        child: Text(controller.creditController.text.isNotEmpty ? controller.numericToWord() : "", maxLines: 5, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: Colors.transparent)),
                                       ),
                                     ],
                                   ),
@@ -837,13 +816,12 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Container(
-                                        child: Text("Leverage",
-                                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                        child: Text("Leverage", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                       ),
                                       SizedBox(
                                         height: 10,
                                       ),
-                                      leverageDropDown(controller.selectedLeverage, width: 23.7.w, height: 4.h, focus: controller.leverageFocus),
+                                      leverageDropDown(controller.selectedLeverage, width: 23.7.w, focus: controller.leverageFocus),
                                     ],
                                   ),
                                 ),
@@ -857,22 +835,23 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
-                                  child: Text("Leverage",
-                                      style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                  child: Text("Leverage", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
-                                leverageDropDown(controller.selectedLeverage, width: 23.7.w, focus: controller.leverageFocus, height: 4.h),
+                                leverageDropDown(
+                                  controller.selectedLeverage,
+                                  width: 23.7.w,
+                                  focus: controller.leverageFocus,
+                                ),
                               ],
                             ),
                           ),
-                        if (controller.selectedUserType.value.roleId != UserRollList.broker &&
-                            controller.selectedUserType.value.roleId != UserRollList.admin)
+                        if (controller.selectedUserType.value.roleId != UserRollList.broker && controller.selectedUserType.value.roleId != UserRollList.admin)
                           Container(
                             margin: EdgeInsets.only(top: 3.h),
-                            child: Text("Exchange",
-                                style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                            child: Text("Exchange", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                           ),
                         if (controller.selectedUserType.value.roleId != UserRollList.broker)
                           SizedBox(
@@ -884,8 +863,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                           SizedBox(
                             height: 30,
                           ),
-                        if (controller.selectedUserType.value.roleId == UserRollList.master && controller.selectedUserForEdit == null)
-                          masterPartnershipDetailsView(),
+                        if (controller.selectedUserType.value.roleId == UserRollList.master && controller.selectedUserForEdit == null) masterPartnershipDetailsView(),
                         if (controller.selectedUserType.value.roleId == UserRollList.master)
                           SizedBox(
                             height: 0,
@@ -894,19 +872,15 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                           SizedBox(
                             height: 30,
                           ),
-                        if (controller.selectedUserType.value.roleId != UserRollList.broker &&
-                            controller.selectedUserType.value.roleId != UserRollList.admin)
+                        if (controller.selectedUserType.value.roleId != UserRollList.broker && controller.selectedUserType.value.roleId != UserRollList.admin)
                           Container(
-                            child: Text("High Low Between Limit",
-                                style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                            child: Text("High Low Between Limit", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                           ),
-                        if (controller.selectedUserType.value.roleId != UserRollList.broker &&
-                            controller.selectedUserType.value.roleId != UserRollList.admin)
+                        if (controller.selectedUserType.value.roleId != UserRollList.broker && controller.selectedUserType.value.roleId != UserRollList.admin)
                           SizedBox(
                             height: 5,
                           ),
-                        if (controller.selectedUserType.value.roleId != UserRollList.broker &&
-                            controller.selectedUserType.value.roleId != UserRollList.admin)
+                        if (controller.selectedUserType.value.roleId != UserRollList.broker && controller.selectedUserType.value.roleId != UserRollList.admin)
                           Container(
                             // height: 3.h,
                             // width: 30.w,
@@ -939,8 +913,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                         if (controller.selectedUserType.value.roleId == UserRollList.master) masterMarketOrderCheckboxView(),
                         if (controller.selectedUserType.value.roleId != UserRollList.admin) SymbolWiseSLCheckboxView(),
                         if (controller.selectedUserType.value.roleId == UserRollList.user) FreshLimitSLCheckboxView(),
-                        if (controller.selectedUserType.value.roleId != UserRollList.broker &&
-                            controller.selectedUserType.value.roleId != UserRollList.admin)
+                        if (controller.selectedUserType.value.roleId != UserRollList.broker && controller.selectedUserType.value.roleId != UserRollList.admin)
                           SizedBox(
                             height: 2.h,
                           ),
@@ -975,8 +948,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                     width: 10,
                                   ),
                                   Container(
-                                    child: Text("Change Password on First Login",
-                                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                                    child: Text("Change Password on First Login", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                                   ),
                                 ],
                               ),
@@ -1282,8 +1254,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  child: Text("Execute Pending Order",
-                      style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                  child: Text("Execute Pending Order", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                 ),
                 Row(
                   children: [
@@ -1421,8 +1392,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                   width: 5,
                 ),
                 Container(
-                  child: Text("${num.tryParse(controller.brokerageSharingController.text) ?? 0}",
-                      style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                  child: Text("${num.tryParse(controller.brokerageSharingController.text) ?? 0}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                 ),
                 SizedBox(
                   width: 5,
@@ -1440,8 +1410,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                   width: 5,
                 ),
                 Container(
-                  child: Text("${100 - (num.tryParse(controller.brokerageSharingController.text) ?? 0)}",
-                      style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                  child: Text("${100 - (num.tryParse(controller.brokerageSharingController.text) ?? 0)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                 ),
               ],
             ),
@@ -1455,8 +1424,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          child:
-              Text("Partnership Share Details", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+          child: Text("Partnership Share Details", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
         ),
         SizedBox(
           height: 10,
@@ -1513,11 +1481,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 width: 5,
               ),
               Container(
-                child: Text(
-                    controller.profitandLossController.text == ""
-                        ? userData!.profitAndLossSharingDownLine!.toString()
-                        : controller.profitandLossController.text,
-                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                child: Text(controller.profitandLossController.text == "" ? userData!.profitAndLossSharingDownLine!.toString() : controller.profitandLossController.text, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
               ),
               SizedBox(
                 width: 5,
@@ -1535,10 +1499,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 width: 5,
               ),
               Container(
-                child: Text(
-                    controller.profitandLossController.text == ""
-                        ? "0"
-                        : "${userData!.profitAndLossSharingDownLine! - (num.tryParse(controller.profitandLossController.text) ?? 0)}",
+                child: Text(controller.profitandLossController.text == "" ? "0" : "${userData!.profitAndLossSharingDownLine! - (num.tryParse(controller.profitandLossController.text) ?? 0)}",
                     // controller.profitandLossController.text,
                     style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
               ),
@@ -1569,8 +1530,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                       style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                 ),
               Spacer(),
-              if (controller.profitandLossController.text.isNotEmpty &&
-                  int.parse(controller.profitandLossController.text) > userData!.profitAndLossSharingDownLine!.toInt())
+              if (controller.profitandLossController.text.isNotEmpty && int.parse(controller.profitandLossController.text) > userData!.profitAndLossSharingDownLine!.toInt())
                 Text("Profit and Loss should be between 0 to ${userData!.profitAndLossSharingDownLine!}",
                     // controller.profitandLossController.text,
                     style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().redColor)),
@@ -1628,11 +1588,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 width: 5,
               ),
               Container(
-                child: Text(
-                    controller.brkSharingMasterController.text == ""
-                        ? userData!.brkSharingDownLine!.toString()
-                        : controller.brkSharingMasterController.text,
-                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                child: Text(controller.brkSharingMasterController.text == "" ? userData!.brkSharingDownLine!.toString() : controller.brkSharingMasterController.text, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
               ),
               SizedBox(
                 width: 5,
@@ -1651,11 +1607,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
               ),
               // "${userData!.brkSharingDownLine! - (num.tryParse(controller.brkSharingMasterController.text) ?? 0)}",
               Container(
-                child: Text(
-                    controller.brkSharingMasterController.text == ""
-                        ? "0"
-                        : "${userData!.brkSharingDownLine! - (num.tryParse(controller.brkSharingMasterController.text) ?? 0)}",
-                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                child: Text(controller.brkSharingMasterController.text == "" ? "0" : "${userData!.brkSharingDownLine! - (num.tryParse(controller.brkSharingMasterController.text) ?? 0)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
               ),
               if (userData!.role != UserRollList.superAdmin)
                 SizedBox(
@@ -1677,8 +1629,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
               Spacer(),
 
-              if (controller.brkSharingMasterController.text.isNotEmpty &&
-                  int.parse(controller.brkSharingMasterController.text) > userData!.brkSharingDownLine!.toInt())
+              if (controller.brkSharingMasterController.text.isNotEmpty && int.parse(controller.brkSharingMasterController.text) > userData!.brkSharingDownLine!.toInt())
                 Text("Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}",
                     // controller.profitandLossController.text,
                     style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().redColor)),
@@ -1822,8 +1773,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 if (controller.selectedUserType.value.roleId != UserRollList.user)
                   Container(
-                    child: Text(controller.selectedUserType.value.roleId == UserRollList.user ? "Close Only" : "Market Order",
-                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                    child: Text(controller.selectedUserType.value.roleId == UserRollList.user ? "Close Only" : "Market Order", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                   ),
               ],
             ),
@@ -1937,8 +1887,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                     width: 10,
                   ),
                   Container(
-                    child: Text("Symbol wise SL/Limit(%)",
-                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                    child: Text("Symbol wise SL/Limit(%)", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                   ),
                 ],
               ),
@@ -2055,8 +2004,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                         width: 10,
                       ),
                       Container(
-                        child: Text(controller.selectedUserType.value.roleId == UserRollList.user ? "Auto Square Off" : "Add Master",
-                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                        child: Text(controller.selectedUserType.value.roleId == UserRollList.user ? "Auto Square Off" : "Add Master", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                       ),
                     ],
                   ),
@@ -2132,8 +2080,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                       ),
                       if (controller.selectedUserType.value.roleId != UserRollList.user)
                         Container(
-                          child: Text(controller.selectedUserType.value.roleId == UserRollList.user ? "Close Only" : "Market Order",
-                              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                          child: Text(controller.selectedUserType.value.roleId == UserRollList.user ? "Close Only" : "Market Order", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                         ),
                     ],
                   ),
@@ -2275,8 +2222,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                 SizedBox(
                                   width: 7,
                                 ),
-                                Text("Exchange",
-                                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                                Text("Exchange", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                               ],
                             )),
                           ),
@@ -2293,8 +2239,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                 SizedBox(
                                   width: 7,
                                 ),
-                                Text("Turnover Brk.",
-                                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                                Text("Turnover Brk.", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                               ],
                             )),
                           ),
@@ -2311,8 +2256,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                 SizedBox(
                                   width: 7,
                                 ),
-                                Text("Symbol Brk.",
-                                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                                Text("Symbol Brk.", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                               ],
                             )),
                           ),
@@ -2433,8 +2377,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                 SizedBox(
                                   width: 7,
                                 ),
-                                Text("Exchange",
-                                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                                Text("Exchange", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                               ],
                             )),
                           ),
@@ -2546,8 +2489,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                         SizedBox(
                           width: 7,
                         ),
-                        Text(controller.arrExchange[index].name ?? "",
-                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                        Text(controller.arrExchange[index].name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                       ],
                     )),
                   ),
@@ -2595,8 +2537,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                               value: controller.arrExchange[index].isSymbolSelected,
                               onChanged: (value) {
-                                if (controller.arrExchange[index].brokarageType == "symbolWise" ||
-                                    controller.arrExchange[index].brokarageType == "both") {
+                                if (controller.arrExchange[index].brokarageType == "symbolWise" || controller.arrExchange[index].brokarageType == "both") {
                                   controller.arrExchange[index].isSymbolSelected = true;
                                   controller.arrExchange[index].isTurnOverSelected = false;
                                   controller.update();
@@ -2620,8 +2561,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                         if (controller.selectedUserType.value.roleId == UserRollList.user)
                           IgnorePointer(
                             ignoring: controller.arrExchange[index].isSelected == false,
-                            child: dropDownGroupSingleSelection(
-                                controller.arrExchange[index].isDropDownValueSelected, controller.arrExchange[index].arrGroupList),
+                            child: dropDownGroupSingleSelection(controller.arrExchange[index].isDropDownValueSelected, controller.arrExchange[index].arrGroupList),
                           ),
                       ],
                     )),
@@ -2691,8 +2631,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                         SizedBox(
                           width: 7,
                         ),
-                        Text(controller.arrExchange[index].name ?? "",
-                            style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                        Text(controller.arrExchange[index].name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                       ],
                     )),
                   ),
@@ -2709,8 +2648,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                       children: [
                         IgnorePointer(
                           ignoring: controller.arrExchange[index].isSelected == false,
-                          child:
-                              dropDownMasterMultiSelection(controller.arrExchange[index].selectedItems, controller.arrExchange[index].arrGroupList),
+                          child: dropDownMasterMultiSelection(controller.arrExchange[index].selectedItems, controller.arrExchange[index].arrGroupList),
                         ),
                       ],
                     )),
@@ -2820,8 +2758,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
           SizedBox(
             width: 1.h,
           ),
-          Text(controller.arrExchange[index].name ?? "",
-              style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text(controller.arrExchange[index].name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
           if (index != controller.arrExchange.length - 1)
             SizedBox(
               width: MediaQuery.of(context).size.width / 80,
@@ -2871,8 +2808,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
           SizedBox(
             width: 1.h,
           ),
-          Text(controller.arrExchange[index].name ?? "",
-              style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text(controller.arrExchange[index].name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
           if (index != controller.arrExchange.length - 1)
             SizedBox(
               width: MediaQuery.of(context).size.width / 80,
@@ -2913,34 +2849,28 @@ class CreateUserScreen extends BaseView<CreateUserController> {
     return Obx(() {
       return Container(
           width: width ?? 250,
-          height: height ?? 30,
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-              border: Border.all(color: focus!.hasFocus ? AppColors().blueColor : AppColors().lightOnlyText, width: 1),
-              color: AppColors().whiteColor),
-          child: DropdownButton<AddMaster>(
+          height: height ?? 35,
+          // padding: EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(border: Border.all(color: focus!.hasFocus ? AppColors().blueColor : AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+          child: DropdownButtonFormField2<AddMaster>(
             focusNode: focus,
+            decoration: commonFocusBorder,
             key: controller.dropdownLeveargeKey,
             value: selectedLeverage.value,
-            icon: const Icon(Icons.arrow_drop_down),
-            elevation: 16,
             style: TextStyle(color: AppColors().darkText),
-            underline: Container(
-              height: 2,
-              color: Colors.transparent,
-            ),
             onChanged: (AddMaster? value) {
               // This is called when the user selects an item.
               selectedLeverage.value = value!;
               focus.nextFocus();
             },
             isExpanded: true,
-            items: arrLeverageList.map<DropdownMenuItem<AddMaster>>((AddMaster value) {
-              return DropdownMenuItem<AddMaster>(
-                value: value,
-                child: Text(value.name!),
-              );
-            }).toList(),
+            items: arrLeverageList
+                .map((AddMaster item) => DropdownItem<AddMaster>(
+                      value: item,
+                      height: 30,
+                      child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                    ))
+                .toList(),
           ));
     });
   }

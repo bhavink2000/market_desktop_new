@@ -77,18 +77,13 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
       width: 220,
       height: 40,
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors().grayLightLine,
-            width: 1.5,
-          ),
-          borderRadius: BorderRadius.circular(3)),
       padding: const EdgeInsets.only(right: 15),
       child: Obx(() {
         return Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButton2<ExchangeData>(
+            child: DropdownButtonFormField2<ExchangeData>(
               isExpanded: true,
+              decoration: commonFocusBorder,
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 300,
                 decoration: BoxDecoration(

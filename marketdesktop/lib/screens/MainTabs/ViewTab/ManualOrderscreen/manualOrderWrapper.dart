@@ -175,17 +175,12 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
           Container(
             height: 5.6.h,
             width: 20.w,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors().grayLightLine,
-                  width: 1.5,
-                ),
-                borderRadius: BorderRadius.circular(3)),
             child: Obx(() {
               return Center(
                 child: DropdownButtonHideUnderline(
-                  child: DropdownButton2<ExchangeData>(
+                  child: DropdownButtonFormField2<ExchangeData>(
                     isExpanded: true,
+                    decoration: commonFocusBorder,
                     iconStyleData: IconStyleData(
                       icon: Padding(
                         padding: const EdgeInsets.only(right: 10),
@@ -301,19 +296,14 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
           Container(
             height: 5.6.h,
             width: 20.w,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors().grayLightLine,
-                  width: 1.5,
-                ),
-                borderRadius: BorderRadius.circular(3)),
             padding: const EdgeInsets.symmetric(horizontal: 0),
             child: Center(
               child: Obx(() {
                 return Center(
                   child: DropdownButtonHideUnderline(
-                    child: DropdownButton2<GlobalSymbolData>(
+                    child: DropdownButtonFormField2<GlobalSymbolData>(
                       isExpanded: true,
+                      decoration: commonFocusBorder,
                       iconStyleData: IconStyleData(
                         icon: Padding(
                           padding: const EdgeInsets.only(right: 10),
@@ -441,32 +431,22 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   child: DropdownButtonHideUnderline(
                     child: ButtonTheme(
                       alignedDropdown: true,
-                      child: DropdownButtonFormField<Type>(
+                      child: DropdownButtonFormField2<Type>(
                         isExpanded: false,
-                        menuMaxHeight: 400,
-                        // alignment: Alignment.topCenter,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 15),
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
-                          disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1.5)),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1)),
-                        ),
 
+                        // alignment: Alignment.topCenter,
+                        decoration: commonFocusBorder,
+                        dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                         hint: Text(
                           'Select Trade display for',
                           style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
                         ),
+
                         items: constantValues!.manuallyTradeAddedFor!
-                            .map((Type item) => DropdownMenuItem<Type>(
+                            .map((Type item) => DropdownItem<Type>(
                                   value: item,
-                                  child: Text(
-                                    item.name ?? "",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Medium,
-                                      color: AppColors().darkText,
-                                    ),
-                                  ),
+                                  height: 30,
+                                  child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
                                 ))
                             .toList(),
                         selectedItemBuilder: (context) {
@@ -529,6 +509,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
               keyBoardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
               isEnabled: true,
               isOptional: false,
+              borderColor: AppColors().lightOnlyText,
               inValidMsg: AppString.emptyServer,
               placeHolderMsg: "00.00",
               emptyFieldMsg: AppString.emptyServer,
@@ -617,7 +598,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   isShowSufix: false,
                   suffixIcon: null,
                   prefixIcon: null,
-                  borderColor: AppColors().grayBorderColor,
+                  borderColor: AppColors().lightOnlyText,
                   roundCorner: 0,
                 ),
               ),
@@ -767,7 +748,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                 contentPadding: EdgeInsets.only(bottom: 8, left: 20),
               ),
 
-              widgetContainerDecoration: BoxDecoration(borderRadius: BorderRadius.circular(0), color: AppColors().whiteColor, border: Border.all(color: AppColors().grayBorderColor, width: 1)),
+              widgetContainerDecoration: BoxDecoration(borderRadius: BorderRadius.circular(0), color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
               controller: controller.lotController,
               min: 1,
               // max: 1000000000000,
@@ -836,7 +817,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                 decoration: BoxDecoration(
                     color: AppColors().whiteColor,
                     border: Border.all(
-                      color: AppColors().grayBorderColor,
+                      color: AppColors().lightOnlyText,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.circular(3)),

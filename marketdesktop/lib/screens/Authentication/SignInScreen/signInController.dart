@@ -33,6 +33,7 @@ class SignInController extends BaseController {
   TextEditingController passwordController = TextEditingController();
   FocusNode passwordFocus = FocusNode();
   RxBool isLoadingSignIn = false.obs;
+  List<String> arrServerName = [];
 
   bool isEyeOpen = true;
 
@@ -41,9 +42,9 @@ class SignInController extends BaseController {
     // TODO: implement onInit
     super.onInit();
     await windowManager.setTitle("BAZAAR 2.0");
-    serverController.text = "bazaar";
-    userNameController.text = "prem";
-    passwordController.text = "123456";
+    // serverController.text = "bazaar";
+    // userNameController.text = "prem";
+    // passwordController.text = "123456";
     await windowManager.setMinimumSize(Size(400, 490));
     await windowManager.setSize(Size(400, 490), animate: false);
     await windowManager.setResizable(false);
@@ -58,6 +59,7 @@ class SignInController extends BaseController {
     var response = await service.getServerNameCall();
     if (response?.statusCode == 200) {
       serverName = response?.data?.serverName ?? "";
+      arrServerName.add(response?.data?.serverName ?? "");
     }
     update();
     Future.delayed(const Duration(milliseconds: 100), () {
@@ -105,8 +107,7 @@ class SignInController extends BaseController {
       passwordFocus.unfocus();
       isLoadingSignIn.value = true;
       update();
-      var response = await service.signInCall(
-          userName: userNameController.text.trim(), password: passwordController.text.trim(), serverName: serverController.text.trim());
+      var response = await service.signInCall(userName: userNameController.text.trim(), password: passwordController.text.trim(), serverName: serverController.text.trim());
 
       if (response != null) {
         if (response.statusCode == 200) {

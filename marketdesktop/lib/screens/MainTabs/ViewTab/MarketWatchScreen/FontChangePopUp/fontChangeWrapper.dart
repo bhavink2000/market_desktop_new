@@ -19,7 +19,10 @@ class FontChangeScreen extends BaseView<FontChangeController> {
         child: Scaffold(
             backgroundColor: AppColors().bgColor,
             body: Column(
-              children: [headerViewContent(context), mainContent(context)],
+              children: [
+                headerViewContent(isFilterAvailable: false, isFromMarket: false, title: "Font"),
+                mainContent(context),
+              ],
             )));
   }
 
@@ -301,10 +304,7 @@ class FontChangeScreen extends BaseView<FontChangeController> {
                         if (controller.arrFont[controller.selectedFamilyIndex]["name"] == "Arial") {
                           watchVc.selectedFontFamily = controller.setArialStyles(controller.selectedStyleIndex);
                         } else {
-                          watchVc.selectedFontFamily = controller.arrFont[controller.selectedFamilyIndex]["name"].toString() +
-                              "-" +
-                              controller.arrFont[controller.selectedFamilyIndex]["family"][controller.selectedStyleIndex]
-                                  .toString();
+                          watchVc.selectedFontFamily = controller.arrFont[controller.selectedFamilyIndex]["name"].toString() + "-" + controller.arrFont[controller.selectedFamilyIndex]["family"][controller.selectedStyleIndex].toString();
                         }
 
                         watchVc.selectedFontSize = controller.arrSize[controller.selectedSizeIndex].toDouble();
@@ -417,67 +417,12 @@ class FontChangeScreen extends BaseView<FontChangeController> {
             Text(controller.arrFont[controller.selectedFamilyIndex]["family"][index],
                 style: TextStyle(
                   fontSize: 16,
-                  fontFamily: controller.arrFont[controller.selectedFamilyIndex]["name"] == "Arial"
-                      ? controller.setArialStyles(index)
-                      : controller.arrFont[controller.selectedFamilyIndex]["name"] +
-                          "-" +
-                          controller.arrFont[controller.selectedFamilyIndex]["family"][index],
+                  fontFamily: controller.arrFont[controller.selectedFamilyIndex]["name"] == "Arial" ? controller.setArialStyles(index) : controller.arrFont[controller.selectedFamilyIndex]["name"] + "-" + controller.arrFont[controller.selectedFamilyIndex]["family"][index],
                   color: controller.selectedStyleIndex == index ? AppColors().whiteColor : AppColors().fontColor,
                 )),
           ],
         ),
       ),
     );
-  }
-
-  Widget headerViewContent(BuildContext context) {
-    return Container(
-        width: 100.w,
-        height: 4.h,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text("Font",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            Spacer(),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-                Get.delete<FontChangeController>();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ));
   }
 }

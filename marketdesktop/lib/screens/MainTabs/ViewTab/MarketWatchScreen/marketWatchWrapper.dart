@@ -983,8 +983,8 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
     return Container(
       width: 200,
       // height: 4.h,
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6.5),
+      decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), borderRadius: BorderRadius.circular(3)),
       child: Autocomplete<GlobalSymbolData>(
         displayStringForOption: (GlobalSymbolData option) => option.symbolTitle!,
         fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
@@ -1003,7 +1003,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
             ),
             controller: searchEditingController,
             focus: searchFocus,
-            focusBorderColor: AppColors().redColor,
+            focusBorderColor: AppColors().blueColor,
             isSecure: false,
             borderColor: AppColors().grayLightLine,
             keyboardButtonType: TextInputAction.search,
