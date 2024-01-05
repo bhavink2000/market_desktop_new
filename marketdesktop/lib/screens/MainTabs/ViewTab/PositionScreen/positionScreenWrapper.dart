@@ -14,7 +14,6 @@ import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
-import '../../../MainContainerScreen/mainContainerController.dart';
 import '../ProfitAndLossScreen/profitAndLossController.dart';
 import '../TradeScreen/successTradeListController.dart';
 import '../TradeScreen/successTradeListWrapper.dart';
@@ -452,12 +451,20 @@ class PositionScreen extends BaseView<PositionController> {
                 fontFamily: CustomFonts.family1Medium,
                 color: AppColors().darkText,
               )),
-          Text((userData!.profitLoss! - userData!.brokerageTotal!).toStringAsFixed(2),
-              style: TextStyle(
-                fontSize: 12,
-                fontFamily: CustomFonts.family1Medium,
-                color: AppColors().darkText,
-              )),
+          if (userData!.role == UserRollList.user)
+            Text((userData!.profitLoss! - userData!.brokerageTotal!).toStringAsFixed(2),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                )),
+          if (userData!.role != UserRollList.user)
+            Text((userData!.profitLoss! + userData!.brokerageTotal!).toStringAsFixed(2),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                )),
           SizedBox(
             width: 50,
           ),
@@ -512,12 +519,20 @@ class PositionScreen extends BaseView<PositionController> {
                 fontFamily: CustomFonts.family1Medium,
                 color: AppColors().darkText,
               )),
-          Text(((userData!.credit! + controller.totalPosition.value + userData!.profitLoss!) - userData!.brokerageTotal!).toStringAsFixed(2),
-              style: TextStyle(
-                fontSize: 12,
-                fontFamily: CustomFonts.family1Medium,
-                color: AppColors().darkText,
-              ))
+          if (userData!.role == UserRollList.user)
+            Text(((userData!.credit! + controller.totalPosition.value + userData!.profitLoss!) - userData!.brokerageTotal!).toStringAsFixed(2),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                )),
+          if (userData!.role != UserRollList.user)
+            Text(((userData!.credit! + controller.totalPosition.value + userData!.profitLoss!) + userData!.brokerageTotal!).toStringAsFixed(2),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                ))
         ],
       ),
     );

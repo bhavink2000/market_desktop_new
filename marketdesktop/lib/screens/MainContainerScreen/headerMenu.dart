@@ -38,8 +38,6 @@ import 'package:marketdesktop/screens/MainTabs/ReportTab/UserScriptPositionTrack
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserScriptPositionTrackScreen/userScriptPostionTrackWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryWrapper.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/WeeklyAdminScreen/weeklyAdminController.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/WeeklyAdminScreen/weeklyAdminWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/messagesController.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/messagesWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';

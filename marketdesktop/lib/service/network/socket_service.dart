@@ -18,7 +18,7 @@ import 'package:marketdesktop/screens/UserDetailPopups/PositionPopUp/positionPop
 import 'package:marketdesktop/screens/UserDetailPopups/TradeListPopUp/tradeListPopUpController.dart';
 import '../../constant/const_string.dart';
 import 'package:web_socket_channel/io.dart';
-
+import 'package:web_socket_channel/status.dart' as status;
 import 'package:web_socket_channel/web_socket_channel.dart';
 // import 'package:web_socket_channel/status.dart' as status;
 
@@ -151,11 +151,21 @@ class SocketService {
     }
   }
 
-  connectScript(String symbols) {
+  connectScript(String symbols) async {
     try {
       channel?.sink.add(symbols);
     } catch (e) {
-      //print(e);
+      print(e);
+      try {
+        socket.channel?.sink.close(status.normalClosure);
+        isMarketSocketConnected.value = false;
+        socket.arrSymbolNames.clear();
+        await socket.connectSocket();
+        socketIO.init();
+      } catch (e) {
+        print(e);
+      }
+      connectScript(symbols);
     }
   }
 }

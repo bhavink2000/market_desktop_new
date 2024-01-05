@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/index.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
-
 import 'package:responsive_sizer/responsive_sizer.dart';
-// import 'package:window_manager/window_manager.dart';
-
-import '../../../constant/assets.dart';
 import '../../../constant/color.dart';
 import '../../../constant/font_family.dart';
 import '../../constant/const_string.dart';

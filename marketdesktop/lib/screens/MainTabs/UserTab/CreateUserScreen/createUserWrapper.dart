@@ -8,10 +8,8 @@ import 'package:marketdesktop/customWidgets/appTextField.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/brokerListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
-import 'package:marketdesktop/modelClass/exchangeAllowModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/CreateUserScreen/createUserController.dart';
-import 'package:multiselect/multiselect.dart';
 import '../../../../constant/index.dart';
 
 class CreateUserScreen extends BaseView<CreateUserController> {
@@ -42,6 +40,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        controller.reseData();
                         Get.find<MainContainerController>().isCreateUserClick = false;
                         Get.find<MainContainerController>().update();
                       },
@@ -77,7 +76,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                           children: [
                             IgnorePointer(
                               ignoring: controller.selectedUserForEdit != null,
-                              child: userTypeDropDown(controller.selectedUserType, width: 23.7.w, height: 4.h, onChange: () {
+                              child: userTypeDropDown(controller.selectedUserType, width: 23.7.w, height: 30, onChange: () {
                                 controller.nameController.text = "";
                                 controller.userNameController.text = "";
                                 controller.passwordController.text = "";
@@ -119,7 +118,9 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                   controller.arrExchange[i].selectedItemsID.clear();
                                   controller.arrExchange[i].isDropDownValueSelectedID.value = "";
                                   if (controller.selectedUserType.value.roleId == UserRollList.user) {
-                                    controller.arrExchange[i].arrGroupList.insert(0, groupListModelData(name: "Select Group"));
+                                    if (!controller.arrExchange[i].arrGroupList.any((element) => element.name == "Select Group")) {
+                                      controller.arrExchange[i].arrGroupList.insert(0, groupListModelData(name: "Select Group"));
+                                    }
 
                                     controller.arrExchange[i].isDropDownValueSelected = controller.arrExchange[i].arrGroupList.first.obs;
                                   }
@@ -199,7 +200,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                         suffixIcon: null,
                                         prefixIcon: null,
                                         borderColor: AppColors().lightText,
-                                        roundCorner: 0,
+                                        roundCorner: 5,
                                         onDoneClick: () {
                                           controller.userNameFocus.requestFocus();
                                         },
@@ -244,7 +245,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                         suffixIcon: null,
                                         prefixIcon: null,
                                         borderColor: AppColors().lightText,
-                                        roundCorner: 0,
+                                        roundCorner: 5,
                                         onDoneClick: () {
                                           controller.passwordFocus.requestFocus();
                                         },
@@ -310,7 +311,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           isMaxlineMore: false,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                           onDoneClick: () {
                                             controller.retypePasswordFocus.requestFocus();
                                           },
@@ -365,7 +366,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                             ),
                                             prefixIcon: null,
                                             borderColor: AppColors().lightText,
-                                            roundCorner: 0,
+                                            roundCorner: 5,
                                             onDoneClick: () {
                                               controller.mobileNumberFocus.requestFocus();
                                             },
@@ -418,7 +419,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                 //             suffixIcon: null,
                                 //             prefixIcon: null,
                                 //             borderColor: AppColors().lightText,
-                                //             roundCorner: 0,
+                                //             roundCorner: 5,
                                 //             onDoneClick: () {
                                 //               controller.mobileNumberFocus
                                 //                   .requestFocus();
@@ -471,7 +472,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           suffixIcon: null,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                           onDoneClick: () {
                                             if (controller.selectedUserType.value.roleId == UserRollList.master) {
                                               controller.creditFocus.requestFocus();
@@ -533,7 +534,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                               //             suffixIcon: null,
                               //             prefixIcon: null,
                               //             borderColor: AppColors().lightText,
-                              //             roundCorner: 0,
+                              //             roundCorner: 5,
                               //           ),
                               //         ),
                               //       ],
@@ -587,7 +588,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           suffixIcon: null,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                           onDoneClick: () {
                                             controller.creditFocus.requestFocus();
                                           },
@@ -632,7 +633,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           suffixIcon: null,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                           onDoneClick: () {
                                             controller.remarkFocus.requestFocus();
                                           },
@@ -692,7 +693,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           suffixIcon: null,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                           onChange: () {
                                             controller.update();
                                           },
@@ -744,7 +745,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           suffixIcon: null,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                           onDoneClick: () {
                                             controller.dropdownLeveargeKey!.currentContext?.visitChildElements((element) {
                                               if (element.widget is Semantics) {
@@ -799,7 +800,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                                           suffixIcon: null,
                                           prefixIcon: null,
                                           borderColor: AppColors().lightText,
-                                          roundCorner: 0,
+                                          roundCorner: 5,
                                         ),
                                       ),
                                       Container(
@@ -1377,7 +1378,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
               suffixIcon: null,
               prefixIcon: null,
               borderColor: AppColors().lightText,
-              roundCorner: 0,
+              roundCorner: 5,
             ),
           ),
         if (controller.selectedUserType.value.roleId == UserRollList.user && controller.selectedBrokerType.value.addMaster != null)
@@ -1467,7 +1468,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
             suffixIcon: null,
             prefixIcon: null,
             borderColor: AppColors().lightText,
-            roundCorner: 0,
+            roundCorner: 5,
           ),
         ),
         Container(
@@ -1574,7 +1575,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
             suffixIcon: null,
             prefixIcon: null,
             borderColor: AppColors().lightText,
-            roundCorner: 0,
+            roundCorner: 5,
           ),
         ),
         Container(
@@ -2481,7 +2482,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Center(
                         child: Row(
@@ -2499,7 +2500,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Row(
                       children: [
@@ -2526,7 +2527,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Row(
                       children: [
@@ -2553,7 +2554,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Center(
                         child: Row(
@@ -2590,7 +2591,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Container(
                     width: 2.2.w,
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Checkbox(
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -2623,7 +2624,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Center(
                         child: Row(
@@ -2641,7 +2642,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 3.h,
+                    height: 4.h,
                     color: index % 2 == 1 ? AppColors().footerColor : AppColors().grayBg,
                     child: Center(
                         child: Row(
@@ -2667,34 +2668,35 @@ class CreateUserScreen extends BaseView<CreateUserController> {
 
   Widget dropDownGroupSingleSelection(Rx<groupListModelData?> values, List<groupListModelData> arr) {
     //print(controller.singleDropdownKey.currentContext);
+    print("CAlled");
     if (values.value!.name! == "") {
       values.value!.name = "Select Group";
       return SizedBox();
     }
-    if (values.value!.name! == "Select Group" && arr.indexWhere((element) => element.name == "Select Group") == -1) {
+    if (values.value!.name! == "Select Group" && arr.any((element) => element.name == "Select Group") == false) {
       arr.insert(0, groupListModelData(name: "Select Group"));
       return SizedBox();
     }
     return Container(
       width: 11.w,
+      height: 25,
       child: Container(
         child: Obx(() {
           return Center(
             child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
               alignedDropdown: true,
-              child: DropdownButtonFormField<groupListModelData>(
-                focusNode: FocusNode(),
-                padding: EdgeInsets.zero,
+              child: DropdownButtonFormField2<groupListModelData>(
+                // focusNode: FocusNode(),
                 key: GlobalKey(),
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 5),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                  // fillColor: Colors.white,
+                  // filled: true,
+                  contentPadding: const EdgeInsets.only(left: 0),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 2)),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().lightOnlyText, width: 1)),
                 ),
                 value: values.value,
-                icon: const Icon(Icons.arrow_drop_down),
-                elevation: 16,
                 style: TextStyle(color: AppColors().darkText),
                 onChanged: (groupListModelData? value) {
                   // This is called when the user selects an item.
@@ -2709,12 +2711,13 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                   }).toList();
                 },
                 isExpanded: true,
-                items: arr.map<DropdownMenuItem<groupListModelData>>((groupListModelData item) {
-                  return DropdownMenuItem<groupListModelData>(
-                    value: item,
-                    child: Text(item.name ?? ""),
-                  );
-                }).toList(),
+                items: arr
+                    .map((groupListModelData item) => DropdownItem<groupListModelData>(
+                          value: item,
+                          height: 30,
+                          child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                        ))
+                    .toList(),
               ),
             )),
           );
@@ -2819,39 +2822,157 @@ class CreateUserScreen extends BaseView<CreateUserController> {
   }
 
   Widget dropDownMasterMultiSelection(List<groupListModelData> values, List<groupListModelData> arr) {
+    print("CAlled123");
     return Container(
-      child: Center(
-        child: Container(
-          width: 22.5.w,
-          height: 27,
+        width: 22.5.w,
+        height: 25,
+        // margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropDownMultiSelect<groupListModelData>(
+            child: DropdownButtonFormField2<groupListModelData>(
+              isExpanded: true,
               decoration: InputDecoration(
-                // contentPadding: EdgeInsets.only(left: 5, bottom: 10),
-                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 1)),
+                // fillColor: Colors.white,
+                // filled: true,
+                contentPadding: const EdgeInsets.only(left: 0),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 2)),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().lightOnlyText, width: 1)),
               ),
-              selected_values_style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText),
-              onChanged: (List<groupListModelData> x) {
-                //print(x);
+              iconStyleData: IconStyleData(
+                icon: Container(
+                  // margin: const EdgeInsets.only(right: 5),
+                  child: Icon(
+                    Icons.keyboard_arrow_down_outlined,
+                    size: 20,
+                    color: AppColors().fontColor,
+                  ),
+                ),
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+              hint: Text(
+                values.length == 0 ? "Select Group" : values.map((item) => item.name).toList().join(", "),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                ),
+              ),
+              items: arr
+                  .map((groupListModelData item) => DropdownItem<groupListModelData>(
+                        enabled: false,
+                        value: item,
+                        height: item.name == "Select Group" ? 0 : 30,
+                        child: StatefulBuilder(builder: (context, menuSetState) {
+                          return InkWell(
+                            onTap: () async {
+                              // focusNode.requestFocus();
+                              if (values.firstWhereOrNull((element) => element.name == item.name) != null) {
+                                menuSetState(() {
+                                  values.removeWhere((element) => element.name == item.name);
+                                });
+                              } else {
+                                menuSetState(() {
+                                  values.add(item);
+                                });
+                              }
+                              controller.update();
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              child: item.name == "Select Group"
+                                  ? SizedBox()
+                                  : Row(
+                                      children: [
+                                        Center(
+                                          child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                                        ),
+                                        const Spacer(),
+                                        values.firstWhereOrNull((element) => element.name == item.name) != null
+                                            ? Icon(
+                                                Icons.check_box,
+                                                color: AppColors().blueColor,
+                                                size: 18,
+                                              )
+                                            : Icon(
+                                                Icons.check_box_outline_blank,
+                                                color: AppColors().lightText,
+                                                size: 18,
+                                              )
+                                      ],
+                                    ),
+                            ),
+                          );
+                        }),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return arr
+                    .map((groupListModelData item) => DropdownMenuItem<groupListModelData>(
+                          value: item,
+                          child: Text(
+                            item.name ?? "",
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().darkText,
+                            ),
+                          ),
+                        ))
+                    .toList();
               },
-              options: arr,
-              selectedValues: values,
-              whenEmpty: 'Select Group',
+              value: null,
+              onChanged: (groupListModelData? value) {
+                // if (values.firstWhereOrNull((element) => element.name == value!.name) != null) {
+                //   values.removeWhere((element) => element.name == value!.name);
+                // } else {
+                //   values.add(value!);
+                // }
+                // print(values.map((item) => item.name).toList().join(", "));
+                // controller.update();
+              },
+              buttonStyleData: ButtonStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                // decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                height: 30,
+                // width: 165,
+              ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
+
+    // return Container(
+    //   child: Center(
+    //     child: Container(
+    //       width: 22.5.w,
+    //       height: 27,
+    //       child: DropdownButtonHideUnderline(
+    //         child: DropDownMultiSelect<groupListModelData>(
+    //           decoration: InputDecoration(
+    //             // contentPadding: EdgeInsets.only(left: 5, bottom: 10),
+    //             focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
+    //             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 1)),
+    //           ),
+    //           selected_values_style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText),
+    //           onChanged: (List<groupListModelData> x) {
+    //             //print(x);
+    //           },
+    //           options: arr,
+    //           selectedValues: values,
+    //           whenEmpty: 'Select Group',
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget leverageDropDown(Rx<AddMaster> selectedLeverage, {double? width, double? height, FocusNode? focus}) {
     return Obx(() {
       return Container(
           width: width ?? 250,
-          height: height ?? 35,
+          height: height ?? 30,
           // padding: EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(border: Border.all(color: focus!.hasFocus ? AppColors().blueColor : AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+          // decoration: BoxDecoration(border: Border.all(color: focus!.hasFocus ? AppColors().blueColor : AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
           child: DropdownButtonFormField2<AddMaster>(
             focusNode: focus,
             decoration: commonFocusBorder,
@@ -2861,7 +2982,7 @@ class CreateUserScreen extends BaseView<CreateUserController> {
             onChanged: (AddMaster? value) {
               // This is called when the user selects an item.
               selectedLeverage.value = value!;
-              focus.nextFocus();
+              // focus.nextFocus();
             },
             isExpanded: true,
             items: arrLeverageList

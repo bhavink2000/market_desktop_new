@@ -1164,9 +1164,10 @@ class AllApiCallService {
         "highLowBetweenTradeLimit": highLowBetweenTradeLimits == null ? [] : List<dynamic>.from(highLowBetweenTradeLimits.map((x) => x)),
         "highLowSLLimitPercentage": symbolWiseSL,
       };
+      print(GetStorage().read(LocalStorageKeys.userToken));
       print(payload);
       final data = await _dio.post(Api.createUser, data: payload);
-      //print(data.data);
+      print(data.data);
       return CreateUserModel.fromJson(data.data);
     } catch (e) {
       return null;
@@ -1362,7 +1363,14 @@ class AllApiCallService {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
-      final payload = {"page": 1, "limit": 5000, "exchangeId": exchangeId, "symbolId": symbolId, "instrumentType": instrumentType, "expiryDate": expiryDate};
+      final payload = {
+        "page": 1,
+        "limit": 5000,
+        "exchangeId": exchangeId,
+        "symbolId": symbolId,
+        "instrumentType": instrumentType,
+        "expiryDate": expiryDate
+      };
       print(payload);
       final data = await _dio.post(Api.strikePriceList, data: payload);
       print(data.data);

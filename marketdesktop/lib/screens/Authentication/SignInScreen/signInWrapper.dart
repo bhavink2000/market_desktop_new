@@ -3,11 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/const_string.dart';
-import 'package:marketdesktop/main.dart';
-
 import 'package:responsive_sizer/responsive_sizer.dart';
-// import 'package:window_manager/window_manager.dart';
-
 import '../../../constant/assets.dart';
 import '../../../constant/color.dart';
 import '../../../constant/font_family.dart';

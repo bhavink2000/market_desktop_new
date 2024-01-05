@@ -31,6 +31,7 @@ List<String> arrTradeAttribute = ["Fully", "Close"];
 List<userRoleListData> arrUserTypeList = [];
 List<ExchangeData> arrExchange = [];
 List<GlobalSymbolData> arrAllScript = [];
+List<String> arrCustomDateSelection = CommonCustomDateSelection().arrCustomDate;
 
 List<BrokerListModelData> arrBrokerList = [];
 AllApiCallService service = AllApiCallService();
@@ -494,26 +495,23 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
   });
 }
 
-Widget timePeriodDropDown(RxString selectedPeriod) {
+Widget timePeriodDropDown(RxString selectedPeriod, {double? width}) {
   return Obx(() {
     return Container(
-        width: 250,
+        width: width ?? 150,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-
+        height: 25,
         child: Center(
           child: DropdownButtonHideUnderline(
             child: DropdownButtonFormField2<String>(
               isExpanded: true,
               decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
-                icon: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset(
-                    AppImages.arrowDown,
-                    height: 20,
-                    width: 20,
-                    color: AppColors().fontColor,
-                  ),
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
                 ),
               ),
               dropdownStyleData: const DropdownStyleData(maxHeight: 150),
@@ -1063,6 +1061,71 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
                 padding: EdgeInsets.symmetric(horizontal: 0),
                 height: 40,
               ),
+            ),
+          ),
+        ));
+  });
+}
+
+Widget timePeriodSelectionDropDown(Rx<String> selectedPeriod, {double? width, Function? onChange}) {
+  arrCustomDateSelection.clear();
+  arrCustomDateSelection.addAll(CommonCustomDateSelection().arrCustomDate);
+  return Obx(() {
+    return Container(
+        width: width ?? 250,
+        // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        height: 30,
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField2<String>(
+              isExpanded: true,
+              decoration: commonFocusBorder,
+              iconStyleData: IconStyleData(
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
+                ),
+              ),
+              hint: Text(
+                'Select Period',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: CustomFonts.family2Regular,
+                  color: AppColors().darkText,
+                ),
+              ),
+              items: arrCustomDateSelection
+                  .map((String item) => DropdownItem<String>(
+                        value: item,
+                        height: 30,
+                        child: Text(item, style: TextStyle(fontSize: 8, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return arrCustomDateSelection
+                    .map((String item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: TextStyle(fontSize: 8, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                          ),
+                        ))
+                    .toList();
+              },
+              value: selectedPeriod.value.isEmpty ? null : selectedPeriod.value,
+              onChanged: (String? value) {
+                selectedPeriod.value = value!;
+                if (onChange != null) {
+                  onChange();
+                }
+              },
+              buttonStyleData: const ButtonStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                height: 40,
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 250),
             ),
           ),
         ));

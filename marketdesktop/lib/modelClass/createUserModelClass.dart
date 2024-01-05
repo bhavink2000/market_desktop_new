@@ -1,5 +1,3 @@
-import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-
 class CreateUserModel {
   Meta? meta;
   Data? data;

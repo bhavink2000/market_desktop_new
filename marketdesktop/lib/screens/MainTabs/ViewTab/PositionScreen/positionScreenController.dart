@@ -161,6 +161,24 @@ class PositionController extends BaseController {
       arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
           ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
           : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
+      totalPL = 0.0;
+
+      if (userData!.role == UserRollList.user) {
+        for (var element in arrPositionScriptList) {
+          totalPL = totalPL + element.profitLossValue!;
+        }
+      } else {
+        for (var i = 0; i < arrPositionScriptList.length; i++) {
+          var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
+          total = total * -1;
+          totalPL = totalPL + total;
+        }
+      }
+
+      totalPosition.value = 0.0;
+      for (var element in arrPositionScriptList) {
+        totalPosition.value += element.profitLossValue ?? 0.0;
+      }
     }
     isApiCallRunning = false;
     update();
@@ -257,8 +275,16 @@ class PositionController extends BaseController {
         }
         totalPL = 0.0;
 
-        for (var element in arrPositionScriptList) {
-          totalPL = totalPL + element.profitLossValue!;
+        if (userData!.role == UserRollList.user) {
+          for (var element in arrPositionScriptList) {
+            totalPL = totalPL + element.profitLossValue!;
+          }
+        } else {
+          for (var i = 0; i < arrPositionScriptList.length; i++) {
+            var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
+            total = total * -1;
+            totalPL = totalPL + total;
+          }
         }
         // totalPL = totalPL + userData!.profitLoss!.toDouble();
         // var mainVc = Get.find<MainContainerController>();

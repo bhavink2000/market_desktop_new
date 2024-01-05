@@ -465,7 +465,7 @@ class CreateUserController extends BaseController {
         arrExchange[i].selectedItemsID.clear();
         for (var k = 0; k < arrExchange[i].arrGroupList.length; k++) {
           for (var l = 0; l < arrExchange[i].selectedItems.length; l++) {
-            if (arrExchange[i].arrGroupList[k].name == arrExchange[i].selectedItems[l].name) {
+            if (arrExchange[i].arrGroupList[k].name == arrExchange[i].selectedItems[l].name && arrExchange[i].arrGroupList[k].groupId != null) {
               arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
             }
           }
@@ -542,6 +542,7 @@ class CreateUserController extends BaseController {
         arrExchange = response.exchangeData ?? [];
         for (var i = 0; i < arrExchange.length; i++) {
           arrExchange[i].arrGroupList = await callforGroupList(arrExchange[i].exchangeId);
+          update();
         }
       }
     }

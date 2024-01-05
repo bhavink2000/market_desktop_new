@@ -406,7 +406,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
         // controller.focusNode.requestFocus();
         ContextMenuController.removeAny();
         controller.selectedScriptIndex = index;
-
+        controller.tempFocus.value.requestFocus();
         controller.selectedScript.value!.copyObject(scriptValue);
         controller.selectedScriptForF5.value!.copyObject(scriptValue);
         controller.selectedScriptForF5.value!.lut = DateTime.now();

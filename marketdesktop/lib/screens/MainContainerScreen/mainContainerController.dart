@@ -79,6 +79,7 @@ class MainContainerController extends BaseController {
   bool isKeyPressActive = false;
   bool isInitCallRequired = true;
   final debouncer = Debouncer(milliseconds: 300);
+  final oneSecondDebouncer = Debouncer(milliseconds: 1000);
   RxDouble? pl;
 
   @override
@@ -109,13 +110,13 @@ class MainContainerController extends BaseController {
       await windowManager.maximize();
       Screen? size = await getCurrentScreen();
       print(size);
-      await windowManager.setSize(Size(size!.frame.width, size!.frame.height - 50));
+      await windowManager.setSize(Size(size!.frame.width, size.frame.height - 50));
     } else {
       setWindowMinSize(const Size(1280, 800));
       Future.delayed(Duration(milliseconds: 100), () async {
         Screen? size = await getCurrentScreen();
         print(size);
-        await windowManager.setSize(Size(size!.frame.width, size!.frame.height - 50));
+        await windowManager.setSize(Size(size!.frame.width, size.frame.height - 50));
         Future.delayed(const Duration(milliseconds: 100), () async {
           await windowManager.center(animate: true);
           await windowManager.setResizable(true);
@@ -174,7 +175,7 @@ class MainContainerController extends BaseController {
       arrFilterType = constantValues?.userFilterType ?? [];
 
       arrLeverageList = constantValues?.leverageList ?? [];
-      update();
+      // update();
     }
   }
 
@@ -185,7 +186,7 @@ class MainContainerController extends BaseController {
         userData = userResponse.data;
 
         setupbottomData();
-        update();
+        // update();
         //print("data Updated");
       }
     }
@@ -542,6 +543,31 @@ class MainContainerController extends BaseController {
 
         marketVC.storeScripsInDB();
         marketVC.update();
+      }
+    } else {
+      if (event is RawKeyDownEvent) {
+        if (!event.isAltPressed && !event.isControlPressed && !event.isMetaPressed && !event.isShiftPressed && event.logicalKey.keyLabel.length == 1) {
+          marketVC.typedString = marketVC.typedString + event.logicalKey.keyLabel;
+          print(marketVC.typedString);
+          var index = marketVC.arrSymbol.indexWhere((element) => element.symbolTitle!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
+          if (index != -1) {
+            var scriptValue = marketVC.arrScript[index];
+            marketVC.selectedScriptIndex = index;
+            marketVC.tempFocus.value.requestFocus();
+            marketVC.selectedScript.value!.copyObject(scriptValue);
+            marketVC.selectedScriptForF5.value!.copyObject(scriptValue);
+            marketVC.selectedScriptForF5.value!.lut = DateTime.now();
+            var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[index].symbol == element.symbolName);
+            if (indexOfSymbol != -1) {
+              marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
+            }
+
+            marketVC.update();
+          }
+          oneSecondDebouncer.run(() async {
+            marketVC.typedString = "";
+          });
+        }
       }
     }
   }

@@ -20,10 +20,12 @@ class BillGenerateController extends BaseController {
   RxDouble fileDownloading = 0.0.obs;
   FocusNode submitFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  RxString selectStatusdropdownValue = "".obs;
   @override
   void onInit() async {
     // TODO: implement onInit
-
+    isFilterOpen = true;
+    update();
     super.onInit();
     if (userData!.role == UserRollList.user) {
       selectedUser.value = UserData(userId: userData!.userId);
@@ -31,6 +33,17 @@ class BillGenerateController extends BaseController {
   }
 
   getBill() async {
+    if (selectStatusdropdownValue.toString().isNotEmpty) {
+      if (selectStatusdropdownValue.toString() != 'Custom Period') {
+        String thisWeekDateRange = "$selectStatusdropdownValue";
+        List<String> dateParts = thisWeekDateRange.split(" to ");
+        fromDate = dateParts[0].trim().split('Week').last.obs;
+        endDate = dateParts[1].obs;
+      } else {
+        // fromDate = '';
+        // toDate = '';
+      }
+    }
     isApiCall = true;
     update();
     var response = await service.billGenerateCall(fromDate.value != "Start Date" ? fromDate.value : "", "", endDate.value != "End Date" ? endDate.value : "", selectedUser.value.userId ?? "");

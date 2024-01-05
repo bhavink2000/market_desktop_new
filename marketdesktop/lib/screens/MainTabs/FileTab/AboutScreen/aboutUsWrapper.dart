@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:get/get.dart';
 import 'package:marketdesktop/screens/BaseController/baseController.dart';
 import 'package:marketdesktop/screens/MainTabs/FileTab/AboutScreen/aboutUsController.dart';
 

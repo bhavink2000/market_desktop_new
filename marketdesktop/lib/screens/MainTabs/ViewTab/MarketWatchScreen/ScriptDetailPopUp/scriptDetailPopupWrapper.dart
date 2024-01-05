@@ -32,7 +32,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                 Visibility(
                   visible: false,
                   child: PriceView(),
-                )
+                ),
               ],
             ),
             Container(
@@ -219,24 +219,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(left: 5, right: 5),
-                          // width: 30,
-                          child: Image.asset(
-                            controller.selectedScriptForF5.value!.ch! < 0 ? AppImages.marketUpIcon : AppImages.marketDownIcon,
-                            width: 20,
-                            height: 20,
-                          ),
-                        ),
-                        Text("INDICATOR", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                   ],
                 )),
@@ -348,6 +331,15 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 )),
+            Container(
+              padding: const EdgeInsets.only(left: 5, right: 5),
+              // width: 30,
+              child: Image.asset(
+                controller.selectedScriptForF5.value!.ch! < 0 ? AppImages.marketUpIcon : AppImages.marketDownIcon,
+                width: 20,
+                height: 20,
+              ),
+            ),
             Spacer(),
             GestureDetector(
               onTap: () {

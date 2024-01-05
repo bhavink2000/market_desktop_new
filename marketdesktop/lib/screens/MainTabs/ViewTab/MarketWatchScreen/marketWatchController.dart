@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/service/database/dbService.dart';
@@ -66,6 +64,7 @@ class MarketWatchController extends BaseController {
   int selectedIndexforCut = -1;
   int selectedIndexforUndo = -1;
   int selectedIndexforPaste = -1;
+  var typedString = "";
 
   // FocusNode userListDropDownFocus = FocusNode();
   List<ListItem> arrListTitle = [
@@ -141,6 +140,11 @@ class MarketWatchController extends BaseController {
     super.onInit();
 
     tempFocus.value.addListener(() {
+      if (tempFocus.value.hasFocus) {
+        // selectedScriptIndex = 0;
+      } else {
+        selectedScriptIndex = -1;
+      }
       update();
     });
     tempFocus.value.requestFocus();
@@ -158,7 +162,7 @@ class MarketWatchController extends BaseController {
     }
     Future.delayed(const Duration(milliseconds: 100), () async {
       Screen? size = await getCurrentScreen();
-      screenSize = Size(size!.frame.width, size!.frame.height);
+      screenSize = Size(size!.frame.width, size.frame.height);
       maxWidth = size.frame.width > 1410 ? size.frame.width : 1410; //
 
       selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
@@ -1347,11 +1351,11 @@ class MarketWatchController extends BaseController {
       // showSuccessToast(response?.meta?.message ?? "");
       isAddDeleteApiLoading = false;
       var symbolNmae = "";
-      var symbol = "";
+
       arrSymbol.removeWhere((element) {
         if (element.userTabSymbolId == tabSymbolId) {
           symbolNmae = element.symbolName!;
-          symbol = element.symbol!;
+
           return true;
         } else {
           return false;

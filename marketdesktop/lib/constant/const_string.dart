@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class AppString {
   static const String emptyUserType = "Please Select User Type.";
   static const String emptyServer = "Please Enter Server Name.";
@@ -108,7 +110,23 @@ class TradeMarginClass {
 }
 
 class CommonCustomDateSelection {
-  List<String> arrCustomDate = <String>['This Week \n24-07-2023 to 30-07-2023', 'Previous Week \n17-07-2023 to 23-07-2023', 'Custom Period'];
+  List<String> arrCustomDate = <String>[];
+
+  CommonCustomDateSelection() {
+    DateTime currentDate = DateTime.now();
+    // Calculate the start and end dates for "This Week"
+    DateTime thisWeekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+    DateTime thisWeekEndDate = thisWeekStartDate.add(Duration(days: 6));
+    // Calculate the start and end dates for "Previous Week"
+    DateTime previousWeekEndDate = thisWeekStartDate.subtract(Duration(days: 1));
+    DateTime previousWeekStartDate = previousWeekEndDate.subtract(Duration(days: 6));
+    // Format the dates as strings
+    String thisWeekDateRange = 'This Week \n${DateFormat('yyyy-MM-dd').format(thisWeekStartDate)} to ${DateFormat('yyyy-MM-dd').format(thisWeekEndDate)}';
+    String previousWeekDateRange = 'Previous Week \n${DateFormat('yyyy-MM-dd').format(previousWeekStartDate)} to ${DateFormat('yyyy-MM-dd').format(previousWeekEndDate)}';
+
+    // Initialize the arrCustomDate list
+    arrCustomDate = <String>[thisWeekDateRange, previousWeekDateRange, 'Custom Period'];
+  }
 }
 
 class UserRollList {
