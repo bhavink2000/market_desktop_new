@@ -33,6 +33,7 @@ class ChangePasswordController extends BaseController {
     super.onInit();
 
     update();
+    isChangePasswordScreenPopUpOpen = true;
     Future.delayed(const Duration(milliseconds: 100), () {
       update();
     });
@@ -88,8 +89,7 @@ class ChangePasswordController extends BaseController {
       isApiCallRunning = true;
       update();
 
-      var response = await service.changePasswordCall(currentPasswordController.text.trim(), passwordController.text.trim(),
-          userId: selectedUserID);
+      var response = await service.changePasswordCall(currentPasswordController.text.trim(), passwordController.text.trim(), userId: selectedUserID);
       if (response != null) {
         isApiCallRunning = false;
         if (response.statusCode == 200) {

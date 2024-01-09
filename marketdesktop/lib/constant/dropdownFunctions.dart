@@ -1,6 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:floating_dialog/floating_dialog.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:get/get.dart';
@@ -46,13 +45,14 @@ TextEditingController userEditingController = TextEditingController();
 FocusNode userEditingFocus = FocusNode();
 bool isSuperAdminPopUpOpen = false;
 bool isCommonScreenPopUpOpen = false;
+bool isChangePasswordScreenPopUpOpen = false;
 
 String currentOpenedScreen = ScreenViewNames.marketWatch;
 final List<Map<String, dynamic>> _roles = arrLeverageList.map((e) => e.toJson()).toList();
 
 Widget sortTypeDropDown(RxString selectedType, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
 
@@ -127,7 +127,7 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
 
 Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         height: 30,
@@ -199,7 +199,7 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
 
 Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         height: 30,
@@ -264,7 +264,7 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
 
 Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         height: 30,
@@ -329,7 +329,7 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
 
 Widget sortCountDropDown(RxString selectedCount, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
 
@@ -397,7 +397,7 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
 
 Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 250,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         height: 30,
@@ -417,7 +417,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
               dropdownSearchData: DropdownSearchData(
                 searchController: userEditingController,
                 searchBarWidgetHeight: 50,
-                searchBarWidget: Container(
+                searchBarWidget: SizedBox(
                   height: 30,
                   // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
                   child: CustomTextField(
@@ -497,7 +497,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
 
 Widget timePeriodDropDown(RxString selectedPeriod, {double? width}) {
   return Obx(() {
-    return Container(
+    return SizedBox(
         width: width ?? 150,
         // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         height: 25,
@@ -563,7 +563,7 @@ Widget timePeriodDropDown(RxString selectedPeriod, {double? width}) {
 Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {List<GlobalSymbolData>? arrSymbol, double? width}) {
   return Obx(() {
     if (arrSymbol != null && arrSymbol.isNotEmpty) {
-      return Container(
+      return SizedBox(
           width: width ?? 250,
           height: 30,
           child: Center(
@@ -1003,7 +1003,7 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
   });
 }
 
-Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
+Widget logTypeListDropDown(Rx<Type> selectedLogType, {double? width}) {
   return Obx(() {
     return Container(
         width: width ?? 250,
@@ -1011,7 +1011,7 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
         height: 30,
         child: Center(
           child: DropdownButtonHideUnderline(
-            child: DropdownButtonFormField2<String>(
+            child: DropdownButtonFormField2<Type>(
               isExpanded: true,
               decoration: commonFocusBorder,
               iconStyleData: IconStyleData(
@@ -1031,21 +1031,21 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
                   color: AppColors().darkText,
                 ),
               ),
-              items: arrLogType
-                  .map((String item) => DropdownItem<String>(
+              items: constantValues!.userLogFilter!
+                  .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name!, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
-                return arrLogType
-                    .map((String item) => DropdownMenuItem<String>(
+                return constantValues!.userLogFilter!
+                    .map((Type item) => DropdownMenuItem<Type>(
                           value: item,
                           child: Text(
-                            item,
+                            item.name!,
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 10,
                               fontFamily: CustomFonts.family1Medium,
                               color: AppColors().darkText,
                             ),
@@ -1053,13 +1053,13 @@ Widget logTypeListDropDown(RxString selectedLogType, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedLogType.value.isEmpty ? null : selectedLogType.value,
-              onChanged: (String? value) {
+              value: selectedLogType.value.id == null ? null : selectedLogType.value,
+              onChanged: (Type? value) {
                 selectedLogType.value = value!;
               },
               buttonStyleData: const ButtonStyleData(
                 padding: EdgeInsets.symmetric(horizontal: 0),
-                height: 40,
+                height: 30,
               ),
             ),
           ),

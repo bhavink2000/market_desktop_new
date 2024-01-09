@@ -299,7 +299,7 @@ showChangePasswordPopUp({String selectedUserId = ""}) {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 width: 420,
-                height: 280,
+                height: selectedUserId == "" ? 270 : 210,
                 color: Colors.transparent,
                 child: ChangePasswordScreen(),
               ),

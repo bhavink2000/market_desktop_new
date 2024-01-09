@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/index.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
-import '../../../constant/color.dart';
-import '../../../constant/font_family.dart';
-import '../../constant/const_string.dart';
-import '../BaseController/baseController.dart';
 
 class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
   const UserDetailsPopUpScreen({Key? key}) : super(key: key);
@@ -27,6 +22,7 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
                 },
                 closeClick: () {
                   Get.back();
+                  isUserDetailPopUpOpen = false;
                   controller.deleteAllController();
                 }),
             menuListContent(context),

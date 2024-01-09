@@ -143,7 +143,9 @@ class MarketWatchController extends BaseController {
       if (tempFocus.value.hasFocus) {
         // selectedScriptIndex = 0;
       } else {
-        selectedScriptIndex = -1;
+        if (isBuyOpen == -1) {
+          selectedScriptIndex = -1;
+        }
       }
       update();
     });
@@ -1810,7 +1812,7 @@ class MarketWatchController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  selectedSymbol?.symbolTitle ?? "",
+                                                  selectedSymbol?.exchange ?? "",
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,

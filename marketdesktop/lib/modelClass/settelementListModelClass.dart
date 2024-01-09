@@ -41,76 +41,76 @@ class SettelementData {
   double plLossGrandTotal = 0;
   double brkLossGrandTotal = 0;
   double LossGrandTotal = 0;
+  int? plStatus;
+  num? myPLTotal;
 
   SettelementData({
     this.profit,
     this.loss,
+    this.plStatus,
+    this.myPLTotal,
   });
 
   factory SettelementData.fromJson(Map<String, dynamic> json) => SettelementData(
         profit: json["profit"] == null ? [] : List<Profit>.from(json["profit"]!.map((x) => Profit.fromJson(x))),
         loss: json["loss"] == null ? [] : List<Profit>.from(json["loss"]!.map((x) => Profit.fromJson(x))),
+        plStatus: json["plStatus"],
+        myPLTotal: json["myPLTotal"],
       );
 
   Map<String, dynamic> toJson() => {
         "profit": profit == null ? [] : List<dynamic>.from(profit!.map((x) => x.toJson())),
         "loss": loss == null ? [] : List<dynamic>.from(loss!.map((x) => x.toJson())),
+        "plStatus": plStatus,
+        "myPLTotal": myPLTotal,
       };
 }
 
+// To parse this JSON data, do
+//
+//     final profit = profitFromJson(jsonString);
+
 class Profit {
   String? userId;
-  String? parentId;
   String? userName;
   String? name;
-  double? profitLoss;
-  double? brokerageTotal;
-  DateTime? createdAt;
-  String? parentName;
-  String? parentUserName;
-  num? profitAndLossSharing;
-  String? role;
+  String? displayName;
+  num? profitLoss;
+  num? brokerageTotal;
+  num? total;
+  String? createdAt;
 
   Profit({
     this.userId,
-    this.parentId,
     this.userName,
     this.name,
+    this.displayName,
     this.profitLoss,
     this.brokerageTotal,
+    this.total,
     this.createdAt,
-    this.parentName,
-    this.parentUserName,
-    this.profitAndLossSharing,
-    this.role,
   });
 
   factory Profit.fromJson(Map<String, dynamic> json) => Profit(
         userId: json["userId"],
-        parentId: json["parentId"],
         userName: json["userName"],
         name: json["name"],
-        parentName: json["parentName"],
-        parentUserName: json["parentUserName"],
-        profitAndLossSharing: json["profitAndLossSharing"],
-        profitLoss: json["profitLoss"]?.toDouble(),
-        brokerageTotal: json["brokerageTotal"]?.toDouble(),
-        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        role: json["role"],
+        displayName: json["displayName"],
+        profitLoss: json["profitLoss"],
+        brokerageTotal: json["brokerageTotal"],
+        total: json["total"]?.toDouble(),
+        createdAt: json["createdAt"],
       );
 
   Map<String, dynamic> toJson() => {
         "userId": userId,
-        "parentId": parentId,
         "userName": userName,
         "name": name,
+        "displayName": displayName,
         "profitLoss": profitLoss,
         "brokerageTotal": brokerageTotal,
-        "parentName": parentName,
-        "parentUserName": parentUserName,
-        "role": role,
-        "profitAndLossSharing": profitAndLossSharing,
-        "createdAt": createdAt?.toIso8601String(),
+        "total": total,
+        "createdAt": createdAt,
       };
 }
 

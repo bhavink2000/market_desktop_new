@@ -37,14 +37,14 @@ class AppColors {
   var gradientEnd = const Color.fromRGBO(232, 240, 255, 1);
   //235, 236, 237, 1
 
-  var customGradient = LinearGradient(
+  var customGradient = const LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [const Color.fromRGBO(162, 196, 254, 1), const Color.fromRGBO(232, 240, 255, 1)],
+    colors: [Color.fromRGBO(162, 196, 254, 1), Color.fromRGBO(232, 240, 255, 1)],
   );
-  var customReverseGradient = LinearGradient(
+  var customReverseGradient = const LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [const Color.fromRGBO(232, 240, 255, 1), const Color.fromRGBO(162, 196, 254, 1)],
+    colors: [Color.fromRGBO(232, 240, 255, 1), Color.fromRGBO(162, 196, 254, 1)],
   );
 }

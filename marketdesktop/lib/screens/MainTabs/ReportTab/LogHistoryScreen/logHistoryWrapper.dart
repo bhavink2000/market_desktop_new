@@ -3,7 +3,9 @@ import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogHistoryScreen/logHistoryController.dart';
-
+import 'package:paginable/paginable.dart';
+import 'package:shimmer/shimmer.dart';
+import '../../../../modelClass/constantModelClass.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '../../../../constant/index.dart';
@@ -311,7 +313,9 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
                               shimmerColor: AppColors().whiteColor,
                               title: "Submit",
                               textSize: 14,
-                              onPress: () {},
+                              onPress: () {
+                                controller.getUserLogList();
+                              },
                               focusKey: controller.submitFocus,
                               borderColor: Colors.transparent,
                               focusShadowColor: AppColors().blueColor,
@@ -319,7 +323,7 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
                               isFilled: true,
                               textColor: AppColors().whiteColor,
                               isTextCenter: true,
-                              isLoading: false,
+                              isLoading: controller.isApiCallRunning,
                             ),
                           ),
                           SizedBox(
@@ -335,7 +339,7 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
-                                controller.selectedLogType.value = "";
+                                controller.selectedLogType.value = Type();
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";
@@ -369,12 +373,45 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
       physics: ClampingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 1820 : 1840,
+        duration: Duration(milliseconds: 300),
+        width: 2100,
+        // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
           children: [
-            Spacer(),
+            Container(
+              height: 3.h,
+              color: AppColors().whiteColor,
+              child: Row(
+                children: [
+                  // Container(
+                  //   width: 30,
+                  // ),
+                  listTitleContent(),
+                ],
+              ),
+            ),
+            Expanded(
+              child: controller.isApiCallRunning == false && controller.arrLog.isEmpty
+                  ? dataNotFoundView("User Logs not found")
+                  : PaginableListView.builder(
+                      loadMore: () async {
+                        if (controller.totalPage >= controller.currentPage) {
+                          //print(controller.currentPage);
+                          controller.getUserLogList();
+                        }
+                      },
+                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                      progressIndicatorWidget: displayIndicator(),
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.isApiCallRunning ? 50 : controller.arrLog.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return tradeContent(context, index);
+                      }),
+            ),
             Container(
               height: 2.h,
               color: AppColors().headerBgColor,
@@ -382,6 +419,49 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget tradeContent(BuildContext context, int index) {
+    // var scriptValue = controller.arrUserOderList[index];
+    if (controller.isApiCallRunning || controller.isResetCall) {
+      return Container(
+        margin: EdgeInsets.only(bottom: 3.h),
+        child: Shimmer.fromColors(
+            child: Container(
+              height: 3.h,
+              color: Colors.white,
+            ),
+            baseColor: AppColors().whiteColor,
+            highlightColor: AppColors().grayBg),
+      );
+    } else {
+      return Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            valueBox(controller.arrLog[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            valueBox(controller.getnewValue(index: index), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            valueBox(controller.getnewValue(index: index, isOld: true), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            valueBox(shortFullDateTime(controller.arrLog[index].createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
+            valueBox(controller.arrLog[index].updatedByName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget listTitleContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        // titleBox("", 0),
+        titleBox("User Name"),
+        titleBox("New ${controller.selectedLogType.value.name}", isBig: true),
+        titleBox("Old ${controller.selectedLogType.value.name}", isBig: true),
+        titleBox("UpdatedOn", isForDate: true),
+        titleBox("UpdatedBy"),
+      ],
     );
   }
 }

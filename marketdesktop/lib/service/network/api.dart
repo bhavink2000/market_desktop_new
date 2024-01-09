@@ -24,6 +24,7 @@ abstract class Api {
   static const positionList = 'position/list';
   static const openPositionList = 'symbol-position/list';
   static const changePassword = 'user/change-password';
+
   static const otherUserchangePassword = 'user/change-password-to-admin';
   static const viewProfile = 'user/view-profile';
   static const m2mProfitLoss = 'm2m-profit-loss/list';
@@ -65,4 +66,5 @@ abstract class Api {
   static const expiryList = 'symbol/expiry-list';
   static const strikePriceList = 'symbol/strike-price-list';
   static const userChangeStatus = 'user/change-status';
+  static const userLogList = 'user-log/list';
 }

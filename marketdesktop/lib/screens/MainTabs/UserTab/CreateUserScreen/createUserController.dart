@@ -9,7 +9,10 @@ import 'package:marketdesktop/modelClass/exchangeAllowModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
+import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
 import 'package:number_to_indian_words/number_to_indian_words.dart';
 
@@ -104,7 +107,9 @@ class CreateUserController extends BaseController {
     // TODO: implement onInit
 
     super.onInit();
-    selectedLeverage.value = arrLeverageList.first;
+    if (arrLeverageList.isNotEmpty) {
+      selectedLeverage.value = arrLeverageList.first;
+    }
     profitandLossController.text = userData!.profitAndLossSharingDownLine!.toString();
     brkSharingMasterController.text = userData!.brkSharingDownLine!.toString();
     dropdownLeveargeKey = GlobalKey();
@@ -168,7 +173,9 @@ class CreateUserController extends BaseController {
                 for (var l = 0; l < arrExchange[j].arrGroupList.length; l++) {
                   for (var k = 0; k < selectedUserForEdit!.exchangeAllow![i].groupId!.length; k++) {
                     if (arrExchange[j].arrGroupList[l].groupId == selectedUserForEdit!.exchangeAllow![i].groupId![k]) {
-                      arrExchange[j].selectedItems.add(arrExchange[j].arrGroupList[l]);
+                      if (!arrExchange[j].selectedItems.contains(arrExchange[j].arrGroupList[l])) {
+                        arrExchange[j].selectedItems.add(arrExchange[j].arrGroupList[l]);
+                      }
                     }
                   }
                 }
@@ -256,7 +263,9 @@ class CreateUserController extends BaseController {
     cutoffController.text = "";
     creditController.text = "";
     remarkController.text = "";
-    selectedLeverage.value = arrLeverageList.first;
+    if (arrLeverageList.isNotEmpty) {
+      selectedLeverage.value = arrLeverageList.first;
+    }
     profitandLossController.text = "";
     brokerageSharingController.text = "";
     brkSharingMasterController.text = "";
@@ -264,6 +273,7 @@ class CreateUserController extends BaseController {
     isModifyOrder = false;
     isCloseOnly = false;
     isIntraday = false;
+
     isChangePasswordOnFirstLogin = false;
     isSelectedallExchangeinMaster.value = false;
     selectedBrokerType = BrokerListModelData().obs;
@@ -339,6 +349,19 @@ class CreateUserController extends BaseController {
         msg = AppString.wrongRetypePassword;
       } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
+      } else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) ||
+          (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
+        msg = AppString.cutOffValid;
+      } else if (creditController.text.trim().isEmpty) {
+        msg = AppString.emptyCredit;
+      } else if (arrSelectedExchangeListforClient.isEmpty) {
+        msg = AppString.emptyExchangeGroup;
+      } else if (selectedBrokerType.value.addMaster != null) {
+        if (brokerageSharingController.text.trim().isEmpty) {
+          msg = AppString.emptyBrokerageSharing;
+        } else if (int.parse(brokerageSharingController.text) > 100) {
+          msg = AppString.rangeBrokerageSharing;
+        }
       }
     }
     // else if (mobileNumberController.text.trim().isEmpty) {
@@ -440,6 +463,18 @@ class CreateUserController extends BaseController {
         msg = AppString.wrongRetypePassword;
       } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
+      } else if (creditController.text.trim().isEmpty) {
+        msg = AppString.emptyCredit;
+      } else if (arrSelectedExchangeListforMaster.isEmpty) {
+        msg = AppString.emptyExchangeGroup;
+      } else if (profitandLossController.text.trim().isEmpty) {
+        msg = AppString.emptyProfitLossSharing;
+      } else if (int.parse(profitandLossController.text) > userData!.profitAndLossSharingDownLine!) {
+        msg = "Profit and Loss should be between 0 to ${userData!.profitAndLossSharingDownLine!}";
+      } else if (brkSharingMasterController.text.trim().isEmpty) {
+        msg = AppString.emptyBrokerageSharing;
+      } else if (int.parse(brkSharingMasterController.text) > userData!.brkSharingDownLine!) {
+        msg = "Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}";
       }
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
@@ -470,7 +505,8 @@ class CreateUserController extends BaseController {
             }
           }
           if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name &&
-              arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty) {
+              arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty &&
+              arrExchange[i].arrGroupList[k].groupId != null) {
             arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
           }
         }
@@ -499,29 +535,25 @@ class CreateUserController extends BaseController {
         }
       }
       update();
-      if (Get.arguments != null) {
-        // callForEditUser();
+      if (selectedUserForEdit == null) {
+        if (selectedUserType.value.roleId == UserRollList.broker) {
+          callForCreateBrocker();
+        } else if (selectedUserType.value.roleId == UserRollList.master) {
+          callForCreateMaster();
+        } else if (selectedUserType.value.roleId == UserRollList.user) {
+          callForCreateUser();
+        } else if (selectedUserType.value.roleId == UserRollList.admin) {
+          callForCreateAdmin();
+        }
       } else {
-        if (selectedUserForEdit == null) {
-          if (selectedUserType.value.roleId == UserRollList.broker) {
-            callForCreateBrocker();
-          } else if (selectedUserType.value.roleId == UserRollList.master) {
-            callForCreateMaster();
-          } else if (selectedUserType.value.roleId == UserRollList.user) {
-            callForCreateUser();
-          } else if (selectedUserType.value.roleId == UserRollList.admin) {
-            callForCreateAdmin();
-          }
-        } else {
-          if (selectedUserForEdit!.role == UserRollList.broker) {
-            callForEditBrocker();
-          } else if (selectedUserForEdit!.role == UserRollList.master) {
-            callForEditMaster();
-          } else if (selectedUserForEdit!.role == UserRollList.user) {
-            callForEditUser();
-          } else if (selectedUserForEdit!.role == UserRollList.admin) {
-            callForCreateAdmin();
-          }
+        if (selectedUserForEdit!.role == UserRollList.broker) {
+          callForEditBrocker();
+        } else if (selectedUserForEdit!.role == UserRollList.master) {
+          callForEditMaster();
+        } else if (selectedUserForEdit!.role == UserRollList.user) {
+          callForEditUser();
+        } else if (selectedUserForEdit!.role == UserRollList.admin) {
+          callForCreateAdmin();
         }
       }
 
@@ -639,7 +671,7 @@ class CreateUserController extends BaseController {
           isExecutePendingOrder = null;
           bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
           if (isUserlistVcAvailable) {
-            Get.find<UserListController>().getUserList();
+            Get.find<UserListController>().updateUser();
           }
           update();
         } else {
@@ -736,7 +768,7 @@ class CreateUserController extends BaseController {
           isExecutePendingOrder = null;
           bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
           if (isUserlistVcAvailable) {
-            Get.find<UserListController>().getUserList();
+            Get.find<UserListController>().updateUser();
           }
           update();
         } else {
@@ -807,7 +839,7 @@ class CreateUserController extends BaseController {
           selectedBrokerType = BrokerListModelData().obs;
           bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
           if (isUserlistVcAvailable) {
-            Get.find<UserListController>().getUserList();
+            Get.find<UserListController>().updateUser();
           }
           for (var i = 0; i < arrExchange.length; i++) {
             if (arrExchange[i].isSelected == true) {
@@ -909,7 +941,7 @@ class CreateUserController extends BaseController {
           selectedBrokerType = BrokerListModelData().obs;
           bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
           if (isUserlistVcAvailable) {
-            Get.find<UserListController>().getUserList();
+            Get.find<UserListController>().updateUser();
           }
           for (var i = 0; i < arrExchange.length; i++) {
             if (arrExchange[i].isSelected == true) {
@@ -1011,7 +1043,8 @@ class CreateUserController extends BaseController {
         if (response.statusCode == 200) {
           Get.back();
           showSuccessToast(response.meta?.message ?? "");
-
+          Get.find<MarketWatchController>().getUserList();
+          getUserList();
           showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
           Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
           Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
@@ -1038,7 +1071,7 @@ class CreateUserController extends BaseController {
           selectedBrokerType = BrokerListModelData().obs;
           bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
           if (isUserlistVcAvailable) {
-            Get.find<UserListController>().getUserList();
+            Get.find<UserListController>().updateUser();
           }
           // for (var i = 0; i < arrExchange.length; i++) {
           //   if (arrExchange[i].isSelected == true) {
@@ -1164,14 +1197,14 @@ class CreateUserController extends BaseController {
           Get.back();
           showSuccessToast(response.meta?.message ?? "");
           // selectedUserForEdit = null;
-          Get.find<UserListController>().updateUser();
-          showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
-          Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
-          Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
-          Get.find<UserDetailsPopUpController>().update();
-          if (userData!.highLowSLLimitPercentage == true) {
-            isSymbolWiseSL = true;
-          }
+          // Get.find<UserListController>().updateUser();
+          // showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
+          // Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
+          // Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
+          // Get.find<UserDetailsPopUpController>().update();
+          // if (userData!.highLowSLLimitPercentage == true) {
+          //   isSymbolWiseSL = true;
+          // }
           nameController.text = "";
           userNameController.text = "";
           passwordController.text = "";
@@ -1191,7 +1224,7 @@ class CreateUserController extends BaseController {
           selectedBrokerType = BrokerListModelData().obs;
           bool isUserlistVcAvailable = Get.isRegistered<UserListController>();
           if (isUserlistVcAvailable) {
-            Get.find<UserListController>().getUserList();
+            Get.find<UserListController>().updateUser();
           }
           for (var i = 0; i < arrExchange.length; i++) {
             if (arrExchange[i].isSelected == true) {
@@ -1226,9 +1259,21 @@ class CreateUserController extends BaseController {
           isAdminManualOrder = null;
           isDeleteTrade = null;
           isExecutePendingOrder = null;
-          var userListVC = Get.find<UserListController>();
-          userListVC.getUserList();
-          userListVC.update();
+          Get.find<UserListController>().updateUser();
+          selectedUserForEdit = null;
+
+          currentOpenedScreen = ScreenViewNames.marketWatch;
+          Get.find<MainContainerController>().isCreateUserClick = false;
+          Get.find<MainContainerController>().update();
+          isCommonScreenPopUpOpen = true;
+          currentOpenedScreen = ScreenViewNames.userList;
+
+          generalContainerPopup(
+              view: UserListScreen(),
+              title: ScreenViewNames.userList,
+              isFilterAvailable: true,
+              filterClick: Get.find<UserListController>().onCLickFilter);
+
           update();
         } else {
           showErrorToast(response.message ?? "");
@@ -1468,10 +1513,22 @@ class CreateUserController extends BaseController {
           isAdminManualOrder = null;
           isDeleteTrade = null;
           isExecutePendingOrder = null;
-          showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
-          Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
-          Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
-          Get.find<UserDetailsPopUpController>().update();
+
+          selectedUserForEdit = null;
+
+          currentOpenedScreen = ScreenViewNames.marketWatch;
+          Get.find<MainContainerController>().isCreateUserClick = false;
+          Get.find<MainContainerController>().update();
+          isCommonScreenPopUpOpen = true;
+          currentOpenedScreen = ScreenViewNames.userList;
+          var userListVC = Get.put(UserListController());
+          generalContainerPopup(
+              view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
+
+          // showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
+          // Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
+          // Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
+          // Get.find<UserDetailsPopUpController>().update();
           update();
         } else {
           showErrorToast(response.message ?? "");

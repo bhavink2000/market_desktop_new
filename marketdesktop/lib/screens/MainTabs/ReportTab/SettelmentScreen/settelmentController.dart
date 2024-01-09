@@ -3,12 +3,14 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../constant/utilities.dart';
 
 class SettlementController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-
+  RxString fromDate = "Start Date".obs;
+  RxString endDate = "End Date".obs;
   List<Profit> arrProfitList = [];
   List<Profit> arrLossList = [];
   String selectedUserId = "";
@@ -25,7 +27,17 @@ class SettlementController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    fromDate.value = shortDateForBackend(findFirstDateOfTheWeek(DateTime.now()));
+    endDate.value = shortDateForBackend(findLastDateOfTheWeek(DateTime.now()));
     getSettelementList();
+  }
+
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    return dateTime.add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
   }
 
   getSettelementList({int isFrom = 0}) async {
@@ -37,7 +49,7 @@ class SettlementController extends BaseController {
       isApiCallFromReset = true;
     }
     update();
-    var response = await service.settelementListCall(1, searchController.text.trim(), selectedUser.value.userId ?? "");
+    var response = await service.settelementListCall(1, fromDate.value != "Start Date" ? fromDate.value : "", endDate.value != "End Date" ? endDate.value : "");
     if (isFrom == 0) {
       isApiCallFirstTime = false;
     } else if (isFrom == 1) {
@@ -51,13 +63,40 @@ class SettlementController extends BaseController {
     for (var element in arrProfitList) {
       totalValues!.plProfitGrandTotal = totalValues!.plProfitGrandTotal + element.profitLoss!;
       totalValues!.brkProfitGrandTotal = totalValues!.brkProfitGrandTotal + element.brokerageTotal!;
+      totalValues!.profitGrandTotal = totalValues!.profitGrandTotal + element.total!;
     }
-    totalValues!.profitGrandTotal = totalValues!.plProfitGrandTotal - totalValues!.brkProfitGrandTotal;
+
+    // var temp3 = totalValues!.plProfitGrandTotal;
+    // var temp4 = totalValues!.brkProfitGrandTotal;
+    // if (totalValues!.plProfitGrandTotal < 0) {
+    //   temp3 = totalValues!.plProfitGrandTotal * -1;
+    // }
+    // if (totalValues!.brkProfitGrandTotal < 0) {
+    //   temp3 = totalValues!.brkProfitGrandTotal * -1;
+    // }
+    // totalValues!.profitGrandTotal = temp3 + temp4;
+    // if (totalValues!.plStatus == 1) {
+    //   totalValues!.profitGrandTotal = totalValues!.profitGrandTotal + totalValues!.myPLTotal!;
+    // }
+
     for (var element in arrLossList) {
       totalValues!.plLossGrandTotal = totalValues!.plLossGrandTotal + element.profitLoss!;
       totalValues!.brkLossGrandTotal = totalValues!.brkLossGrandTotal + element.brokerageTotal!;
+      totalValues!.LossGrandTotal = totalValues!.LossGrandTotal + element.total!;
     }
-    totalValues!.LossGrandTotal = totalValues!.plLossGrandTotal - totalValues!.brkLossGrandTotal;
+    // var temp1 = totalValues!.plLossGrandTotal;
+    // var temp2 = totalValues!.brkLossGrandTotal;
+    // if (totalValues!.plLossGrandTotal < 0) {
+    //   temp1 = totalValues!.plLossGrandTotal * -1;
+    // }
+    // if (totalValues!.LossGrandTotal < 0) {
+    //   temp2 = totalValues!.brkLossGrandTotal * -1;
+    // }
+    // totalValues!.LossGrandTotal = temp1 + temp2;
+    // if (totalValues!.plStatus == 0) {
+    //   totalValues!.LossGrandTotal = totalValues!.LossGrandTotal + totalValues!.myPLTotal!;
+    // }
+
     update();
   }
 

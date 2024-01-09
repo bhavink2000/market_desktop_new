@@ -110,6 +110,8 @@ class UserListController extends BaseController {
   updateUser() async {
     arrUserListData.clear();
     currentPage = 1;
+    isResetData = true;
+    update();
     getUserList(isFromClear: true);
   }
 }

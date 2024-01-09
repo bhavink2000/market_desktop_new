@@ -91,15 +91,17 @@ class manualOrderController extends BaseController {
   getUserList() async {
     var response = await service.getMyUserListCall(roleId: UserRollList.user);
     arrUserListOnlyClient = response!.data ?? [];
-    if (arrUserListOnlyClient.isNotEmpty) {
-      selectedUser.value = arrUserListOnlyClient.first;
-    }
+    update();
+    // if (arrUserListOnlyClient.isNotEmpty) {
+    //   selectedUser.value = arrUserListOnlyClient.first;
+    // }
   }
 
   String validateForm() {
     var msg = "";
-
-    if (selectExchangedropdownValue.value.exchangeId == null) {
+    if (selectedUser.value.userId == null) {
+      msg = AppString.emptyUserName;
+    } else if (selectExchangedropdownValue.value.exchangeId == null) {
       msg = AppString.emptyExchange;
     } else if (selectedScriptDropDownValue.value.symbolId == null) {
       msg = AppString.emptyScript;

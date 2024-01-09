@@ -116,10 +116,10 @@ class CommonCustomDateSelection {
     DateTime currentDate = DateTime.now();
     // Calculate the start and end dates for "This Week"
     DateTime thisWeekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
-    DateTime thisWeekEndDate = thisWeekStartDate.add(Duration(days: 6));
+    DateTime thisWeekEndDate = thisWeekStartDate.add(const Duration(days: 6));
     // Calculate the start and end dates for "Previous Week"
-    DateTime previousWeekEndDate = thisWeekStartDate.subtract(Duration(days: 1));
-    DateTime previousWeekStartDate = previousWeekEndDate.subtract(Duration(days: 6));
+    DateTime previousWeekEndDate = thisWeekStartDate.subtract(const Duration(days: 1));
+    DateTime previousWeekStartDate = previousWeekEndDate.subtract(const Duration(days: 6));
     // Format the dates as strings
     String thisWeekDateRange = 'This Week \n${DateFormat('yyyy-MM-dd').format(thisWeekStartDate)} to ${DateFormat('yyyy-MM-dd').format(thisWeekEndDate)}';
     String previousWeekDateRange = 'Previous Week \n${DateFormat('yyyy-MM-dd').format(previousWeekStartDate)} to ${DateFormat('yyyy-MM-dd').format(previousWeekEndDate)}';

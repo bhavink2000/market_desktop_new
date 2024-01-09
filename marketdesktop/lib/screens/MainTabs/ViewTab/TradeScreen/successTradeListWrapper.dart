@@ -534,7 +534,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
               valueBox(controller.arrTrade[index].totalQuantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isSmall: true),
               valueBox(controller.arrTrade[index].quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isSmall: true),
               // if (userData!.role != UserRollList.user) valueBox(controller.arrTrade[index].totalQuantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrTrade[index].productTypeValue.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(controller.arrTrade[index].productTypeValue.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
               valueBox(controller.arrTrade[index].price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor, index),
               // valueBox(
               //   ((controller.arrTrade[index].quantity! * controller.arrTrade[index].brokerageAmount!) / 100).toStringAsFixed(2),
@@ -610,7 +610,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
         // titleBox("Validity"),
         titleBox("Lot", isSmall: true),
         // if (userData!.role != UserRollList.user) titleBox("Total Qty"),
-        titleBox("type"),
+        titleBox("type", isBig: true),
         titleBox("trade price"),
         titleBox("Brokerage"),
         titleBox("Price(B)"),

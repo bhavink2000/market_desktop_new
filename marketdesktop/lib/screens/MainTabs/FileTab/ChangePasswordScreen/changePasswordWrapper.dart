@@ -1,7 +1,11 @@
+import 'package:get/get.dart';
+import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/customWidgets/appTextField.dart';
 import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/changePasswordController.dart';
 import '../../../../constant/index.dart';
+import '../../../../main.dart';
+import '../../../MainContainerScreen/mainContainerController.dart';
 
 class ChangePasswordScreen extends BaseView<ChangePasswordController> {
   const ChangePasswordScreen({Key? key}) : super(key: key);
@@ -15,52 +19,61 @@ class ChangePasswordScreen extends BaseView<ChangePasswordController> {
         body: SafeArea(
             child: Column(
           children: [
-            headerViewContent(title: "Change Password", isFilterAvailable: false, isFromMarket: false),
-
-            // if (controller.selectedUserID == "")
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
-              child: Row(
-                children: [
-                  Spacer(),
-                  Text("Current Password :",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: CustomFonts.family1Regular,
-                        color: AppColors().fontColor,
-                      )),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Container(
-                    width: 200,
-                    height: 40,
-                    child: CustomTextField(
-                      type: 'password',
-                      keyBoardType: TextInputType.text,
-                      isEnabled: true,
-                      isOptional: false,
-                      isNoNeededCapital: true,
-                      inValidMsg: AppString.emptyUserName,
-                      placeHolderMsg: "Enter your current password",
-                      labelMsg: "",
-                      emptyFieldMsg: AppString.emptyUserName,
-                      controller: controller.currentPasswordController,
-                      focus: controller.currentPasswordFocus,
-                      isSecure: true,
-                      keyboardButtonType: TextInputAction.next,
-                      maxLength: 20,
-                      isShowPrefix: false,
-                      isShowSufix: false,
-                      suffixIcon: null,
-                      prefixIcon: null,
-                      borderColor: AppColors().lightText,
-                      roundCorner: 0,
+            headerViewContent(
+                title: "Change Password",
+                isFilterAvailable: false,
+                isFromMarket: false,
+                closeClick: () {
+                  if (userData!.changePasswordOnFirstLogin == false) {
+                    Get.find<MainContainerController>().onKeyHite();
+                  } else {
+                    showWarningToast("You need to change your password at first login.");
+                  }
+                }),
+            if (controller.selectedUserID == "")
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    Text("Current Password :",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontFamily: CustomFonts.family1Regular,
+                          color: AppColors().fontColor,
+                        )),
+                    SizedBox(
+                      width: 20,
                     ),
-                  ),
-                ],
+                    Container(
+                      width: 200,
+                      height: 40,
+                      child: CustomTextField(
+                        type: 'password',
+                        keyBoardType: TextInputType.text,
+                        isEnabled: true,
+                        isOptional: false,
+                        isNoNeededCapital: true,
+                        inValidMsg: AppString.emptyUserName,
+                        placeHolderMsg: "Enter your current password",
+                        labelMsg: "",
+                        emptyFieldMsg: AppString.emptyUserName,
+                        controller: controller.currentPasswordController,
+                        focus: controller.currentPasswordFocus,
+                        isSecure: true,
+                        keyboardButtonType: TextInputAction.next,
+                        maxLength: 20,
+                        isShowPrefix: false,
+                        isShowSufix: false,
+                        suffixIcon: null,
+                        prefixIcon: null,
+                        borderColor: AppColors().lightText,
+                        roundCorner: 0,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
               child: Row(

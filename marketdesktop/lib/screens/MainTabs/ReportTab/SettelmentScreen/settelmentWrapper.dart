@@ -1,4 +1,4 @@
-import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
+import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/SettelmentScreen/settelmentController.dart';
 import 'package:shimmer/shimmer.dart';
@@ -8,7 +8,6 @@ import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
-import '../../../../customWidgets/appTextField.dart';
 
 class SettlementScreen extends BaseView<SettlementController> {
   const SettlementScreen({Key? key}) : super(key: key);
@@ -107,7 +106,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                           children: [
                             Spacer(),
                             Container(
-                              child: Text("Username:",
+                              child: Text("From:",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: CustomFonts.family1Regular,
@@ -117,7 +116,50 @@ class SettlementScreen extends BaseView<SettlementController> {
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 150),
+                            GestureDetector(
+                              onTap: () {
+                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                  controller.fromDate.value = shortDateForBackend(selectedDate);
+                                });
+                              },
+                              child: Obx(() {
+                                return Container(
+                                  height: 35,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                      color: AppColors().whiteColor,
+                                      border: Border.all(
+                                        color: AppColors().lightOnlyText,
+                                        width: 1.5,
+                                      ),
+                                      borderRadius: BorderRadius.circular(3)),
+                                  // color: AppColors().whiteColor,
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        controller.fromDate.value,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontFamily: CustomFonts.family1Medium,
+                                          color: AppColors().darkText,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Image.asset(
+                                        AppImages.calendarIcon,
+                                        width: 25,
+                                        height: 25,
+                                        color: AppColors().fontColor,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ),
                             SizedBox(
                               width: 30,
                             ),
@@ -131,10 +173,15 @@ class SettlementScreen extends BaseView<SettlementController> {
                         height: 35,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            // SizedBox(
+                            //   width: 30,
+                            // ),
                             Spacer(),
+
                             Container(
-                              child: Text("Search:",
+                              child: Text("To:",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: CustomFonts.family1Regular,
@@ -144,31 +191,50 @@ class SettlementScreen extends BaseView<SettlementController> {
                             SizedBox(
                               width: 10,
                             ),
-                            Container(
-                              width: 150,
-                              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1), borderRadius: BorderRadius.circular(5)),
-                              child: CustomTextField(
-                                type: 'Search',
-                                keyBoardType: TextInputType.text,
-                                isEnabled: true,
-                                isOptional: false,
-                                inValidMsg: "",
-                                placeHolderMsg: "Search",
-                                emptyFieldMsg: "",
-                                fontStyle: TextStyle(
-                                  fontSize: 10,
-                                  fontFamily: CustomFonts.family1Regular,
-                                  color: AppColors().fontColor,
-                                ),
-                                controller: controller.searchController,
-                                focus: controller.searchFocus,
-                                isSecure: false,
-                                borderColor: AppColors().grayLightLine,
-                                keyboardButtonType: TextInputAction.search,
-                                maxLength: 64,
-                                isShowSufix: false,
-                                isShowPrefix: false,
-                              ),
+                            GestureDetector(
+                              onTap: () {
+                                // selectToDate(controller.endDate);
+                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                  controller.endDate.value = shortDateForBackend(selectedDate);
+                                });
+                              },
+                              child: Obx(() {
+                                return Container(
+                                  height: 35,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                      color: AppColors().whiteColor,
+                                      border: Border.all(
+                                        color: AppColors().lightOnlyText,
+                                        width: 1.5,
+                                      ),
+                                      borderRadius: BorderRadius.circular(3)),
+                                  // color: AppColors().whiteColor,
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        controller.endDate.value,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontFamily: CustomFonts.family1Medium,
+                                          color: AppColors().darkText,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Image.asset(
+                                        AppImages.calendarIcon,
+                                        width: 25,
+                                        height: 25,
+                                        color: AppColors().fontColor,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
                             ),
                             SizedBox(
                               width: 30,
@@ -216,8 +282,9 @@ class SettlementScreen extends BaseView<SettlementController> {
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
-                                controller.selectedUser.value = UserData();
-                                controller.searchController.clear();
+                                controller.fromDate.value = shortDateForBackend(controller.findFirstDateOfTheWeek(DateTime.now()));
+                                controller.endDate.value = shortDateForBackend(controller.findLastDateOfTheWeek(DateTime.now()));
+                                controller.getSettelementList();
                                 controller.getSettelementList(isFrom: 2);
                               },
                               bgColor: AppColors().whiteColor,
@@ -299,7 +366,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                       child: Center(
                           child: Row(
                         children: [
-                          totalContent(value: "Net Profit", textColor: AppColors().darkText, width: 110),
+                          totalContent(value: "Net Profit ${controller.totalValues!.plStatus == 1 ? ": " + controller.totalValues!.myPLTotal!.toStringAsFixed(2) : ""}", textColor: AppColors().darkText, width: 300),
                           totalContent(value: controller.totalValues!.plProfitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                           totalContent(value: controller.totalValues!.brkProfitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                           totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
@@ -362,7 +429,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                       child: Center(
                           child: Row(
                         children: [
-                          totalContent(value: "Net Loss", textColor: AppColors().darkText, width: 110),
+                          totalContent(value: "Net Loss ${controller.totalValues!.plStatus == 0 ? ": " + controller.totalValues!.myPLTotal!.toStringAsFixed(2) : ""}", textColor: AppColors().darkText, width: 300),
                           totalContent(value: controller.totalValues!.plLossGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                           totalContent(value: controller.totalValues!.brkLossGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                           totalContent(value: controller.totalValues!.LossGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
@@ -415,12 +482,12 @@ class SettlementScreen extends BaseView<SettlementController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(value.userName! + " [ ${value.name!} - ${controller.getRoll(value.role!)} - ${value.profitAndLossSharing!.toString()} ]", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
+              valueBox(value.displayName!, 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
                 showUserDetailsPopUp(userId: value.userId!, userName: value.userName!);
               }, isLarge: true),
               valueBox(value.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(value.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox((value.profitLoss! - value.brokerageTotal!).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+              valueBox(value.total!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
             ],
           ),
         ),

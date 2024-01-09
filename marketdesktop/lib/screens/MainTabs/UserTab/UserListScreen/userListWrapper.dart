@@ -533,7 +533,7 @@ class UserListScreen extends BaseView<UserListController> {
               valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].autoSquareOff == 0 ? false.obs : true.obs, isBig: true, onSwitchChanged: (value) {
                 final payload = {
                   "userId": controller.arrUserListData[index].userId,
-                  "autoSquareOff": value,
+                  "autoSquareOff": value ? 1 : 0,
                   "logStatus": "autoSquareOff",
                 };
                 controller.updateUserStatus(payload);
@@ -549,7 +549,7 @@ class UserListScreen extends BaseView<UserListController> {
               valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs, onSwitchChanged: (value) {
                 final payload = {
                   "userId": controller.arrUserListData[index].userId,
-                  "status": value,
+                  "status": value ? 1 : 2,
                   "logStatus": "status",
                 };
                 controller.updateUserStatus(payload);

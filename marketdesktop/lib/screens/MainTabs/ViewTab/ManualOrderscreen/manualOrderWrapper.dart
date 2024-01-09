@@ -2,8 +2,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:spinner_date_time_picker/spinner_date_time_picker.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
@@ -12,6 +12,7 @@ import '../../../../customWidgets/incrimentField.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
+import '../../../../modelClass/myUserListModelClass.dart';
 import '../../../BaseController/baseController.dart';
 import 'manualOrderController.dart';
 import '../../../../modelClass/constantModelClass.dart';
@@ -265,6 +266,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     onChanged: (ExchangeData? value) {
                       controller.selectExchangedropdownValue.value = value!;
                       controller.selectedScriptDropDownValue.value = GlobalSymbolData();
+                      controller.arrMainScript.clear();
+                      controller.update();
                       controller.getScriptList();
                     },
                     buttonStyleData: const ButtonStyleData(
@@ -389,6 +392,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         // // });
 
                         controller.selectedScriptDropDownValue.value = value!;
+                        var temp = num.parse(controller.lotController.text) * controller.selectedScriptDropDownValue.value.ls!;
+                        controller.qtyController.text = temp.toString();
                       },
                       buttonStyleData: const ButtonStyleData(
                         padding: EdgeInsets.symmetric(horizontal: 0),
@@ -851,64 +856,62 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
   }
 
   showTimeSelectionPopUp() async {
-    showDialog(
-      context: Get.context!,
-      builder: (context) {
-        var now = DateTime.now();
-        return Dialog(
-          insetPadding: EdgeInsets.symmetric(horizontal: 35.w),
-          child: SpinnerDateTimePicker(
-            initialDateTime: now,
-            maximumDate: now,
-            minimumDate: now.subtract(Duration(days: 100)),
-            mode: CupertinoDatePickerMode.dateAndTime,
-            use24hFormat: false,
-            didSetTime: (value) {
-              controller.fromDate.value = value;
-            },
-          ),
-        );
-      },
-    );
-    // controller.fromDate.value = await showOmniDateTimePicker(
+    // showDialog(
     //   context: Get.context!,
-    //   initialDate: DateTime.now(),
-    //   firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-    //   lastDate: DateTime.now().add(
-    //     const Duration(days: 3652),
-    //   ),
-    //   is24HourMode: false,
-    //   isShowSeconds: false,
-    //   minutesInterval: 1,
-    //   secondsInterval: 1,
-    //   borderRadius: const BorderRadius.all(Radius.circular(16)),
-    //   constraints: const BoxConstraints(
-    //     maxWidth: 350,
-    //     maxHeight: 650,
-    //   ),
-    //   transitionBuilder: (context, anim1, anim2, child) {
-    //     return FadeTransition(
-    //       opacity: anim1.drive(
-    //         Tween(
-    //           begin: 0,
-    //           end: 1,
-    //         ),
+    //   builder: (context) {
+    //     var now = DateTime.now();
+    //     return Dialog(
+    //       insetPadding: EdgeInsets.symmetric(horizontal: 35.w),
+    //       child: SpinnerDateTimePicker(
+    //         initialDateTime: now,
+    //         maximumDate: now,
+    //         minimumDate: now.subtract(Duration(days: 100)),
+    //         mode: CupertinoDatePickerMode.dateAndTime,
+    //         use24hFormat: false,
+    //         didSetTime: (value) {
+    //           controller.fromDate.value = value;
+    //         },
     //       ),
-    //       child: child,
     //     );
     //   },
-    //   transitionDuration: const Duration(milliseconds: 200),
-    //   barrierDismissible: true,
-    //   selectableDayPredicate: (dateTime) {
-    //     // Disable 25th Feb 2023
-    //     // controller.fromDate.value = shortFullDateTime(dateTime);
-    //     if (dateTime == DateTime(2023, 2, 25)) {
-    //       return false;
-    //     } else {
-    //       return true;
-    //     }
-    //   },
     // );
+    controller.fromDate.value = await showOmniDateTimePicker(
+      context: Get.context!,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+      lastDate: DateTime.now(),
+      is24HourMode: false,
+      isShowSeconds: false,
+      minutesInterval: 1,
+      secondsInterval: 1,
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
+      constraints: const BoxConstraints(
+        maxWidth: 350,
+        maxHeight: 650,
+      ),
+      transitionBuilder: (context, anim1, anim2, child) {
+        return FadeTransition(
+          opacity: anim1.drive(
+            Tween(
+              begin: 0,
+              end: 1,
+            ),
+          ),
+          child: child,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      barrierDismissible: true,
+      selectableDayPredicate: (dateTime) {
+        // Disable 25th Feb 2023
+        // controller.fromDate.value = shortFullDateTime(dateTime);
+        if (dateTime == DateTime(2023, 2, 25)) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+    );
     // showDialog<String>(
     //     context: Get.context!,
     //     // barrierColor: Colors.transparent,
@@ -1022,6 +1025,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
           controller.rateBoxOneController.text = "";
           controller.rateBoxTwoController.text = "";
           controller.qtyController.text = "";
+          controller.selectedUser = UserData().obs;
           controller.selectExchangedropdownValue = ExchangeData().obs;
           controller.selectedScriptDropDownValue = GlobalSymbolData().obs;
           controller.typedropdownValue.value = "";

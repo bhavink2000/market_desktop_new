@@ -8,6 +8,7 @@ import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/expiryListModelClass.dart';
 import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/DashboardTab/dashboardController.dart';
+import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/changePasswordController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/AccountSummaryScreen/accountSummaryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportController.dart';
@@ -81,7 +82,7 @@ class MainContainerController extends BaseController {
   final debouncer = Debouncer(milliseconds: 300);
   final oneSecondDebouncer = Debouncer(milliseconds: 1000);
   RxDouble? pl;
-
+  CreateUserController? createUserVc;
   @override
   void onInit() async {
     if (userData?.role == UserRollList.user || userData?.role == UserRollList.broker) {
@@ -92,12 +93,20 @@ class MainContainerController extends BaseController {
         AppImages.marketIcon,
       ];
     } else {
-      arrAdditionMenu = [AppImages.watchIcon, AppImages.addYellowIcon, AppImages.addRedIcon, AppImages.marketIcon, AppImages.userAddIcon, AppImages.searchColorIcon];
+      arrAdditionMenu = [
+        AppImages.watchIcon,
+        AppImages.addYellowIcon,
+        AppImages.addRedIcon,
+        AppImages.marketIcon,
+        AppImages.userAddIcon,
+        AppImages.searchColorIcon
+      ];
     }
 
     super.onInit();
     Get.put(CreateUserController());
     Get.put(NotificationSettingsController());
+    createUserVc = Get.find<CreateUserController>();
     if (Platform.isMacOS) {
       await windowManager.setMinimumSize(Size(1280, 800));
       // // setWindowMinSize(const Size(1280, 800));
@@ -132,15 +141,17 @@ class MainContainerController extends BaseController {
     }
 
     Timer.periodic(const Duration(seconds: 5), (timer) {
+      getOwnProfile();
+      getConstantLisT();
       if (Platform.isWindows) {
         setWindowMinSize(const Size(1280, 800));
       }
-
-      getOwnProfile();
-      getConstantLisT();
     });
 
     Future.delayed(const Duration(milliseconds: 100), () async {
+      if (userData!.changePasswordOnFirstLogin == true) {
+        showChangePasswordPopUp();
+      }
       update();
     });
 
@@ -175,6 +186,11 @@ class MainContainerController extends BaseController {
       arrFilterType = constantValues?.userFilterType ?? [];
 
       arrLeverageList = constantValues?.leverageList ?? [];
+
+      if (arrLeverageList.isNotEmpty && createUserVc!.selectedLeverage.value.id == null) {
+        createUserVc!.selectedLeverage.value = arrLeverageList.first;
+        createUserVc!.update();
+      }
       // update();
     }
   }
@@ -233,7 +249,12 @@ class MainContainerController extends BaseController {
 
   onKeyHite() async {
     debouncer.run(() async {
-      if (isUserDetailPopUpOpen) {
+      if (isChangePasswordScreenPopUpOpen) {
+        Get.back();
+
+        await Get.delete<ChangePasswordController>();
+        isChangePasswordScreenPopUpOpen = false;
+      } else if (isUserDetailPopUpOpen) {
         Get.back();
         await Get.find<UserDetailsPopUpController>().deleteAllController();
         await Get.delete<UserDetailsPopUpController>();
@@ -350,7 +371,7 @@ class MainContainerController extends BaseController {
           marketVC.isBuyOpen = 1;
           debouncer.run(() async {
             isKeyPressActive = true;
-
+            print("testtttttt");
             marketVC.adminBuySellPopupDialog(isFromBuy: true);
             Future.delayed(Duration(milliseconds: 100), () {});
           });
@@ -415,7 +436,8 @@ class MainContainerController extends BaseController {
           marketVC.arrStrikePrice.clear();
           marketVC.selectedCallPutForF5.value = Type();
           marketVC.selectedStrikePriceForF5.value = StrikePriceData();
-          marketVC.selectedExchangeForF5.value = marketVC.arrExchange.firstWhere((element) => element.exchangeId == marketVC.selectedSymbol!.exchangeId);
+          marketVC.selectedExchangeForF5.value =
+              marketVC.arrExchange.firstWhere((element) => element.exchangeId == marketVC.selectedSymbol!.exchangeId);
           marketVC.getScriptList(isFromF5: true);
 
           showScriptDetailPopUp();
@@ -463,7 +485,8 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
           marketVC.update();
-          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
+          var indexOfSymbol =
+              marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
             marketVC.update();
@@ -485,7 +508,8 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
           marketVC.update();
-          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
+          var indexOfSymbol =
+              marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
             marketVC.update();
@@ -546,7 +570,11 @@ class MainContainerController extends BaseController {
       }
     } else {
       if (event is RawKeyDownEvent) {
-        if (!event.isAltPressed && !event.isControlPressed && !event.isMetaPressed && !event.isShiftPressed && event.logicalKey.keyLabel.length == 1) {
+        if (!event.isAltPressed &&
+            !event.isControlPressed &&
+            !event.isMetaPressed &&
+            !event.isShiftPressed &&
+            event.logicalKey.keyLabel.length == 1) {
           marketVC.typedString = marketVC.typedString + event.logicalKey.keyLabel;
           print(marketVC.typedString);
           var index = marketVC.arrSymbol.indexWhere((element) => element.symbolTitle!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
@@ -583,7 +611,8 @@ class MainContainerController extends BaseController {
         if (positionVc.isBuyOpen == -1) {
           positionVc.isBuyOpen = 1;
           positionVc.qtyController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!.toString();
-          positionVc.priceController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
+          positionVc.priceController.text =
+              positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
           positionVc.symbolController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].symbolName ?? "";
           positionVc.exchangeController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].exchangeName ?? "";
           positionVc.isValidQty = true.obs;
@@ -605,7 +634,8 @@ class MainContainerController extends BaseController {
         if (positionVc.isBuyOpen == -1) {
           positionVc.isBuyOpen = 2;
           positionVc.qtyController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!.toString();
-          positionVc.priceController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
+          positionVc.priceController.text =
+              positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
           positionVc.symbolController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].symbolName ?? "";
           positionVc.exchangeController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].exchangeName ?? "";
           positionVc.isValidQty = true.obs;
