@@ -48,6 +48,8 @@ class ClientAccountReportController extends BaseController {
   int currentPage = 1;
 
   bool isPagingApiCall = false;
+  RxDouble grandTotal = 0.0.obs;
+  RxDouble outPerGrandTotal = 0.0.obs;
 
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
@@ -103,6 +105,15 @@ class ClientAccountReportController extends BaseController {
           ? (double.parse(arrSummaryList[indexOfScript].ask!.toStringAsFixed(2)) - arrSummaryList[indexOfScript].avgPrice!) * arrSummaryList[indexOfScript].totalQuantity!
           : (double.parse(arrSummaryList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrSummaryList[indexOfScript].avgPrice!.toStringAsFixed(2))) * arrSummaryList[indexOfScript].totalQuantity!;
     }
+    grandTotal.value = 0.0;
+    outPerGrandTotal.value = 0.0;
+    arrSummaryList.forEach((element) {
+      var temp = ((double.parse(element.profitLoss!.toStringAsFixed(2)) + double.parse(element.profitLossValue!.toStringAsFixed(2))) - double.parse(element.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2);
+      var value = double.tryParse(temp) ?? 0.0;
+      grandTotal.value = grandTotal.value + value;
+
+      outPerGrandTotal.value = outPerGrandTotal.value + (((element.profitLossValue! + element.profitLoss!) * element.profitAndLossSharing!) / 100) + element.adminBrokerageTotal!;
+    });
     isApiCallRunning = false;
     update();
     var arrTemp = [];
@@ -176,6 +187,15 @@ class ClientAccountReportController extends BaseController {
       }
 
       update();
+      grandTotal.value = 0.0;
+      outPerGrandTotal.value = 0.0;
+      arrSummaryList.forEach((element) {
+        var temp = ((double.parse(element.profitLoss!.toStringAsFixed(2)) + double.parse(element.profitLossValue!.toStringAsFixed(2))) - double.parse(element.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2);
+        var value = double.tryParse(temp) ?? 0.0;
+        grandTotal.value = grandTotal.value + value;
+
+        outPerGrandTotal.value = outPerGrandTotal.value + ((((element.profitLossValue! + element.profitLoss!) * element.profitAndLossSharing!) / 100) + element.adminBrokerageTotal!) * -1;
+      });
     }
   }
 }

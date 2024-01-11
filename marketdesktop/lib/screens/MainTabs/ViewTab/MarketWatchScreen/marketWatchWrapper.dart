@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appTextField.dart';
 import 'package:marketdesktop/customWidgets/contextMenueBuilder.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
-import '../../../../main.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import 'marketWatchController.dart';
 
@@ -45,45 +43,45 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                       if (controller.selectedExchange.value.isCallPut) controller.strikePriceTypeDropDown(),
                       searchBox(),
                       const Spacer(),
-                      GestureDetector(
-                        onTap: () async {
-                          controller.getSymbolListTabWise();
-                          if (isMarketSocketConnected.value == false) {
-                            await socket.connectSocket();
-                            if (socket.arrSymbolNames.isNotEmpty) {
-                              var txt = {"symbols": socket.arrSymbolNames};
-                              socket.connectScript(jsonEncode(txt));
-                            }
-                          }
-                          // if (isMarketSocketConnected.value) {
-                          //   socket.channel?.sink.close(status.normalClosure);
-                          //   isMarketSocketConnected.value = false;
-                          // } else {
-                          //   await socket.connectSocket();
-                          //   if (socket.arrSymbolNames.isNotEmpty) {
-                          //     var txt = {"symbols": socket.arrSymbolNames};
-                          //     socket.connectScript(jsonEncode(txt));
-                          //   }
-                          // }
-                          // controller.update();
-                        },
-                        child: controller.isSymbolListApiCall
-                            ? Container(
-                                width: 45,
-                                height: 50,
-                                padding: const EdgeInsets.all(14),
-                                child: CircularProgressIndicator(
-                                  color: AppColors().blueColor,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Container(
-                                width: 50,
-                                height: 50,
-                                padding: const EdgeInsets.all(10),
-                                child: Icon(Icons.refresh, color: AppColors().blueColor),
-                              ),
-                      )
+                      // GestureDetector(
+                      //   onTap: () async {
+                      //     controller.getSymbolListTabWise();
+                      //     if (isMarketSocketConnected.value == false) {
+                      //       await socket.connectSocket();
+                      //       if (socket.arrSymbolNames.isNotEmpty) {
+                      //         var txt = {"symbols": socket.arrSymbolNames};
+                      //         socket.connectScript(jsonEncode(txt));
+                      //       }
+                      //     }
+                      //     // if (isMarketSocketConnected.value) {
+                      //     //   socket.channel?.sink.close(status.normalClosure);
+                      //     //   isMarketSocketConnected.value = false;
+                      //     // } else {
+                      //     //   await socket.connectSocket();
+                      //     //   if (socket.arrSymbolNames.isNotEmpty) {
+                      //     //     var txt = {"symbols": socket.arrSymbolNames};
+                      //     //     socket.connectScript(jsonEncode(txt));
+                      //     //   }
+                      //     // }
+                      //     // controller.update();
+                      //   },
+                      //   child: controller.isSymbolListApiCall
+                      //       ? Container(
+                      //           width: 45,
+                      //           height: 50,
+                      //           padding: const EdgeInsets.all(14),
+                      //           child: CircularProgressIndicator(
+                      //             color: AppColors().blueColor,
+                      //             strokeWidth: 2,
+                      //           ),
+                      //         )
+                      //       : Container(
+                      //           width: 50,
+                      //           height: 50,
+                      //           padding: const EdgeInsets.all(10),
+                      //           child: Icon(Icons.refresh, color: AppColors().blueColor),
+                      //         ),
+                      // )
                     ],
                   ),
                 ),
@@ -173,7 +171,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                                 controller.selectedScript.value = controller.arrScript[controller.selectedScriptIndex];
                                                 controller.isScripDetailOpen = true;
 
-                                                showScriptDetailPopUp();
+                                                showScriptInfoPopup();
 
                                                 controller.update();
                                               },

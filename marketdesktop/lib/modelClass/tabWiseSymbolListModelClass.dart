@@ -63,6 +63,14 @@ class SymbolData {
   String? name;
   String? symbol;
   Depth? depth;
+  num? tradeMargin;
+  String? tradeAttribute;
+  num? allowTrade;
+  String? allowTradeValue;
+  num? quantityMax;
+  num? lotMax;
+  num? breakQuantity;
+  num? breakUpLot;
 
   SymbolData({
     this.userTabSymbolId,
@@ -95,6 +103,14 @@ class SymbolData {
     this.symbol = "",
     this.depth,
     this.oddLotTrade,
+    this.tradeMargin,
+    this.tradeAttribute,
+    this.allowTrade,
+    this.allowTradeValue,
+    this.quantityMax,
+    this.lotMax,
+    this.breakQuantity,
+    this.breakUpLot,
   });
 
   factory SymbolData.fromJson(Map<String, dynamic> json) => SymbolData(
@@ -133,6 +149,14 @@ class SymbolData {
         name: json["name"] ?? json["symbolTitle"] ?? "",
         symbol: json["symbol"] ?? json["symbolName"] ?? "",
         depth: json["depth"] == null ? null : Depth.fromJson(json["depth"]),
+        tradeMargin: json["tradeMargin"],
+        tradeAttribute: json["tradeAttribute"],
+        allowTrade: json["allowTrade"],
+        allowTradeValue: json["allowTradeValue"],
+        quantityMax: json["quantityMax"],
+        lotMax: json["lotMax"],
+        breakQuantity: json["breakQuantity"],
+        breakUpLot: json["breakUpLot"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -166,6 +190,14 @@ class SymbolData {
         "symbol": symbol,
         "depth": depth?.toJson(),
         "oddLotTrade": oddLotTrade,
+        "tradeMargin": tradeMargin,
+        "tradeAttribute": tradeAttribute,
+        "allowTrade": allowTrade,
+        "allowTradeValue": allowTradeValue,
+        "quantityMax": quantityMax,
+        "lotMax": lotMax,
+        "breakQuantity": breakQuantity,
+        "breakUpLot": breakUpLot,
       };
   bool operator ==(dynamic other) {
     if (other is SymbolData) {

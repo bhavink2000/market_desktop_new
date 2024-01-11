@@ -13,6 +13,7 @@ import 'package:marketdesktop/screens/MainTabs/ToolsTab/MarketTimingScreen/marke
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/ScriptDetailPopUp/scriptDetailPopupWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchScriptInfoPopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeInfoPopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
@@ -527,6 +528,34 @@ showPendingTradeInfoPopup() {
               height: 71.h,
 
               child: TradeInfoPopUpScreen(),
+            ),
+          ));
+}
+
+showScriptInfoPopup() {
+  showDialog<String>(
+      context: Get.context!,
+      // barrierColor: Colors.transparent,
+      barrierDismissible: true,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: Container(
+              // width: 30.w,
+              // height: 28.h,
+              color: AppColors().whiteColor,
+              width: 500,
+              height: 480,
+
+              child: MArketWatchScriptInfoPopUpScreen(),
             ),
           ));
 }

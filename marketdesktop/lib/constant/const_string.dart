@@ -44,9 +44,9 @@ class AppString {
 
 class ScreenViewNames {
   static const String marketWatch = "Market Watch";
-  static const String orders = "Orders";
+  static const String orders = "Pending Orders";
   static const String trades = "Trades";
-  static const String positions = "Positions";
+  static const String positions = "Net Position";
   static const String createUser = "Create User";
   static const String userList = "User List";
   static const String manualOrder = "Manual Order";
@@ -65,7 +65,7 @@ class ScreenViewNames {
   static const String billGenerate = "Bill Generate";
   static const String percentopenPosition = "% Open Position";
   static const String weeklyAdmin = "Weekly Admin";
-  static const String logsHistory = "Logs History";
+  static const String logsHistory = "Activity Report";
   static const String scriptMaster = "Script Master";
   static const String pAndlSummary = "Scriptwise P&L Summary";
   static const String userLogsNew = "User Logs New";

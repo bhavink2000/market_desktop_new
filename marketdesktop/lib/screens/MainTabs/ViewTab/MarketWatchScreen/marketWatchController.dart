@@ -1149,7 +1149,7 @@ class MarketWatchController extends BaseController {
         totalQuantity: double.parse(qtyController.text),
         price: double.parse(priceController.text),
         lotSize: selectedScript.value!.ls!.toInt(),
-        orderType: selectedOrderType.value.id,
+        orderType: "market",
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: selectedSymbol!.exchangeId,
         executionTime: serverFormatDateTime(DateTime.now()),
@@ -1237,8 +1237,12 @@ class MarketWatchController extends BaseController {
         for (int i = 0; i < arrSymbol.length; i++) {
           var index = arrCurrentWatchListOrder.indexWhere((it) => it.values.toList().last == arrSymbol[i].symbol);
           if (index != -1) {
-            arrScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
-            arrPreScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
+            // arrScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
+            // arrPreScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
+            arrPreScript.removeAt(index);
+            arrPreScript.insert(index, (ScriptData.fromJson(arrSymbol[i].toJson())));
+            arrScript.removeAt(index);
+            arrScript.insert(index, (ScriptData.fromJson(arrSymbol[i].toJson())));
           } else {
             var position = arrCurrentWatchListOrder.length;
             Map<String, dynamic> newItem = {position.toString(): arrSymbol[i].symbol};

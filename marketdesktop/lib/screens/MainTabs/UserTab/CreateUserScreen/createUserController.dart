@@ -501,12 +501,15 @@ class CreateUserController extends BaseController {
         for (var k = 0; k < arrExchange[i].arrGroupList.length; k++) {
           for (var l = 0; l < arrExchange[i].selectedItems.length; l++) {
             if (arrExchange[i].arrGroupList[k].name == arrExchange[i].selectedItems[l].name && arrExchange[i].arrGroupList[k].groupId != null) {
-              arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
+              if (!arrExchange[i].selectedItemsID.contains(arrExchange[i].arrGroupList[k].groupId!)) {
+                arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
+              }
             }
           }
           if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name &&
               arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty &&
-              arrExchange[i].arrGroupList[k].groupId != null) {
+              arrExchange[i].arrGroupList[k].groupId != null &&
+              !arrExchange[i].selectedItemsID.contains(arrExchange[i].arrGroupList[k].groupId!)) {
             arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
           }
         }
@@ -534,6 +537,7 @@ class CreateUserController extends BaseController {
           arrHighLowBetweenTradeSelectedList.add(arrExchange[i].exchangeId ?? "");
         }
       }
+
       update();
       if (selectedUserForEdit == null) {
         if (selectedUserType.value.roleId == UserRollList.broker) {

@@ -28,6 +28,9 @@ class SymbolWisePositionReportController extends BaseController {
 
   RxBool isTradeCallFinished = true.obs;
   double visibleWidth = 0.0;
+  RxDouble plTotal = 0.0.obs;
+  RxDouble plPerTotal = 0.0.obs;
+  RxDouble brkTotal = 0.0.obs;
   Rx<Type> selectedValidity = Type().obs;
   final FocusNode focusNode = FocusNode();
   final FocusNode popUpfocusNode = FocusNode();
@@ -101,6 +104,16 @@ class SymbolWisePositionReportController extends BaseController {
           ? (double.parse(arrSummaryList[indexOfScript].ask!.toStringAsFixed(2)) - arrSummaryList[indexOfScript].avgPrice!) * arrSummaryList[indexOfScript].totalQuantity!
           : (double.parse(arrSummaryList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrSummaryList[indexOfScript].avgPrice!.toStringAsFixed(2))) * arrSummaryList[indexOfScript].totalQuantity!;
     }
+    plTotal = 0.0.obs;
+    plPerTotal = 0.0.obs;
+    brkTotal = 0.0.obs;
+    arrSummaryList.forEach((element) {
+      plTotal.value = plTotal.value + element.profitLossValue!;
+
+      var temp = ((element.profitLossValue! * element.profitAndLossSharing!) / 100);
+      plPerTotal.value = (plPerTotal.value + temp) * -1;
+      brkTotal.value = brkTotal.value + element.adminBrokerageTotal!;
+    });
     isApiCallRunning = false;
     update();
     var arrTemp = [];
@@ -172,7 +185,16 @@ class SymbolWisePositionReportController extends BaseController {
           }
         }
       }
+      plTotal = 0.0.obs;
+      plPerTotal = 0.0.obs;
+      brkTotal = 0.0.obs;
+      arrSummaryList.forEach((element) {
+        plTotal.value = plTotal.value + element.profitLossValue!;
 
+        var temp = ((element.profitLossValue! * element.profitAndLossSharing!) / 100);
+        plPerTotal.value = (plPerTotal.value + temp) * -1;
+        brkTotal.value = brkTotal.value + element.adminBrokerageTotal!;
+      });
       update();
     }
   }

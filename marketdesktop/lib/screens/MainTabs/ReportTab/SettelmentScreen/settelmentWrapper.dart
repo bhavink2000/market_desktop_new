@@ -482,9 +482,7 @@ class SettlementScreen extends BaseView<SettlementController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(value.displayName!, 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: value.userId!, userName: value.userName!);
-              }, isLarge: true),
+              valueBox(value.displayName!, 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
               valueBox(value.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(value.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
               valueBox(value.total!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),

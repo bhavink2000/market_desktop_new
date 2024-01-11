@@ -93,14 +93,7 @@ class MainContainerController extends BaseController {
         AppImages.marketIcon,
       ];
     } else {
-      arrAdditionMenu = [
-        AppImages.watchIcon,
-        AppImages.addYellowIcon,
-        AppImages.addRedIcon,
-        AppImages.marketIcon,
-        AppImages.userAddIcon,
-        AppImages.searchColorIcon
-      ];
+      arrAdditionMenu = [AppImages.watchIcon, AppImages.addYellowIcon, AppImages.addRedIcon, AppImages.marketIcon, AppImages.userAddIcon, AppImages.searchColorIcon];
     }
 
     super.onInit();
@@ -436,8 +429,7 @@ class MainContainerController extends BaseController {
           marketVC.arrStrikePrice.clear();
           marketVC.selectedCallPutForF5.value = Type();
           marketVC.selectedStrikePriceForF5.value = StrikePriceData();
-          marketVC.selectedExchangeForF5.value =
-              marketVC.arrExchange.firstWhere((element) => element.exchangeId == marketVC.selectedSymbol!.exchangeId);
+          marketVC.selectedExchangeForF5.value = marketVC.arrExchange.firstWhere((element) => element.exchangeId == marketVC.selectedSymbol!.exchangeId);
           marketVC.getScriptList(isFromF5: true);
 
           showScriptDetailPopUp();
@@ -485,8 +477,7 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
           marketVC.update();
-          var indexOfSymbol =
-              marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
+          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
             marketVC.update();
@@ -508,8 +499,7 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
           marketVC.update();
-          var indexOfSymbol =
-              marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
+          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
             marketVC.update();
@@ -570,11 +560,7 @@ class MainContainerController extends BaseController {
       }
     } else {
       if (event is RawKeyDownEvent) {
-        if (!event.isAltPressed &&
-            !event.isControlPressed &&
-            !event.isMetaPressed &&
-            !event.isShiftPressed &&
-            event.logicalKey.keyLabel.length == 1) {
+        if (!event.isAltPressed && !event.isControlPressed && !event.isMetaPressed && !event.isShiftPressed && event.logicalKey.keyLabel.length == 1) {
           marketVC.typedString = marketVC.typedString + event.logicalKey.keyLabel;
           print(marketVC.typedString);
           var index = marketVC.arrSymbol.indexWhere((element) => element.symbolTitle!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
@@ -611,8 +597,7 @@ class MainContainerController extends BaseController {
         if (positionVc.isBuyOpen == -1) {
           positionVc.isBuyOpen = 1;
           positionVc.qtyController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!.toString();
-          positionVc.priceController.text =
-              positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
+          positionVc.priceController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
           positionVc.symbolController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].symbolName ?? "";
           positionVc.exchangeController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].exchangeName ?? "";
           positionVc.isValidQty = true.obs;
@@ -634,8 +619,7 @@ class MainContainerController extends BaseController {
         if (positionVc.isBuyOpen == -1) {
           positionVc.isBuyOpen = 2;
           positionVc.qtyController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!.toString();
-          positionVc.priceController.text =
-              positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
+          positionVc.priceController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
           positionVc.symbolController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].symbolName ?? "";
           positionVc.exchangeController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].exchangeName ?? "";
           positionVc.isValidQty = true.obs;

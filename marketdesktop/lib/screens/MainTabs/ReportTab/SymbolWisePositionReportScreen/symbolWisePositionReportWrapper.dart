@@ -418,6 +418,21 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                         return tradeContent(context, index);
                       }),
             ),
+            Obx(() {
+              return Container(
+                height: 3.h,
+                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                child: Center(
+                    child: Row(
+                  children: [
+                    totalContent(value: "Total :", textColor: AppColors().darkText, width: 1300),
+                    totalContent(value: controller.plTotal.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                    totalContent(value: controller.plPerTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                    totalContent(value: controller.brkTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                  ],
+                )),
+              );
+            }),
             Container(
               height: 2.h,
               color: AppColors().headerBgColor,
@@ -518,6 +533,20 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
         titleBox("P/L (%)"),
         titleBox("BROKRAGE %"),
       ],
+    );
+  }
+
+  Widget totalContent({String? value, Color? textColor, double? width}) {
+    return Container(
+      width: width ?? 6.w,
+      padding: EdgeInsets.only(left: 5),
+      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+      child: Text(value ?? "",
+          style: TextStyle(
+            fontSize: 12,
+            fontFamily: CustomFonts.family1Medium,
+            color: textColor ?? AppColors().redColor,
+          )),
     );
   }
 }

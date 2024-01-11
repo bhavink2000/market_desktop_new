@@ -16,6 +16,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
 
 import '../../modelClass/myTradeListModelClass.dart';
+import '../../modelClass/profileInfoModelClass.dart';
 
 class SocketIOService {
   var SERVER_URL = "wss://socket-io.bazaar2.in"; //test url
@@ -49,6 +50,19 @@ class SocketIOService {
         print(data);
 
         try {
+          if (data["userData"] != null) {
+            print(data["userData"]);
+            var obj = ProfileInfoData.fromJson(data["userData"]);
+            userData!.profitLoss = obj.profitLoss;
+            userData!.brokerageTotal = obj.brokerageTotal;
+            userData!.credit = obj.credit;
+            userData!.marginBalance = obj.marginBalance;
+            userData!.tradeMarginBalance = obj.tradeMarginBalance;
+            bool isPositionAvailable = Get.isRegistered<PositionController>();
+            if (isPositionAvailable) {
+              Get.find<PositionController>().update();
+            }
+          }
           if (data["alertTradeStatus"] == 1) {
             if (userData!.role == UserRollList.superAdmin) {
               var obj = SuperAdminPopUpModel.fromJson(data["alertTradeData"]);

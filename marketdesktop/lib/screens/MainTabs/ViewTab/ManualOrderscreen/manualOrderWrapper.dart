@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../constant/index.dart';
@@ -813,7 +814,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
           Spacer(),
           GestureDetector(
             onTap: () {
-              showTimeSelectionPopUp();
+              showDateSelectionPopUp();
             },
             child: Obx(() {
               return Container(
@@ -855,7 +856,41 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
     );
   }
 
-  showTimeSelectionPopUp() async {
+  showTimeSelectionPopUp(String selectedDate) async {
+    final TimeOfDay? picked = await showTimePicker(context: Get.context!, barrierDismissible: false, initialEntryMode: TimePickerEntryMode.inputOnly, initialTime: TimeOfDay.now());
+
+    if (picked != null) {
+      // Format the DateTime to display only the date portion
+      selectedDate = selectedDate + " " + picked.hour.toString() + ":" + picked.minute.toString();
+      controller.fromDate.value = DateFormat('yyyy-MM-dd HH:mm').parse(selectedDate);
+      print(picked.format(Get.context!));
+      // controller.fromDate = formattedDate;
+      controller.update();
+    }
+  }
+
+  showDateSelectionPopUp() async {
+    final DateTime? picked = await showDatePicker(
+      context: Get.context!,
+      barrierDismissible: false,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      helpText: 'Select Date',
+      cancelText: 'Cancel',
+      confirmText: 'Select Time',
+      // locale: Locale('en', 'US'),
+    );
+
+    if (picked != null) {
+      // Format the DateTime to display only the date portion
+      String formattedDate = DateFormat('yyyy-MM-dd').format(picked);
+      print(formattedDate);
+      // controller.fromDate = formattedDate;
+      // controller.fromDate.value = picked;
+
+      showTimeSelectionPopUp(formattedDate);
+    }
     // showDialog(
     //   context: Get.context!,
     //   builder: (context) {
@@ -875,43 +910,43 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
     //     );
     //   },
     // );
-    controller.fromDate.value = await showOmniDateTimePicker(
-      context: Get.context!,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-      lastDate: DateTime.now(),
-      is24HourMode: false,
-      isShowSeconds: false,
-      minutesInterval: 1,
-      secondsInterval: 1,
-      borderRadius: const BorderRadius.all(Radius.circular(16)),
-      constraints: const BoxConstraints(
-        maxWidth: 350,
-        maxHeight: 650,
-      ),
-      transitionBuilder: (context, anim1, anim2, child) {
-        return FadeTransition(
-          opacity: anim1.drive(
-            Tween(
-              begin: 0,
-              end: 1,
-            ),
-          ),
-          child: child,
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 200),
-      barrierDismissible: true,
-      selectableDayPredicate: (dateTime) {
-        // Disable 25th Feb 2023
-        // controller.fromDate.value = shortFullDateTime(dateTime);
-        if (dateTime == DateTime(2023, 2, 25)) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-    );
+    // controller.fromDate.value = await showOmniDateTimePicker(
+    //   context: Get.context!,
+    //   initialDate: DateTime.now(),
+    //   firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+    //   lastDate: DateTime.now(),
+    //   is24HourMode: false,
+    //   isShowSeconds: false,
+    //   minutesInterval: 1,
+    //   secondsInterval: 1,
+    //   borderRadius: const BorderRadius.all(Radius.circular(16)),
+    //   constraints: const BoxConstraints(
+    //     maxWidth: 350,
+    //     maxHeight: 650,
+    //   ),
+    //   transitionBuilder: (context, anim1, anim2, child) {
+    //     return FadeTransition(
+    //       opacity: anim1.drive(
+    //         Tween(
+    //           begin: 0,
+    //           end: 1,
+    //         ),
+    //       ),
+    //       child: child,
+    //     );
+    //   },
+    //   transitionDuration: const Duration(milliseconds: 200),
+    //   barrierDismissible: true,
+    //   selectableDayPredicate: (dateTime) {
+    //     // Disable 25th Feb 2023
+    //     // controller.fromDate.value = shortFullDateTime(dateTime);
+    //     if (dateTime == DateTime(2023, 2, 25)) {
+    //       return false;
+    //     } else {
+    //       return true;
+    //     }
+    //   },
+    // );
     // showDialog<String>(
     //     context: Get.context!,
     //     // barrierColor: Colors.transparent,
