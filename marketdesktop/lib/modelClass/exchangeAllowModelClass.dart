@@ -66,6 +66,7 @@ class ExchangeAllowforMaster {
     if (groupId!.isEmpty) {
       return {"exchangeId": exchangeId, "groupId": null};
     } else {
+      groupId?.removeWhere((element) => element == "");
       return {
         "exchangeId": exchangeId,
         "groupId": groupId == null ? [] : List<dynamic>.from(groupId!.map((x) => x)),

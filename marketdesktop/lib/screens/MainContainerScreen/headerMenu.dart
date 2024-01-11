@@ -15,11 +15,11 @@ import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeLogScreen/tradeLog
 import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeLogScreen/tradeLogWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeMarginScreen/tradeMarginListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeMarginScreen/tradeMarginListWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/CreateUserScreen/createUserController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListWrapper.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/AccountSummaryScreen/accountSummaryController.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/AccountSummaryScreen/accountSummaryWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogHistoryScreen/logHistoryController.dart';
@@ -452,16 +452,16 @@ class MyMenuBar extends StatelessWidget {
               },
             ),
           MenuEntry(
-            label: ScreenViewNames.accountSummary,
+            label: ScreenViewNames.creditHistory,
             onPressed: () {
               if (marketViewObj.isBuyOpen != -1) {
                 return;
               }
 
               isCommonScreenPopUpOpen = true;
-              currentOpenedScreen = ScreenViewNames.accountSummary;
-              var accountSummaryVC = Get.put(AccountSummaryController());
-              generalContainerPopup(view: AccountSummaryScreen(), title: ScreenViewNames.accountSummary, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter);
+              currentOpenedScreen = ScreenViewNames.creditHistory;
+              var accountSummaryVC = Get.put(HistoryOfCreditController());
+              generalContainerPopup(view: HistoryOfCreditScreen(), title: ScreenViewNames.creditHistory, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter);
             },
           ),
           MenuEntry(

@@ -1,19 +1,18 @@
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-
-import 'package:marketdesktop/customWidgets/appButton.dart';
-import 'package:marketdesktop/main.dart';
-import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/AccountSummaryScreen/accountSummaryController.dart';
+import 'package:marketdesktop/screens/BaseController/baseController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditController.dart';
 import 'package:paginable/paginable.dart';
-import 'package:responsive_framework/responsive_framework.dart';
+import 'package:responsive_framework/utils/scroll_behavior.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../../constant/dropdownFunctions.dart';
+
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
+import '../../../../customWidgets/appButton.dart';
+import '../../../../main.dart';
+import '../../../../modelClass/myUserListModelClass.dart';
 
-class AccountSummaryScreen extends BaseView<AccountSummaryController> {
-  const AccountSummaryScreen({Key? key}) : super(key: key);
-
+class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
   @override
   Widget vBuilder(BuildContext context) {
     return FocusTraversalGroup(

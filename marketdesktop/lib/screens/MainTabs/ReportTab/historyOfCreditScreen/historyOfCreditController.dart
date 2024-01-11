@@ -1,16 +1,19 @@
 import 'package:floating_dialog/floating_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:marketdesktop/constant/utilities.dart';
-import 'package:marketdesktop/main.dart';
-import 'package:marketdesktop/modelClass/accountSummaryModelClass.dart';
-import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-import 'package:marketdesktop/modelClass/tradeDetailModelClass.dart';
-import 'package:marketdesktop/screens/UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
+import 'package:marketdesktop/screens/BaseController/baseController.dart';
+
 import '../../../../constant/index.dart';
+import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
+import '../../../../modelClass/accountSummaryModelClass.dart';
+import '../../../../modelClass/myUserListModelClass.dart';
+import '../../../../modelClass/tradeDetailModelClass.dart';
+import '../../../UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
 import '../../../../modelClass/constantModelClass.dart';
 
-class AccountSummaryController extends BaseController {
-  //*********************************************************************** */
+class HistoryOfCreditController extends BaseController {
+//*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
 

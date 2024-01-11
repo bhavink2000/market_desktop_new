@@ -1578,7 +1578,10 @@ class MarketWatchController extends BaseController {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(vertical: 5),
-                                          child: userListDropDown(selectedUser),
+                                          child: IgnorePointer(
+                                            ignoring: userData!.role == UserRollList.user,
+                                            child: userListDropDown(selectedUser),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -2564,19 +2567,21 @@ class MarketWatchController extends BaseController {
                   ),
                 ),
 
-                items: arrUserListOnlyClient
-                    .map((UserData item) => DropdownItem<UserData>(
-                          value: item,
-                          height: 30,
-                          alignment: AlignmentDirectional.centerStart,
-                          child: StatefulBuilder(builder: (context, menuSetState) {
-                            return Container(
-                              color: Colors.transparent,
-                              child: Text(item.userName ?? "", maxLines: 1, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
-                            );
-                          }),
-                        ))
-                    .toList(),
+                items: userData!.role == UserRollList.user
+                    ? []
+                    : arrUserListOnlyClient
+                        .map((UserData item) => DropdownItem<UserData>(
+                              value: item,
+                              height: 30,
+                              alignment: AlignmentDirectional.centerStart,
+                              child: StatefulBuilder(builder: (context, menuSetState) {
+                                return Container(
+                                  color: Colors.transparent,
+                                  child: Text(item.userName ?? "", maxLines: 1, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                                );
+                              }),
+                            ))
+                        .toList(),
                 selectedItemBuilder: (context) {
                   return arrUserListOnlyClient
                       .map((UserData item) => DropdownMenuItem<UserData>(
