@@ -46,6 +46,7 @@ FocusNode userEditingFocus = FocusNode();
 bool isSuperAdminPopUpOpen = false;
 bool isCommonScreenPopUpOpen = false;
 bool isChangePasswordScreenPopUpOpen = false;
+bool isUpdateLeveragePopUpOpen = false;
 
 String currentOpenedScreen = ScreenViewNames.marketWatch;
 final List<Map<String, dynamic>> _roles = arrLeverageList.map((e) => e.toJson()).toList();
@@ -1437,7 +1438,7 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
   });
 }
 
-showCalenderPopUp(DateTime fromDate, Function onDateSelection) {
+showCalenderPopUp(DateTime fromDate, Function onDateSelection, {DateTime? maxDate}) {
   showDialog<String>(
       context: Get.context!,
       // barrierColor: Colors.transparent,
@@ -1464,6 +1465,7 @@ showCalenderPopUp(DateTime fromDate, Function onDateSelection) {
                   onDateSelection(date);
                   Get.back();
                 },
+                maxSelectedDate: maxDate != null ? maxDate : DateTime.now(),
                 weekendTextStyle: TextStyle(
                   color: Colors.red,
                 ),

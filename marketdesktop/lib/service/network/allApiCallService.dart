@@ -219,17 +219,7 @@ class AllApiCallService {
     try {
       _dio.options.headers = getHeaders();
 
-      final payload = {
-        "userName": userName,
-        "password": password,
-        "serverName": serverName,
-        "deviceToken": "xxxxx",
-        "loginBy": deviceName,
-        'deviceId': deviceId,
-        "ip": myIpAddress,
-        "systemToken": "",
-        "deviceType": deviceName
-      };
+      final payload = {"userName": userName, "password": password, "serverName": serverName, "deviceToken": "xxxxx", "loginBy": deviceName, 'deviceId': deviceId, "ip": myIpAddress, "systemToken": "", "deviceType": deviceName};
 
       final data = await _dio.post(Api.login, data: payload);
       print(data.data);
@@ -241,19 +231,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> tradeCall(
-      {String? symbolId,
-      double? quantity,
-      int? totalQuantity,
-      double? price,
-      int? lotSize,
-      String? orderType,
-      String? tradeType,
-      String? exchangeId,
-      bool? isFromStopLoss,
-      double? marketPrice,
-      String? productType,
-      double? refPrice}) async {
+  Future<TradeExecuteModel?> tradeCall({String? symbolId, double? quantity, int? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, bool? isFromStopLoss, double? marketPrice, String? productType, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -284,19 +262,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> modifyTradeCall(
-      {String? symbolId,
-      double? quantity,
-      double? totalQuantity,
-      double? price,
-      double? lotSize,
-      String? orderType,
-      String? tradeType,
-      String? exchangeId,
-      double? marketPrice,
-      String? productType,
-      String? tradeId,
-      double? refPrice}) async {
+  Future<TradeExecuteModel?> modifyTradeCall({String? symbolId, double? quantity, double? totalQuantity, double? price, double? lotSize, String? orderType, String? tradeType, String? exchangeId, double? marketPrice, String? productType, String? tradeId, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -328,19 +294,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> manualTradeCall(
-      {String? userId,
-      String? symbolId,
-      double? quantity,
-      double? totalQuantity,
-      double? price,
-      int? lotSize,
-      String? orderType,
-      String? tradeType,
-      String? exchangeId,
-      String? executionTime,
-      String? manuallyTradeAddedFor,
-      double? refPrice}) async {
+  Future<TradeExecuteModel?> manualTradeCall({String? userId, String? symbolId, double? quantity, double? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, String? executionTime, String? manuallyTradeAddedFor, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -584,15 +538,7 @@ class AllApiCallService {
   }) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {
-        "userWiseGroupDataAssociationId": arrIDs,
-        "userId": userId,
-        "quantityMax": quantityMax,
-        "lotMax": lotMax,
-        "breakQuantity": breakQuantity,
-        "breakUpLot": breakUpLot,
-        "status": 1
-      };
+      final payload = {"userWiseGroupDataAssociationId": arrIDs, "userId": userId, "quantityMax": quantityMax, "lotMax": lotMax, "breakQuantity": breakQuantity, "breakUpLot": breakUpLot, "status": 1};
 
       //print(payload);
       final data = await _dio.post(Api.updateQuantity, data: payload);
@@ -631,21 +577,10 @@ class AllApiCallService {
     }
   }
 
-  Future<AccountSuumaryListModel?> accountSummaryCall(
-      {String? search, String? userId, String? type, String? startDate, String? endDate, int? page}) async {
+  Future<AccountSuumaryListModel?> accountSummaryCall({String? search, String? userId, String? type, String? startDate, String? endDate, int? page}) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {
-        "page": page,
-        "limit": 1000000,
-        "search": search,
-        "userId": userId,
-        "type": type,
-        "startDate": startDate,
-        "endDate": endDate,
-        "sortKey": "createdAt",
-        "sortBy": -1
-      };
+      final payload = {"page": page, "limit": 1000000, "search": search, "userId": userId, "type": type, "startDate": startDate, "endDate": endDate, "sortKey": "createdAt", "sortBy": -1};
       //print(payload);
       final data = await _dio.post(Api.accountSummary, data: payload);
       //print(data.data);
@@ -658,16 +593,7 @@ class AllApiCallService {
   Future<UserWiseBrokerageListModel?> userWiseBrokerageListCall({String? search, String? userId, String? type, String? exchangeId}) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {
-        "page": 1,
-        "limit": pageLimit,
-        "search": search,
-        "sortKey": "createdAt",
-        "brokerageType": type,
-        "sortBy": -1,
-        "userId": userId,
-        "exchangeId": exchangeId
-      };
+      final payload = {"page": 1, "limit": pageLimit, "search": search, "sortKey": "createdAt", "brokerageType": type, "sortBy": -1, "userId": userId, "exchangeId": exchangeId};
       {}
       //print(payload);
       final data = await _dio.post(Api.userWiseBrokerageList, data: payload);
@@ -761,15 +687,7 @@ class AllApiCallService {
   Future<ExchangeListModel?> getExchangeListUserWiseCall({String userId = "", String brokerageType = ""}) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {
-        "page": 1,
-        "limit": 10000000,
-        "search": "",
-        "sortKey": "createdAt",
-        "sortBy": -1,
-        "userId": userId,
-        "brokerageType": brokerageType
-      };
+      final payload = {"page": 1, "limit": 10000000, "search": "", "sortKey": "createdAt", "sortBy": -1, "userId": userId, "brokerageType": brokerageType};
       final data = await _dio.post(Api.getExchangeListUserWise, data: payload);
 
       return ExchangeListModel.fromJson(data.data);
@@ -883,19 +801,11 @@ class AllApiCallService {
     }
   }
 
-  Future<NotificationSettingModel?> updateNotificationSettingCall(
-      {bool? marketOrder, bool? pendingOrder, bool? executePendingOrder, bool? deletePendingOrder, bool? tradingSound}) async {
+  Future<NotificationSettingModel?> updateNotificationSettingCall({bool? marketOrder, bool? pendingOrder, bool? executePendingOrder, bool? deletePendingOrder, bool? tradingSound}) async {
     try {
       _dio.options.headers = getHeaders();
       print(_dio.options.headers);
-      final payload = {
-        "userId": userData!.userId,
-        "marketOrder": marketOrder,
-        "pendingOrder": pendingOrder,
-        "executePendingOrder": executePendingOrder,
-        "deletePendingOrder": deletePendingOrder,
-        "treadingSound": tradingSound
-      };
+      final payload = {"userId": userData!.userId, "marketOrder": marketOrder, "pendingOrder": pendingOrder, "executePendingOrder": executePendingOrder, "deletePendingOrder": deletePendingOrder, "treadingSound": tradingSound};
       // //print(payload);
       final data = await _dio.post(Api.updateNotificationSetting, data: payload);
       //print(data);
@@ -1044,16 +954,7 @@ class AllApiCallService {
     }
   }
 
-  Future<CreateUserModel?> createAdminCall(
-      {String? name,
-      String? userName,
-      String? password,
-      String? phone,
-      String? role,
-      int? cmpOrder,
-      int? manualOrder,
-      int? deleteTrade,
-      int? executePendingOrder}) async {
+  Future<CreateUserModel?> createAdminCall({String? name, String? userName, String? password, String? phone, String? role, int? cmpOrder, int? manualOrder, int? deleteTrade, int? executePendingOrder}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -1346,8 +1247,7 @@ class AllApiCallService {
     }
   }
 
-  Future<PositionModel?> openPositionListCall(int page,
-      {String search = "", String exchangeId = "", String symbolId = "", String userId = ""}) async {
+  Future<PositionModel?> openPositionListCall(int page, {String search = "", String exchangeId = "", String symbolId = "", String userId = ""}) async {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
@@ -1387,6 +1287,20 @@ class AllApiCallService {
       return TradeLogsModel.fromJson(data.data);
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<CommonModel?> updateLeverageCall(int? leverage, {String? userId}) async {
+    try {
+      _dio.options.headers = getHeaders();
+      final payload = {"leverage": leverage, "userId": userId};
+      final data = await _dio.post(Api.updateLeverage, data: payload);
+      print(data.realUri);
+      return CommonModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+      // final errMsg = e.response?.data['message'];
+      // throw Exception(errMsg);
     }
   }
 
@@ -1494,14 +1408,7 @@ class AllApiCallService {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
-      final payload = {
-        "page": 1,
-        "limit": 5000,
-        "exchangeId": exchangeId,
-        "symbolId": symbolId,
-        "instrumentType": instrumentType,
-        "expiryDate": expiryDate
-      };
+      final payload = {"page": 1, "limit": 5000, "exchangeId": exchangeId, "symbolId": symbolId, "instrumentType": instrumentType, "expiryDate": expiryDate};
       print(payload);
       final data = await _dio.post(Api.strikePriceList, data: payload);
       print(data.data);
@@ -1656,13 +1563,7 @@ class AllApiCallService {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
-      final payload = {
-        "deviceToken": "xxxxxx",
-        "loginBy": Platform.isMacOS ? "Mac" : "Window",
-        "deviceId": deviceId,
-        "ip": myIpAddress,
-        "systemToken": "Bearer ${GetStorage().read(LocalStorageKeys.userToken)}"
-      };
+      final payload = {"deviceToken": "xxxxxx", "loginBy": Platform.isMacOS ? "Mac" : "Window", "deviceId": deviceId, "ip": myIpAddress, "systemToken": "Bearer ${GetStorage().read(LocalStorageKeys.userToken)}"};
       final data = await _dio.post(Api.logout, data: payload);
       print(data.data);
       return CommonModel.fromJson(data.data);

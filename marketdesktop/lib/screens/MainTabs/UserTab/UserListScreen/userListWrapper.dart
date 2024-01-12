@@ -461,6 +461,9 @@ class UserListScreen extends BaseView<UserListController> {
                   if (value == "1") {
                     showChangePasswordPopUp(selectedUserId: controller.arrUserListData[index].userId!);
                   }
+                  if (value == "2") {
+                    showLeverageUpdatePopUp(selectedUser: controller.arrUserListData[index]);
+                  }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   PopupMenuItem<String>(
@@ -469,6 +472,10 @@ class UserListScreen extends BaseView<UserListController> {
                   ),
                   PopupMenuItem<String>(
                     value: '2',
+                    child: Text('Update Leverage'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: '3',
                     child: Text(controller.arrUserListData[index].role == UserRollList.user ? '% MARGIN SQUER' : "Account limit"),
                   ),
                 ],

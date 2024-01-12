@@ -11,6 +11,7 @@ class BillGenerateController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
   RxString fromDate = "Start Date".obs;
+  Rx<DateTime> fromDateValue = DateTime.now().obs;
   RxString endDate = "End Date".obs;
 
   bool isApiCall = false;
@@ -21,6 +22,7 @@ class BillGenerateController extends BaseController {
   FocusNode submitFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
   RxString selectStatusdropdownValue = "".obs;
+  DateTime thisWeekStartDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
   @override
   void onInit() async {
     // TODO: implement onInit

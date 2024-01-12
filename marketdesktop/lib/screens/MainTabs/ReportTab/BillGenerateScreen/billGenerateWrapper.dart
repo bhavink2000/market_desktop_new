@@ -150,8 +150,9 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                 onTap: () {
                                   // selectFromDate(controller.fromDate);
                                   showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                    controller.fromDateValue.value = selectedDate;
                                     controller.fromDate.value = shortDateForBackend(selectedDate);
-                                  });
+                                  }, maxDate: userData!.role != UserRollList.superAdmin ? controller.thisWeekStartDate : DateTime.now());
                                 },
                                 child: Obx(() {
                                   return Container(
@@ -227,9 +228,9 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                               GestureDetector(
                                 onTap: () {
                                   // selectToDate(controller.endDate);
-                                  showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                  showCalenderPopUp(controller.fromDateValue.value, (DateTime selectedDate) {
                                     controller.endDate.value = shortDateForBackend(selectedDate);
-                                  });
+                                  }, maxDate: userData!.role != UserRollList.superAdmin ? controller.thisWeekStartDate : DateTime.now());
                                 },
                                 child: Obx(() {
                                   return Container(

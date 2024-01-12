@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/index.dart';
 import 'package:marketdesktop/main.dart';
+import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import 'package:marketdesktop/screens/MainTabs/FileTab/AboutScreen/aboutUsController.dart';
 import 'package:marketdesktop/screens/MainTabs/FileTab/AboutScreen/aboutUsWrapper.dart';
@@ -10,6 +11,8 @@ import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/chan
 import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/changePasswordWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/MarketTimingScreen/marketTimingScreenController.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/MarketTimingScreen/marketTimingScreenWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateController.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/ScriptDetailPopUp/scriptDetailPopupWrapper.dart';
@@ -274,6 +277,36 @@ showProfitAndLossUserWiseSummaryPopUp() {
               height: 60.h,
               decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: ProfitAndLossUserWiseSummaryPopUpScreen(),
+            ),
+          ));
+}
+
+showLeverageUpdatePopUp({UserData? selectedUser}) {
+  var cpVC = Get.put(LeverageUpdateController());
+  cpVC.selectedUser = selectedUser!;
+  showDialog<String>(
+      context: Get.context!,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: 420,
+                height: 210,
+                color: Colors.transparent,
+                child: LeverageUpdateScreen(),
+              ),
             ),
           ));
 }

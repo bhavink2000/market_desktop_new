@@ -67,4 +67,5 @@ abstract class Api {
   static const strikePriceList = 'symbol/strike-price-list';
   static const userChangeStatus = 'user/change-status';
   static const userLogList = 'user-log/list';
+  static const updateLeverage = 'user/change-leverage';
 }

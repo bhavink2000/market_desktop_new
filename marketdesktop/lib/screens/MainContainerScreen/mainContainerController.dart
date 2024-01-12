@@ -29,6 +29,7 @@ import 'package:marketdesktop/screens/MainTabs/ReportTab/WeeklyAdminScreen/weekl
 import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditController.dart';
 import 'package:marketdesktop/screens/MainTabs/SettingsTab/notificationSettingController.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/messagesController.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/LoginHistoryScreen/loginHistoryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/M2mProfitAndLossScreen/m2mProfitAndLossController.dart';
@@ -247,6 +248,11 @@ class MainContainerController extends BaseController {
 
         await Get.delete<ChangePasswordController>();
         isChangePasswordScreenPopUpOpen = false;
+      } else if (isUpdateLeveragePopUpOpen) {
+        Get.back();
+
+        await Get.delete<LeverageUpdateController>();
+        isUpdateLeveragePopUpOpen = false;
       } else if (isUserDetailPopUpOpen) {
         Get.back();
         await Get.find<UserDetailsPopUpController>().deleteAllController();
