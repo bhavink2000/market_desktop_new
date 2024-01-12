@@ -189,6 +189,10 @@ class CreateUserController extends BaseController {
         if (userData!.highLowSLLimitPercentage == true) {
           isSymbolWiseSL = true;
         }
+        for (int i = 0; i < selectedUserForEdit!.exchangeAllow!.length; i++) {
+          selectedUserForEdit!.exchangeAllow![i].groupId = selectedUserForEdit!.exchangeAllow![i].groupId!.toSet().toList();
+        }
+
         update();
       } else if (selectedUserForEdit!.role == UserRollList.user) {
         selectedUserType.value.roleId = selectedUserForEdit!.role;
@@ -557,7 +561,7 @@ class CreateUserController extends BaseController {
         } else if (selectedUserForEdit!.role == UserRollList.user) {
           callForEditUser();
         } else if (selectedUserForEdit!.role == UserRollList.admin) {
-          callForCreateAdmin();
+          callForEditAdmin();
         }
       }
 
@@ -592,7 +596,11 @@ class CreateUserController extends BaseController {
     if (response != null) {
       if (response.statusCode == 200) {
         response.data!.insert(0, groupListModelData(name: "Select Group"));
-        return response.data!;
+        List<groupListModelData> toreturn = [];
+        response.data!.forEach((element) {
+          toreturn.addIf(!toreturn.contains(element), element);
+        });
+        return toreturn;
       } else {
         showErrorToast(response.meta!.message ?? "");
         return [];

@@ -1097,15 +1097,13 @@ class AllApiCallService {
         "name": name,
         "userName": userName,
         "phone": phone,
-        "changePasswordOnFirstLogin": changePassword,
         "remark": remark,
         "autoSquareOff": autoSquareOff,
-        "leverage": leverage,
         "cutOff": cutOff,
         "highLowSLLimitPercentage": symbolWiseSL,
-        "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow.map((x) => x.toJson())),
         "highLowBetweenTradeLimit": highLowBetweenTradeLimits == null ? [] : List<dynamic>.from(highLowBetweenTradeLimits.map((x) => x)),
-        "freshLimitSL": freshLimitSL
+        "freshLimitSL": freshLimitSL,
+        "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow.map((x) => x.toJson())),
       };
       print(payload);
       final data = await _dio.post(Api.editUser, data: payload);
@@ -1209,7 +1207,6 @@ class AllApiCallService {
         "name": name,
         "phone": phone,
         "addMaster": addMaster,
-        "leverage": leverage,
         "remark": remark,
         "marketOrder": marketOrder,
         "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow.map((x) => x.toJson())),

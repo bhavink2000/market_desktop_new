@@ -72,6 +72,8 @@ class groupListModelData {
       };
   @override
   String toString() => name!;
+
+  @override
   bool operator ==(dynamic other) {
     if (other is groupListModelData) {
       return this.name == other.name;

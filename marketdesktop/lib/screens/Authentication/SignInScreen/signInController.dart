@@ -43,8 +43,8 @@ class SignInController extends BaseController {
     super.onInit();
     await windowManager.setTitle("BAZAAR 2.0");
     // serverController.text = "bazaar";
-    userNameController.text = "prem";
-    passwordController.text = "123456";
+    // userNameController.text = "prem";
+    // passwordController.text = "123456";
     await windowManager.setMinimumSize(Size(400, 490));
     await windowManager.setSize(Size(400, 490), animate: false);
     await windowManager.setResizable(false);
