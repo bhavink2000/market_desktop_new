@@ -460,7 +460,6 @@ class SettlementScreen extends BaseView<SettlementController> {
   }
 
   Widget profitLossContent(BuildContext context, int index, Profit value) {
-    // var scriptValue = controller.arrUserOderList[index];
     if (controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
@@ -473,21 +472,43 @@ class SettlementScreen extends BaseView<SettlementController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      return GestureDetector(
-        onTap: () {
-          // controller.selectedScriptIndex = index;
-          controller.update();
-        },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              valueBox(value.displayName!, 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(value.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(value.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(value.total!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            ],
-          ),
+      return Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'USERNAME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.displayName!, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true) : const SizedBox();
+                    }
+                  case 'P/L':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'BRK':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'TOTAL':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.total!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
+          ],
         ),
       );
     }
@@ -497,12 +518,67 @@ class SettlementScreen extends BaseView<SettlementController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BRK':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("Username", isLarge: true),
-        titleBox("P/L"),
-        titleBox("Brk"),
-        titleBox("Total"),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

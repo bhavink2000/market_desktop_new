@@ -4,6 +4,7 @@ import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserScriptPositionTrackScreen/userScriptPositionTrackController.dart';
 import 'package:paginable/paginable.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../constant/utilities.dart';
@@ -387,40 +388,150 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    var scriptValue = controller.arrTracking[index];
-    return GestureDetector(
-      onTap: () {
-        // controller.selectedScriptIndex = index;
-        controller.update();
-      },
-      child: Container(
+    if (controller.isApiCallRunning) {
+      return Container(
+        margin: EdgeInsets.only(bottom: 3.h),
+        child: Shimmer.fromColors(
+            child: Container(
+              height: 3.h,
+              color: Colors.white,
+            ),
+            baseColor: AppColors().whiteColor,
+            highlightColor: AppColors().grayBg),
+      );
+    } else {
+      var scriptValue = controller.arrTracking[index];
+      return Container(
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(shortFullDateTime(scriptValue.createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-            valueBox(scriptValue.userName ?? "", 30, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-              showUserDetailsPopUp(userId: scriptValue.userId!, userName: scriptValue.userName ?? "");
-            }),
-            valueBox(scriptValue.symbolTitle ?? "", 30, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-            valueBox(scriptValue.orderType!.toUpperCase(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            valueBox(scriptValue.quantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'POSITION DATE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(shortFullDateTime(scriptValue.createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                    }
+                  case 'USERNAME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(scriptValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true, isUnderlined: true, onClickValue: () {
+                              showUserDetailsPopUp(userId: scriptValue.userId!, userName: scriptValue.userName!);
+                            })
+                          : const SizedBox();
+                    }
+                  case 'SYMBOL':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: false) : const SizedBox();
+                    }
+                  case 'POSITION':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.orderType!.toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'OPEN QUANTITY':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
           ],
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget listTitleContent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'POSITION DATE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("POSITION DATE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SYMBOL':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'POSITION':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("POSITION", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'OPEN QUANTITY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("OPEN QUANTITY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L WITH BRK':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L WITH BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("Position Date", isForDate: true),
-        titleBox("Username"),
-        titleBox("Symbol", isLarge: true),
-        titleBox("position"),
-        titleBox("Open Quantity", isBig: true),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

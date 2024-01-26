@@ -12,6 +12,7 @@ import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/brokerListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
+import 'package:marketdesktop/modelClass/groupListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import 'package:marketdesktop/service/network/allApiCallService.dart';
@@ -750,6 +751,63 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
             ),
           ));
     }
+  });
+}
+
+Widget groupListDropDown(Rx<groupListModelData> selectedGroup, {List<groupListModelData>? arrGroup, double? width}) {
+  return Obx(() {
+    return SizedBox(
+        width: width ?? 250,
+        height: 30,
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField2<groupListModelData>(
+              isExpanded: true,
+              decoration: commonFocusBorder,
+              iconStyleData: IconStyleData(
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
+                ),
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+              hint: Text(
+                '',
+                style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+              ),
+              items: arrGroup!
+                  .map((groupListModelData item) => DropdownItem<groupListModelData>(
+                        value: item,
+                        height: 30,
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return arrGroup
+                    .map((groupListModelData item) => DropdownMenuItem<groupListModelData>(
+                          value: item,
+                          child: Text(
+                            item.name ?? "",
+                            style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                          ),
+                        ))
+                    .toList();
+              },
+              value: selectedGroup.value.groupId != "" ? selectedGroup.value : null,
+              onChanged: (groupListModelData? value) {
+                // // setState(() {
+                // controller.selectedScriptFromAll = value;
+                // controller.update();
+                // // });
+
+                selectedGroup.value = value!;
+              },
+              buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
+            ),
+          ),
+        ));
   });
 }
 

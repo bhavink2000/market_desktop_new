@@ -26,6 +26,7 @@ class BaseController extends GetxController {
   AllApiCallService service = AllApiCallService();
   List<GlobalSymbolData> arrExchangeWiseScript = [];
   bool isFilterOpen = false;
+  RxBool isScrollEnable = true.obs;
   onCLickFilter() {
     isFilterOpen = !isFilterOpen;
     update();

@@ -202,7 +202,7 @@ class CreateUserController extends BaseController {
         creditController.text = selectedUserForEdit!.credit.toString().replaceAll(RegExp(r'\.0$'), '');
         remarkController.text = selectedUserForEdit!.remark!;
         isAutoSquareOff = selectedUserForEdit!.autoSquareOff == 1 ? true : false;
-        cutoffController.text = selectedUserForEdit!.cutOff.toString();
+        cutoffController.text = selectedUserForEdit!.cutOff! > 0 ? selectedUserForEdit!.cutOff.toString() : "";
         isChangePasswordOnFirstLogin = selectedUserForEdit!.changePasswordOnFirstLogin!;
         if (selectedUserForEdit!.highLowBetweenTradeLimit != null) {
           for (var element in selectedUserForEdit!.highLowBetweenTradeLimit!) {

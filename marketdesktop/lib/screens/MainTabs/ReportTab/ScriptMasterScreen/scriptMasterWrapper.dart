@@ -1,3 +1,4 @@
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ScriptMasterScreen/scriptMasterController.dart';
 
 import 'package:paginable/paginable.dart';
@@ -253,7 +254,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 88.w : 96.w,
+        width: globalMaxWidth,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -302,7 +303,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    if (controller.isApiCallRunning || controller.isClearApiCallRunning) {
+    if (controller.isApiCallRunning) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
         child: Shimmer.fromColors(
@@ -315,27 +316,51 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
       );
     } else {
       var tradeValue = controller.arrTradeMargin[index];
-      return GestureDetector(
-        onTap: () {
-          // controller.selectedScriptIndex = index;
-          controller.update();
-        },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
-              //     isImage: true, strImage: AppImages.checkBox, isSmall: true),
+      return Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'EXCHANGE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(tradeValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'SCRIPT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(tradeValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'EXPIRY DATE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(shortFullDateTime(tradeValue.expiryDate!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                    }
+                  case 'DESCRIPTION':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(tradeValue.symbolName ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                    }
+                  case 'TRADE ATTRIBUTE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox((tradeValue.tradeAttribute ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                    }
+                  case 'ALLOW TRADE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox((tradeValue.allowTradeValue ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                    }
 
-              valueBox(tradeValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(tradeValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(shortFullDateTime(tradeValue.expiryDate!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-
-              valueBox(tradeValue.symbolName ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox((tradeValue.tradeAttribute ?? "").toUpperCase(), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox((tradeValue.allowTradeValue ?? "").toUpperCase(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-            ],
-          ),
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
+          ],
         ),
       );
     }
@@ -345,16 +370,83 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'EXCHANGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SCRIPT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SCRIPT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'EXPIRY DATE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EXPIRY DATE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'DESCRIPTION':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DESCRIPTION", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TRADE ATTRIBUTE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TRADE ATTRIBUTE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'ALLOW TRADE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("ALLOW TRADE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        // titleBox("", isImage: true, strImage: AppImages.checkBox),
-        titleBox("Exchange"),
-        titleBox("Script", isLarge: true),
-        titleBox("Expiry Date", isForDate: true),
-
-        titleBox("Description", isLarge: true),
-        titleBox("Trade Attribute", isBig: true),
-        titleBox("Allow Trade", isBig: true),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

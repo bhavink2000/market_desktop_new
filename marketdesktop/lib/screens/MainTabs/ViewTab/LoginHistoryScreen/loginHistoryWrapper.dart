@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/popUpFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:paginable/paginable.dart';
 import 'package:shimmer/shimmer.dart';
@@ -399,7 +400,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: 98.w,
+        width: globalMaxWidth,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -463,21 +464,86 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
           controller.update();
         },
         child: Container(
+          height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(historyValue.loginDate != "" && historyValue.loginDate != null ? shortFullDateTime(historyValue.loginDate!) : "--", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(historyValue.logoutDate != "" && historyValue.logoutDate != null ? shortFullDateTime(historyValue.logoutDate!) : "--", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(historyValue.userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: controller.arrLoginHistory[index].userId!, userName: controller.arrLoginHistory[index].userName ?? "");
-              }),
-              valueBox(historyValue.role ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(historyValue.ip ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(historyValue.deviceId ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              // valueBox(historyValue.city ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText,
-              //     index),
-              // valueBox(historyValue.country ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              //     AppColors().darkText, index),
+
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.arrListTitle.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int indexT) {
+                  switch (controller.arrListTitle[indexT].title) {
+                    case 'LOGIN TIME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(historyValue.loginDate != "" && historyValue.loginDate != null ? shortFullDateTime(historyValue.loginDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true)
+                            : const SizedBox();
+                      }
+                    case 'LOGOUT TIME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(historyValue.logoutDate != "" && historyValue.logoutDate != null ? shortFullDateTime(historyValue.logoutDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
+                                isForDate: true)
+                            : const SizedBox();
+                      }
+                    case 'USERNAME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                                showUserDetailsPopUp(userId: controller.arrLoginHistory[index].userId!, userName: controller.arrLoginHistory[index].userName ?? "");
+                              })
+                            : const SizedBox();
+                      }
+                    case 'USER TYPE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(
+                                historyValue.role ?? "",
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              )
+                            : const SizedBox();
+                      }
+                    case 'IP ADDRESS':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(
+                                historyValue.ip ?? "",
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              )
+                            : const SizedBox();
+                      }
+                    case 'DEVICEID':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(
+                                historyValue.deviceId ?? "",
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              )
+                            : const SizedBox();
+                      }
+
+                    default:
+                      {
+                        return const SizedBox();
+                      }
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -489,16 +555,83 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'LOGIN TIME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("LOGIN TIME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'LOGOUT TIME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("LOGOUT TIME", index, isForDate: true, hasFilterIcon: true, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USER TYPE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USER TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'IP ADDRESS':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'DEVICEID':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DEVICEID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("Login Time", isForDate: true),
-        titleBox("Logout Time", isForDate: true),
-        titleBox("Username"),
-        titleBox("User Type"),
-        titleBox("IPAddress"),
-        titleBox("DeviceId", isLarge: true),
-        // titleBox("City"),
-        // titleBox("Country"),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

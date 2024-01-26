@@ -396,6 +396,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                                 width: 150,
                                 decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
                                 child: TextFormField(
+                                  maxLength: 9,
                                   controller: controller.amountController,
                                   textInputAction: TextInputAction.done,
                                   style: TextStyle(
@@ -411,6 +412,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                                     return null;
                                   },
                                   decoration: InputDecoration(
+                                    counterText: "",
                                     contentPadding: const EdgeInsets.all(8),
                                     // labelText: 'Food Type',
                                     focusedBorder: OutlineInputBorder(
@@ -429,6 +431,12 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                               ),
                             ],
                           ),
+                        ),
+                        Container(
+                          width: 23.w,
+                          margin: EdgeInsets.only(left: 90),
+                          // color: Colors.red,
+                          child: Text(controller.amountController.text.isNotEmpty ? controller.numericToWord() : "", maxLines: 5, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
                         ),
                         SizedBox(
                           height: 10,

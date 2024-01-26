@@ -444,7 +444,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    if (controller.isApiCallRunning || controller.isResetCall) {
+    if (controller.isApiCallRunning) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
         child: Shimmer.fromColors(
@@ -457,61 +457,121 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
       );
     } else {
       var scriptValue = controller.arrSummaryList[index];
-      return GestureDetector(
-        onTap: () {
-          // controller.selectedScriptIndex = index;
-          controller.update();
-        },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              valueBox(scriptValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(scriptValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
+      return Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'EXCHANGE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'SYMBOL':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(
+                              scriptValue.symbolTitle ?? "",
+                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle,
+                            )
+                          : const SizedBox();
+                    }
+                  case 'NET QTY':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(scriptValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                              isCommonScreenPopUpOpen = true;
+                              Get.find<MainContainerController>().isInitCallRequired = false;
+                              currentOpenedScreen = ScreenViewNames.clientAccountReport;
+                              var tradeVC = Get.put(ClientAccountReportController());
+                              tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
+                              tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrSummaryList[index].symbolId, symbolName: controller.arrSummaryList[index].symbolName, symbolTitle: controller.arrSummaryList[index].symbolTitle);
+                              // tradeVC.update();
+                              // tradeVC.getTradeList();
 
-              valueBox(scriptValue.totalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-                isCommonScreenPopUpOpen = true;
-                Get.find<MainContainerController>().isInitCallRequired = false;
-                currentOpenedScreen = ScreenViewNames.clientAccountReport;
-                var tradeVC = Get.put(ClientAccountReportController());
-                tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
-                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrSummaryList[index].symbolId, symbolName: controller.arrSummaryList[index].symbolName, symbolTitle: controller.arrSummaryList[index].symbolTitle);
-                // tradeVC.update();
-                // tradeVC.getTradeList();
+                              tradeVC.isPagingApiCall = false;
+                              tradeVC.getAccountSummaryNewList("");
+                              tradeVC.isPagingApiCall = true;
+                              Get.find<MainContainerController>().isInitCallRequired = true;
+                              Get.delete<SymbolWisePositionReportController>();
+                              Get.back();
 
-                tradeVC.isPagingApiCall = false;
-                tradeVC.getAccountSummaryNewList("");
-                tradeVC.isPagingApiCall = true;
-                Get.find<MainContainerController>().isInitCallRequired = true;
-                Get.delete<SymbolWisePositionReportController>();
-                Get.back();
+                              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
+                            })
+                          : const SizedBox();
+                    }
+                  case 'NET QTY % WISE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(scriptValue.totalShareQuantity!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true)
+                          : const SizedBox();
+                    }
+                  case 'NET A PRICE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
+                          : const SizedBox();
+                    }
+                  case 'BROKERAGE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'WITH BROKERAGE A PRICE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(
+                              scriptValue.totalQuantity! != 0
+                                  ? scriptValue.brokerageTotal! > 0
+                                      ? (scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2)
+                                      : scriptValue.avgPrice!.toStringAsFixed(2)
+                                  : "0.00",
+                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle,
+                              isLarge: true)
+                          : const SizedBox();
+                    }
+                  case 'CMP':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'P/L':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
 
-                generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
-              }),
-              valueBox(scriptValue.totalShareQuantity!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+                  case 'P/L (%)':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
+                          : const SizedBox();
+                    }
 
-              valueBox(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+                  case 'BROKERAGE %':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.adminBrokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                    }
 
-              valueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(
-                  scriptValue.totalQuantity! != 0
-                      ? scriptValue.brokerageTotal! > 0
-                          ? (scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2)
-                          : scriptValue.avgPrice!.toStringAsFixed(2)
-                      : "0.00",
-                  45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText,
-                  index,
-                  isLarge: true),
-              valueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(scriptValue.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox((double.parse(scriptValue.profitLoss!.toStringAsFixed(2)) + double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(scriptValue.profitLossValue!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(scriptValue.adminBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            ],
-          ),
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
+          ],
         ),
       );
     }
@@ -521,17 +581,123 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        titleBox("Exchange"),
-        titleBox("symbol", isLarge: true),
-        titleBox("Net Qty"),
-        titleBox("Net Qty % wise", isBig: true),
-        titleBox("Net A Price"),
-        titleBox("BROKRAGE"),
-        titleBox("with BROKRAGE a price", isLarge: true),
-        titleBox("CMP"),
-        titleBox("P/L"),
-        titleBox("P/L (%)"),
-        titleBox("BROKRAGE %"),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'EXCHANGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SYMBOL':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET QTY % WISE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET QTY % WISE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BROKERAGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BROKERAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'WITH BROKERAGE A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("WITH BROKERAGE A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'CMP':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("CMP", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L (%)':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L (%)", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BROKERAGE %':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BROKERAGE %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

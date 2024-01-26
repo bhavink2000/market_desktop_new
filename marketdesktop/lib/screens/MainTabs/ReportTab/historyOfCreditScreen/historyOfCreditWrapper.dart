@@ -451,7 +451,7 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        width: 98.w,
+        width: globalMaxWidth,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -525,7 +525,6 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    // var scriptValue = controller.arrUserOderList[index];
     if (controller.isApiCallRunning || controller.isResetCall) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
@@ -538,42 +537,61 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      return GestureDetector(
-        onTap: () {
-          // controller.selectedScriptIndex = index;
-          controller.update();
-        },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // valueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
-              //   showUserDetailsPopUp(userId: controller.arrAccountSummary[index].userId!, userName: controller.arrAccountSummary[index].userName ?? "");
-              // }),
-              // valueBox(controller.arrAccountSummary[index].symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              // valueBox(controller.arrAccountSummary[index].quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].tradeType ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].positionDataAveragePrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].type ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].transactionType ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              // valueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, onClickValue: () {
-              //   controller.tradeID = controller.arrAccountSummary[index].tradeId!;
-              //   controller.getTradeDetail();
-              // }),
-              // valueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox(controller.arrAccountSummary[index].positionDataQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+      var historyValue = controller.arrAccountSummary[index];
+      return Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'DATE TIME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true)
+                          : const SizedBox();
+                    }
+                  case 'USERNAME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'OPENING':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox((controller.arrAccountSummary[index].amount! + controller.arrAccountSummary[index].closing!).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
+                          : const SizedBox();
+                    }
+                  case 'AMOUNT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'CLOSING':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'COMMENT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
 
-              valueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(controller.arrAccountSummary[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox((controller.arrAccountSummary[index].amount! + controller.arrAccountSummary[index].closing!).toStringAsFixed(2), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].comment ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrAccountSummary[index].fromUserName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            ],
-          ),
+                  case 'ACTION BY':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].fromUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
+          ],
         ),
       );
     }
@@ -583,29 +601,92 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'DATE TIME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DATE TIME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'OPENING':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("OPENING", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'AMOUNT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("AMOUNT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'CLOSING':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("CLOSING", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'COMMENT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("COMMENT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        // titleBox("Date Time"),
-        // titleBox("Username"),
-        // titleBox("Symbol Name", isLarge: true),
-        // titleBox("Qty"),
-        // titleBox("Trade Type"),
-        // titleBox("Price"),
-        // titleBox("Average Price"),
+              case 'ACTION BY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("ACTION BY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        // titleBox("Type"),
-        // titleBox("Transaction Type", isForDate: true),
-        // titleBox("Amount"),
-        // titleBox("Closing"),
-        // titleBox("Open Qty"),
-
-        titleBox("Date Time", isForDate: true),
-        titleBox("Username"),
-        titleBox("Opening"),
-        titleBox("Amount"),
-        titleBox("Closing"),
-        titleBox("Comment"),
-        titleBox("Action By"),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

@@ -48,6 +48,8 @@ class ScriptData {
   num? tsq;
   num? ts;
   num? ls;
+  num? lc;
+  num? uc;
   DateTime? expiry;
   String? exchange;
   String? name;
@@ -71,6 +73,8 @@ class ScriptData {
     this.tsq = 0.0,
     this.ts = 0.0,
     this.ls = 0.0,
+    this.lc = 0.0,
+    this.uc = 0.0,
     this.expiry,
     this.exchange = "",
     this.name = "",
@@ -95,6 +99,8 @@ class ScriptData {
         tsq: json["tsq"],
         ts: json["ts"],
         ls: json["ls"],
+        lc: json["lc"],
+        uc: json["uc"],
         expiry: json["expiry"] == null ? null : DateTime.tryParse(json["expiry"]),
         exchange: json["exchange"] ?? "",
         name: json["name"] ?? "",
@@ -118,6 +124,8 @@ class ScriptData {
         "tsq": tsq,
         "ts": ts,
         "ls": ls,
+        "lc": lc,
+        "uc": uc,
         "expiry": expiry?.toIso8601String(),
         "exchange": exchange,
         "name": name,

@@ -1,39 +1,41 @@
-import 'package:marketdesktop/customWidgets/appButton.dart';
-import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/ProfitAndLossSummaryScreen/profitAndLossSummaryController.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:marketdesktop/main.dart';
+import 'package:paginable/paginable.dart';
+import 'package:responsive_framework/utils/scroll_behavior.dart';
+
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../../../constant/color.dart';
+import '../../../../constant/assets.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/utilities.dart';
+import '../../../../customWidgets/appButton.dart';
+import '../../../../modelClass/exchangeListModelClass.dart';
+import '../../../../modelClass/groupListModelClass.dart';
+import '../../../BaseController/baseController.dart';
+import 'ScriptQuantityScreenController.dart';
 
-import 'package:responsive_framework/responsive_framework.dart';
-
-import '../../../../main.dart';
-
-class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController> {
-  const ProfitAndLossSummaryScreen({Key? key}) : super(key: key);
+class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
+  const ScriptQuantityScreen({Key? key}) : super(key: key);
 
   @override
   Widget vBuilder(BuildContext context) {
     return FocusTraversalGroup(
       policy: WidgetOrderTraversalPolicy(),
-      child: Column(
+      child: Row(
         children: [
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
+            controller.isFilterOpen = !controller.isFilterOpen;
+            controller.update();
+          }),
+          filterContent(context),
           Expanded(
-            child: Row(
-              children: [
-                if (userData!.role != UserRollList.user)
-                  filterPanel(context, bottomMargin: 0, isRecordDisplay: true, onCLickFilter: () {
-                    controller.isFilterOpen = !controller.isFilterOpen;
-                    controller.update();
-                  }),
-                if (userData!.role != UserRollList.user) filterContent(context),
-                Expanded(
-                  flex: 8,
-                  child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
-                  // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
-                ),
-              ],
-            ),
+            flex: 8,
+            child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+            // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
           ),
         ],
       ),
@@ -62,7 +64,6 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                 ),
                 Container(
                   height: 35,
-                  color: AppColors().headerBgColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -113,7 +114,7 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                           children: [
                             Spacer(),
                             Container(
-                              child: Text("Username:",
+                              child: Text("Exchange:",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: CustomFonts.family1Regular,
@@ -123,7 +124,37 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 150),
+                            exchangeTypeDropDown(controller.selectExchangeDropdownValue, onChange: () async {
+                              await controller.callforGroupList(controller.selectExchangeDropdownValue.value.exchangeId!);
+                              // controller.update();
+                            }, width: 150),
+                            SizedBox(
+                              width: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 35,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Container(
+                              child: Text("Group:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().fontColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            groupListDropDown(controller.selectGroupDropdownValue, arrGroup: controller.arrGroupList, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -138,18 +169,18 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                         children: [
                           SizedBox(
                             width: 80,
-                            height: 35,
+                            height: 30,
                             child: CustomButton(
                               isEnabled: true,
                               shimmerColor: AppColors().whiteColor,
                               title: "View",
                               textSize: 14,
+                              onPress: () {
+                                controller.getQuantityList();
+                              },
                               focusKey: controller.viewFocus,
                               borderColor: Colors.transparent,
                               focusShadowColor: AppColors().blueColor,
-                              onPress: () {
-                                controller.profitLossList();
-                              },
                               bgColor: AppColors().blueColor,
                               isFilled: true,
                               textColor: AppColors().whiteColor,
@@ -162,25 +193,27 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                           ),
                           SizedBox(
                             width: 80,
-                            height: 35,
+                            height: 30,
                             child: CustomButton(
                               isEnabled: true,
                               shimmerColor: AppColors().blueColor,
                               title: "Clear",
                               textSize: 14,
-                              focusKey: controller.clearFocus,
-                              borderColor: Colors.transparent,
-                              focusShadowColor: AppColors().blueColor,
                               prefixWidth: 0,
                               onPress: () {
-                                controller.selectedUser.value = UserData();
-                                controller.profitLossList(isFromClear: true);
+                                controller.selectExchangeDropdownValue.value = ExchangeData();
+                                controller.selectGroupDropdownValue.value = groupListModelData();
+                                controller.arrData.clear();
+                                controller.update();
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,
+                              focusKey: controller.clearFocus,
+                              borderColor: Colors.transparent,
+                              focusShadowColor: AppColors().blueColor,
                               textColor: AppColors().blueColor,
                               isTextCenter: true,
-                              isLoading: controller.isClearApiCallRunning,
+                              isLoading: false,
                             ),
                           ),
                           // SizedBox(width: 5.w,),
@@ -202,8 +235,9 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
       physics: ClampingScrollPhysics(),
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
+        duration: Duration(milliseconds: 300),
         width: globalMaxWidth,
+        // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
           children: [
@@ -220,29 +254,25 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrProfitLoss.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return orderContent(context, index);
-                  }),
-            ),
-            Container(
-              height: 2.h,
-              child: Center(
-                  child: Row(
-                children: [
-                  totalContent(value: "Total", textColor: AppColors().darkText, width: 280),
-                  totalContent(value: controller.getTotal("pl").toStringAsFixed(2), textColor: controller.getTotal("pl") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 150),
-                  totalContent(value: controller.getTotal("brk").toStringAsFixed(2), textColor: controller.getTotal("brk") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                  totalContent(value: controller.getTotal("Total").toStringAsFixed(2), textColor: controller.getTotal("Total") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                  totalContent(value: controller.getTotal("m2m").toStringAsFixed(2), textColor: controller.getTotal("m2m") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                  totalContent(value: controller.getTotal("netPL").toStringAsFixed(2), textColor: controller.getTotal("netPL") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                ],
-              )),
+              child: controller.isApiCallRunning == false && controller.arrData.isEmpty
+                  ? dataNotFoundView("Script quantity not found")
+                  : PaginableListView.builder(
+                      loadMore: () async {
+                        if (controller.totalPage >= controller.pageNumber) {
+                          //print(controller.currentPage);
+                          controller.getQuantityList();
+                        }
+                      },
+                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                      progressIndicatorWidget: displayIndicator(),
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.isApiCallRunning ? 50 : controller.arrData.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return tradeContent(context, index);
+                      }),
             ),
             Container(
               height: 2.h,
@@ -254,21 +284,7 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
     );
   }
 
-  Widget totalContent({String? value, Color? textColor, double? width}) {
-    return Container(
-      width: width ?? 6.w,
-      padding: EdgeInsets.only(left: 5),
-      decoration: BoxDecoration(color: AppColors().headerBgColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-      child: Text(value ?? "",
-          style: TextStyle(
-            fontSize: 12,
-            fontFamily: CustomFonts.family1Medium,
-            color: textColor ?? AppColors().redColor,
-          )),
-    );
-  }
-
-  Widget orderContent(BuildContext context, int index) {
+  Widget tradeContent(BuildContext context, int index) {
     if (controller.isApiCallRunning) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
@@ -281,7 +297,7 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var scriptValue = controller.arrProfitLoss[index];
+      var scriptValue = controller.arrData[index];
       return Container(
         height: 30,
         child: Row(
@@ -294,41 +310,25 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle[indexT].title) {
-                  case 'DESCRIPTION':
+                  case 'SYMBOL':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true, onClickValue: () {
-                              showProfitAndLossSummaryPopUp();
-                            })
-                          : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
                     }
-                  case 'PROFIT & LOSS':
+                  case 'BREAKUP QTY':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, scriptValue.profitLoss! >= 0 ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle, isBig: true)
-                          : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.breakQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
                     }
-                  case 'BRK':
+                  case 'MAX QTY':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.quantityMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
                     }
-                  case 'TOTAL':
+                  case 'BREAKUP LOT':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.total.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, (scriptValue.profitLoss! - scriptValue.brokerageTotal!) >= 0 ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle)
-                          : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.breakUpLot!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
                     }
-                  case 'M2M P/L':
+                  case 'MAX LOT':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.totalProfitLossValue.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, scriptValue.totalProfitLossValue >= 0 ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle)
-                          : const SizedBox();
-                    }
-                  case 'NET P/L':
-                    {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.netPL.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, scriptValue.netPL >= 0 ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle)
-                          : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.lotMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
                     }
 
                   default:
@@ -356,50 +356,42 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             switch (controller.arrListTitle[index].title) {
-              case 'DESCRIPTION':
+              case 'SYMBOL':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DESCRIPTION", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
                 }
-              case 'PROFIT & LOSS':
+              case 'BREAKUP QTY':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("PROFIT & LOSS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      ? dynamicTitleBox("BREAKUP QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
                       : SizedBox(
                           key: Key('$index'),
                         );
                 }
-              case 'BRK':
+              case 'MAX QTY':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("MAX QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
                 }
-              case 'TOTAL':
+              case 'BREAKUP LOT':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("BREAKUP LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
                       : SizedBox(
                           key: Key('$index'),
                         );
                 }
-              case 'M2M P/L':
+              case 'MAX LOT':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("M2M P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'NET P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("MAX LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );

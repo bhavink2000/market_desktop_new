@@ -87,6 +87,9 @@ class _CustomButton extends State<CustomButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        if (widget.isLoading) {
+          return;
+        }
         widget.onPress();
         if (widget.focusKey != null) {
           widget.focusKey!.unfocus();
@@ -108,11 +111,7 @@ class _CustomButton extends State<CustomButton> {
                 ),
               ],
               borderRadius: widget.noNeedBorderRadius != null ? BorderRadius.circular(0) : BorderRadius.circular(4),
-              border: Border.all(
-                  color: widget.focusKey != null && widget.focusKey!.hasFocus
-                      ? widget.borderColor ?? Colors.transparent
-                      : Colors.transparent,
-                  width: 2),
+              border: Border.all(color: widget.focusKey != null && widget.focusKey!.hasFocus ? widget.borderColor ?? Colors.transparent : Colors.transparent, width: 2),
               color: widget.isFilled ? widget.bgColor : AppColors().whiteColor,
             ),
             child: Center(
@@ -135,10 +134,7 @@ class _CustomButton extends State<CustomButton> {
               child: Container(
                 height: widget.buttonHeight ?? 8.h,
                 width: 90.w,
-                decoration: BoxDecoration(
-                    borderRadius: widget.noNeedBorderRadius != null ? BorderRadius.circular(0) : BorderRadius.circular(4),
-                    border: Border.all(color: widget.borderColor ?? Colors.transparent),
-                    color: widget.isFilled ? widget.bgColor : AppColors().whiteColor),
+                decoration: BoxDecoration(borderRadius: widget.noNeedBorderRadius != null ? BorderRadius.circular(0) : BorderRadius.circular(4), border: Border.all(color: widget.borderColor ?? Colors.transparent), color: widget.isFilled ? widget.bgColor : AppColors().whiteColor),
                 child: Text(
                   widget.title,
                   style: TextStyle(

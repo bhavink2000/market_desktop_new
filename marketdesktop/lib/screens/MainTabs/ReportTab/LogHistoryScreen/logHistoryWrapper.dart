@@ -374,7 +374,7 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        width: 2100,
+        width: globalMaxWidth,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -423,7 +423,6 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    // var scriptValue = controller.arrUserOderList[index];
     if (controller.isApiCallRunning || controller.isResetCall) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
@@ -437,14 +436,44 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
       );
     } else {
       return Container(
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(controller.arrLog[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            valueBox(controller.getnewValue(index: index), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-            valueBox(controller.getnewValue(index: index, isOld: true), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-            valueBox(shortFullDateTime(controller.arrLog[index].createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-            valueBox(controller.arrLog[index].updatedByName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'USERNAME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrLog[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'UPDATED ON':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(shortFullDateTime(controller.arrLog[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true)
+                          : const SizedBox();
+                    }
+                  case 'UPDATED BY':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrLog[index].updatedByName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      if (controller.arrListTitle[indexT].title.startsWith('NEW')) {
+                        return dynamicValueBox(controller.getnewValue(index: index), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true);
+                      } else if (controller.arrListTitle[indexT].title.startsWith('OLD')) {
+                        return dynamicValueBox(controller.getnewValue(index: index, isOld: true), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true);
+                      }
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
           ],
         ),
       );
@@ -455,12 +484,72 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
-        titleBox("User Name"),
-        titleBox("New ${controller.selectedLogType.value.name}", isBig: true),
-        titleBox("Old ${controller.selectedLogType.value.name}", isBig: true),
-        titleBox("UpdatedOn", isForDate: true),
-        titleBox("UpdatedBy"),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'UPDATED ON':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("UPDATED ON", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'UPDATED BY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("UPDATED BY", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              default:
+                {
+                  if (controller.arrListTitle[index].title.startsWith('NEW')) {
+                    return controller.arrListTitle[index].isSelected
+                        ? dynamicTitleBox("NEW ${controller.selectedLogType.value.name}".toUpperCase(), index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                        : SizedBox(
+                            key: Key('$index'),
+                          );
+                  } else if (controller.arrListTitle[index].title.startsWith('OLD')) {
+                    return controller.arrListTitle[index].isSelected
+                        ? dynamicTitleBox("OLD ${controller.selectedLogType.value.name}".toUpperCase(), index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                        : SizedBox(
+                            key: Key('$index'),
+                          );
+                  }
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

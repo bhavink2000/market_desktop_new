@@ -16,6 +16,7 @@ import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
+import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class PositionController extends BaseController {
   //*********************************************************************** */
@@ -76,6 +77,25 @@ class PositionController extends BaseController {
 
   List<LtpUpdateModel> arrLtpUpdate = [];
 
+  List<ListItem> arrListTitle = [
+    // ListItem("", true),
+    if (userData!.role == UserRollList.user) ListItem("", true),
+    if (userData!.role != UserRollList.user) ListItem("VIEW", true),
+    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
+    ListItem("EXCHANGE", true),
+    ListItem("SYMBOL NAME", true),
+    ListItem("TOTAL BUY A QTY", true),
+    ListItem("TOTAL BUY A PRICE", true),
+    ListItem("TOTAL SELL QTY", true),
+    ListItem("SELL A PRICE", true),
+    ListItem("NET QTY", true),
+    ListItem("NET LOT", true),
+    ListItem("NET A PRICE", true),
+    ListItem("CMP", true),
+    ListItem("P/L", true),
+    if (userData!.role != UserRollList.user) ListItem("P/L % WISE", true),
+  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -134,6 +154,10 @@ class PositionController extends BaseController {
     } else {
       showErrorToast(response!.message ?? "");
     }
+  }
+
+  refreshView() {
+    update();
   }
 
   getPositionList(String text, {bool isFromfilter = false, bool isFromClear = false}) async {
@@ -201,7 +225,9 @@ class PositionController extends BaseController {
     if (response?.statusCode == 200) {
       showSuccessToast(response!.meta!.message ?? "");
       arrPositionScriptList.clear();
+      update();
       currentPage = 1;
+      isApiCallRunning = true;
       getPositionList("", isFromClear: true);
       update();
     } else {
@@ -317,12 +343,12 @@ class PositionController extends BaseController {
     if (selectedOrderType.value.id != "limit") {
       var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrPositionScriptList[selectedScriptIndex].symbolName);
       if (ltpObj == null) {
-        return "Not Allowed For Trade";
+        return "Something went wrong in trade price.";
       } else {
         var difference = DateTime.now().difference(ltpObj.dateTime!);
         var differenceInSeconds = difference.inSeconds;
         if (differenceInSeconds >= 40) {
-          return "Not Allowed For Trade";
+          return "Something went wrong in trade price.";
         }
       }
     }

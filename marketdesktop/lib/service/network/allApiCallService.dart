@@ -26,6 +26,7 @@ import 'package:marketdesktop/modelClass/positionTrackListModelClass.dart';
 import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
 import 'package:marketdesktop/modelClass/quantitySettingListMmodelClass.dart';
 import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
+import 'package:marketdesktop/modelClass/scriptQuantityModelClass.dart';
 import 'package:marketdesktop/modelClass/serverNameModelClass.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
 import 'package:marketdesktop/modelClass/signInModelClass.dart';
@@ -604,6 +605,26 @@ class AllApiCallService {
     }
   }
 
+  Future<UserListModel?> getChildUserListCall({String? text, String? filterType, String? roleId, String? userId, String? status, int? page}) async {
+    try {
+      _dio.options.headers = getHeaders();
+      final payload = {
+        "page": page,
+        "limit": 1000,
+        "search": text,
+        "filterType": filterType,
+        "roleId": roleId,
+        "status": status,
+        "userId": userId,
+      };
+      final data = await _dio.post(Api.childUserList, data: payload);
+      print(data.data);
+      return UserListModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<UserListModel?> getMyUserListCall({String? text, String? filterType, String? roleId, String? userId, String? status, int? page}) async {
     try {
       _dio.options.headers = getHeaders();
@@ -938,7 +959,6 @@ class AllApiCallService {
       _dio.options.headers = getHeaders();
       final payload = {
         "name": name,
-        "userName": userName,
         "phone": phone,
         "changePasswordOnFirstLogin": changePassword,
         "role": role,
@@ -992,8 +1012,6 @@ class AllApiCallService {
       _dio.options.headers = getHeaders();
       final payload = {
         "name": name,
-        "userName": userName,
-        // "password": password,
         "phone": phone,
         "role": role,
         "cmpOrder": cmpOrder,
@@ -1095,7 +1113,6 @@ class AllApiCallService {
       final payload = {
         "userId": userId,
         "name": name,
-        "userName": userName,
         "phone": phone,
         "remark": remark,
         "autoSquareOff": autoSquareOff,
@@ -1433,7 +1450,17 @@ class AllApiCallService {
       // throw Exception(errMsg);
     }
   }
-
+ Future<ScriptQuantityModel?> getScriptQuantityListCall({String? text, String? userId, String? groupId, int? page}) async {
+    try {
+      _dio.options.headers = getHeaders();
+      final payload = {"page": page, "limit": 20, "search": text, "sortKey": "createdAt", "sortBy": -1, "userId": userId, "groupId": groupId};
+      final data = await _dio.post(Api.scriptQuantityList, data: payload);
+      print(data.data);
+      return ScriptQuantityModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+    }
+  }
   Future<UserWiseProfitLossSummaryModel?> userWiseProfitLossListCall(int page, String search, String userId) async {
     try {
       _dio.options.headers = getHeaders();

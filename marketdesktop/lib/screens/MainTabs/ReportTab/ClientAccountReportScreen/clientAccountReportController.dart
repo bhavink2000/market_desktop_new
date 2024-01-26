@@ -11,6 +11,7 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import '../../../../constant/index.dart';
 import '../../../../modelClass/constantModelClass.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class ClientAccountReportController extends BaseController {
   //*********************************************************************** */
@@ -53,18 +54,50 @@ class ClientAccountReportController extends BaseController {
 
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
+  List<ListItem> arrListTitle = [];
+
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
-
+    updateTitleList();
     isApiCallRunning = true;
     if (Get.find<MainContainerController>().isInitCallRequired) {
       getAccountSummaryNewList("");
     }
 
     getUserList();
+    update();
+  }
+
+  updateTitleList() {
+    arrListTitle = [
+      // ListItem("", true),
+
+      if (userData!.role != UserRollList.user) ListItem("USERNAME", true),
+      if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
+      ListItem("EXCHANGE", true),
+      ListItem("SYMBOL", true),
+      ListItem("TOTAL BUY QTY", true),
+      ListItem("TOTAL BUY A PRICE", true),
+      ListItem("TOTAL SELL QTY", true),
+      ListItem("TOTAL SELL A PRICE", true),
+      ListItem("NET QTY", true),
+      ListItem("NET A PRICE", true),
+      ListItem("CMP", true),
+      ListItem("BROKERAGE", true),
+      ListItem("P/L", true),
+      if (selectedplType.value == "All" || selectedplType.value == "Only Release") ListItem("RELEASE P/L", true),
+      if (selectedplType.value != "Only Release") ListItem("MTM", true),
+      if (selectedplType.value != "Only Release") ListItem("MTM WITH BROKERAGE", true),
+      if (selectedplType.value == "All" && selectedplType.value != "Only Release") ListItem("TOTAL", true),
+      if (userData!.role != UserRollList.user) ListItem("OUR %", true),
+    ];
+    update();
+  }
+
+  refreshView() {
     update();
   }
 
@@ -104,17 +137,23 @@ class ClientAccountReportController extends BaseController {
       arrSummaryList[indexOfScript].profitLossValue = arrSummaryList[indexOfScript].totalQuantity! < 0
           ? (double.parse(arrSummaryList[indexOfScript].ask!.toStringAsFixed(2)) - arrSummaryList[indexOfScript].avgPrice!) * arrSummaryList[indexOfScript].totalQuantity!
           : (double.parse(arrSummaryList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrSummaryList[indexOfScript].avgPrice!.toStringAsFixed(2))) * arrSummaryList[indexOfScript].totalQuantity!;
+
+      arrSummaryList[indexOfScript].total = (double.parse(arrSummaryList[indexOfScript].profitLoss!.toStringAsFixed(2)) + double.parse(arrSummaryList[indexOfScript].profitLossValue!.toStringAsFixed(2))) - double.parse(arrSummaryList[indexOfScript].brokerageTotal!.toStringAsFixed(2));
+      arrSummaryList[indexOfScript].ourPer = (((arrSummaryList[indexOfScript].profitLossValue! + arrSummaryList[indexOfScript].profitLoss!) * arrSummaryList[indexOfScript].profitAndLossSharing!) / 100);
+      // if (arrSummaryList[indexOfScript].total < 0) {
+      arrSummaryList[indexOfScript].ourPer = arrSummaryList[indexOfScript].ourPer * -1;
+      // }
+      arrSummaryList[indexOfScript].ourPer = arrSummaryList[indexOfScript].ourPer + arrSummaryList[indexOfScript].adminBrokerageTotal!;
     }
     grandTotal.value = 0.0;
     outPerGrandTotal.value = 0.0;
     arrSummaryList.forEach((element) {
-      var temp = ((double.parse(element.profitLoss!.toStringAsFixed(2)) + double.parse(element.profitLossValue!.toStringAsFixed(2))) - double.parse(element.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2);
-      var value = double.tryParse(temp) ?? 0.0;
-      grandTotal.value = grandTotal.value + value;
+      grandTotal.value = element.total + grandTotal.value;
 
-      outPerGrandTotal.value = outPerGrandTotal.value + (((element.profitLossValue! + element.profitLoss!) * element.profitAndLossSharing!) / 100) + element.adminBrokerageTotal!;
+      outPerGrandTotal.value = outPerGrandTotal.value + element.ourPer;
     });
     isApiCallRunning = false;
+    updateTitleList();
     update();
     var arrTemp = [];
     for (var element in response.data!) {
@@ -182,6 +221,13 @@ class ClientAccountReportController extends BaseController {
             arrSummaryList[indexOfScript].profitLossValue = arrSummaryList[indexOfScript].totalQuantity! < 0
                 ? (double.parse(arrSummaryList[indexOfScript].ask!.toStringAsFixed(2)) - arrSummaryList[indexOfScript].avgPrice!) * arrSummaryList[indexOfScript].totalQuantity!
                 : (double.parse(arrSummaryList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrSummaryList[indexOfScript].avgPrice!.toStringAsFixed(2))) * arrSummaryList[indexOfScript].totalQuantity!;
+
+            arrSummaryList[indexOfScript].total = (double.parse(arrSummaryList[indexOfScript].profitLoss!.toStringAsFixed(2)) + double.parse(arrSummaryList[indexOfScript].profitLossValue!.toStringAsFixed(2))) - double.parse(arrSummaryList[indexOfScript].brokerageTotal!.toStringAsFixed(2));
+            arrSummaryList[indexOfScript].ourPer = (((arrSummaryList[indexOfScript].profitLossValue! + arrSummaryList[indexOfScript].profitLoss!) * arrSummaryList[indexOfScript].profitAndLossSharing!) / 100);
+            // if (arrSummaryList[indexOfScript].total < 0) {
+            arrSummaryList[indexOfScript].ourPer = arrSummaryList[indexOfScript].ourPer * -1;
+            // }
+            arrSummaryList[indexOfScript].ourPer = arrSummaryList[indexOfScript].ourPer + arrSummaryList[indexOfScript].adminBrokerageTotal!;
           }
         }
       }
@@ -190,11 +236,9 @@ class ClientAccountReportController extends BaseController {
       grandTotal.value = 0.0;
       outPerGrandTotal.value = 0.0;
       arrSummaryList.forEach((element) {
-        var temp = ((double.parse(element.profitLoss!.toStringAsFixed(2)) + double.parse(element.profitLossValue!.toStringAsFixed(2))) - double.parse(element.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2);
-        var value = double.tryParse(temp) ?? 0.0;
-        grandTotal.value = grandTotal.value + value;
+        grandTotal.value = grandTotal.value + element.total;
 
-        outPerGrandTotal.value = outPerGrandTotal.value + ((((element.profitLossValue! + element.profitLoss!) * element.profitAndLossSharing!) / 100) + element.adminBrokerageTotal!) * -1;
+        outPerGrandTotal.value = outPerGrandTotal.value + element.ourPer;
       });
     }
   }

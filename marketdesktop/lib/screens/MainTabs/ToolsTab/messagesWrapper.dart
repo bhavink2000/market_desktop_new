@@ -87,21 +87,40 @@ class MessagesScreen extends BaseView<MessagesController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var notificationValue = controller.arrNotification[index];
-      return GestureDetector(
-        onTap: () {
-          // controller.selectedScriptIndex = index;
-          controller.update();
-        },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              valueBox(index.toString(), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isSmall: true),
-              valueBox(notificationValue.message ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isExtraLarge: true),
-              valueBox(shortFullDateTime(notificationValue.createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-            ],
-          ),
+      var scriptValue = controller.arrNotification[index];
+      return Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'INDEX':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox((index + 1).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
+                  case 'MESSAGE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.message!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true) : const SizedBox();
+                    }
+                  case 'RECEIVED ON':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(shortFullDateTime(scriptValue.createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
+          ],
         ),
       );
     }
@@ -111,11 +130,59 @@ class MessagesScreen extends BaseView<MessagesController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'INDEX':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("INDEX", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'MESSAGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("MESSAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'RECEIVED ON':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("RECEIVED ON", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("Index", isSmall: true),
-        titleBox("Message", isExtraLarge: true),
-        titleBox("ReceivedOn", isForDate: true),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

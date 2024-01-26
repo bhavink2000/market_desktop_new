@@ -3,6 +3,8 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/userLogListModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../main.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class LogHistoryController extends BaseController {
   //*********************************************************************** */
@@ -25,12 +27,26 @@ class LogHistoryController extends BaseController {
   Rx<Type> selectedLogType = Type().obs;
   FocusNode submitFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  List<ListItem> arrListTitle = [
+    ListItem("USERNAME", true),
+    ListItem("NEW", true),
+    ListItem("OLD", true),
+    ListItem("UPDATED ON", true),
+    ListItem("UPDATED BY", true),
+  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
+    selectedLogType.value = constantValues!.userLogFilter!.first;
+    update();
     // getUserLogList();
+  }
+
+  refreshView() {
+    update();
   }
 
   getUserLogList({bool isFromClear = false}) async {

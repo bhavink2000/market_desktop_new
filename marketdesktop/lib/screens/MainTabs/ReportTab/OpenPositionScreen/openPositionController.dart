@@ -11,6 +11,7 @@ import 'package:marketdesktop/screens/BaseController/baseController.dart';
 
 import '../../../../constant/index.dart';
 import '../../../../main.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class OpenPositionController extends BaseController {
   //*********************************************************************** */
@@ -35,6 +36,17 @@ class OpenPositionController extends BaseController {
   bool isResetCall = false;
   FocusNode applyFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  List<ListItem> arrListTitle = [
+    ListItem("SCRIPT", true),
+    ListItem("TOTAL BUY QTY", true),
+    ListItem("BUY A PRICE", true),
+    ListItem("TOTAL SELL QTY", true),
+    ListItem("SELL A PRICE", true),
+    ListItem("NET QTY", true),
+    ListItem("NET A PRICE", true),
+    ListItem("CMP", true),
+    ListItem("PROFIT/LOSS", true),
+  ];
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -44,6 +56,10 @@ class OpenPositionController extends BaseController {
     isApiCallRunning = true;
     getPositionList("");
     getUSerInfo();
+  }
+
+  refreshView() {
+    update();
   }
 
   getPositionList(String text, {bool isFromFilter = false, bool isFromReset = false}) async {

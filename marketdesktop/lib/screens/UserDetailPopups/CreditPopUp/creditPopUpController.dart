@@ -5,6 +5,7 @@ import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
+import 'package:number_to_indian_words/number_to_indian_words.dart';
 import '../../../constant/index.dart';
 import '../../BaseController/baseController.dart';
 
@@ -33,6 +34,9 @@ class CreditPopUpController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    amountController.addListener(() {
+      update();
+    });
   }
   //*********************************************************************** */
   // Field Validation
@@ -45,6 +49,17 @@ class CreditPopUpController extends BaseController {
       msg = AppString.emptyAmount;
     }
     return msg;
+  }
+
+  String numericToWord() {
+    var word = "";
+
+    word = NumToWords.convertNumberToIndianWords(int.parse(amountController.text)).toUpperCase();
+
+    // word.replaceAll("MILLION", "LAC.");
+    // word.replaceAll("BILLION", "CR.");
+
+    return word;
   }
 
   getCreditList() async {

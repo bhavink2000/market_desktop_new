@@ -85,7 +85,8 @@ final socket = SocketService();
 final socketIO = SocketIOService();
 ConstantData? constantValues;
 // SignInData? userObj;
-
+Size globalScreenSize = const Size(0, 0);
+double globalMaxWidth = 0.0;
 bool currentDarkModeOn = false;
 bool isAccessTokenExpired = false;
 bool isScoketDisconnted = false;

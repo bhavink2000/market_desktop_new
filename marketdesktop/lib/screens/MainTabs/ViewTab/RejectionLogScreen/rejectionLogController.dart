@@ -4,6 +4,7 @@ import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
 import '../../../../constant/index.dart';
+import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class RejectionLogController extends BaseController {
   //*********************************************************************** */
@@ -27,12 +28,28 @@ class RejectionLogController extends BaseController {
   bool isPagingApiCall = false;
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  List<ListItem> arrListTitle = [
+    ListItem("DATE", true),
+    ListItem("REJECTION REASON", true),
+    ListItem("USERNAME", true),
+    ListItem("SYMBOL", true),
+    ListItem("TYPE", true),
+    ListItem("QUANTITY", true),
+    ListItem("PRICE", true),
+    ListItem("IP ADDRESS", true),
+    ListItem("DEVICE ID", true),
+  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     isApiCallRunning = true;
     rejectLogList();
+  }
+
+  refreshView() {
+    update();
   }
 
   rejectLogList({bool isFromClear = false, bool isFromFilter = false}) async {

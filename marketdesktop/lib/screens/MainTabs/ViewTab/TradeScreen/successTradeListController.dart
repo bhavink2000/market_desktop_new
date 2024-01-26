@@ -10,6 +10,7 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../modelClass/constantModelClass.dart';
+import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class SuccessTradeListController extends BaseController {
   //*********************************************************************** */
@@ -40,6 +41,26 @@ class SuccessTradeListController extends BaseController {
   Rx<Type> selectedTradeStatus = Type().obs;
   bool isAllSelected = false;
   FocusNode deleteTradeFocus = FocusNode();
+  List<ListItem> arrListTitle = [
+    if (userData!.role == UserRollList.superAdmin) ListItem("", true),
+    if (userData!.role != UserRollList.user) ListItem("USERNAME", true),
+    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
+    ListItem("SEGMENT", true),
+    ListItem("SYMBOL", true),
+    ListItem("B/S", true),
+    ListItem("QTY", true),
+    ListItem("LOT", true),
+    ListItem("TYPE", true),
+    ListItem("TRADE PRICE", true),
+    ListItem("BROKERAGE", true),
+    ListItem("PRICE(B)", true),
+    ListItem("ORDER D/T", true),
+    ListItem("EXECUTION D/T", true),
+    ListItem("REFERENCE PRICE", true),
+    ListItem("IP ADDRESS", true),
+    ListItem("DEVICE", true),
+    ListItem("DEVICE ID", true),
+  ];
 
   @override
   void onInit() async {
@@ -106,6 +127,10 @@ class SuccessTradeListController extends BaseController {
         }
       }
     });
+  }
+
+  refreshView() {
+    update();
   }
 
   deleteTrade(List<TradeData>? arrSymbol) async {

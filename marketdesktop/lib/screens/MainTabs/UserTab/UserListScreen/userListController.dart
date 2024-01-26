@@ -4,6 +4,7 @@ import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class UserListController extends BaseController {
   //*********************************************************************** */
@@ -25,6 +26,7 @@ class UserListController extends BaseController {
   bool isLoadingData = false;
   bool isResetData = false;
   bool isPagingApiCall = false;
+ 
   int totalPage = 0;
   int totalRecord = 0;
   int currentPage = 1;
@@ -32,6 +34,33 @@ class UserListController extends BaseController {
   FocusNode clearFocus = FocusNode();
   double totalPL = 0.0;
   double totalPLPercentage = 0.0;
+  List<ListItem> arrListTitle = [
+    ListItem("EDIT", true),
+    ListItem("...", true),
+    ListItem("USERNAME", true),
+    ListItem("PARENT USER", true),
+    ListItem("TYPE", true),
+    ListItem("NAME", true),
+    ListItem("OUR %", true),
+    ListItem("BRK SHARING", true),
+    ListItem("LEVERAGE", true),
+    ListItem("CREDIT", true),
+    ListItem("P/L", true),
+    ListItem("EQUITY", true),
+    ListItem("TOTAL MARGIN", true),
+    ListItem("USED MARGIN", true),
+    ListItem("FREE MARGIN", true),
+    ListItem("BET", true),
+    ListItem("CLOSE ONLY", true),
+    ListItem("AUTO SQROFF", true),
+    ListItem("VIEW ONLY", true),
+    ListItem("STATUS", true),
+    ListItem("CREATED DATE", true),
+    ListItem("LAST LOGIN DATE/TIME", true),
+    ListItem("DEVICE", true),
+    ListItem("DEVICE ID", true),
+    ListItem("IP ADDRESS", true),
+  ];
 
   @override
   void onInit() async {
@@ -42,6 +71,10 @@ class UserListController extends BaseController {
     callForRoleList();
     isLoadingData = true;
     getUserList();
+  }
+
+  refreshView() {
+    update();
   }
 
   num getPlPer({num? percentage, num? pl}) {
@@ -72,7 +105,7 @@ class UserListController extends BaseController {
     }
 
     update();
-    var response = await service.getMyUserListCall(
+    var response = await service.getChildUserListCall(
       text: textController.text.trim(),
       page: currentPage,
       status: selectUserStatusdropdownValue.value.id?.toString() ?? "",

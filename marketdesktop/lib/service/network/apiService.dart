@@ -16,8 +16,8 @@ class ApiService {
   static BaseOptions options = BaseOptions(
     baseUrl: Api.baseUrl,
     responseType: ResponseType.json,
-    connectTimeout: const Duration(seconds: 30),
-    receiveTimeout: const Duration(seconds: 30),
+    connectTimeout: const Duration(seconds: 300),
+    receiveTimeout: const Duration(seconds: 300),
     contentType: "application/json",
     headers: {
       'Accept': 'application/json',
@@ -39,7 +39,7 @@ class ApiService {
         userToken = null;
         CancelToken().cancel();
         if (isAccessTokenExpired == false) {
-          showWarningToast("Your access token has been expired.".tr);
+          showWarningToast("Your access token has been expired.".tr, isFromTop: true);
           Get.offAllNamed(RouterName.signInScreen);
           isAccessTokenExpired = true;
         }

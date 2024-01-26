@@ -10,6 +10,7 @@ import 'package:marketdesktop/screens/BaseController/baseController.dart';
 import '../../../../constant/index.dart';
 import '../../../../modelClass/getScriptFromSocket.dart';
 import '../../../../modelClass/symbolWisePlListModelClass.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class ProfitAndLossSummaryController extends BaseController {
   //*********************************************************************** */
@@ -26,12 +27,26 @@ class ProfitAndLossSummaryController extends BaseController {
   List<SymbolWiseProfitLossData> arrProfitLoss = [];
   bool isApiCallRunning = false;
   bool isClearApiCallRunning = false;
+
+  List<ListItem> arrListTitle = [
+    ListItem("DESCRIPTION", true),
+    ListItem("PROFIT & LOSS", true),
+    ListItem("BRK", true),
+    ListItem("TOTAL", true),
+    ListItem("M2M P/L", true),
+    ListItem("NET P/L", true),
+  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
     profitLossList();
+  }
+
+  refreshView() {
+    update();
   }
 
   profitLossList({bool isFromClear = false}) async {

@@ -325,12 +325,17 @@ class UserListScreen extends BaseView<UserListController> {
   }
 
   Widget mainContent(BuildContext context) {
+    print(controller.isScrollEnable.value);
     return SingleChildScrollView(
-      physics: controller.isLoadingData == false && controller.arrUserListData.isEmpty ? NeverScrollableScrollPhysics() : ClampingScrollPhysics(),
+      physics: controller.isLoadingData == false && controller.arrUserListData.isEmpty
+          ? NeverScrollableScrollPhysics()
+          : controller.isScrollEnable.value
+              ? ClampingScrollPhysics()
+              : NeverScrollableScrollPhysics(),
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: 3375,
+        width: globalMaxWidth > 3375 ? globalMaxWidth : 3375,
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -429,144 +434,293 @@ class UserListScreen extends BaseView<UserListController> {
           controller.update();
         },
         child: Container(
+          height: 30,
           decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedUserIndex == index ? AppColors().darkText : Colors.transparent)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: AppImages.editUserImage, isSmall: true, onClickImage: () async {
-                var dashbaordScreen = Get.find<MainContainerController>();
-                dashbaordScreen.isCreateUserClick = true;
-                dashbaordScreen.isNotificationSettingClick = false;
-                // dashbaordScreen.widgetOptions.clear();
-                // dashbaordScreen.arrAvailableController.clear();
-                // dashbaordScreen.arrAvailableTabs.clear();
-                Get.back();
-                await callForRoleList();
-                var createUserVC = Get.find<CreateUserController>();
-                createUserVC.selectedUserForEdit = null;
-                createUserVC.selectedUserForEdit = controller.arrUserListData[index];
-                createUserVC.fillUserDataForEdit();
-                dashbaordScreen.update();
-              }),
-              // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
-              //     isImage: true, isBig: true, strImage: AppImages.shareDetailsImage, onClickImage: () {
-              //   controller.selectedUserIndex = index;
-              //   showSharingPopup();
-              // }),
-              PopupMenuButton<String>(
-                tooltip: "",
-                onSelected: (String value) {
-                  // Handle menu item selection here
-                  print('Selected: $value');
-                  if (value == "1") {
-                    showChangePasswordPopUp(selectedUserId: controller.arrUserListData[index].userId!);
-                  }
-                  if (value == "2") {
-                    showLeverageUpdatePopUp(selectedUser: controller.arrUserListData[index]);
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.arrListTitle.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int indexT) {
+                  switch (controller.arrListTitle[indexT].title) {
+                    case 'EDIT':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isImage: true, strImage: AppImages.editUserImage, isSmall: true, onClickImage: () async {
+                                var dashbaordScreen = Get.find<MainContainerController>();
+                                dashbaordScreen.isCreateUserClick = true;
+                                dashbaordScreen.isNotificationSettingClick = false;
+                                // dashbaordScreen.widgetOptions.clear();
+                                // dashbaordScreen.arrAvailableController.clear();
+                                // dashbaordScreen.arrAvailableTabs.clear();
+                                Get.back();
+                                await callForRoleList();
+                                var createUserVC = Get.find<CreateUserController>();
+                                createUserVC.selectedUserForEdit = null;
+                                createUserVC.selectedUserForEdit = controller.arrUserListData[index];
+                                createUserVC.fillUserDataForEdit();
+                                dashbaordScreen.update();
+                              })
+                            : const SizedBox();
+                      }
+                    case '...':
+                      {
+                        return PopupMenuButton<String>(
+                          tooltip: "",
+                          onSelected: (String value) {
+                            // Handle menu item selection here
+                            print('Selected: $value');
+                            if (value == "1") {
+                              showChangePasswordPopUp(selectedUserId: controller.arrUserListData[index].userId!);
+                            }
+                            if (value == "2") {
+                              showLeverageUpdatePopUp(selectedUser: controller.arrUserListData[index]);
+                            }
+                          },
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                            PopupMenuItem<String>(
+                              value: '1',
+                              child: Text('Change password'),
+                            ),
+                            PopupMenuItem<String>(
+                              value: '2',
+                              child: Text('Update Leverage'),
+                            ),
+                            PopupMenuItem<String>(
+                              value: '3',
+                              child: Text(controller.arrUserListData[index].role == UserRollList.user ? '% MARGIN SQUER' : "Account limit"),
+                            ),
+                          ],
+                          child: IgnorePointer(
+                            ignoring: true,
+                            child: dynamicValueBox(
+                              "",
+                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                              Colors.transparent,
+                              index,
+                              indexT,
+                              controller.arrListTitle,
+                              isImage: true,
+                              isSmall: true,
+                              strImage: AppImages.cpImage,
+                            ),
+                          ),
+                        );
+                      }
+                    case 'USERNAME':
+                      {
+                        return dynamicValueBox(controller.arrUserListData[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                          showUserDetailsPopUp(userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!, roll: controller.arrUserListData[index].role!);
+                        });
+                      }
+                    case 'PARENT USER':
+                      {
+                        return dynamicValueBox(controller.arrUserListData[index].parentUser ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true);
+                      }
+                    case 'TYPE':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].roleName ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'NAME':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].name ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'OUR %':
+                      {
+                        return dynamicValueBox(
+                          "${controller.arrUserListData[index].ourProfitAndLossSharing}",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'BRK SHARING':
+                      {
+                        return dynamicValueBox("${controller.arrUserListData[index].ourBrkSharing}", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isBig: true);
+                      }
+                    case 'LEVERAGE':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].leverage!.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'CREDIT':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].credit.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'P/L':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].role == UserRollList.user
+                              ? (controller.arrUserListData[index].profitLoss! - controller.arrUserListData[index].brokerageTotal!).toStringAsFixed(2)
+                              : (controller.arrUserListData[index].profitLoss! + controller.arrUserListData[index].brokerageTotal!).toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'EQUITY':
+                      {
+                        return dynamicValueBox(
+                          (controller.arrUserListData[index].credit! + controller.arrUserListData[index].profitLoss!).toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'TOTAL MARGIN':
+                      {
+                        return dynamicValueBox(controller.arrUserListData[index].marginBalance!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isBig: true);
+                      }
+                    case 'USED MARGIN':
+                      {
+                        return dynamicValueBox(controller.arrUserListData[index].role == UserRollList.user ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2) : "0", index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                            AppColors().blueColor, index, indexT, controller.arrListTitle,
+                            isBig: true);
+                      }
+                    case 'FREE MARGIN':
+                      {
+                        return dynamicValueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isBig: true);
+                      }
+                    case 'BET':
+                      {
+                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs, onSwitchChanged: (value) {
+                          final payload = {
+                            "userId": controller.arrUserListData[index].userId,
+                            "bet": value,
+                            "logStatus": "bet",
+                          };
+                          controller.updateUserStatus(payload);
+                        });
+                      }
+                    case 'CLOSE ONLY':
+                      {
+                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
+                          final payload = {
+                            "userId": controller.arrUserListData[index].userId,
+                            "closeOnly": value,
+                            "logStatus": "closeOnly",
+                          };
+                          controller.updateUserStatus(payload);
+                        });
+                      }
+                    case 'AUTO SQROFF':
+                      {
+                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isBig: true, isSwitch: true, switchValue: controller.arrUserListData[index].autoSquareOff == 0 ? false.obs : true.obs,
+                            onSwitchChanged: (value) {
+                          final payload = {
+                            "userId": controller.arrUserListData[index].userId,
+                            "autoSquareOff": value ? 1 : 0,
+                            "logStatus": "autoSquareOff",
+                          };
+                          controller.updateUserStatus(payload);
+                        });
+                      }
+                    case 'VIEW ONLY':
+                      {
+                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].viewOnly!.obs, onSwitchChanged: (value) {
+                          final payload = {
+                            "userId": controller.arrUserListData[index].userId,
+                            "viewOnly": value,
+                            "logStatus": "viewOnly",
+                          };
+                          controller.updateUserStatus(payload);
+                        });
+                      }
+                    case 'STATUS':
+                      {
+                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs, onSwitchChanged: (value) {
+                          final payload = {
+                            "userId": controller.arrUserListData[index].userId,
+                            "status": value ? 1 : 2,
+                            "logStatus": "status",
+                          };
+                          controller.updateUserStatus(payload);
+                        });
+                      }
+                    case 'CREATED DATE':
+                      {
+                        return dynamicValueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true);
+                      }
+                    case 'LAST LOGIN DATE/TIME':
+                      {
+                        return dynamicValueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true);
+                      }
+                    case 'DEVICE':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].deviceType ?? "--",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'DEVICE ID':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].deviceId ?? "--",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    case 'IP ADDRESS':
+                      {
+                        return dynamicValueBox(
+                          controller.arrUserListData[index].ipAddress ?? "--",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
+                      }
+                    default:
+                      {
+                        return const SizedBox();
+                      }
                   }
                 },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: '1',
-                    child: Text('Change password'),
-                  ),
-                  PopupMenuItem<String>(
-                    value: '2',
-                    child: Text('Update Leverage'),
-                  ),
-                  PopupMenuItem<String>(
-                    value: '3',
-                    child: Text(controller.arrUserListData[index].role == UserRollList.user ? '% MARGIN SQUER' : "Account limit"),
-                  ),
-                ],
-                child: IgnorePointer(
-                  ignoring: true,
-                  child: valueBox(
-                    "",
-                    0,
-                    index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                    Colors.transparent,
-                    index,
-                    isImage: true,
-                    isSmall: true,
-                    strImage: AppImages.cpImage,
-                  ),
-                ),
               ),
-
-              valueBox(controller.arrUserListData[index].userName ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true, isUnderlined: true, onClickValue: () {
-                showUserDetailsPopUp(userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!, roll: controller.arrUserListData[index].role!);
-              }),
-              valueBox(controller.arrUserListData[index].parentUser ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrUserListData[index].roleName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrUserListData[index].name ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox("${controller.arrUserListData[index].ourProfitAndLossSharing}", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox("${controller.arrUserListData[index].ourBrkSharing}", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox(controller.arrUserListData[index].leverage!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-
-              valueBox(controller.arrUserListData[index].credit.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-
-              valueBox(controller.arrUserListData[index].profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox((controller.arrUserListData[index].credit! + controller.arrUserListData[index].profitLoss!).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-              valueBox(controller.getPlPer(percentage: controller.arrUserListData[index].ourProfitAndLossSharing!, pl: controller.arrUserListData[index].profitLoss!).toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  controller.getPlPer(percentage: controller.arrUserListData[index].profitAndLossSharing!, pl: controller.arrUserListData[index].profitLoss!) > 0 ? AppColors().redColor : AppColors().blueColor, index),
-
-              // valueBox("${(controller.arrUserListData[index].profitLoss! / 100).toStringAsFixed(2)}%", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-
-              valueBox(controller.arrUserListData[index].marginBalance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, isBig: true),
-              valueBox(controller.arrUserListData[index].role == UserRollList.user ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2) : "0", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().blueColor, index,
-                  isBig: true),
-
-              valueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index),
-
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs, onSwitchChanged: (value) {
-                final payload = {
-                  "userId": controller.arrUserListData[index].userId,
-                  "bet": value,
-                  "logStatus": "bet",
-                };
-                controller.updateUserStatus(payload);
-              }),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
-                final payload = {
-                  "userId": controller.arrUserListData[index].userId,
-                  "closeOnly": value,
-                  "logStatus": "closeOnly",
-                };
-                controller.updateUserStatus(payload);
-              }),
-
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].autoSquareOff == 0 ? false.obs : true.obs, isBig: true, onSwitchChanged: (value) {
-                final payload = {
-                  "userId": controller.arrUserListData[index].userId,
-                  "autoSquareOff": value ? 1 : 0,
-                  "logStatus": "autoSquareOff",
-                };
-                controller.updateUserStatus(payload);
-              }),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].viewOnly!.obs, onSwitchChanged: (value) {
-                final payload = {
-                  "userId": controller.arrUserListData[index].userId,
-                  "viewOnly": value,
-                  "logStatus": "viewOnly",
-                };
-                controller.updateUserStatus(payload);
-              }),
-              valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs, onSwitchChanged: (value) {
-                final payload = {
-                  "userId": controller.arrUserListData[index].userId,
-                  "status": value ? 1 : 2,
-                  "logStatus": "status",
-                };
-                controller.updateUserStatus(payload);
-              }),
-
-              valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
-              valueBox(controller.arrUserListData[index].deviceType ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(controller.arrUserListData[index].deviceId ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(controller.arrUserListData[index].ipAddress ?? "--", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
 
               // valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
               //     isImage: true, isBig: true, strImage: AppImages.shareDetailsImage, onClickImage: () {
@@ -603,14 +757,14 @@ class UserListScreen extends BaseView<UserListController> {
     );
   }
 
-  Widget listTitleContent() {
+  Widget listTitleContentFinal() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         titleBox("EDIT", isSmall: true),
         // titleBox("Share Details", isBig: true),
         titleBox("...", isSmall: true),
-        titleBox("Username", isBig: true),
+        titleBox("Username"),
         titleBox("PARENT USER"),
         titleBox("Type"),
         titleBox("Name", isBig: true),
@@ -622,7 +776,7 @@ class UserListScreen extends BaseView<UserListController> {
 
         titleBox("P/L"),
         titleBox("equity"),
-        titleBox("P/L % WISE"),
+        // titleBox("P/L % WISE"),
         titleBox("Total Margin", isBig: true),
         titleBox("Used Margin", isBig: true),
         titleBox("free margin"),
@@ -641,6 +795,249 @@ class UserListScreen extends BaseView<UserListController> {
         titleBox("Device"),
         titleBox("Device Id", isBig: true),
         titleBox("IP ADRESS"),
+      ],
+    );
+  }
+
+  Widget listTitleContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'EDIT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EDIT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case '...':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("...", index, isSmall: true, hasFilterIcon: true, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'PARENT USER':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TYPE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'OUR %':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("OUR %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BRK SHARING':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BRK SHARING", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'LEVERAGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("LEVERAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'CREDIT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("CREDIT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'EQUITY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EQUITY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL MARGIN':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL MARGIN", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USED MARGIN':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USED MARGIN", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'FREE MARGIN':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("FREE MARGIN", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BET':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BET", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'CLOSE ONLY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox(
+                          "CLOSE ONLY",
+                          index,
+                          controller.arrListTitle,
+                          controller.isScrollEnable,
+                          updateCallback: controller.refreshView,
+                        )
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'AUTO SQROFF':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("AUTO SQROFF", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'VIEW ONLY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("VIEW ONLY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'STATUS':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("STATUS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'CREATED DATE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("CREATED DATE", index, controller.arrListTitle, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'LAST LOGIN DATE/TIME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("LAST LOGIN DATE/TIME", index, controller.arrListTitle, controller.isScrollEnable, isLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'DEVICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DEVICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'DEVICE ID':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DEVICE ID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'IP ADDRESS':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

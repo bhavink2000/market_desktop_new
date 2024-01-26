@@ -14,6 +14,7 @@ abstract class Api {
   static const modifyTrade = 'trade/update';
   static const myTradeList = 'trade/list';
   static const myUserList = 'user/list';
+  static const childUserList = 'user/child-list';
   static const getExchangeListUserWise = 'exchange/user-wise-list';
   static const getExchangeList = 'exchange/list';
   static const userRoleList = 'role/list';
@@ -24,7 +25,7 @@ abstract class Api {
   static const positionList = 'position/list';
   static const openPositionList = 'symbol-position/list';
   static const changePassword = 'user/change-password';
-
+  static const scriptQuantityList = 'user-wise-group-data-association/list';
   static const otherUserchangePassword = 'user/change-password-to-admin';
   static const viewProfile = 'user/view-profile';
   static const m2mProfitLoss = 'm2m-profit-loss/list';

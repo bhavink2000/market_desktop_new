@@ -53,14 +53,16 @@ class SocketIOService {
           if (data["userData"] != null) {
             print(data["userData"]);
             var obj = ProfileInfoData.fromJson(data["userData"]);
-            userData!.profitLoss = obj.profitLoss;
-            userData!.brokerageTotal = obj.brokerageTotal;
-            userData!.credit = obj.credit;
-            userData!.marginBalance = obj.marginBalance;
-            userData!.tradeMarginBalance = obj.tradeMarginBalance;
-            bool isPositionAvailable = Get.isRegistered<PositionController>();
-            if (isPositionAvailable) {
-              Get.find<PositionController>().update();
+            if (obj.profitLoss != null && obj.brokerageTotal != null && obj.credit != null && obj.tradeMarginBalance != null) {
+              userData!.profitLoss = obj.profitLoss;
+              userData!.brokerageTotal = obj.brokerageTotal;
+              userData!.credit = obj.credit;
+              userData!.marginBalance = obj.marginBalance;
+              userData!.tradeMarginBalance = obj.tradeMarginBalance;
+              bool isPositionAvailable = Get.isRegistered<PositionController>();
+              if (isPositionAvailable) {
+                Get.find<PositionController>().update();
+              }
             }
           }
           if (data["alertTradeStatus"] == 1) {
@@ -104,13 +106,29 @@ class SocketIOService {
                   vcObj.update();
                 }
               }
-
+              log("***************************************");
+              print(data);
+              log("***************************************");
               bool isSuccessTradeAvailable = Get.isRegistered<SuccessTradeListController>();
               if (isSuccessTradeAvailable) {
                 var vcObj = Get.find<SuccessTradeListController>();
-                vcObj.arrTrade.insert(0, obj);
-                vcObj.addSymbolInSocket(obj.symbolName!);
-                vcObj.update();
+                var isAvailableObj = vcObj.arrTrade.firstWhereOrNull((element) => element.tradeId == obj.tradeId);
+                if (isAvailableObj == null) {
+                  vcObj.arrTrade.insert(0, obj);
+                  vcObj.addSymbolInSocket(obj.symbolName!);
+                  vcObj.update();
+                }
+              }
+            } else if (obj.status == "deleted") {
+              bool isSuccessTradeAvailable = Get.isRegistered<SuccessTradeListController>();
+              if (isSuccessTradeAvailable) {
+                var vcObj = Get.find<SuccessTradeListController>();
+                var index = vcObj.arrTrade.indexWhere((element) => element.tradeId == obj.tradeId);
+                if (index != -1) {
+                  vcObj.arrTrade.removeAt(index);
+
+                  vcObj.update();
+                }
               }
             } else {
               bool isTradeAvailable = Get.isRegistered<TradeListController>();
@@ -119,8 +137,11 @@ class SocketIOService {
                 if (status == 1 || status == 0) {
                   vcObj.arrTrade.removeWhere((element) => element.tradeId == obj.tradeId);
                 }
-                vcObj.arrTrade.insert(0, obj);
-                vcObj.addSymbolInSocket(obj.symbolName!);
+                if (obj.tradeId != null && obj.tradeId != "") {
+                  vcObj.arrTrade.insert(0, obj);
+                  vcObj.addSymbolInSocket(obj.symbolName!);
+                }
+
                 vcObj.update();
               }
             }
@@ -133,8 +154,12 @@ class SocketIOService {
                 var vcObj = Get.find<PositionController>();
                 var index = vcObj.arrPositionScriptList.indexWhere((element) => obj.symbolId == element.symbolId);
                 if (index != -1) {
-                  vcObj.arrPositionScriptList[index] = positionListData.fromJson(data["position"]["data"]);
-                  vcObj.update();
+                  if (data["position"]["positionStatus"] != null && data["position"]["positionStatus"] == 1) {
+                    vcObj.arrPositionScriptList.removeAt(index);
+                  } else {
+                    vcObj.arrPositionScriptList[index] = positionListData.fromJson(data["position"]["data"]);
+                    vcObj.update();
+                  }
                 } else {
                   vcObj.arrPositionScriptList.insert(0, positionListData.fromJson(data["position"]["data"]));
                   var arrTemp = [];

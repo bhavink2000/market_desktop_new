@@ -409,7 +409,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 1460 : 1840,
+        width: globalMaxWidth,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -454,7 +454,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
   }
 
   Widget rejectionLogContent(BuildContext context, int index) {
-    if (controller.isApiCallRunning || controller.isResetCall) {
+    if (controller.isApiCallRunning) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
         child: Shimmer.fromColors(
@@ -466,28 +466,90 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var logValue = controller.arrRejectLog[index];
-
+      var historyValue = controller.arrRejectLog[index];
       return GestureDetector(
         onTap: () {
           // controller.selectedScriptIndex = index;
           controller.update();
         },
         child: Container(
+          height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              valueBox(shortFullDateTime(logValue.createdAt!), 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(logValue.status ?? "", 33, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-              valueBox(logValue.userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true),
-              valueBox(logValue.symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              valueBox(logValue.tradeTypeValue ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(logValue.quantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(logValue.price!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              // valueBox("58 980.00", 60, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              //     isBig: true),
-              valueBox(logValue.ipAddress ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-              valueBox(logValue.deviceId ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.arrListTitle.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int indexT) {
+                  switch (controller.arrListTitle[indexT].title) {
+                    case 'DATE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(shortFullDateTime(historyValue.createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                      }
+                    case 'REJECTION REASON':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(historyValue.status ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                      }
+                    case 'USERNAME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                                showUserDetailsPopUp(userId: controller.arrRejectLog[index].userId!, userName: controller.arrRejectLog[index].userName ?? "");
+                              })
+                            : const SizedBox();
+                      }
+                    case 'SYMBOL':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(historyValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      }
+                    case 'TYPE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(historyValue.tradeTypeValue ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      }
+                    case 'QUANTITY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(historyValue.quantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      }
+                    case 'PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(historyValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      }
+                    case 'IP ADDRESS':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(
+                                historyValue.ipAddress ?? "",
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              )
+                            : const SizedBox();
+                      }
+                    case 'DEVICE ID':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(
+                                historyValue.deviceId ?? "",
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              )
+                            : const SizedBox();
+                      }
+
+                    default:
+                      {
+                        return const SizedBox();
+                      }
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -499,18 +561,107 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
-        titleBox("Date", isForDate: true),
-        titleBox("Rejection Reason", isForDate: true),
-        titleBox("Username"),
-        titleBox("Sumbol", isBig: true),
-        titleBox("Type"),
-        titleBox("Quanity"),
-        titleBox("Price"),
-        // titleBox("Reference Price", isBig: true),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'DATE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DATE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'REJECTION REASON':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("REJECTION REASON", index, isForDate: true, hasFilterIcon: true, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SYMBOL':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TYPE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'QUANTITY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("QUANTITY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'IP ADDRESS':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'DEVICE ID':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DEVICE ID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("IPAddress"),
-        titleBox("DeviceId", isBig: true),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

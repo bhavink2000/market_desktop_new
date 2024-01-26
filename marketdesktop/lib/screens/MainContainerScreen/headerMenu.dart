@@ -17,6 +17,8 @@ import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeMarginScreen/trade
 import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeMarginScreen/tradeMarginListWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/ToolsTab/ScriptQuantityScreen/ScriptQuantityScreenController.dart';
+import 'package:marketdesktop/screens/MainTabs/ToolsTab/ScriptQuantityScreen/ScriptQuantityScreenWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/CreateUserScreen/createUserController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListWrapper.dart';
@@ -401,19 +403,19 @@ class MyMenuBar extends StatelessWidget {
               generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter);
             },
           ),
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
-            MenuEntry(
-              label: ScreenViewNames.tradeAccount,
-              onPressed: () {
-                if (marketViewObj.isBuyOpen != -1) {
-                  return;
-                }
-                isCommonScreenPopUpOpen = true;
-                currentOpenedScreen = ScreenViewNames.tradeAccount;
-                var tradeAccountVC = Get.put(TradeAccountController());
-                generalContainerPopup(view: TradeAccountScreen(), title: ScreenViewNames.tradeAccount, isFilterAvailable: true, filterClick: tradeAccountVC.onCLickFilter);
-              },
-            ),
+          // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          //   MenuEntry(
+          //     label: ScreenViewNames.tradeAccount,
+          //     onPressed: () {
+          //       if (marketViewObj.isBuyOpen != -1) {
+          //         return;
+          //       }
+          //       isCommonScreenPopUpOpen = true;
+          //       currentOpenedScreen = ScreenViewNames.tradeAccount;
+          //       var tradeAccountVC = Get.put(TradeAccountController());
+          //       generalContainerPopup(view: TradeAccountScreen(), title: ScreenViewNames.tradeAccount, isFilterAvailable: true, filterClick: tradeAccountVC.onCLickFilter);
+          //     },
+          //   ),
           MenuEntry(
             label: ScreenViewNames.clientAccountReport,
             onPressed: () {
@@ -625,6 +627,19 @@ class MyMenuBar extends StatelessWidget {
                 generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
               },
             ),
+          MenuEntry(
+            label: ScreenViewNames.scriptQty,
+            onPressed: () {
+              if (marketViewObj.isBuyOpen != -1) {
+                return;
+              }
+
+              isCommonScreenPopUpOpen = true;
+              currentOpenedScreen = ScreenViewNames.scriptQty;
+              var masterVC = Get.put(ScriptQuantityController());
+              generalContainerPopup(view: ScriptQuantityScreen(), title: ScreenViewNames.scriptQty, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
+            },
+          ),
           MenuEntry(
             label: ScreenViewNames.messages,
             shortcut: const SingleActivator(LogicalKeyboardKey.f10, control: false),

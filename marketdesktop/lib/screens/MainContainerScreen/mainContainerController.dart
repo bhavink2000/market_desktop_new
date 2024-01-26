@@ -28,6 +28,7 @@ import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen
 import 'package:marketdesktop/screens/MainTabs/ReportTab/WeeklyAdminScreen/weeklyAdminController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditController.dart';
 import 'package:marketdesktop/screens/MainTabs/SettingsTab/notificationSettingController.dart';
+import 'package:marketdesktop/screens/MainTabs/ToolsTab/ScriptQuantityScreen/ScriptQuantityScreenController.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/messagesController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
@@ -327,6 +328,8 @@ class MainContainerController extends BaseController {
           await Get.delete<SymbolWisePositionReportController>();
         } else if (currentOpenedScreen == ScreenViewNames.clientAccountReport) {
           await Get.delete<ClientAccountReportController>();
+        } else if (currentOpenedScreen == ScreenViewNames.scriptQty) {
+          await Get.delete<ScriptQuantityController>();
         }
 
         currentOpenedScreen = ScreenViewNames.marketWatch;

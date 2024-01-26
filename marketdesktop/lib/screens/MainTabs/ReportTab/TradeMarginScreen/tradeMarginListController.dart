@@ -5,6 +5,7 @@ import 'package:marketdesktop/modelClass/tradeMarginListModelClass.dart';
 
 import '../../../../constant/index.dart';
 import '../../../UserDetailPopups/ScriptMasterPopUp/scriptMasterPopUpController.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class TradeMarginController extends BaseController {
   //*********************************************************************** */
@@ -31,11 +32,24 @@ class TradeMarginController extends BaseController {
   int currentPage = 1;
   int totalCount = 0;
   List<TradeMarginData> arrTradeMargin = [];
+
+  List<ListItem> arrListTitle = [
+    ListItem("EXCHANGE", true),
+    ListItem("SCRIPT", true),
+    ListItem("EXPIRY DATE", true),
+    ListItem("MARGIN (%)", true),
+    ListItem("MARGIN (AMOUNT)", true),
+    ListItem("DESCRIPTION", true),
+  ];
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     // tradeMarginList(isFromFilter: true);
+  }
+
+  refreshView() {
+    update();
   }
 
   tradeMarginList({bool isFromFilter = false, bool isFromClear = false}) async {

@@ -166,6 +166,8 @@ class MarketWatchController extends BaseController {
       Screen? size = await getCurrentScreen();
       screenSize = Size(size!.frame.width, size.frame.height);
       maxWidth = size.frame.width > 1410 ? size.frame.width : 1410; //
+      globalScreenSize = Size(size.frame.width, size.frame.height);
+      globalMaxWidth = size.frame.width > 1410 ? size.frame.width : 1410; //
 
       selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
       update();
@@ -928,12 +930,12 @@ class MarketWatchController extends BaseController {
       var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == selectedScript.value!.symbol);
 
       if (ltpObj == null) {
-        return "Not Allowed For Trade";
+        return "Something went wrong in trade price.";
       } else {
         var difference = DateTime.now().difference(ltpObj.dateTime!);
         var differenceInSeconds = difference.inSeconds;
         if (differenceInSeconds >= 40) {
-          return "Not Allowed For Trade";
+          return "Something went wrong in trade price.";
         }
       }
     }

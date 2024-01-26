@@ -11,6 +11,7 @@ import '../../../../modelClass/myUserListModelClass.dart';
 import '../../../../modelClass/tradeDetailModelClass.dart';
 import '../../../UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
 import '../../../../modelClass/constantModelClass.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class HistoryOfCreditController extends BaseController {
 //*********************************************************************** */
@@ -34,6 +35,16 @@ class HistoryOfCreditController extends BaseController {
   var tradeID = "";
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+
+  List<ListItem> arrListTitle = [
+    ListItem("DATE TIME", true),
+    ListItem("USERNAME", true),
+    ListItem("OPENING", true),
+    ListItem("AMOUNT", true),
+    ListItem("CLOSING", true),
+    ListItem("COMMENT", true),
+    ListItem("ACTION BY", true),
+  ];
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -41,6 +52,10 @@ class HistoryOfCreditController extends BaseController {
     isApiCallRunning = true;
     selectedType = constantValues!.transactionType!.first;
     accountSummaryList();
+  }
+
+  refreshView() {
+    update();
   }
 
   accountSummaryList({bool isFromFilter = false, bool isFromClear = false}) async {

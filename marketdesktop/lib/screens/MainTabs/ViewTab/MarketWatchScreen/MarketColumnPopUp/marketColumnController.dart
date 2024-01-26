@@ -70,18 +70,21 @@ class ListItem {
   double smallLargeOriginal = 155;
   double largeOriginal = 210;
   double extraLargeOriginal = 500;
+  double forDateOriginal = 180;
   double small = 60;
   double normal = 102;
   double big = 120;
   double large = 210;
   double smallLarge = 155;
   double extraLarge = 500;
+  double forDate = 180;
   double smallUpdated = 60;
   double normalUpdated = 102;
   double bigUpdated = 120;
   double smallLargeUpdated = 155;
   double largeUpdated = 210;
   double extraLargeUpdated = 500;
+  double forDateUpdated = 180;
   Offset? start;
 
   ListItem(this.title, this.isSelected);

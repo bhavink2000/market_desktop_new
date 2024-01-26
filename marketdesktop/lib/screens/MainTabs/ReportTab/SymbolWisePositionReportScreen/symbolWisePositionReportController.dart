@@ -10,6 +10,7 @@ import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/getScriptFromSocket.dart';
+import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class SymbolWisePositionReportController extends BaseController {
   //*********************************************************************** */
@@ -53,6 +54,20 @@ class SymbolWisePositionReportController extends BaseController {
 
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
+
+  List<ListItem> arrListTitle = [
+    ListItem("EXCHANGE", true),
+    ListItem("SYMBOL", true),
+    ListItem("NET QTY", true),
+    ListItem("NET QTY % WISE", true),
+    ListItem("NET A PRICE", true),
+    ListItem("BROKERAGE", true),
+    ListItem("WITH BROKERAGE A PRICE", true),
+    ListItem("CMP", true),
+    ListItem("P/L", true),
+    ListItem("P/L (%)", true),
+    ListItem("BROKERAGE %", true),
+  ];
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -63,6 +78,10 @@ class SymbolWisePositionReportController extends BaseController {
 
     getAccountSummaryNewList("");
     getUserList();
+    update();
+  }
+
+  refreshView() {
     update();
   }
 

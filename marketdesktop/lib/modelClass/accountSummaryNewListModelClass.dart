@@ -72,6 +72,8 @@ class AccountSummaryNewListData {
   num? profitAndLossSharing = 0.0;
   num? adminBrokerageTotal;
   num? totalShareQuantity = 0.0;
+  num total = 0.0;
+  num ourPer = 0.0;
   Rx<ScriptData> scriptDataFromSocket = ScriptData().obs;
 
   AccountSummaryNewListData({

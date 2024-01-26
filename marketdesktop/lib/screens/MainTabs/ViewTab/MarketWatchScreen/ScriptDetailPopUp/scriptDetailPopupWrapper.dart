@@ -190,7 +190,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                 sheetList("Avg. Price", "--", 3),
                                 sheetList(
                                   "L. CRKT",
-                                  controller.selectedScriptForF5.value!.close.toString(),
+                                  controller.selectedScriptForF5.value!.lc.toString(),
                                   4,
                                 ),
                                 // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
@@ -210,7 +210,7 @@ class ScriptDetailPopUpScreen extends BaseView<MarketWatchController> {
                                 sheetList("Low", controller.selectedScriptForF5.value!.low!.toString(), 2, width: 70),
                                 sheetList("Close", controller.selectedScriptForF5.value!.close.toString(), 3, width: 70),
 
-                                sheetList("U. CRKT", controller.selectedScriptForF5.value!.close.toString(), 4, width: 70),
+                                sheetList("U. CRKT", controller.selectedScriptForF5.value!.uc.toString(), 4, width: 70),
                                 // sheetList("Time", shortTime(controller.selectedScriptForF5.value!.lut!), 4)
                               ],
                             ),

@@ -44,7 +44,7 @@ class UserListPopUpController extends BaseController {
     }
 
     update();
-    var response = await service.getMyUserListCall(
+    var response = await service.getChildUserListCall(
       text: textController.text.trim(),
       status: selectUserStatusdropdownValue.value.id?.toString() ?? "",
       roleId: selectedUserType.value.roleId ?? "",

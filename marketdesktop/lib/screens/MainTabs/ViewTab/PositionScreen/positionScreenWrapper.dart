@@ -355,96 +355,96 @@ class PositionScreen extends BaseView<PositionController> {
           SizedBox(
             width: 5,
           ),
-          // if (userData!.role == UserRollList.user)
-          Container(
-            margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
-            width: 180,
-            height: 35,
-            child: CustomButton(
-              isEnabled: true,
-              shimmerColor: AppColors().whiteColor,
-              title: "Square Off",
-              textSize: 14,
-              onPress: () {
-                showPermissionDialog(
-                    message: "Are you sure you want to Square off position?",
-                    acceptButtonTitle: "Yes",
-                    rejectButtonTitle: "No",
-                    yesClick: () {
-                      Get.back();
-                      List<SymbolRequestData> arrSquare = [];
-                      for (var element in controller.arrPositionScriptList) {
-                        if (element.isSelected) {
-                          var price = element.totalQuantity! < 0 ? element.bid!.toStringAsFixed(2).toString() : element.ask!.toStringAsFixed(2).toString();
-                          var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
-                          arrSquare.add(temp);
+          if (userData!.role == UserRollList.user)
+            Container(
+              margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
+              width: 180,
+              height: 35,
+              child: CustomButton(
+                isEnabled: true,
+                shimmerColor: AppColors().whiteColor,
+                title: "Square Off",
+                textSize: 14,
+                onPress: () {
+                  showPermissionDialog(
+                      message: "Are you sure you want to Square off position?",
+                      acceptButtonTitle: "Yes",
+                      rejectButtonTitle: "No",
+                      yesClick: () {
+                        Get.back();
+                        List<SymbolRequestData> arrSquare = [];
+                        for (var element in controller.arrPositionScriptList) {
+                          if (element.isSelected) {
+                            var price = element.totalQuantity! < 0 ? element.bid!.toStringAsFixed(2).toString() : element.ask!.toStringAsFixed(2).toString();
+                            var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
+                            arrSquare.add(temp);
+                          }
                         }
-                      }
-                      if (arrSquare.length > 0) {
-                        controller.squareOffPosition(arrSquare);
-                      } else {
-                        showWarningToast("Please select position");
-                      }
-                    },
-                    noclick: () {
-                      Get.back();
-                    });
-              },
-              focusKey: controller.squareOffFocus,
-              borderColor: Colors.transparent,
-              focusShadowColor: AppColors().blueColor,
-              bgColor: AppColors().blueColor,
-              isFilled: true,
-              textColor: AppColors().whiteColor,
-              isTextCenter: true,
-              isLoading: controller.isApiCallRunning,
-            ),
-          ),
-          // if (userData!.role == UserRollList.user)
-          Container(
-            margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
-            width: 180,
-            height: 35,
-            child: CustomButton(
-              isEnabled: true,
-              shimmerColor: AppColors().whiteColor,
-              title: "Roll Over",
-              textSize: 14,
-              onPress: () {
-                showPermissionDialog(
-                    message: "Are you sure you want to Roll over position?",
-                    acceptButtonTitle: "Yes",
-                    rejectButtonTitle: "No",
-                    yesClick: () {
-                      Get.back();
-                      List<SymbolRequestData> arrSquare = [];
-                      for (var element in controller.arrPositionScriptList) {
-                        if (element.isSelected) {
-                          var price = element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString();
-                          var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
-                          arrSquare.add(temp);
+                        if (arrSquare.length > 0) {
+                          controller.squareOffPosition(arrSquare);
+                        } else {
+                          showWarningToast("Please select position");
                         }
-                      }
-                      if (arrSquare.length > 0) {
-                        controller.rollOverPosition(arrSquare);
-                      } else {
-                        showWarningToast("Please select position");
-                      }
-                    },
-                    noclick: () {
-                      Get.back();
-                    });
-              },
-              focusKey: controller.squareOffFocus,
-              borderColor: Colors.transparent,
-              focusShadowColor: AppColors().blueColor,
-              bgColor: AppColors().blueColor,
-              isFilled: true,
-              textColor: AppColors().whiteColor,
-              isTextCenter: true,
-              isLoading: controller.isApiCallRunning,
+                      },
+                      noclick: () {
+                        Get.back();
+                      });
+                },
+                focusKey: controller.squareOffFocus,
+                borderColor: Colors.transparent,
+                focusShadowColor: AppColors().blueColor,
+                bgColor: AppColors().blueColor,
+                isFilled: true,
+                textColor: AppColors().whiteColor,
+                isTextCenter: true,
+                isLoading: controller.isApiCallRunning,
+              ),
             ),
-          ),
+          if (userData!.role == UserRollList.user)
+            Container(
+              margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
+              width: 180,
+              height: 35,
+              child: CustomButton(
+                isEnabled: true,
+                shimmerColor: AppColors().whiteColor,
+                title: "Roll Over",
+                textSize: 14,
+                onPress: () {
+                  showPermissionDialog(
+                      message: "Are you sure you want to Roll over position?",
+                      acceptButtonTitle: "Yes",
+                      rejectButtonTitle: "No",
+                      yesClick: () {
+                        Get.back();
+                        List<SymbolRequestData> arrSquare = [];
+                        for (var element in controller.arrPositionScriptList) {
+                          if (element.isSelected) {
+                            var price = element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString();
+                            var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
+                            arrSquare.add(temp);
+                          }
+                        }
+                        if (arrSquare.length > 0) {
+                          controller.rollOverPosition(arrSquare);
+                        } else {
+                          showWarningToast("Please select position");
+                        }
+                      },
+                      noclick: () {
+                        Get.back();
+                      });
+                },
+                focusKey: controller.squareOffFocus,
+                borderColor: Colors.transparent,
+                focusShadowColor: AppColors().blueColor,
+                bgColor: AppColors().blueColor,
+                isFilled: true,
+                textColor: AppColors().whiteColor,
+                isTextCenter: true,
+                isLoading: controller.isApiCallRunning,
+              ),
+            ),
           Text("Realised P&L : ",
               style: TextStyle(
                 fontSize: 12,
@@ -551,7 +551,7 @@ class PositionScreen extends BaseView<PositionController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var scriptValue = controller.arrPositionScriptList[index];
+      var historyValue = controller.arrPositionScriptList[index];
       return GestureDetector(
         onTap: () {
           controller.selectedScriptIndex = index;
@@ -561,108 +561,177 @@ class PositionScreen extends BaseView<PositionController> {
         },
         child: Container(
           decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+          height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // if (userData!.role == UserRollList.user)
-              valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: scriptValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
-                controller.arrPositionScriptList[index].isSelected = !controller.arrPositionScriptList[index].isSelected;
-                for (var element in controller.arrPositionScriptList) {
-                  if (element.isSelected) {
-                    controller.isAllSelected = true;
-                  } else {
-                    controller.isAllSelected = false;
-                    break;
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.arrListTitle.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int indexT) {
+                  switch (controller.arrListTitle[indexT].title) {
+                    case '':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle,
+                                isImage: true, strImage: controller.arrPositionScriptList[index].isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+                                controller.arrPositionScriptList[index].isSelected = !controller.arrPositionScriptList[index].isSelected;
+                                for (var element in controller.arrPositionScriptList) {
+                                  if (element.isSelected) {
+                                    controller.isAllSelected = true;
+                                  } else {
+                                    controller.isAllSelected = false;
+                                    break;
+                                  }
+                                }
+                                controller.update();
+                              })
+                            : const SizedBox();
+                      }
+                    case 'VIEW':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
+                                isUserViewPopUpOpen = true;
+                                showOpenPositionPopUp(controller.arrPositionScriptList[index].symbolId!, controller.arrPositionScriptList[index].userId!);
+                              })
+                            : const SizedBox();
+                      }
+                    case 'PARENT USER':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(child: dynamicValueBox(historyValue.parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true))
+                            : const SizedBox();
+                      }
+                    case 'EXCHANGE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(
+                                  historyValue.exchangeName ?? "",
+                                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                  AppColors().darkText,
+                                  index,
+                                  indexT,
+                                  controller.arrListTitle,
+                                ),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'SYMBOL NAME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true, isUnderlined: true, onClickValue: () {
+                                isCommonScreenPopUpOpen = true;
+                                currentOpenedScreen = ScreenViewNames.trades;
+                                var tradeVC = Get.put(SuccessTradeListController());
+                                tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrPositionScriptList[index].exchangeId, name: controller.arrPositionScriptList[index].exchangeName);
+                                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId, symbolName: controller.arrPositionScriptList[index].symbolName, symbolTitle: controller.arrPositionScriptList[index].symbolTitle);
+                                // tradeVC.update();
+                                // tradeVC.getTradeList();
+                                Get.delete<ProfitAndLossController>();
+                                Get.back();
+                                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades);
+                              })
+                            : const SizedBox();
+                      }
+                    case 'TOTAL BUY A QTY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'TOTAL BUY A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'TOTAL SELL QTY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellTotalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().redColor, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'SELL A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'NET QTY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'NET LOT':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'NET A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'CMP':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(
+                                    controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
+                                    index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                    controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
+                                    index,
+                                    indexT,
+                                    controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'P/L':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!),
+                                    index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'P/L % WISE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox((controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) * -1).toStringAsFixed(3), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                    controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) > 0 ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    default:
+                      {
+                        return const SizedBox();
+                      }
                   }
-                }
-                controller.update();
-              }),
-              if (userData!.role != UserRollList.user)
-                valueBox("", 0, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
-                  isUserViewPopUpOpen = true;
-                  showOpenPositionPopUp(controller.arrPositionScriptList[index].symbolId!, controller.arrPositionScriptList[index].userId!);
-                }),
-              if (userData!.role != UserRollList.user)
-                IgnorePointer(
-                  child: valueBox(controller.arrPositionScriptList[index].parentUserName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-                ),
-              IgnorePointer(
-                child: valueBox(controller.arrPositionScriptList[index].exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+                },
               ),
-              valueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true, isUnderlined: true, onClickValue: () {
-                isCommonScreenPopUpOpen = true;
-                currentOpenedScreen = ScreenViewNames.trades;
-                var tradeVC = Get.put(SuccessTradeListController());
-                tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrPositionScriptList[index].exchangeId, name: controller.arrPositionScriptList[index].exchangeName);
-                tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId, symbolName: controller.arrPositionScriptList[index].symbolName, symbolTitle: controller.arrPositionScriptList[index].symbolTitle);
-                // tradeVC.update();
-                // tradeVC.getTradeList();
-                Get.delete<ProfitAndLossController>();
-                Get.back();
-                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades);
-              }),
-              IgnorePointer(
-                child: valueBox(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, isBig: true),
-              ),
-              IgnorePointer(
-                child: valueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              ),
-              IgnorePointer(
-                child: valueBox(controller.arrPositionScriptList[index].sellTotalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().redColor, index, isBig: true),
-              ),
-              IgnorePointer(
-                child: valueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-              ),
-              IgnorePointer(
-                child: valueBox(
-                  controller.arrPositionScriptList[index].totalQuantity!.toString(),
-                  45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText,
-                  index,
-                ),
-              ),
-              IgnorePointer(
-                child: valueBox(
-                  controller.arrPositionScriptList[index].quantity.toString(),
-                  45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText,
-                  index,
-                ),
-              ),
-              IgnorePointer(
-                child: valueBox(
-                  controller.arrPositionScriptList[index].price!.toStringAsFixed(2),
-                  45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  AppColors().darkText,
-                  index,
-                ),
-              ),
-              IgnorePointer(
-                child: valueBox(
-                  controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
-                  45,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
-                  index,
-                ),
-              ),
-              IgnorePointer(
-                child: valueBox(
-                  double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(),
-                  60,
-                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                  controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!),
-                  index,
-                ),
-              ),
-              if (userData!.role != UserRollList.user)
-                IgnorePointer(
-                  child: valueBox((controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) * -1).toStringAsFixed(3), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                      controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) > 0 ? AppColors().redColor : AppColors().blueColor, index),
-                ),
             ],
           ),
         ),
@@ -674,38 +743,171 @@ class PositionScreen extends BaseView<PositionController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
-        // if (userData!.role == UserRollList.user)
-        titleBox("", isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
-          if (controller.isAllSelected) {
-            controller.arrPositionScriptList.forEach((element) {
-              element.isSelected = false;
-            });
-            controller.isAllSelected = false;
-            controller.update();
-          } else {
-            controller.arrPositionScriptList.forEach((element) {
-              element.isSelected = true;
-            });
-            controller.isAllSelected = true;
-            controller.update();
-          }
-        }),
-        if (userData!.role != UserRollList.user) titleBox("View", isSmall: true),
-        if (userData!.role != UserRollList.user) titleBox("Parent User"),
-        titleBox("Exchange"),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case '':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("", index, controller.arrListTitle, controller.isScrollEnable, isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+                          if (controller.isAllSelected) {
+                            controller.arrPositionScriptList.forEach((element) {
+                              element.isSelected = false;
+                            });
+                            controller.isAllSelected = false;
+                            controller.update();
+                          } else {
+                            controller.arrPositionScriptList.forEach((element) {
+                              element.isSelected = true;
+                            });
+                            controller.isAllSelected = true;
+                            controller.update();
+                          }
+                        })
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'VIEW':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("VIEW", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'PARENT USER':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'EXCHANGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SYMBOL NAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SYMBOL NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL BUY A QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL BUY A QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL BUY A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL BUY A PRICE", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL SELL QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL SELL QTY", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SELL A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SELL A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET LOT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("symbol name", isLarge: true),
-        titleBox("Total Buy Qty", isBig: true),
-        titleBox(userData!.role != UserRollList.user ? "Total Buy A Price" : "Buy A Price", isBig: true),
-        titleBox("Total Sell Qty", isBig: true),
-        titleBox("Sell A Price", isBig: true),
-        titleBox("Net Qty"),
-        titleBox("Net Lot"),
-        titleBox("Net A Price"),
-        titleBox("CMP"),
-        titleBox("P/L"),
-        if (userData!.role != UserRollList.user) titleBox("P/L % Wise"),
+              case 'CMP':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("CMP", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              case 'P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L % WISE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L % WISE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }
