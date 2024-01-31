@@ -406,6 +406,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                                 controller.fromDate.value = "";
                                 controller.selectedTradeStatus = Type().obs;
                                 controller.endDate.value = "";
+
                                 controller.getTradeList(isFromClear: true);
                               },
                               bgColor: AppColors().whiteColor,
@@ -489,7 +490,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    if (controller.isApiCallRunning) {
+    if (controller.isApiCallRunning || controller.isResetCall) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
         child: Shimmer.fromColors(

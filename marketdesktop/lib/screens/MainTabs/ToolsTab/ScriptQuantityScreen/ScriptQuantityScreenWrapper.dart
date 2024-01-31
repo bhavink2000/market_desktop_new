@@ -27,7 +27,7 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -176,6 +176,10 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
                               title: "View",
                               textSize: 14,
                               onPress: () {
+                                
+                                controller.arrData.clear();
+                                controller.pageNumber = 1;
+                                controller.update();
                                 controller.getQuantityList();
                               },
                               focusKey: controller.viewFocus,
@@ -203,7 +207,9 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
                               onPress: () {
                                 controller.selectExchangeDropdownValue.value = ExchangeData();
                                 controller.selectGroupDropdownValue.value = groupListModelData();
+
                                 controller.arrData.clear();
+                                controller.pageNumber = 1;
                                 controller.update();
                               },
                               bgColor: AppColors().whiteColor,
@@ -260,6 +266,7 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
                       loadMore: () async {
                         if (controller.totalPage >= controller.pageNumber) {
                           //print(controller.currentPage);
+
                           controller.getQuantityList();
                         }
                       },
@@ -310,6 +317,10 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle[indexT].title) {
+                  case 'INDEX':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(index.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                    }
                   case 'SYMBOL':
                     {
                       return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
@@ -356,6 +367,14 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             switch (controller.arrListTitle[index].title) {
+              case 'INDEX':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("INDEX", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
               case 'SYMBOL':
                 {
                   return controller.arrListTitle[index].isSelected

@@ -268,26 +268,63 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
   }
 
   Widget creditContent(BuildContext context, int index) {
-    // var scriptValue = controller.arrUserOderList[index];
     return GestureDetector(
       onTap: () {
         // controller.selectedScriptIndex = index;
-        controller.update();
+        // // controller.selectedScript!.value = scriptValue;
+        // controller.focusNode.requestFocus();
+        // controller.update();
       },
       child: Container(
+        // decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(shortFullDateTime(controller.arrCreditList[index].createdAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-            valueBox(
-              controller.arrCreditList[index].transactionType ?? "",
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'DATE TIME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(child: dynamicValueBox(shortFullDateTime(controller.arrCreditList[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true))
+                          : const SizedBox();
+                    }
+                  case 'TYPE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrCreditList[index].transactionType ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'AMOUNT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrCreditList[index].amount!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'COMMENT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrCreditList[index].comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true),
+                            )
+                          : const SizedBox();
+                    }
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
             ),
-            valueBox(controller.arrCreditList[index].amount!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            valueBox(controller.arrCreditList[index].comment ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ],
         ),
       ),
@@ -298,13 +335,67 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'DATE TIME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DATE TIME", index, controller.arrListTitle, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TYPE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'AMOUNT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("AMOUNT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'COMMENT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("COMMENTS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("Date Time", isBig: true),
-        titleBox("Type"),
-        titleBox("Amount"),
-
-        titleBox("Comments", isLarge: true),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

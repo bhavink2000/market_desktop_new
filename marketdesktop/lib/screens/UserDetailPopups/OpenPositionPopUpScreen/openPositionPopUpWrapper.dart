@@ -9,6 +9,7 @@ import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/OpenPositionPopUpScreen/openPositionPopUpController.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../constant/index.dart';
 
 import 'package:responsive_framework/responsive_framework.dart';
@@ -19,39 +20,34 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
 
   @override
   Widget vBuilder(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () async {
-          Get.back();
-          return Future.value(false);
-        },
-        child: Column(
-          children: [
-            headerViewContent(
-                title: "Open Position",
-                isFilterAvailable: false,
-                isFromMarket: false,
-                closeClick: () {
-                  Get.back();
-                  Get.delete<OpenPositionPopUpController>();
-                }),
-            Expanded(
-              child: Row(
-                children: [
-                  filterPanel(context, bottomMargin: 0, onCLickFilter: () {
-                    controller.isFilterOpen = !controller.isFilterOpen;
-                    controller.update();
-                  }),
-                  filterContent(context),
-                  Expanded(
-                    flex: 8,
-                    child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
-                    // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
-                  ),
-                ],
+    return Column(
+      children: [
+        headerViewContent(
+            title: "Open Position",
+            isFilterAvailable: false,
+            isFromMarket: false,
+            closeClick: () {
+              Get.back();
+              Get.delete<OpenPositionPopUpController>();
+            }),
+        Expanded(
+          child: Row(
+            children: [
+              filterPanel(context, bottomMargin: 0, onCLickFilter: () {
+                controller.isFilterOpen = !controller.isFilterOpen;
+                controller.update();
+              }),
+              filterContent(context),
+              Expanded(
+                flex: 8,
+                child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+                // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
               ),
-            ),
-          ],
-        ));
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   Widget filterContent(BuildContext context) {
@@ -325,7 +321,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
     );
   }
 
-  Widget orderContent(BuildContext context, int index) {
+  Widget orderContentold(BuildContext context, int index) {
     // var scriptValue = controller.arrUserOderList[index];
     return Container(
       color: Colors.transparent,
@@ -419,24 +415,344 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
     );
   }
 
+  Widget orderContent(BuildContext context, int index) {
+    if (controller.isApiCallRunning) {
+      return Container(
+        margin: EdgeInsets.only(bottom: 3.h),
+        child: Shimmer.fromColors(
+            child: Container(
+              height: 3.h,
+              color: Colors.white,
+            ),
+            baseColor: AppColors().whiteColor,
+            highlightColor: AppColors().grayBg),
+      );
+    } else {
+      var historyValue = controller.arrPositionScriptList[index];
+      return GestureDetector(
+        onTap: () {
+          // controller.selectedScriptIndex = index;
+          // // controller.selectedScript!.value = scriptValue;
+          // controller.focusNode.requestFocus();
+          // controller.update();
+        },
+        child: Container(
+          // decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+          height: 30,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ListView.builder(
+                padding: EdgeInsets.zero,
+                itemCount: controller.arrListTitle.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (BuildContext context, int indexT) {
+                  switch (controller.arrListTitle[indexT].title) {
+                    case 'USERNAME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected ? IgnorePointer(child: dynamicValueBox(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)) : const SizedBox();
+                      }
+                    case 'PARENT USER':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(child: dynamicValueBox(historyValue.parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true))
+                            : const SizedBox();
+                      }
+                    case 'EXCHANGE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(
+                                  historyValue.exchangeName ?? "",
+                                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                  AppColors().darkText,
+                                  index,
+                                  indexT,
+                                  controller.arrListTitle,
+                                ),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'SCRIPT NAME':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? dynamicValueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)
+                            : const SizedBox();
+                      }
+                    case 'TOTAL BUY A QTY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'TOTAL BUY A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'BUY A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'TOTAL SELL QTY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellTotalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().redColor, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'SELL A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'NET QTY':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'NET LOT':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'NET A PRICE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'CMP':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(
+                                    controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
+                                    index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                    controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
+                                    index,
+                                    indexT,
+                                    controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'P/L':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!),
+                                    index, indexT, controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    case 'P/L % WISE':
+                      {
+                        return controller.arrListTitle[indexT].isSelected
+                            ? IgnorePointer(
+                                child: dynamicValueBox(
+                                    controller.getPlPer(cmp: controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask! : controller.arrPositionScriptList[index].bid!, netAPrice: controller.arrPositionScriptList[index].price!).toStringAsFixed(3),
+                                    index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                    controller.getPlPer(cmp: controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask! : controller.arrPositionScriptList[index].bid!, netAPrice: controller.arrPositionScriptList[index].price!) > 0
+                                        ? AppColors().blueColor
+                                        : AppColors().redColor,
+                                    index,
+                                    indexT,
+                                    controller.arrListTitle),
+                              )
+                            : const SizedBox();
+                      }
+                    default:
+                      {
+                        return const SizedBox();
+                      }
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
   Widget listTitleContent() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        titleBox("Username"),
-        titleBox("Parent User"),
-        titleBox("Exchange"),
-        titleBox("Symbol", isLarge: true),
-        titleBox("Total Buy Qty", isBig: true),
-        titleBox("Total Buy A Price", isBig: true),
-        titleBox("Total Sell Qty", isBig: true),
-        titleBox("Sell A Price", isBig: true),
-        titleBox("Net Qty"),
-        titleBox("Net Lot"),
-        titleBox("Net A Price"),
-        titleBox("CMP"),
-        titleBox("P/L"),
-        titleBox("P/L % Wise"),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'PARENT USER':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'EXCHANGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SCRIPT NAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SCRIPT NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL BUY A QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL BUY A QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              case 'TOTAL BUY A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL BUY A PRICE", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BUY A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL BUY A PRICE", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TOTAL SELL QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TOTAL SELL QTY", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SELL A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SELL A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET LOT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'NET A PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("NET A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              case 'CMP':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("CMP", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              case 'P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L % WISE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L % WISE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

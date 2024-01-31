@@ -1220,7 +1220,7 @@ class UserListScreen extends BaseView<UserListController> {
                 width: 10,
               ),
               Expanded(
-                child: Text("bazaar",
+                child: Text("TESLA",
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: CustomFonts.family1Medium,

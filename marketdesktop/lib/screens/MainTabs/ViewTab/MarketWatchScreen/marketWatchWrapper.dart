@@ -574,6 +574,12 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             {
                               return controller.arrListTitle[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.close.toString(), index: index, textColor: AppColors().whiteColor) : const SizedBox();
                             }
+                          case 'STRIKE PRICE':
+                            {
+                              return controller.arrListTitle[indexT].isSelected
+                                  ? ScriptBox(indexT, title: scriptValue.strikePrice != 0 ? scriptValue.instrumentType! + " - " + scriptValue.strikePrice.toString() : "--", index: index, textColor: AppColors().whiteColor, isSmallLarge: true)
+                                  : const SizedBox();
+                            }
                           case 'LUT':
                             {
                               return controller.arrListTitle[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.lut != null ? shortFullDateTime(scriptValue.lut!) : "", index: index, textColor: AppColors().whiteColor, isSmallLarge: true) : const SizedBox();
@@ -719,6 +725,14 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                 {
                   return controller.arrListTitle[index].isSelected
                       ? titleBox("CLOSE", index)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'STRIKE PRICE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? titleBox("STRIKE PRICE", index, isSmallLarge: true)
                       : SizedBox(
                           key: Key('$index'),
                         );

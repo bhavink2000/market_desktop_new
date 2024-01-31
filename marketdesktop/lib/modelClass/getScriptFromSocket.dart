@@ -50,9 +50,11 @@ class ScriptData {
   num? ls;
   num? lc;
   num? uc;
+  num? strikePrice;
   DateTime? expiry;
   String? exchange;
   String? name;
+  String? instrumentType;
   String? symbol;
   Depth? depth;
   DateTime? lut;
@@ -75,9 +77,11 @@ class ScriptData {
     this.ls = 0.0,
     this.lc = 0.0,
     this.uc = 0.0,
+    this.strikePrice = 0.0,
     this.expiry,
     this.exchange = "",
     this.name = "",
+    this.instrumentType = "",
     this.symbol = "",
     this.depth,
     this.lut,
@@ -101,9 +105,11 @@ class ScriptData {
         ls: json["ls"],
         lc: json["lc"],
         uc: json["uc"],
+        strikePrice: json["strikePrice"],
         expiry: json["expiry"] == null ? null : DateTime.tryParse(json["expiry"]),
         exchange: json["exchange"] ?? "",
         name: json["name"] ?? "",
+        instrumentType: json["instrumentType"] ?? "",
         symbol: json["symbol"] ?? "",
         depth: json["depth"] == null ? null : Depth.fromJson(json["depth"]),
       );
@@ -126,9 +132,11 @@ class ScriptData {
         "ls": ls,
         "lc": lc,
         "uc": uc,
+        "strikePrice": strikePrice,
         "expiry": expiry?.toIso8601String(),
         "exchange": exchange,
         "name": name,
+        "instrumentType": instrumentType,
         "symbol": symbol,
         "depth": depth?.toJson(),
       };

@@ -57,10 +57,12 @@ class SymbolData {
   num? tsq;
   num? ts;
   num? ls;
+  num? strikePrice;
   int? oddLotTrade;
   DateTime? expiry;
   String? exchange;
   String? name;
+  String? instrumentType;
   String? symbol;
   Depth? depth;
   num? tradeMargin;
@@ -97,9 +99,11 @@ class SymbolData {
     this.tsq = 0.0,
     this.ts = 0.0,
     this.ls = 0.0,
+    this.strikePrice = 0.0,
     this.expiry,
     this.exchange = "",
     this.name = "",
+    this.instrumentType = "",
     this.symbol = "",
     this.depth,
     this.oddLotTrade,
@@ -138,6 +142,7 @@ class SymbolData {
         tsq: json["tsq"],
         ts: json["ts"],
         ls: json["ls"],
+        strikePrice: json["strikePrice"],
         oddLotTrade: json["oddLotTrade"],
         expiry: json["expiry"] != null && json["expiry"] != ""
             ? DateTime.tryParse(json["expiry"])
@@ -150,6 +155,7 @@ class SymbolData {
         symbol: json["symbol"] ?? json["symbolName"] ?? "",
         depth: json["depth"] == null ? null : Depth.fromJson(json["depth"]),
         tradeMargin: json["tradeMargin"],
+        instrumentType: json["instrumentType"],
         tradeAttribute: json["tradeAttribute"],
         allowTrade: json["allowTrade"],
         allowTradeValue: json["allowTradeValue"],
@@ -184,9 +190,11 @@ class SymbolData {
         "tsq": tsq,
         "ts": ts,
         "ls": ls,
+        "strikePrice": strikePrice,
         "expiry": expiry != null ? expiry!.toIso8601String() : "",
         "exchange": exchange,
         "name": name,
+        "instrumentType": instrumentType,
         "symbol": symbol,
         "depth": depth?.toJson(),
         "oddLotTrade": oddLotTrade,

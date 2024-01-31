@@ -9,6 +9,7 @@ import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../../modelClass/exchangeListModelClass.dart';
 import '../../BaseController/baseController.dart';
 import '../../../constant/index.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class BrkPopUpController extends BaseController {
   //*********************************************************************** */
@@ -44,10 +45,24 @@ class BrkPopUpController extends BaseController {
   FocusNode updateFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
 
+  List<ListItem> arrListTitle = [];
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    arrListTitle = [
+      ListItem("", true),
+      ListItem("EXCHANGE", true),
+      ListItem("SCRIPT", true),
+      if (selectedCurrentTab == 0) ListItem("TURNOVER WISE BRK(RS. PER 1/CR))", true),
+      if (selectedCurrentTab == 1) ListItem("Brk(Rs.)", true),
+    ];
+    update();
+  }
+
+  refreshView() {
+    update();
   }
 
   Future<List<GlobalSymbolData>> getSymbolListByKeyword(String text) async {

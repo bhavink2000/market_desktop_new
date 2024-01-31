@@ -82,6 +82,7 @@ class MarketWatchController extends BaseController {
     ListItem("LTP", true),
     ListItem("NET CHANGE %", true),
     ListItem("EXPIRY", true),
+    ListItem("STRIKE PRICE", true),
     ListItem("LUT", false),
   ];
   bool isAddDeleteApiLoading = false;
@@ -584,6 +585,27 @@ class MarketWatchController extends BaseController {
           break;
         }
       case "NET CHANGE %":
+        {
+          switch (arrListTitle[index].sortType) {
+            case 0:
+            case -1:
+              {
+                arrListTitle[index].sortType = 1;
+                arrScript.sort((a, b) => b.chp!.compareTo(a.chp!));
+
+                break;
+              }
+            case 1:
+              {
+                arrListTitle[index].sortType = -1;
+                arrScript.sort((a, b) => a.chp!.compareTo(b.chp!));
+                break;
+              }
+          }
+
+          break;
+        }
+      case "STRIKE PRICE":
         {
           switch (arrListTitle[index].sortType) {
             case 0:
@@ -1320,9 +1342,15 @@ class MarketWatchController extends BaseController {
           var preIndex = arrPreScript.indexWhere((element) => element.symbol == obj.symbol);
           arrPreScript.removeAt(preIndex);
           arrPreScript.insert(preIndex, arrScript[index]);
-          if (index == 0) {}
+
           arrScript[index] = socketData.data!;
           arrScript[index].lut = DateTime.now();
+          var symbolObj = arrSymbol.firstWhereOrNull((element) => element.symbol == arrScript[index].symbol);
+          if (symbolObj != null) {
+            arrScript[index].strikePrice = symbolObj.strikePrice;
+            arrScript[index].instrumentType = symbolObj.instrumentType;
+            update();
+          }
         }
         //else {
         //   var obj = arrSymbol.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);

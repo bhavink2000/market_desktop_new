@@ -16,9 +16,8 @@ class DbService {
 
   Future<void> initDatabase(int length) async {
     try {
-      if (tabLenght < length) {
-        tabLenght = length;
-      }
+      tabLenght = length;
+
       await closeDatabase();
       if (userData != null) {
         dbName = userData!.userId!;

@@ -516,7 +516,7 @@ class AllApiCallService {
   }) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {"page": 1, "limit": pageLimit, "search": text, "sortKey": "createdAt", "sortBy": -1, "userId": userId, "groupId": groupId};
+      final payload = {"page": 1, "limit": 100000, "search": text, "sortKey": "createdAt", "sortBy": -1, "userId": userId, "groupId": groupId};
 
       //print(payload);
       final data = await _dio.post(Api.quantitySettingList, data: payload);
@@ -1450,10 +1450,11 @@ class AllApiCallService {
       // throw Exception(errMsg);
     }
   }
- Future<ScriptQuantityModel?> getScriptQuantityListCall({String? text, String? userId, String? groupId, int? page}) async {
+
+  Future<ScriptQuantityModel?> getScriptQuantityListCall({String? text, String? userId, String? groupId, int? page}) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {"page": page, "limit": 20, "search": text, "sortKey": "createdAt", "sortBy": -1, "userId": userId, "groupId": groupId};
+      final payload = {"page": page, "limit": pageLimit, "search": text, "sortKey": "createdAt", "sortBy": -1, "userId": userId, "groupId": groupId};
       final data = await _dio.post(Api.scriptQuantityList, data: payload);
       print(data.data);
       return ScriptQuantityModel.fromJson(data.data);
@@ -1461,6 +1462,7 @@ class AllApiCallService {
       return null;
     }
   }
+
   Future<UserWiseProfitLossSummaryModel?> userWiseProfitLossListCall(int page, String search, String userId) async {
     try {
       _dio.options.headers = getHeaders();

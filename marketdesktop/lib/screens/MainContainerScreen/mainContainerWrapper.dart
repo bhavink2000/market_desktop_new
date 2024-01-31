@@ -58,7 +58,7 @@ class MainContainerScreen extends BaseView<MainContainerController> {
                     // Spacer(),
                     Image.asset(
                       AppImages.appLogo,
-                      width: 22,
+                      width: 50,
                       height: 22,
                     ),
                     SizedBox(

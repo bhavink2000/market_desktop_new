@@ -482,32 +482,80 @@ class AccountSummaryPopUpScreen extends BaseView<AccountSummaryPopUpController> 
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    // var scriptValue = controller.arrUserOderList[index];
     return GestureDetector(
       onTap: () {
         // controller.selectedScriptIndex = index;
-        controller.update();
+        // // controller.selectedScript!.value = scriptValue;
+        // controller.focusNode.requestFocus();
+        // controller.update();
       },
       child: Container(
+        // decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), 33,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isBig: true),
-            valueBox(controller.arrAccountSummary[index].userName ?? "", 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isUnderlined: true),
-            valueBox(controller.arrAccountSummary[index].symbolName ?? "", 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isLarge: true),
-            valueBox(controller.arrAccountSummary[index].type ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
-            valueBox(controller.arrAccountSummary[index].transactionType ?? "", 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-                isBig: true),
-            valueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), 45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'DATE TIME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(child: dynamicValueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true))
+                          : const SizedBox();
+                    }
+                  case 'USERNAME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrAccountSummary[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'SYMBOL NAME':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrAccountSummary[index].symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'TYPE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrAccountSummary[index].type ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'TRANSACTION TYPE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrAccountSummary[index].transactionType ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'AMOUNT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                            )
+                          : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -518,14 +566,82 @@ class AccountSummaryPopUpScreen extends BaseView<AccountSummaryPopUpController> 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
-
-        titleBox("Date Time", isBig: true),
-        titleBox("Username"),
-        titleBox("Symbol Name", isLarge: true),
-        titleBox("Type"),
-        titleBox("Transaction Type", isBig: true),
-        titleBox("Amount"),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'DATE TIME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("DATE TIME", index, controller.arrListTitle, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'USERNAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SYMBOL NAME':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SYMBOL NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TYPE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TRANSACTION TYPE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TRANSACTION TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'AMOUNT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("AMOUNT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

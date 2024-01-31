@@ -500,7 +500,7 @@ showAboutUsPopup() {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 width: 950,
-                height: 340,
+                height: 300,
                 decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: Colors.transparent, width: 1)),
                 child: AboutUsPopUpScreen(),
               ),
@@ -529,7 +529,7 @@ showMarketTimingPopup() {
               // width: 30.w,
               // height: 28.h,
               width: 400,
-              height: 580,
+              height: 600,
               decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: MarketTimingScreen(),
             ),
@@ -630,7 +630,7 @@ Widget headerViewContent({String title = "", bool isFromMarket = false, bool isF
             width: 10,
           ),
           Image.asset(
-            AppImages.appLogo,
+            AppImages.logoMain,
             width: 3.h,
             height: 3.h,
           ),

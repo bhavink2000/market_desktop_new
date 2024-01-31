@@ -83,31 +83,65 @@ class GroupSettingPopUpScreen extends BaseView<GroupSettingPopUpController> {
     return GestureDetector(
       onTap: () {
         // controller.selectedScriptIndex = index;
-        controller.update();
+        // // controller.selectedScript!.value = scriptValue;
+        // controller.focusNode.requestFocus();
+        // controller.update();
       },
       child: Container(
+        // decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox(groupValue.groupName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            valueBox(shortFullDateTime(groupValue.updatedAt!), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isForDate: true),
-            valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
-              var detailVC = Get.find<UserDetailsPopUpController>();
-              detailVC.selectedCurrentTab = 3;
-              if (detailVC.userRoll == UserRollList.user) {
-                detailVC.selectedMenuName = detailVC.arrUserMenuList[index];
-              } else {
-                detailVC.selectedMenuName = detailVC.arrMasterMenuList[index];
-              }
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case 'GROUP':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? IgnorePointer(child: dynamicValueBox(groupValue.groupName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)) : const SizedBox();
+                    }
+                  case 'LAST UPDATED':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(shortFullDateTime(groupValue.updatedAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'VIEW':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, isImage: true, strImage: AppImages.viewIcon, AppColors().darkText, index, indexT, controller.arrListTitle, isSmall: true, onClickImage: () {
+                              var detailVC = Get.find<UserDetailsPopUpController>();
+                              detailVC.selectedCurrentTab = 3;
+                              if (detailVC.userRoll == UserRollList.user) {
+                                detailVC.selectedMenuName = detailVC.arrUserMenuList[index];
+                              } else {
+                                detailVC.selectedMenuName = detailVC.arrMasterMenuList[index];
+                              }
 
-              // detailVC.selectedMenuName = detailVC.arrUserMenuList[detailVC.selectedCurrentTab];
-              detailVC.updateUnSelectedView();
-              detailVC.updateSelectedView();
-              detailVC.update();
-              var qtyVC = Get.find<QuantitySettingPopUpController>();
-              qtyVC.selectedGroupId = groupValue.groupId!;
-              qtyVC.quantitySettingList();
-            }),
+                              // detailVC.selectedMenuName = detailVC.arrUserMenuList[detailVC.selectedCurrentTab];
+                              detailVC.updateUnSelectedView();
+                              detailVC.updateSelectedView();
+                              detailVC.update();
+                              var qtyVC = Get.find<QuantitySettingPopUpController>();
+                              qtyVC.selectedGroupId = groupValue.groupId!;
+                              qtyVC.quantitySettingList();
+                            })
+                          : const SizedBox();
+                    }
+
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -118,11 +152,59 @@ class GroupSettingPopUpScreen extends BaseView<GroupSettingPopUpController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        // titleBox("", 0),
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case 'GROUP':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("GROUP", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'LAST UPDATED':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("LAST UPDATED", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'VIEW':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("VIEW", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
 
-        titleBox("Group"),
-        titleBox("Last Updated", isForDate: true),
-        titleBox("View", isSmall: true),
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
       ],
     );
   }

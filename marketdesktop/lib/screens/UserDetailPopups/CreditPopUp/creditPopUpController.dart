@@ -8,6 +8,7 @@ import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpControlle
 import 'package:number_to_indian_words/number_to_indian_words.dart';
 import '../../../constant/index.dart';
 import '../../BaseController/baseController.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 enum TransType { Credit, Debit }
 
@@ -30,6 +31,13 @@ class CreditPopUpController extends BaseController {
   ProfileInfoData? selectedUserData;
   bool isApiCallRunning = false;
   FocusNode submitFocus = FocusNode();
+  List<ListItem> arrListTitle = [
+    ListItem("DATE TIME", true),
+    ListItem("TYPE", true),
+    ListItem("AMOUNT", true),
+    ListItem("COMMENT", true),
+  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -37,6 +45,10 @@ class CreditPopUpController extends BaseController {
     amountController.addListener(() {
       update();
     });
+  }
+
+  refreshView() {
+    update();
   }
   //*********************************************************************** */
   // Field Validation

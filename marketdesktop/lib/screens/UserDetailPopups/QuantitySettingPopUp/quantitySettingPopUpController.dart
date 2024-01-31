@@ -5,6 +5,7 @@ import 'package:marketdesktop/modelClass/quantitySettingListMmodelClass.dart';
 import '../../../constant/index.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../BaseController/baseController.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import '../userDetailsPopUpController.dart';
 
 class QuantitySettingPopUpController extends BaseController {
@@ -35,11 +36,24 @@ class QuantitySettingPopUpController extends BaseController {
   FocusNode applyFocus = FocusNode();
   FocusNode updateFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  List<ListItem> arrListTitle = [
+    ListItem("", true),
+    ListItem("SCRIPT", true),
+    ListItem("LOT MAX", true),
+    ListItem("QTY MAX", true),
+    ListItem("BREAKUP QTY", true),
+    ListItem("BREAKUP LOT", true),
+    ListItem("LAST UPDATED", true),
+  ];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+  }
+
+  refreshView() {
+    update();
   }
   //*********************************************************************** */
   // Field Validation

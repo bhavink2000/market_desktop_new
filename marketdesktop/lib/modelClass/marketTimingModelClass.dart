@@ -10,7 +10,8 @@ String marketTimingModelToJson(MarketTimingModel data) => json.encode(data.toJso
 
 class MarketTimingModel {
   Meta? meta;
-  TimingData? data;
+  // TimingData? data;
+  List<TimingData>? data;
   int? statusCode;
 
   MarketTimingModel({
@@ -21,13 +22,13 @@ class MarketTimingModel {
 
   factory MarketTimingModel.fromJson(Map<String, dynamic> json) => MarketTimingModel(
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-        data: json["data"] == null ? null : TimingData.fromJson(json["data"]),
+        data: json["data"] == null ? [] : List<TimingData>.from(json["data"]!.map((x) => TimingData.fromJson(x))),
         statusCode: json["statusCode"],
       );
 
   Map<String, dynamic> toJson() => {
         "meta": meta?.toJson(),
-        "data": data?.toJson(),
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
         "statusCode": statusCode,
       };
 }

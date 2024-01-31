@@ -3,11 +3,13 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
 
+import '../../../main.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../../modelClass/exchangeListModelClass.dart';
 
 import '../../../constant/index.dart';
 import '../../../modelClass/getScriptFromSocket.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class OpenPositionPopUpController extends BaseController {
   //*********************************************************************** */
@@ -25,11 +27,32 @@ class OpenPositionPopUpController extends BaseController {
   String selectedUserId = "";
   double totalPL = 0.0;
   RxDouble totalPosition = 0.0.obs;
+  List<ListItem> arrListTitle = [
+    // ListItem("", true),
+    ListItem("USERNAME", true),
+    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
+    ListItem("EXCHANGE", true),
+    ListItem("SCRIPT NAME", true),
+    ListItem("TOTAL BUY QTY", true),
+    ListItem("TOTAL BUY A PRICE", true),
+    ListItem("TOTAL SELL QTY", true),
+    ListItem("SELL A PRICE", true),
+    ListItem("NET QTY", true),
+    ListItem("NET LOT", true),
+    ListItem("NET A PRICE", true),
+    ListItem("CMP", true),
+    ListItem("P/L", true),
+    if (userData!.role != UserRollList.user) ListItem("P/L % WISE", true),
+  ];
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
+  }
+
+  refreshView() {
+    update();
   }
 
   getPositionList(String text) async {

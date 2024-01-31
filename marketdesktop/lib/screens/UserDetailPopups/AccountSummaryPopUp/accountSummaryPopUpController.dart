@@ -6,6 +6,7 @@ import '../../../modelClass/accountSummaryModelClass.dart';
 import '../../BaseController/baseController.dart';
 import '../../../constant/index.dart';
 import '../../../modelClass/constantModelClass.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 enum AccountSummaryType { pl, brk, credit }
 
@@ -22,11 +23,23 @@ class AccountSummaryPopUpController extends BaseController {
   List<AccountSummaryData> arrAccountSummary = [];
   Rx<UserData> selectedUser = UserData().obs;
   String selectedUserId = "";
+  List<ListItem> arrListTitle = [
+    ListItem("DATE TIME", true),
+    ListItem("USERNAME", true),
+    ListItem("SYMBOL NAME", true),
+    ListItem("TYPE", true),
+    ListItem("TRANSACTION TYPE", true),
+    ListItem("AMOUNT", true),
+  ];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+  }
+
+  refreshView() {
+    update();
   }
 
   accountSummaryList() async {

@@ -52,18 +52,29 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                         searchBtnView(),
                       ],
                     ),
-                    if (controller.timingData?.data == null && controller.selectedExchangedropdownValue!.value!.exchangeId == null)
+                    if (controller.arrTiming.isEmpty && controller.selectedExchangedropdownValue!.value!.exchangeId == null)
                       Container(
                         // height: 580,
                         child: Center(child: Text("Please select exchange.")),
                       ),
-                    if (controller.timingData?.data == null && controller.selectedExchangedropdownValue!.value!.exchangeId != null)
+                    if (controller.arrTiming.isEmpty && controller.selectedExchangedropdownValue!.value!.exchangeId != null)
                       Container(
                         // height: 580,
                         child: Center(child: Text("No data found")),
                       ),
-                    if (controller.timingData?.data != null) customCalender(),
-                    if (controller.isDateSelected == true) dateTimingView(),
+                    if (controller.arrTiming.isNotEmpty) customCalender(),
+                    if (controller.isDateSelected == true)
+                      Expanded(
+                        child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.arrTiming.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return dateTimingView(context, index);
+                            }),
+                      ),
                   ],
                 ))
               ],
@@ -240,6 +251,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
   }
 
   Widget customCalender() {
+    var valueObj = controller.arrTiming.first;
     return Column(
       children: [
         Container(
@@ -259,7 +271,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               customCalenderHeader(),
               CalendarCarousel<Event>(
                 onDayPressed: (date, events) {
-                  if (controller.timingData!.data!.weekOff!.contains(date.weekday)) {
+                  if (valueObj.weekOff!.contains(date.weekday)) {
                     controller.currentDate2 = date;
                     events.forEach((event) => print(event.title));
                     controller.isDateSelected = true.obs;
@@ -287,7 +299,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                               ? AppColors().lightOnlyText
                               : isSelectedDay || isToday
                                   ? AppColors().whiteColor
-                                  : controller.timingData!.data!.weekOff!.contains(day.weekday)
+                                  : valueObj.weekOff!.contains(day.weekday)
                                       ? Colors.green
                                       : AppColors().redColor,
                         ),
@@ -312,7 +324,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                   controller.targetDateTime = date;
                   controller.currentMonth = DateFormat.yMMM().format(controller.targetDateTime);
                   controller.update();
-                  dateTimingView();
+                  // dateTimingView();
                 },
               ),
             ],
@@ -331,10 +343,12 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
     );
   }
 
-  Widget dateTimingView() {
+  Widget dateTimingView(BuildContext context, int index) {
+    var valueObj = controller.arrTiming[index];
     return Container(
       // height: 6.h,
-      margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
+
+      margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5),
       child: Row(
         children: [
           Column(
@@ -342,7 +356,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               Text(
                 DateFormat('EEE').format(controller.currentDate2).toUpperCase(),
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().blueColor,
                 ),
@@ -372,9 +386,9 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               decoration: BoxDecoration(color: AppColors().blueColor, borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text(
-                  controller.timingData!.data!.startTime! + " - " + controller.timingData!.data!.endTime!,
+                  valueObj.startTime! + " - " + valueObj.endTime!,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     fontFamily: CustomFonts.family1Medium,
                     color: AppColors().whiteColor,
                   ),

@@ -33,7 +33,8 @@ class ScriptQuantityController extends BaseController {
   List<scriptQuantityData> arrData = [];
   int pageNumber = 1;
   int totalPage = 0;
-
+  int totalCount = 0;
+  bool isPagingApiCall = false;
   bool isLocalDataLoading = true;
   List<ExchangeData> arrExchangeList = [];
   List<groupListModelData> arrGroupList = [];
@@ -59,26 +60,6 @@ class ScriptQuantityController extends BaseController {
     getUserList();
     // getQuantityList();
     update();
-
-    listcontroller.addListener(() async {
-      if ((listcontroller.position.pixels > listcontroller.position.maxScrollExtent / 2.5 && totalPage > 1 && pageNumber < totalPage && !isLocalDataLoading)) {
-        isLocalDataLoading = true;
-        pageNumber++;
-        update();
-        var response = await service.getScriptQuantityListCall(text: "", userId: selectUserdropdownValue.value.userId ?? "", groupId: "", page: pageNumber);
-        if (response != null) {
-          if (response.statusCode == 200) {
-            totalPage = response.meta?.totalPage ?? 0;
-
-            for (var v in response.data!) {
-              arrData.add(v);
-            }
-            isLocalDataLoading = false;
-            update();
-          }
-        }
-      }
-    });
   }
 
   refreshView() {
@@ -125,24 +106,29 @@ class ScriptQuantityController extends BaseController {
   }
 
   getQuantityList() async {
-    if (selectGroupDropdownValue.value.groupId == null) {
+    if (selectGroupDropdownValue.value.groupId == null || selectGroupDropdownValue.value.groupId == "") {
       showWarningToast("Please select group");
       return;
     }
-    pageNumber = 1;
-    arrData.clear();
-
-    isLocalDataLoading = true;
+    if (isPagingApiCall) {
+      return;
+    }
     isApiCallRunning = true;
+    isPagingApiCall = true;
+
     update();
     var response = await service.getScriptQuantityListCall(text: "", userId: selectUserdropdownValue.value.userId ?? "", groupId: selectGroupDropdownValue.value.groupId, page: pageNumber);
     if (response != null) {
-      isLocalDataLoading = false;
       isApiCallRunning = false;
+      isPagingApiCall = false;
       update();
       if (response.statusCode == 200) {
-        totalPage = response.meta?.totalCount ?? 0;
+        totalPage = response.meta?.totalPage ?? 0;
+        totalCount = response.meta?.totalCount ?? 0;
         arrData.addAll(response.data ?? []);
+        if (totalPage >= pageNumber) {
+          pageNumber = pageNumber + 1;
+        }
         update();
       }
     }

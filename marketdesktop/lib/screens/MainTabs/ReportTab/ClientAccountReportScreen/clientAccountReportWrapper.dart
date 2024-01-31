@@ -460,7 +460,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        width: globalMaxWidth + 75,
+        width: globalMaxWidth + 370,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(

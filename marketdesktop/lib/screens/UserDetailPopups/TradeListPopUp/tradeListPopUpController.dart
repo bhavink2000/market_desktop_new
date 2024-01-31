@@ -7,6 +7,7 @@ import 'package:marketdesktop/modelClass/myTradeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../modelClass/constantModelClass.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class TradeListPopUpController extends BaseController {
   //*********************************************************************** */
@@ -30,11 +31,37 @@ class TradeListPopUpController extends BaseController {
   FocusNode clearFocus = FocusNode();
   bool isApiCallRunning = false;
   bool isResetCall = false;
+  List<ListItem> arrListTitle = [
+    ListItem("USERNAME", true),
+    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
+    ListItem("SEGMENT", true),
+    ListItem("SYMBOL", true),
+    if (userData!.role != UserRollList.user) ListItem("B/S", true),
+    if (userData!.role == UserRollList.user) ListItem("TRADE TYPE", true),
+    ListItem("QTY", true),
+    ListItem("LOT", true),
+    ListItem("TOTAL QTY", true),
+    ListItem("VALIDITY", true),
+    ListItem(userData!.role != UserRollList.user ? "TRADE PRICE" : "PRICE", true),
+    ListItem("BROKERAGE", true),
+    ListItem("NET PRICE", true),
+    ListItem("ORDER D/T", true),
+    ListItem("EXECUTION D/T", true),
+    ListItem("REFERENCE PRICE", true),
+    ListItem("IP ADDRESS", true),
+    ListItem("DEVICE", true),
+    ListItem("DEVICE ID", true),
+  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     arrTradeStatus = constantValues!.tradeStatusFilter ?? [];
+    update();
+  }
+
+  refreshView() {
     update();
   }
 

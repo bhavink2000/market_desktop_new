@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
-        title: 'BAZAAR 2.0',
+        title: 'TESLA',
         initialRoute: RouterName.signInScreen,
         debugShowCheckedModeBanner: false,
         getPages: Pages.pages(),

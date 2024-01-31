@@ -465,81 +465,119 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
     return GestureDetector(
       onTap: () {
         // controller.selectedScriptIndex = index;
-        controller.update();
+        // // controller.selectedScript!.value = scriptValue;
+        // controller.focusNode.requestFocus();
+        // controller.update();
       },
       child: Container(
+        // decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: quantityValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
-              controller.arrQuantitySetting[index].isSelected = !controller.arrQuantitySetting[index].isSelected;
-              for (var element in controller.arrQuantitySetting) {
-                if (element.isSelected) {
-                  controller.isAllSelected = true;
-                } else {
-                  controller.isAllSelected = false;
-                  break;
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case '':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: quantityValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+                              controller.arrQuantitySetting[index].isSelected = !controller.arrQuantitySetting[index].isSelected;
+                              for (var element in controller.arrQuantitySetting) {
+                                if (element.isSelected) {
+                                  controller.isAllSelected = true;
+                                } else {
+                                  controller.isAllSelected = false;
+                                  break;
+                                }
+                              }
+                              controller.update();
+                            })
+                          : const SizedBox();
+                    }
+                  case 'SCRIPT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(
+                                quantityValue.symbolName ?? "",
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              ),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'LOT MAX':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(
+                                quantityValue.lotMax.toString(),
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              ),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'QTY MAX':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(
+                                quantityValue.quantityMax.toString(),
+                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                AppColors().darkText,
+                                index,
+                                indexT,
+                                controller.arrListTitle,
+                              ),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'BREAKUP QTY':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(quantityValue.breakQuantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'BREAKUP LOT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(quantityValue.breakUpLot.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true),
+                            )
+                          : const SizedBox();
+                    }
+                  case 'LAST UPDATED':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(
+                              child: dynamicValueBox(quantityValue.updatedAt != null ? shortFullDateTime(quantityValue.updatedAt!) : "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true),
+                            )
+                          : const SizedBox();
+                    }
+                  default:
+                    {
+                      return const SizedBox();
+                    }
                 }
-              }
-              controller.update();
-            }),
-            valueBox(quantityValue.symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
-            valueBox(quantityValue.lotMax.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-            valueBox(
-              quantityValue.quantityMax.toString(),
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
+              },
             ),
-            valueBox(
-              quantityValue.breakQuantity.toString(),
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
-            ),
-            valueBox(
-              quantityValue.breakUpLot.toString(),
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
-            ),
-            valueBox(quantityValue.updatedAt != null ? shortFullDateTime(quantityValue.updatedAt!) : "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ],
         ),
       ),
-    );
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // titleBox("", 0),
-        titleBox("", isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, onClickImage: () {
-          if (controller.isAllSelected) {
-            controller.arrQuantitySetting.forEach((element) {
-              element.isSelected = false;
-            });
-            controller.isAllSelected = false;
-            controller.update();
-          } else {
-            controller.arrQuantitySetting.forEach((element) {
-              element.isSelected = true;
-            });
-            controller.isAllSelected = true;
-            controller.update();
-          }
-        }),
-        titleBox("Script", isBig: true),
-        titleBox("Lot Max"),
-        titleBox("Qty Max"),
-        titleBox("Breakup Qty"),
-        titleBox("Breakup Lot"),
-        titleBox("Last Updated", isBig: true),
-      ],
     );
   }
 
@@ -635,6 +673,120 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
           // controller.addSymbolToTab(selection.symbolId!);
         },
       ),
+    );
+  }
+
+  Widget listTitleContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case '':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("", index, controller.arrListTitle, controller.isScrollEnable, isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, onClickImage: () {
+                          if (controller.isAllSelected) {
+                            controller.arrQuantitySetting.forEach((element) {
+                              element.isSelected = false;
+                            });
+                            controller.isAllSelected = false;
+                            controller.update();
+                          } else {
+                            controller.arrQuantitySetting.forEach((element) {
+                              element.isSelected = true;
+                            });
+                            controller.isAllSelected = true;
+                            controller.update();
+                          }
+                        })
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SCRIPT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SCRIPT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'LOT MAX':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox(
+                          "LOT MAX",
+                          index,
+                          controller.arrListTitle,
+                          controller.isScrollEnable,
+                          updateCallback: controller.refreshView,
+                        )
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'QTY MAX':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("QTY MAX", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BREAKUP QTY':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BREAKUP QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              case 'BREAKUP LOT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BREAKUP LOT", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'LAST UPDATED':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("LAST UPDATED", index, controller.arrListTitle, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
+      ],
     );
   }
 }

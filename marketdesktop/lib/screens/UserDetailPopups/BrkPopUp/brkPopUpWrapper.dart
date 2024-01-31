@@ -18,6 +18,7 @@ import '../../../customWidgets/appButton.dart';
 import '../../../customWidgets/commonWidgets.dart';
 
 import '../../BaseController/baseController.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import '../userDetailsPopUpController.dart';
 
 class BrkPopUpScreen extends BaseView<BrkPopUpController> {
@@ -81,6 +82,13 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
         controller.getExchangeListUserWise(userId: controller.selectedUserId);
         controller.arrBrokerage.clear();
         controller.selectedExchange.value = ExchangeData();
+        controller.arrListTitle = [
+          ListItem("", true),
+          ListItem("EXCHANGE", true),
+          ListItem("SCRIPT", true),
+          if (controller.selectedCurrentTab == 0) ListItem("TURNOVER WISE BRK(RS. PER 1/CR))", true),
+          if (controller.selectedCurrentTab == 1) ListItem("Brk(Rs.)", true),
+        ];
 
         controller.update();
       },
@@ -123,8 +131,9 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
                   // Container(
                   //   width: 30,
                   // ),
-                  if (controller.selectedCurrentTab == 0) turnOverWiseTitleContent(),
-                  if (controller.selectedCurrentTab == 1) symbolWiseTitleContent()
+                  // if (controller.selectedCurrentTab == 0) turnOverWiseTitleContent(),
+                  // if (controller.selectedCurrentTab == 1) symbolWiseTitleContent()
+                  listTitleContent()
                 ],
               ),
             ),
@@ -136,9 +145,7 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return controller.selectedCurrentTab == 0
-                        ? turnOverWiseContent(context, index)
-                        : symbolWiseContent(context, index);
+                    return groupContent(context, index);
                   }),
             ),
           ],
@@ -293,151 +300,75 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
     );
   }
 
-  Widget turnOverWiseContent(BuildContext context, int index) {
+  Widget groupContent(BuildContext context, int index) {
     var brkValue = controller.arrBrokerage[index];
     return GestureDetector(
       onTap: () {
         // controller.selectedScriptIndex = index;
-
-        controller.update();
+        // // controller.selectedScript!.value = scriptValue;
+        // controller.focusNode.requestFocus();
+        // controller.update();
       },
       child: Container(
+        // decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+        height: 30,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
-                isImage: true,
-                strImage: brkValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-                isSmall: true, onClickImage: () {
-              controller.arrBrokerage[index].isSelected = !controller.arrBrokerage[index].isSelected;
-              for (var element in controller.arrBrokerage) {
-                if (element.isSelected) {
-                  controller.isAllSelected = true;
-                } else {
-                  controller.isAllSelected = false;
-                  break;
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle[indexT].title) {
+                  case '':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isImage: true, strImage: brkValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+                              controller.arrBrokerage[index].isSelected = !controller.arrBrokerage[index].isSelected;
+                              for (var element in controller.arrBrokerage) {
+                                if (element.isSelected) {
+                                  controller.isAllSelected = true;
+                                } else {
+                                  controller.isAllSelected = false;
+                                  break;
+                                }
+                              }
+                              controller.update();
+                            })
+                          : const SizedBox();
+                    }
+                  case 'EXCHANGE':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? IgnorePointer(child: dynamicValueBox(brkValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)) : const SizedBox();
+                    }
+                  case 'SCRIPT':
+                    {
+                      return controller.arrListTitle[indexT].isSelected ? IgnorePointer(child: dynamicValueBox(brkValue.symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)) : const SizedBox();
+                    }
+                  case 'TURNOVER WISE BRK(RS. PER 1/CR))':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(child: dynamicValueBox(brkValue.brokeragePrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isExtraLarge: true))
+                          : const SizedBox();
+                    }
+                  case 'Brk(Rs.)':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? IgnorePointer(child: dynamicValueBox(brkValue.brokeragePrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true))
+                          : const SizedBox();
+                    }
+                  default:
+                    {
+                      return const SizedBox();
+                    }
                 }
-              }
-              controller.update();
-            }),
-            valueBox(brkValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
-            valueBox(brkValue.symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isLarge: true),
-            valueBox(brkValue.brokeragePrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isLarge: true),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget symbolWiseContent(BuildContext context, int index) {
-    var brkValue = controller.arrBrokerage[index];
-    return GestureDetector(
-      onTap: () {
-        // controller.selectedScriptIndex = index;
-        controller.update();
-      },
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index,
-                isImage: true,
-                strImage: brkValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-                isSmall: true, onClickImage: () {
-              controller.arrBrokerage[index].isSelected = !controller.arrBrokerage[index].isSelected;
-              for (var element in controller.arrBrokerage) {
-                if (element.isSelected) {
-                  controller.isAllSelected = true;
-                } else {
-                  controller.isAllSelected = false;
-                  break;
-                }
-              }
-              controller.update();
-            }),
-            valueBox(brkValue.exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index),
-            valueBox(brkValue.symbolName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText, index,
-                isLarge: true),
-            valueBox(
-              brkValue.brokeragePrice!.toStringAsFixed(2),
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
+              },
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget turnOverWiseTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // titleBox("", 0),
-
-        titleBox("",
-            isImage: true,
-            strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-            isSmall: true, onClickImage: () {
-          if (controller.isAllSelected) {
-            controller.arrBrokerage.forEach((element) {
-              element.isSelected = false;
-            });
-            controller.isAllSelected = false;
-            controller.update();
-          } else {
-            controller.arrBrokerage.forEach((element) {
-              element.isSelected = true;
-            });
-            controller.isAllSelected = true;
-            controller.update();
-          }
-        }),
-        titleBox("Exchange"),
-        titleBox("Script", isLarge: true),
-        titleBox("Turnover Wise Brk(Rs. per 1/CR)", isLarge: true),
-      ],
-    );
-  }
-
-  Widget symbolWiseTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // titleBox("", 0),
-
-        titleBox("",
-            isImage: true,
-            strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-            isSmall: true, onClickImage: () {
-          if (controller.isAllSelected) {
-            controller.arrBrokerage.forEach((element) {
-              element.isSelected = false;
-            });
-            controller.isAllSelected = false;
-            controller.update();
-          } else {
-            controller.arrBrokerage.forEach((element) {
-              element.isSelected = true;
-            });
-            controller.isAllSelected = true;
-            controller.update();
-          }
-        }),
-        titleBox("Exchange"),
-        titleBox("Script", isLarge: true),
-
-        titleBox("Brk(Rs.)"),
-      ],
     );
   }
 
@@ -449,8 +380,7 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
       decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
       child: Autocomplete<GlobalSymbolData>(
         displayStringForOption: (GlobalSymbolData option) => option.symbolTitle!,
-        fieldViewBuilder:
-            (BuildContext context, TextEditingController control, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
+        fieldViewBuilder: (BuildContext context, TextEditingController control, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
           return CustomTextField(
             type: 'Search',
             keyBoardType: TextInputType.text,
@@ -534,6 +464,96 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
           // controller.addSymbolToTab(selection.symbolId!);
         },
       ),
+    );
+  }
+
+  Widget listTitleContent() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ReorderableListView.builder(
+          scrollDirection: Axis.horizontal,
+          buildDefaultDragHandles: false,
+          padding: EdgeInsets.zero,
+          itemCount: controller.arrListTitle.length,
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            switch (controller.arrListTitle[index].title) {
+              case '':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView, isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
+                          if (controller.isAllSelected) {
+                            controller.arrBrokerage.forEach((element) {
+                              element.isSelected = false;
+                            });
+                            controller.isAllSelected = false;
+                            controller.update();
+                          } else {
+                            controller.arrBrokerage.forEach((element) {
+                              element.isSelected = true;
+                            });
+                            controller.isAllSelected = true;
+                            controller.update();
+                          }
+                        })
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'EXCHANGE':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'SCRIPT':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("SCRIPT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'TURNOVER WISE BRK(RS. PER 1/CR))':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("TURNOVER WISE BRK(RS. PER 1/CR))", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isExtraLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'Brk(Rs.)':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("Brk(Rs.)", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              default:
+                {
+                  return SizedBox(
+                    key: Key('$index'),
+                  );
+                }
+            }
+          },
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+            var temp = controller.arrListTitle.removeAt(oldIndex);
+            if (newIndex > controller.arrListTitle.length) {
+              newIndex = controller.arrListTitle.length;
+            }
+            controller.arrListTitle.insert(newIndex, temp);
+            controller.update();
+          },
+        ),
+      ],
     );
   }
 }

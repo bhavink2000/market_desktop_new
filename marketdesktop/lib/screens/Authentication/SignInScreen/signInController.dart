@@ -41,7 +41,7 @@ class SignInController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    await windowManager.setTitle("BAZAAR 2.0");
+    await windowManager.setTitle("TESLA");
     // serverController.text = "bazaar";
     // userNameController.text = "prem";
     // passwordController.text = "123456";

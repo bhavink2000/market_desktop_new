@@ -30,7 +30,7 @@ class MarketTimingController extends BaseController {
   bool isApiCallRunning = false;
   Size? screenSize;
   List<ExchangeData> arrExchangeList = [];
-  MarketTimingModel? timingData;
+  List<TimingData> arrTiming = [];
   FocusNode viewFocus = FocusNode();
   @override
   void onInit() async {
@@ -59,9 +59,16 @@ class MarketTimingController extends BaseController {
     isApiCallRunning = false;
     update();
     if (response?.statusCode == 200) {
-      timingData = response;
-      isDateSelected.value = false;
-      if (timingData?.data == null) {}
+      arrTiming = response?.data ?? [];
+      if (arrTiming.isEmpty) {
+        isDateSelected.value = false;
+      } else {
+        targetDateTime = DateTime.now();
+        currentMonth = DateFormat.yMMM().format(targetDateTime);
+        isDateSelected.value = true;
+        update();
+      }
+      ;
       update();
     }
   }

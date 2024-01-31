@@ -56,13 +56,13 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
               Center(
                 child: Image.asset(
                   AppImages.appLogo,
-                  width: 100,
+                  width: 300,
                   height: 100,
                 ),
               ),
-              Center(
-                child: Text("BAZAAR 2.0", style: TextStyle(fontSize: 40, fontFamily: CustomFonts.family1ExtraBold, color: AppColors().blueColor)),
-              ),
+              // Center(
+              //   child: Text("TESLA", style: TextStyle(fontSize: 40, fontFamily: CustomFonts.family1ExtraBold, color: AppColors().blueColor)),
+              // ),
             ],
           )
         ],
@@ -144,7 +144,7 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
                   children: [
                     SizedBox(
                       width: 25.w,
-                      child: Text("BAZAAR",
+                      child: Text("TESLA",
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: CustomFonts.family1SemiBold,
