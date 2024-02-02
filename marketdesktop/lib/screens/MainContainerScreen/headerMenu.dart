@@ -156,8 +156,8 @@ class MyMenuBar extends StatelessWidget {
                 isMarketSocketConnected.value = false;
               } else {
                 await socket.connectSocket();
-                if (socket.arrSymbolNames.isNotEmpty) {
-                  var txt = {"symbols": socket.arrSymbolNames};
+                if (arrSymbolNames.isNotEmpty) {
+                  var txt = {"symbols": arrSymbolNames};
                   socket.connectScript(jsonEncode(txt));
                 }
               }
@@ -181,7 +181,7 @@ class MyMenuBar extends StatelessWidget {
               // GetStorage().erase();
               service.logoutCall();
 
-              socket.arrSymbolNames.clear();
+              arrSymbolNames.clear();
               socket.channel?.sink.close(status.normalClosure);
               socketIO.socketForTrade.emit('unsubscribe', userData!.userName);
               socketIO.socketForTrade.disconnect();

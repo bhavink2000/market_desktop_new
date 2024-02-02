@@ -292,7 +292,7 @@ class MarketWatchController extends BaseController {
     selectedCallPut.value = Type();
     selectedStrikePrice.value = StrikePriceData();
     update();
-    var response = await service.allSymbolListCall(1, "", isFromF5 ? selectedExchangeForF5.value.exchangeId ?? "" : selectedExchange.value.exchangeId ?? "");
+    var response = await service.allSymbolListCallForMarket(1, "", isFromF5 ? selectedExchangeForF5.value.exchangeId ?? "" : selectedExchange.value.exchangeId ?? "");
     if (isFromF5) {
       arrAllScriptForF5 = response!.data ?? [];
       var temp = arrAllScriptForF5.firstWhereOrNull((element) => element.symbolId == selectedSymbol!.symbolId);
@@ -1286,9 +1286,9 @@ class MarketWatchController extends BaseController {
         print(e);
       }
       for (var element in response.data!) {
-        if (!socket.arrSymbolNames.contains(element.symbolName)) {
+        if (!arrSymbolNames.contains(element.symbolName)) {
           arrTemp.insert(0, element.symbolName);
-          socket.arrSymbolNames.insert(0, element.symbolName!);
+          arrSymbolNames.insert(0, element.symbolName!);
         }
       }
       var txt = {"symbols": arrTemp};
@@ -1423,7 +1423,7 @@ class MarketWatchController extends BaseController {
     arrSearchedScript.clear();
     update();
     if (text != "") {
-      var response = await service.allSymbolListCall(1, text, "");
+      var response = await service.allSymbolListCallForMarket(1, text, "");
       arrSearchedScript = response!.data ?? [];
 
       return arrSearchedScript;
@@ -1478,12 +1478,15 @@ class MarketWatchController extends BaseController {
             arrPreScript.add(ScriptData.fromJson(response.data!.toJson()));
           }
         }
+        // isMarketSocketConnected.value ? 'Disconnect' : 'Connect'
         storeScripsInDB();
         isFilterClicked = 0;
         var arrTemp = [];
         tempFocus.value.requestFocus();
         arrTemp.add(response.data!.symbolName!);
+        arrSymbolNames.insert(0, response.data!.symbolName!);
         var txt = {"symbols": arrTemp};
+
         socket.connectScript(jsonEncode(txt));
         update();
       } else {

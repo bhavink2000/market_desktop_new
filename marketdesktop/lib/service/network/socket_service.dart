@@ -27,9 +27,10 @@ import '../../screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccount
 import '../../screens/MainTabs/ReportTab/ProfitAndLossSummaryScreen/profitAndLossSummaryController.dart';
 import '../../screens/MainTabs/ViewTab/ProfitAndLossScreen/profitAndLossController.dart';
 
+var bouncer = Debouncer(milliseconds: 2000);
+
 class SocketService {
   WebSocketChannel? channel;
-  List<String> arrSymbolNames = [];
 
   connectSocket() async {
     try {
@@ -135,9 +136,16 @@ class SocketService {
           //   channel?.sink.close(status.goingAway);
           // }
         },
-        onDone: () => {
-          // isMarketSocketConnected.value = false,
-          print('onDone: Will close WebSocket: ${channel?.closeReason}'),
+        onDone: () {
+          print("here");
+          socket.channel?.sink.close(status.normalClosure);
+          bouncer.run(() async {
+            await socket.connectSocket();
+            var txt = {"symbols": arrSymbolNames};
+            if (arrSymbolNames.isNotEmpty) {
+              socket.connectScript(jsonEncode(txt));
+            }
+          });
         },
         onError: (err) => {
           isMarketSocketConnected.value = false,
@@ -159,7 +167,7 @@ class SocketService {
       try {
         socket.channel?.sink.close(status.normalClosure);
         isMarketSocketConnected.value = false;
-        socket.arrSymbolNames.clear();
+        arrSymbolNames.clear();
         await socket.connectSocket();
         socketIO.init();
       } catch (e) {

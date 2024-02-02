@@ -119,7 +119,7 @@ class SignInController extends BaseController {
             await localStorage.write(LocalStorageKeys.userData, response.data!.toJson());
             userId = response.data!.userId!;
             try {
-              socket.arrSymbolNames.clear();
+              arrSymbolNames.clear();
               await socket.connectSocket();
               socketIO.init();
             } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/main.dart';
+import 'package:marketdesktop/modelClass/tableColumnsModelClass.dart';
 
 import '../constant/index.dart';
 import '../screens/MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
@@ -231,6 +232,108 @@ Widget dynamicTitleBox(
   );
 }
 
+Widget dynamicTitleBox1(
+  String title,
+  int index,
+  List<ColumnItem> arrListTitle,
+  RxBool isScrollEnable, {
+  bool isBig = false,
+  bool isSmall = false,
+  bool isSmallLarge = false,
+  bool isLarge = false,
+  bool isExtraLarge = false,
+  bool isForDate = false,
+  Function? onClickImage,
+  bool isImage = false,
+  String? strImage = "",
+  bool hasFilterIcon = false,
+  Function? updateCallback,
+}) {
+  return Row(
+    key: Key('$index'),
+    children: [
+      ReorderableDragStartListener(
+        enabled: true,
+        index: index,
+        child: isImage == false
+            ? Container(
+                color: AppColors().backgroundColor,
+                width: arrListTitle[index].width ?? 100,
+                height: 3.h,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(title, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().fontColor)),
+                    const Spacer(),
+                  ],
+                ),
+              )
+            : GestureDetector(
+                key: Key(strImage!),
+                onTap: () {
+                  if (onClickImage != null) {
+                    onClickImage();
+                  }
+                },
+                child: Container(
+                  color: AppColors().backgroundColor,
+                  height: 3.h,
+                  padding: const EdgeInsets.only(left: 22, right: 22),
+                  child: Image.asset(
+                    strImage,
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+              ),
+      ),
+      MouseRegion(
+        cursor: SystemMouseCursors.resizeColumn,
+        child: GestureDetector(
+          onPanStart: (details) {
+            arrListTitle![index].start = details.localPosition;
+            isScrollEnable.value = false;
+          },
+          onPanEnd: (details) {
+            arrListTitle![index].start = Offset.zero;
+            if (updateCallback != null) {
+              isScrollEnable.value = true;
+              updateCallback();
+            }
+          },
+          onPanUpdate: (details) {
+            var diff = details.localPosition.dx - arrListTitle![index].start!.dx;
+            if ((globalMaxWidth + diff) >= globalScreenSize.width) {
+              globalMaxWidth = globalScreenSize.width + diff;
+            }
+            if ((arrListTitle[index].width! + diff) >= arrListTitle[index].defaultWidth!) {
+              arrListTitle[index].width = arrListTitle[index].defaultWidth! + diff;
+            }
+            if (updateCallback != null) {
+              updateCallback();
+            }
+          },
+          child: Container(
+            height: 3.h,
+            width: 5,
+            color: AppColors().backgroundColor,
+            child: Center(
+              child: Container(
+                color: AppColors().whiteColor,
+                width: 2,
+              ),
+            ),
+          ),
+        ),
+      )
+    ],
+  );
+}
+
 Widget dynamicValueBox(String title, Color? bgColor, Color? textColor, int index, int titleIndex, List<ListItem> arrListTitle,
     {bool isBig = false,
     isUnderlined = false,
@@ -325,6 +428,115 @@ Widget dynamicValueBox(String title, Color? bgColor, Color? textColor, int index
                 child: Container(
                   height: 3.h,
                   width: setWidthDynamic(titleIndex, isBig: isBig, isSmall: isSmall, isLarge: isLarge, isExtraLarge: isExtraLarge, isSmallLarge: isSmallLarge, isForDate: isForDate, arrListTitle: arrListTitle) + 2,
+                  color: bgColor,
+                  padding: EdgeInsets.only(left: isBig ? 3.4.w : 1.1.w, right: isBig ? 3.4.w : 1.1.w),
+                  child: Image.asset(
+                    strImage ?? "",
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+              );
+  } catch (e) {
+    print(e);
+    return SizedBox();
+  }
+}
+
+Widget dynamicValueBox1(String title, Color? bgColor, Color? textColor, int index, int titleIndex, List<ColumnItem> arrListTitle,
+    {bool isBig = false,
+    isUnderlined = false,
+    bool isLarge = false,
+    bool isSmall = false,
+    bool isForDate = false,
+    bool isExtraLarge = false,
+    bool isSmallLarge = false,
+    Function? onClickValue,
+    Function? onClickImage,
+    Function? onSwitchChanged,
+    bool isImage = false,
+    RxBool? switchValue,
+    bool isSwitch = false,
+    String? strImage = ""}) {
+  try {
+    return isImage == false && isSwitch == false
+        ? IgnorePointer(
+            ignoring: onClickValue == null,
+            child: Container(
+              width: (arrListTitle[titleIndex].width ?? 0) + 5,
+              color: bgColor,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      if (onClickValue != null) {
+                        onClickValue();
+                      }
+                    },
+                    child: Container(
+                      width: (arrListTitle[titleIndex].width ?? 0) - 20,
+                      child: Text(title,
+                          textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Regular, color: textColor != null ? textColor : AppColors().darkText, decoration: isUnderlined ? TextDecoration.underline : TextDecoration.none)),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   width: 20,
+                  // ),
+                  Spacer(),
+                  Container(
+                    height: 3.h,
+                    width: 2,
+                    color: AppColors().whiteColor,
+                  )
+                ],
+              ),
+            ),
+          )
+        : isSwitch
+            ? Obx(() {
+                return Container(
+                  width: (arrListTitle[index].width ?? 0) + 5,
+                  height: 3.h,
+                  color: bgColor,
+                  // padding: EdgeInsets.symmetric(horizontal: 80),
+                  child: Row(
+                    children: [
+                      Transform.scale(
+                        scale: 0.7,
+                        child: Switch(
+                          value: switchValue!.value,
+                          activeColor: AppColors().blueColor,
+                          onChanged: (bool value) async {
+                            switchValue.value = value;
+                            if (onSwitchChanged != null) {
+                              onSwitchChanged(value);
+                            }
+                          },
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        height: 3.h,
+                        width: 2,
+                        color: AppColors().whiteColor,
+                      )
+                    ],
+                  ),
+                );
+              })
+            : GestureDetector(
+                onTap: () {
+                  if (onClickImage != null) {
+                    onClickImage();
+                  }
+                },
+                child: Container(
+                  height: 3.h,
+                  width: (arrListTitle[index].width ?? 0) + 2,
                   color: bgColor,
                   padding: EdgeInsets.only(left: isBig ? 3.4.w : 1.1.w, right: isBig ? 3.4.w : 1.1.w),
                   child: Image.asset(

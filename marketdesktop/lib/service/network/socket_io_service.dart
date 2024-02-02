@@ -164,9 +164,9 @@ class SocketIOService {
                   vcObj.arrPositionScriptList.insert(0, positionListData.fromJson(data["position"]["data"]));
                   var arrTemp = [];
                   for (var element in vcObj.arrPositionScriptList) {
-                    if (!socket.arrSymbolNames.contains(element.symbolName)) {
+                    if (!arrSymbolNames.contains(element.symbolName)) {
                       arrTemp.insert(0, element.symbolName);
-                      socket.arrSymbolNames.insert(0, element.symbolName!);
+                      arrSymbolNames.insert(0, element.symbolName!);
                     }
                   }
 

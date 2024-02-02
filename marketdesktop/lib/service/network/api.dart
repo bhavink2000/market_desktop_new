@@ -6,6 +6,7 @@ abstract class Api {
   static const getServerName = 'server/list';
   static const login = 'user/login';
   static const getAllSymbol = 'symbol/list';
+  static const getAllSymbolForCEPE = 'symbol/search-list';
   static const getAllUserTabList = 'user/get-user-tab-list';
   static const addSymbolToTab = 'user/post-user-tab-wise-symbols';
   static const deleteSymbolFromTab = 'user/delete-user-tab-symbol';
@@ -26,6 +27,7 @@ abstract class Api {
   static const openPositionList = 'symbol-position/list';
   static const changePassword = 'user/change-password';
   static const scriptQuantityList = 'user-wise-group-data-association/list';
+  static const scriptQuantityListForAdmin = 'group-data-association/list';
   static const otherUserchangePassword = 'user/change-password-to-admin';
   static const viewProfile = 'user/view-profile';
   static const m2mProfitLoss = 'm2m-profit-loss/list';

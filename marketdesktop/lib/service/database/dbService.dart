@@ -40,6 +40,15 @@ class DbService {
         )
       ''');
       }
+
+      await db.execute('''
+        CREATE TABLE loginHistory (
+          columnId INTEGER PRIMARY KEY,
+          width DOUBLE,
+          defaultWidth Double,
+          title
+        )
+      ''');
     } catch (e) {
       print(e);
       return;
@@ -124,6 +133,17 @@ class DbService {
     } catch (e) {
       print(e);
       return;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> readColumns(String screenName) async {
+    try {
+      Database? db = await database;
+      screenName = "loginHistory";
+      return await db!.query(screenName);
+    } catch (e) {
+      print(e);
+      return [];
     }
   }
 }

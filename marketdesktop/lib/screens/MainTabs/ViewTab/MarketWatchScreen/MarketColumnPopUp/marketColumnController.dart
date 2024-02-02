@@ -89,3 +89,4 @@ class ListItem {
 
   ListItem(this.title, this.isSelected);
 }
+

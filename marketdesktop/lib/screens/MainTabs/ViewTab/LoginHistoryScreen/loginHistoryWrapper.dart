@@ -431,7 +431,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                       progressIndicatorWidget: displayIndicator(),
                       physics: const ClampingScrollPhysics(),
                       clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning ? 50 : controller.arrLoginHistory.length,
+                      itemCount: 1,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
@@ -468,7 +468,6 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-
               ListView.builder(
                 padding: EdgeInsets.zero,
                 itemCount: controller.arrListTitle.length,
@@ -478,63 +477,52 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                   switch (controller.arrListTitle[indexT].title) {
                     case 'LOGIN TIME':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(historyValue.loginDate != "" && historyValue.loginDate != null ? shortFullDateTime(historyValue.loginDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true)
-                            : const SizedBox();
+                        return dynamicValueBox1(historyValue.loginDate != "" && historyValue.loginDate != null ? shortFullDateTime(historyValue.loginDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
+                            isForDate: true);
                       }
                     case 'LOGOUT TIME':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(historyValue.logoutDate != "" && historyValue.logoutDate != null ? shortFullDateTime(historyValue.logoutDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
-                                isForDate: true)
-                            : const SizedBox();
+                        return dynamicValueBox1(historyValue.logoutDate != "" && historyValue.logoutDate != null ? shortFullDateTime(historyValue.logoutDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
+                            isForDate: true);
                       }
                     case 'USERNAME':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
-                                showUserDetailsPopUp(userId: controller.arrLoginHistory[index].userId!, userName: controller.arrLoginHistory[index].userName ?? "");
-                              })
-                            : const SizedBox();
+                        return dynamicValueBox1(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                          showUserDetailsPopUp(userId: controller.arrLoginHistory[index].userId!, userName: controller.arrLoginHistory[index].userName ?? "");
+                        });
                       }
                     case 'USER TYPE':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.role ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.role ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
                       }
                     case 'IP ADDRESS':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.ip ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.ip ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
                       }
                     case 'DEVICEID':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.deviceId ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.deviceId ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle,
+                        );
                       }
 
                     default:
@@ -562,63 +550,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
           itemCount: controller.arrListTitle.length,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'LOGIN TIME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("LOGIN TIME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'LOGOUT TIME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("LOGOUT TIME", index, isForDate: true, hasFilterIcon: true, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USER TYPE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USER TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'IP ADDRESS':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DEVICEID':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DEVICEID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
+            return dynamicTitleBox1(controller.arrListTitle[index].title ?? "", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true);
           },
           onReorder: (int oldIndex, int newIndex) {
             if (oldIndex < newIndex) {

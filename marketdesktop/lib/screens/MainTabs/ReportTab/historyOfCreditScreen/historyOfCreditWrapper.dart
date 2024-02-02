@@ -416,8 +416,8 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";
-                                controller.selectedAccountSummaryType = null;
-                                controller.selectedType = null;
+                                // controller.selectedAccountSummaryType = null;
+                                // controller.selectedType = null;
                                 controller.update();
                                 controller.arrAccountSummary.clear();
                                 controller.currentPage = 1;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -9,7 +10,7 @@ import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
 import 'package:marketdesktop/service/network/apiService.dart';
 import 'package:marketdesktop/service/network/socket_io_service.dart';
 import 'package:marketdesktop/service/network/socket_service.dart';
-
+import 'package:web_socket_channel/status.dart' as status;
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
@@ -69,6 +70,7 @@ void main() async {
 bool isProduction = false;
 var userId;
 var userToken;
+
 bool isKeyBoardListenerActive = false;
 bool isUserDetailPopUpOpen = false;
 bool isUserViewPopUpOpen = false;
@@ -90,6 +92,7 @@ double globalMaxWidth = 0.0;
 bool currentDarkModeOn = false;
 bool isAccessTokenExpired = false;
 bool isScoketDisconnted = false;
+List<String> arrSymbolNames = [];
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -113,6 +116,14 @@ internetConnectivity() async {
     final result = await InternetAddress.lookup('google.com');
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
       if (Get.isDialogOpen!) {
+        socket.channel?.sink.close(status.normalClosure);
+        bouncer.run(() async {
+          await socket.connectSocket();
+          var txt = {"symbols": arrSymbolNames};
+          if (arrSymbolNames.isNotEmpty) {
+            socket.connectScript(jsonEncode(txt));
+          }
+        });
         Get.back();
         // Get.offAllNamed(userId == null
         //     ? RouterName.searchWithoutLoginScreen

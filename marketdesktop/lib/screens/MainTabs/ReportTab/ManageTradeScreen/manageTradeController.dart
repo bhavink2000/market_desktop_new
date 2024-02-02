@@ -79,9 +79,9 @@ class ManageTradeController extends BaseController {
             update();
             var arrTemp = [];
             for (var element in response.data!) {
-              if (!socket.arrSymbolNames.contains(element.symbolName)) {
+              if (!arrSymbolNames.contains(element.symbolName)) {
                 arrTemp.insert(0, element.symbolName);
-                socket.arrSymbolNames.insert(0, element.symbolName!);
+                arrSymbolNames.insert(0, element.symbolName!);
               }
             }
 
@@ -142,9 +142,9 @@ class ManageTradeController extends BaseController {
           totalPendingRecord = response.meta?.totalCount ?? 0;
         }
         for (var element in response.data!) {
-          if (!socket.arrSymbolNames.contains(element.symbolName)) {
+          if (!arrSymbolNames.contains(element.symbolName)) {
             arrTemp.insert(0, element.symbolName);
-            socket.arrSymbolNames.insert(0, element.symbolName!);
+            arrSymbolNames.insert(0, element.symbolName!);
           }
         }
 
@@ -157,8 +157,8 @@ class ManageTradeController extends BaseController {
   }
 
   addSymbolInSocket(String symbolName) {
-    if (!socket.arrSymbolNames.contains(symbolName)) {
-      socket.arrSymbolNames.insert(0, symbolName);
+    if (!arrSymbolNames.contains(symbolName)) {
+      arrSymbolNames.insert(0, symbolName);
       var txt = {
         "symbols": [symbolName]
       };

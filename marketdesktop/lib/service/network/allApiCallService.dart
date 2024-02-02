@@ -751,6 +751,21 @@ class AllApiCallService {
     }
   }
 
+  Future<AllSymbolListModel?> allSymbolListCallForMarket(int page, String search, String exchangeId) async {
+    try {
+      _dio.options.headers = getHeaders();
+      //print(_dio.options.headers);
+      final payload = {"page": page, "limit": 100000, "search": search, "sortKey": "createdAt", "sortBy": 1, "exchangeId": exchangeId};
+      final data = await _dio.post(Api.getAllSymbolForCEPE, data: payload);
+
+      return AllSymbolListModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+      // final errMsg = e.response?.data['message'];
+      // throw Exception(errMsg);
+    }
+  }
+
   Future<AllSymbolListModel?> allSymbolListCall(int page, String search, String exchangeId) async {
     try {
       _dio.options.headers = getHeaders();
@@ -1455,7 +1470,7 @@ class AllApiCallService {
     try {
       _dio.options.headers = getHeaders();
       final payload = {"page": page, "limit": pageLimit, "search": text, "sortKey": "createdAt", "sortBy": -1, "userId": userId, "groupId": groupId};
-      final data = await _dio.post(Api.scriptQuantityList, data: payload);
+      final data = await _dio.post((userData!.role == UserRollList.superAdmin || userData!.role == UserRollList.admin) ? Api.scriptQuantityListForAdmin : Api.scriptQuantityList, data: payload);
       print(data.data);
       return ScriptQuantityModel.fromJson(data.data);
     } catch (e) {

@@ -42,6 +42,20 @@ class AppString {
   static const String emptyScript = "Please select script.";
 }
 
+var dict = {
+  "1": {
+    "title": "Login History",
+    "columns": [
+      {"name": "LOGIN TIME", "columnId": 0, "width": 180.0, "position": 0},
+      {"name": "LOGOUT TIME", "columnId": 1, "width": 180.0, "position": 1},
+      {"name": "USERNAME", "columnId": 2, "width": 102.0, "position": 2},
+      {"name": "USER TYPE", "columnId": 3, "width": 102.0, "position": 3},
+      {"name": "IP ADDRESS", "columnId": 4, "width": 102.0, "position": 4},
+      {"name": "DEVICE ID", "columnId": 5, "width": 102.0, "position": 5}
+    ]
+  }
+};
+
 class ScreenViewNames {
   static const String marketWatch = "Market Watch";
   static const String orders = "Pending Orders";

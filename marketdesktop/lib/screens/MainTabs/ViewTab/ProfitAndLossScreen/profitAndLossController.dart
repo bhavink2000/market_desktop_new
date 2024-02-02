@@ -46,9 +46,9 @@ class ProfitAndLossController extends BaseController {
       arrProfitLoss.forEach((userObj) {
         for (var element in userObj.childUserDataPosition!) {
           if (!arrTemp.contains(element.symbolName)) {
-            if (!socket.arrSymbolNames.contains(element.symbolName)) {
+            if (!arrSymbolNames.contains(element.symbolName)) {
               arrTemp.insert(0, element.symbolName);
-              socket.arrSymbolNames.insert(0, element.symbolName!);
+              arrSymbolNames.insert(0, element.symbolName!);
             }
           }
         }
