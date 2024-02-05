@@ -594,7 +594,7 @@ class AllApiCallService {
   Future<UserWiseBrokerageListModel?> userWiseBrokerageListCall({String? search, String? userId, String? type, String? exchangeId}) async {
     try {
       _dio.options.headers = getHeaders();
-      final payload = {"page": 1, "limit": pageLimit, "search": search, "sortKey": "createdAt", "brokerageType": type, "sortBy": -1, "userId": userId, "exchangeId": exchangeId};
+      final payload = {"page": 1, "limit": 1000000, "search": search, "sortKey": "createdAt", "brokerageType": type, "sortBy": -1, "userId": userId, "exchangeId": exchangeId};
       {}
       //print(payload);
       final data = await _dio.post(Api.userWiseBrokerageList, data: payload);
