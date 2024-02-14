@@ -171,6 +171,14 @@ class GlobalSymbolData {
         "modifyStatus": modifyStatus,
         "status": status,
       };
+  @override
+  bool operator ==(dynamic other) {
+    if (other is GlobalSymbolData) {
+      return this.symbolId == other.symbolId;
+    } else {
+      return false;
+    }
+  }
 }
 
 class Meta {

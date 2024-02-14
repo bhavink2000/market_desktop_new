@@ -34,7 +34,7 @@ class UserScriptPositionTrackController extends BaseController {
     ListItem("USERNAME", true),
     ListItem("SYMBOL", true),
     ListItem("POSITION", true),
-    ListItem("OPEN QUANTITY", true),
+    ListItem("OPEN A PRICE", true),
   ];
   @override
   void onInit() async {

@@ -474,7 +474,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                               )
                             : const SizedBox();
                       }
-                    case 'SCRIPT NAME':
+                    case 'SYMBOL NAME':
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? dynamicValueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)
@@ -532,7 +532,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].lotSize!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
                               )
                             : const SizedBox();
                       }
@@ -633,10 +633,10 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                           key: Key('$index'),
                         );
                 }
-              case 'SCRIPT NAME':
+              case 'SYMBOL NAME':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SCRIPT NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      ? dynamicTitleBox("SYMBOL NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
                       : SizedBox(
                           key: Key('$index'),
                         );

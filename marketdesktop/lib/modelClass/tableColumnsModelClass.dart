@@ -22,32 +22,47 @@ class TableColumnModel {
 
 class ColumnItem {
   String? title;
-  int? columnId;
   double? width;
   int? position;
-  double? defaultWidth;
+  int? screenId;
+  String? columnId;
+  double? updatedWidth;
   Offset start = Offset.zero;
   ColumnItem({
     this.title,
-    this.columnId,
     this.width,
-    this.defaultWidth,
+    this.updatedWidth,
+    this.screenId,
+    this.columnId,
     this.position,
   });
 
   factory ColumnItem.fromJson(Map<String, dynamic> json) => ColumnItem(
         title: json["title"],
-        columnId: json["columnId"],
         width: json["width"],
-        defaultWidth: json["defaultWidth"],
+        screenId: json["screenId"],
+        updatedWidth: json["updatedWidth"],
+        columnId: json["columnId"],
         position: json["position"],
       );
 
   Map<String, dynamic> toJson() => {
         "title": title,
-        "columnId": columnId,
         "width": width,
-        "defaultWidth": defaultWidth,
+        "screenId": screenId,
+        "updatedWidth": updatedWidth,
+        "columnId": columnId,
         "position": position,
       };
+  @override
+  String toString() => title!;
+
+  @override
+  bool operator ==(dynamic other) {
+    if (other is ColumnItem) {
+      return this.screenId == other.screenId && this.title == other.title;
+    } else {
+      return false;
+    }
+  }
 }

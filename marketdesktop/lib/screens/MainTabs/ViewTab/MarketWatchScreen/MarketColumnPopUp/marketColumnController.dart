@@ -15,14 +15,14 @@ class MarketColumnController extends BaseController {
   // Variable Declaration
   //*********************************************************************** */
 
-  List<ListItem> arrListTitle = [];
+  List<ListItem> arrListTitleMarket = [];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     var marketVC = Get.find<MarketWatchController>();
-    arrListTitle.addAll(marketVC.arrListTitle);
+    arrListTitleMarket.addAll(marketVC.arrListTitleMarket);
     update();
   }
 

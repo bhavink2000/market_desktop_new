@@ -62,7 +62,7 @@ class UserDetailsPopUpController extends BaseController {
     Get.put(BrkPopUpController());
     Get.put(UserListPopUpController());
     Get.put(CreditPopUpController());
-    Get.put(AccountSummaryPopUpController());
+    // Get.put(AccountSummaryPopUpController());
     // Get.put(SettlementPopUpController());
     Get.put(RejectionLogPopUpController());
     Get.put(ShareDetailPopUpController());
@@ -79,7 +79,7 @@ class UserDetailsPopUpController extends BaseController {
     Get.delete<BrkPopUpController>();
     Get.delete<UserListPopUpController>();
     Get.delete<CreditPopUpController>();
-    Get.delete<AccountSummaryPopUpController>();
+    // Get.delete<AccountSummaryPopUpController>();
     Get.delete<RejectionLogPopUpController>();
     Get.delete<ShareDetailPopUpController>();
   }
@@ -107,7 +107,7 @@ class UserDetailsPopUpController extends BaseController {
             "Brk",
             "Credit",
             "User List",
-            "Account Summary",
+            // "Account Summary",
             "Rejection Log",
             "Share Details",
           ];
@@ -119,7 +119,7 @@ class UserDetailsPopUpController extends BaseController {
           widgetOptions.add(const BrkPopUpScreen());
           widgetOptions.add(const CreditPopUpScreen());
           widgetOptions.add(const UserListPopUpScreen());
-          widgetOptions.add(const AccountSummaryPopUpScreen());
+
           widgetOptions.add(const RejectionLogPopUpScreen());
           widgetOptions.add(const ShareDetailPopUpScreen());
         } else {
@@ -130,7 +130,7 @@ class UserDetailsPopUpController extends BaseController {
             "Quantity Settings",
             "Brk",
             "Credit",
-            "Account Summary",
+            // "Account Summary",
             "Rejection Log",
           ];
         }
@@ -141,7 +141,7 @@ class UserDetailsPopUpController extends BaseController {
         widgetOptions.add(const QuantitySettingPopUpScreen());
         widgetOptions.add(const BrkPopUpScreen());
         widgetOptions.add(const CreditPopUpScreen());
-        widgetOptions.add(const AccountSummaryPopUpScreen());
+        // widgetOptions.add(const AccountSummaryPopUpScreen());
         widgetOptions.add(const RejectionLogPopUpScreen());
         widgetOptions.add(const ShareDetailPopUpScreen());
       }

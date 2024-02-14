@@ -1429,6 +1429,72 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
   });
 }
 
+Widget rejectedstatusListDropDown(Rx<Type> selectedStatus, {double? width, double? height, Function? onChange}) {
+  return Obx(() {
+    return Container(
+        width: width ?? 250,
+        height: height ?? 30,
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField2<Type>(
+              isExpanded: true,
+              decoration: commonFocusBorder,
+              iconStyleData: IconStyleData(
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
+                ),
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 150),
+              hint: Text(
+                '',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                ),
+              ),
+              items: constantValues!.rejectedTradeStatusFilter!
+                  .map((Type item) => DropdownItem<Type>(
+                        value: item,
+                        height: 30,
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return constantValues!.rejectedTradeStatusFilter!
+                    .map((Type item) => DropdownMenuItem<Type>(
+                          value: item,
+                          child: Text(
+                            item.name ?? "",
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: CustomFonts.family1Regular,
+                              color: AppColors().darkText,
+                            ),
+                          ),
+                        ))
+                    .toList();
+              },
+              value: selectedStatus.value.id != null ? selectedStatus.value : null,
+              onChanged: (Type? value) {
+                selectedStatus.value = value!;
+                if (onChange != null) {
+                  onChange();
+                }
+              },
+              buttonStyleData: const ButtonStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                height: 40,
+              ),
+            ),
+          ),
+        ));
+  });
+}
+
 Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? height, Function? onChange}) {
   return Obx(() {
     return Container(

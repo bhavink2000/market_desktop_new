@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:marketdesktop/modelClass/expiryListModelClass.dart';
 import 'package:marketdesktop/modelClass/groupListModelClass.dart';
 import 'package:marketdesktop/constant/index.dart';
 
@@ -132,6 +133,14 @@ class ExchangeData {
         "status": status,
         "isCallPut": isCallPut,
       };
+  @override
+  bool operator ==(dynamic other) {
+    if (other is ExchangeData) {
+      return this.exchangeId == other.exchangeId;
+    } else {
+      return false;
+    }
+  }
 }
 
 class Meta {

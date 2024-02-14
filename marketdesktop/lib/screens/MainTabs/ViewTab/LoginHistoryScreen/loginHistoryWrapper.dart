@@ -10,6 +10,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../BaseController/baseController.dart';
 import 'loginHistoryController.dart';
@@ -413,7 +414,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                   // Container(
                   //   width: 30,
                   // ),
-                  listTitleContent(),
+                  listTitleContent(controller),
                 ],
               ),
             ),
@@ -431,7 +432,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                       progressIndicatorWidget: displayIndicator(),
                       physics: const ClampingScrollPhysics(),
                       clipBehavior: Clip.hardEdge,
-                      itemCount: 1,
+                      itemCount: controller.arrLoginHistory.length,
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
@@ -470,24 +471,36 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
             children: [
               ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: controller.arrListTitle.length,
+                itemCount: controller.arrListTitle1.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int indexT) {
-                  switch (controller.arrListTitle[indexT].title) {
+                  switch (controller.arrListTitle1[indexT].title) {
                     case 'LOGIN TIME':
                       {
-                        return dynamicValueBox1(historyValue.loginDate != "" && historyValue.loginDate != null ? shortFullDateTime(historyValue.loginDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
-                            isForDate: true);
+                        return dynamicValueBox1(
+                          historyValue.loginDate != "" && historyValue.loginDate != null ? shortFullDateTime(historyValue.loginDate!) : "--",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'LOGOUT TIME':
                       {
-                        return dynamicValueBox1(historyValue.logoutDate != "" && historyValue.logoutDate != null ? shortFullDateTime(historyValue.logoutDate!) : "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
-                            isForDate: true);
+                        return dynamicValueBox1(
+                          historyValue.logoutDate != "" && historyValue.logoutDate != null ? shortFullDateTime(historyValue.logoutDate!) : "--",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'USERNAME':
                       {
-                        return dynamicValueBox1(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                        return dynamicValueBox1(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
                           showUserDetailsPopUp(userId: controller.arrLoginHistory[index].userId!, userName: controller.arrLoginHistory[index].userName ?? "");
                         });
                       }
@@ -499,7 +512,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'IP ADDRESS':
@@ -510,10 +523,10 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
-                    case 'DEVICEID':
+                    case 'DEVICE ID':
                       {
                         return dynamicValueBox1(
                           historyValue.deviceId ?? "",
@@ -521,7 +534,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
 
@@ -537,34 +550,5 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return dynamicTitleBox1(controller.arrListTitle[index].title ?? "", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true);
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 }

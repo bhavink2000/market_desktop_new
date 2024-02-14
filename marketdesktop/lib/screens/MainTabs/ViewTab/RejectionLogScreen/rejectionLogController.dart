@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
+import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class RejectionLogController extends BaseController {
@@ -15,6 +17,7 @@ class RejectionLogController extends BaseController {
   RxString endDate = "End Date".obs;
   Rx<UserData> selectedUser = UserData().obs;
   RxString selectedTradeStatus = "".obs;
+  Rx<Type> selectedStatus = Type().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
   List<ExchangeData> arrExchange = [];
@@ -28,28 +31,14 @@ class RejectionLogController extends BaseController {
   bool isPagingApiCall = false;
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
-  List<ListItem> arrListTitle = [
-    ListItem("DATE", true),
-    ListItem("REJECTION REASON", true),
-    ListItem("USERNAME", true),
-    ListItem("SYMBOL", true),
-    ListItem("TYPE", true),
-    ListItem("QUANTITY", true),
-    ListItem("PRICE", true),
-    ListItem("IP ADDRESS", true),
-    ListItem("DEVICE ID", true),
-  ];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().rejectionLog, arrListTitle1);
     isApiCallRunning = true;
     rejectLogList();
-  }
-
-  refreshView() {
-    update();
   }
 
   rejectLogList({bool isFromClear = false, bool isFromFilter = false}) async {
@@ -66,7 +55,7 @@ class RejectionLogController extends BaseController {
     isPagingApiCall = true;
 
     update();
-    var response = await service.getRejectLogListCall(page: currentPage, startDate: "", endDate: "", userId: selectedUser.value.userId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "");
+    var response = await service.getRejectLogListCall(page: currentPage, startDate: "", endDate: "", userId: selectedUser.value.userId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "", status: selectedStatus.value.id ?? "");
 
     isApiCallRunning = false;
     isPagingApiCall = false;

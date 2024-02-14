@@ -83,9 +83,9 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
     creditVC.getCreditList();
     creditVC.getUSerInfo();
 
-    var summaryVc = Get.find<AccountSummaryPopUpController>();
-    summaryVc.selectedUserId = userId;
-    summaryVc.accountSummaryList();
+    // var summaryVc = Get.find<AccountSummaryPopUpController>();
+    // summaryVc.selectedUserId = userId;
+    // summaryVc.accountSummaryList();
 
     var rejectionVC = Get.find<RejectionLogPopUpController>();
     rejectionVC.selectedUserId = userId;

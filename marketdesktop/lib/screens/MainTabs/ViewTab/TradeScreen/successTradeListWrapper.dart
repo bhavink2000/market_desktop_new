@@ -9,6 +9,7 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeL
 import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/myTradeListModelClass.dart';
 
@@ -440,7 +441,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        width: globalMaxWidth + 100,
+        width: globalMaxWidth + 500,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -453,7 +454,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                   // Container(
                   //   width: 30,
                   // ),
-                  listTitleContent(),
+                  listTitleContent(controller),
                 ],
               ),
             ),
@@ -515,190 +516,205 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
             children: [
               ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: controller.arrListTitle.length,
+                itemCount: controller.arrListTitle1.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int indexT) {
-                  switch (controller.arrListTitle[indexT].title) {
-                    case '':
+                  switch (controller.arrListTitle1[indexT].title) {
+                    case TradeColumns.checkBox:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isImage: true, strImage: controller.arrTrade[index].isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true,
-                                onClickImage: () {
-                                controller.arrTrade[index].isSelected = !controller.arrTrade[index].isSelected;
-                                for (var element in controller.arrTrade) {
-                                  if (element.isSelected) {
-                                    controller.isAllSelected = true;
-                                  } else {
-                                    controller.isAllSelected = false;
-                                    break;
-                                  }
-                                }
-                                controller.update();
-                              })
-                            : const SizedBox();
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isImage: true, strImage: controller.arrTrade[index].isSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
+                            onClickImage: () {
+                          controller.arrTrade[index].isSelected = !controller.arrTrade[index].isSelected;
+                          for (var element in controller.arrTrade) {
+                            if (element.isSelected) {
+                              controller.isAllSelected = true;
+                            } else {
+                              controller.isAllSelected = false;
+                              break;
+                            }
+                          }
+                          controller.update();
+                        });
                       }
-                    case 'USERNAME':
+                    case TradeColumns.username:
                       {
-                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrTrade[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].userName ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'PARENT USER':
+                    case TradeColumns.parentUser:
                       {
-                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(historyValue.parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                        return dynamicValueBox1(historyValue.parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
-                    case 'SEGMENT':
+                    case TradeColumns.segment:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.exchangeName ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.exchangeName ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'SYMBOL':
+                    case TradeColumns.symbol:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.symbolTitle ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.symbolTitle ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'B/S':
+                    case TradeColumns.bs:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(controller.arrTrade[index].tradeTypeValue!.toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle,
-                                isSmall: true)
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].tradeTypeValue!.toUpperCase(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'QTY':
+                    case TradeColumns.qty:
                       {
-                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrTrade[index].totalQuantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmall: true) : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].totalQuantity.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'LOT':
+                    case TradeColumns.lot:
                       {
-                        return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrTrade[index].quantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmall: true) : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].quantity.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'TYPE':
+                    case TradeColumns.type:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                controller.arrTrade[index].productTypeValue.toString(),
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].productTypeValue.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'TRADE PRICE':
+                    case TradeColumns.tradePrice:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                controller.arrTrade[index].price!.toStringAsFixed(2),
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].price!.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'BROKERAGE':
+                    case TradeColumns.brk:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                controller.arrTrade[index].brokerageAmount!.toStringAsFixed(2),
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].brokerageAmount!.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'PRICE(B)':
+                    case TradeColumns.priceB:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                controller.getNetPrice(controller.arrTrade[index].tradeType!, controller.arrTrade[index].price ?? 0, (controller.arrTrade[index].brokerageAmount! / controller.arrTrade[index].totalQuantity!)).toStringAsFixed(2),
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                controller.getProfitLossColor(
-                                    controller.arrTrade[index].tradeType!, controller.getNetPrice(controller.arrTrade[index].tradeType!, controller.arrTrade[index].price ?? 0, controller.arrTrade[index].brokerageAmount ?? 0), controller.arrTrade[index].currentPriceFromSocket),
-                                index,
-                                indexT,
-                                controller.arrListTitle)
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                            controller.getNetPrice(controller.arrTrade[index].tradeType!, controller.arrTrade[index].price ?? 0, (controller.arrTrade[index].brokerageAmount! / controller.arrTrade[index].totalQuantity!)).toStringAsFixed(2),
+                            index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                            controller.getProfitLossColor(controller.arrTrade[index].tradeType!, controller.getNetPrice(controller.arrTrade[index].tradeType!, controller.arrTrade[index].price ?? 0, controller.arrTrade[index].brokerageAmount ?? 0), controller.arrTrade[index].currentPriceFromSocket),
+                            index,
+                            indexT,
+                            controller.arrListTitle1);
                       }
-                    case 'ORDER D/T':
+                    case TradeColumns.orderDT:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(shortFullDateTime(controller.arrTrade[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle,
-                                isForDate: true)
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          shortFullDateTime(controller.arrTrade[index].createdAt!),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'EXECUTION D/T':
+                    case TradeColumns.executionDT:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                shortFullDateTime(controller.arrTrade[index].executionDateTime!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle,
-                                isForDate: true)
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          shortFullDateTime(controller.arrTrade[index].executionDateTime!),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'REFERENCE PRICE':
+                    case TradeColumns.refPrice:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(controller.arrTrade[index].referencePrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor, index, indexT, controller.arrListTitle,
-                                isSmallLarge: true)
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].referencePrice!.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'IP ADDRESS':
+                    case TradeColumns.ipAddress:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.ipAddress ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.ipAddress ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'DEVICE':
+                    case TradeColumns.device:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.orderMethod ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.orderMethod ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
-                    case 'DEVICE ID':
+                    case TradeColumns.deviceId:
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                historyValue.deviceId ?? "",
-                                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                              )
-                            : const SizedBox();
+                        return dynamicValueBox1(
+                          historyValue.deviceId ?? "",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
 
                     default:
@@ -713,204 +729,6 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case '':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("", index, controller.arrListTitle, controller.isScrollEnable, isImage: true, strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
-                          if (controller.isAllSelected) {
-                            controller.arrTrade.forEach((element) {
-                              element.isSelected = false;
-                            });
-                            controller.isAllSelected = false;
-                            controller.update();
-                          } else {
-                            controller.arrTrade.forEach((element) {
-                              element.isSelected = true;
-                            });
-                            controller.isAllSelected = true;
-                            controller.update();
-                          }
-                        })
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, hasFilterIcon: true, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'PARENT USER':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SEGMENT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SEGMENT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SYMBOL':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'B/S':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("B/S", index, controller.arrListTitle, controller.isScrollEnable, isSmall: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'QTY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("QTY", index, controller.arrListTitle, controller.isScrollEnable, isSmall: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'LOT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("LOT", index, controller.arrListTitle, controller.isScrollEnable, isSmall: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TYPE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TRADE PRICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TRADE PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BROKERAGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BROKERAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'PRICE(B)':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("PRICE(B)", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              case 'ORDER D/T':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("ORDER D/T", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              case 'EXECUTION D/T':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EXECUTION D/T", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'REFERENCE PRICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("REFERENCE PRICE", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              case 'IP ADDRESS':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DEVICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DEVICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DEVICE ID':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DEVICE ID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 
   Widget deleteTradeBtn() {

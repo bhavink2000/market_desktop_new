@@ -15,13 +15,15 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 import 'constant/const_string.dart';
+import 'modelClass/DatabaseModel/screenTitleModelClass.dart';
 import 'modelClass/constantModelClass.dart';
 import 'navigation/navigation.dart';
 import 'navigation/routename.dart';
 
 void main() async {
   await GetStorage.init();
-
+  var tempScreenModel = ScreenTitleModel.fromJson(screenTitles);
+  arrScreens = tempScreenModel.screen ?? [];
   getMyIP().whenComplete(() async {
     myIpAddress = await getMyIP();
   });
@@ -83,6 +85,7 @@ bool isShowToastAfterLogout = false;
 final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 var myIpAddress = "0.0.0.0";
 ProfileInfoData? userData;
+List<ScreenTitleItem> arrScreens = [];
 final socket = SocketService();
 final socketIO = SocketIOService();
 ConstantData? constantValues;

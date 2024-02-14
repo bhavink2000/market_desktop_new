@@ -437,13 +437,14 @@ class AllApiCallService {
     String? exchangeId,
     String? startDate,
     String? endDate,
+    String? status,
   }) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
         "page": page,
         "limit": pageLimit,
-        "status": "rejected",
+        "status": userData!.role == UserRollList.superAdmin ? status : "rejected",
         "search": text,
         "userId": userId ?? "",
         "symbolId": symbolId ?? "",
@@ -629,8 +630,8 @@ class AllApiCallService {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
-        "page": page,
-        "limit": 1000,
+        "page": 1,
+        "limit": 100000,
         "search": text,
         "filterType": filterType,
         "roleId": roleId,

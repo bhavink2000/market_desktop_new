@@ -2,6 +2,8 @@ import 'package:marketdesktop/main.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../modelClass/tableColumnsModelClass.dart';
+
 class DbService {
   String dbName = "";
   static final DbService _instance = DbService._internal();
@@ -42,11 +44,13 @@ class DbService {
       }
 
       await db.execute('''
-        CREATE TABLE loginHistory (
-          columnId INTEGER PRIMARY KEY,
+        CREATE TABLE dynamicColumn (
+          columnId TEXT PRIMARY KEY,
+          title TEXT,
+          screenId INTEGER,
+          position INTEGER,
           width DOUBLE,
-          defaultWidth Double,
-          title
+          updatedWidth DOUBLE
         )
       ''');
     } catch (e) {
@@ -60,6 +64,54 @@ class DbService {
       dbName = "";
       await _database!.close();
       _database = null;
+    }
+  }
+
+  Future<void> addColumns(List<ColumnItem> arrColumns) async {
+    try {
+      Database? db = await database;
+      await db!.transaction((txn) async {
+        for (var update in arrColumns) {
+          await txn.insert(
+            "dynamicColumn",
+            update.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+      });
+    } catch (e) {
+      print(e);
+
+      return;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> readColumns(int screenID) async {
+    try {
+      Database? db = await database;
+      return await db!.query(
+        "dynamicColumn",
+        where: 'screenId = ?', // Add your WHERE condition here
+
+        whereArgs: [screenID],
+      );
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<void> deleteColumn(String columnId) async {
+    try {
+      Database? db = await database;
+      await db!.delete(
+        "dynamicColumn",
+        where: 'columnId = ?',
+        whereArgs: [columnId],
+      );
+    } catch (e) {
+      print(e);
+      return;
     }
   }
 
@@ -133,17 +185,6 @@ class DbService {
     } catch (e) {
       print(e);
       return;
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> readColumns(String screenName) async {
-    try {
-      Database? db = await database;
-      screenName = "loginHistory";
-      return await db!.query(screenName);
-    } catch (e) {
-      print(e);
-      return [];
     }
   }
 }

@@ -287,6 +287,14 @@ class UserData {
         "ourBrkSharing": ourBrkSharing,
         "viewOnly": viewOnly,
       };
+  @override
+  bool operator ==(dynamic other) {
+    if (other is UserData) {
+      return this.userId == other.userId;
+    } else {
+      return false;
+    }
+  }
 }
 
 class AssignGroupDatum {

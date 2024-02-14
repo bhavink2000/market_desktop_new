@@ -8,6 +8,7 @@ import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/myTradeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
@@ -39,33 +40,14 @@ class SuccessTradeListController extends BaseController {
   int totalPage = 0;
   bool isFromSocket = false;
   Rx<Type> selectedTradeStatus = Type().obs;
-  bool isAllSelected = false;
+
   FocusNode deleteTradeFocus = FocusNode();
-  List<ListItem> arrListTitle = [
-    if (userData!.role == UserRollList.superAdmin) ListItem("", true),
-    if (userData!.role != UserRollList.user) ListItem("USERNAME", true),
-    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
-    ListItem("SEGMENT", true),
-    ListItem("SYMBOL", true),
-    ListItem("B/S", true),
-    ListItem("QTY", true),
-    ListItem("LOT", true),
-    ListItem("TYPE", true),
-    ListItem("TRADE PRICE", true),
-    ListItem("BROKERAGE", true),
-    ListItem("PRICE(B)", true),
-    ListItem("ORDER D/T", true),
-    ListItem("EXECUTION D/T", true),
-    ListItem("REFERENCE PRICE", true),
-    ListItem("IP ADDRESS", true),
-    ListItem("DEVICE", true),
-    ListItem("DEVICE ID", true),
-  ];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().trades, arrListTitle1);
     arrTradeStatus = constantValues!.tradeStatusFilter ?? [];
     Future.delayed(Duration(seconds: 1), () {
       if (isFromSocket == false) {
@@ -87,7 +69,7 @@ class SuccessTradeListController extends BaseController {
         }
         update();
         var response = await service.getMyTradeListCall(
-          status: isSuccessSelected ? "executed" : "pending",
+          status: "executed",
           page: pageNumber,
           text: "",
           userId: selectedUser.value.userId ?? "",
@@ -129,10 +111,6 @@ class SuccessTradeListController extends BaseController {
     });
   }
 
-  refreshView() {
-    update();
-  }
-
   deleteTrade(List<TradeData>? arrSymbol) async {
     List<String> arr = [];
     for (var element in arrSymbol!) {
@@ -148,6 +126,14 @@ class SuccessTradeListController extends BaseController {
     } else {
       showErrorToast(response!.message ?? "");
     }
+  }
+
+  @override
+  isAllSelectedUpdate(bool change) {
+    arrTrade.forEach((element) {
+      element.isSelected = change;
+    });
+    update();
   }
 
   getTradeList({bool isFromClear = false}) async {

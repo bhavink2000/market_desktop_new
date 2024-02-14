@@ -14,6 +14,7 @@ import 'package:marketdesktop/modelClass/ltpUpdateModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
 import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
@@ -77,31 +78,12 @@ class PositionController extends BaseController {
 
   List<LtpUpdateModel> arrLtpUpdate = [];
 
-  List<ListItem> arrListTitle = [
-    // ListItem("", true),
-    if (userData!.role == UserRollList.user) ListItem("", true),
-    if (userData!.role != UserRollList.user) ListItem("VIEW", true),
-    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
-    ListItem("EXCHANGE", true),
-    ListItem("SYMBOL NAME", true),
-    ListItem("TOTAL BUY A QTY", true),
-    ListItem("TOTAL BUY A PRICE", true),
-    ListItem("TOTAL SELL QTY", true),
-    ListItem("SELL A PRICE", true),
-    ListItem("NET QTY", true),
-    ListItem("NET LOT", true),
-    ListItem("NET A PRICE", true),
-    ListItem("CMP", true),
-    ListItem("P/L", true),
-    if (userData!.role != UserRollList.user) ListItem("P/L % WISE", true),
-  ];
-
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
-
+    getColumnListFromDB(ScreenIds().netPosition, arrListTitle1);
     focusNode.requestFocus();
     arrValidaty = constantValues!.productType ?? [];
     // handleKeyEvents();
@@ -154,10 +136,6 @@ class PositionController extends BaseController {
     } else {
       showErrorToast(response!.message ?? "");
     }
-  }
-
-  refreshView() {
-    update();
   }
 
   getPositionList(String text, {bool isFromfilter = false, bool isFromClear = false}) async {

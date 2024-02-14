@@ -84,6 +84,9 @@ class ScriptQuantityController extends BaseController {
     if (response != null) {
       if (response.statusCode == 200) {
         arrGroupList = response.data ?? [];
+        if (arrGroupList.isNotEmpty) {
+          selectGroupDropdownValue.value = arrGroupList.first;
+        }
         update();
       } else {
         showErrorToast(response.meta!.message ?? "");

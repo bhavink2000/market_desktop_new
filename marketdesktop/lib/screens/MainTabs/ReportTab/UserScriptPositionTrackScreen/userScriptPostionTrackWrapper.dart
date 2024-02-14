@@ -433,9 +433,9 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                     {
                       return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.orderType!.toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
                     }
-                  case 'OPEN QUANTITY':
+                  case 'OPEN A PRICE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.price!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
                     }
 
                   default:
@@ -495,10 +495,10 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                           key: Key('$index'),
                         );
                 }
-              case 'OPEN QUANTITY':
+              case 'OPEN A PRICE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("OPEN QUANTITY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      ? dynamicTitleBox("OPEN A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
                       : SizedBox(
                           key: Key('$index'),
                         );

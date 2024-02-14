@@ -460,7 +460,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        width: globalMaxWidth + 370,
+        width: globalMaxWidth + 1000,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -506,8 +506,9 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     child: Row(
                   children: [
                     totalContent(value: "Total :", textColor: AppColors().darkText, width: 1600),
-                    totalContent(value: controller.grandTotal.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
-                    totalContent(value: controller.outPerGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+
+                    // totalContent(value: controller.outPerGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                    totalContent(value: controller.grandTotal.value.toStringAsFixed(2), textColor: controller.grandTotal.value > 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
                     // totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                   ],
                 )),
@@ -565,7 +566,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                 switch (controller.arrListTitle[indexT].title) {
                   case 'USERNAME':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(controller.arrSummaryList[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true, isUnderlined: true, onClickValue: () {
                               showUserDetailsPopUp(userId: controller.arrSummaryList[index].userId!, userName: controller.arrSummaryList[index].userName ?? "");
                             })
@@ -575,7 +576,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'PARENT USER':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(controller.arrSummaryList[index].parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)
                           : SizedBox(
                               key: Key('$index'),
@@ -583,7 +584,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'EXCHANGE':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -591,7 +592,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'SYMBOL':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)
                           : SizedBox(
                               key: Key('$index'),
@@ -599,7 +600,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'TOTAL BUY QTY':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.buyTotalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)
                           : SizedBox(
                               key: Key('$index'),
@@ -607,7 +608,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'TOTAL BUY A PRICE':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.buyTotalPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true)
                           : SizedBox(
                               key: Key('$index'),
@@ -615,7 +616,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'TOTAL SELL QTY':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.sellTotalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true)
                           : SizedBox(
                               key: Key('$index'),
@@ -624,7 +625,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
 
                   case 'TOTAL SELL A PRICE':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.sellTotalPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true)
                           : SizedBox(
                               key: Key('$index'),
@@ -633,7 +634,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
 
                   case 'NET QTY':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -641,7 +642,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'NET A PRICE':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.avgPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -649,32 +650,32 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'CMP':
                     {
-                      return controller.arrListTitle[index].isSelected
-                          ? dynamicValueBox(
-                              scriptValue.currentPriceFromSocket!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, scriptValue.currentPriceFromSocket! > scriptValue.avgPrice! ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle)
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(scriptValue.totalQuantity! < 0 ? scriptValue.ask!.toStringAsFixed(2) : scriptValue.bid!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                              scriptValue.currentPriceFromSocket! > scriptValue.avgPrice! ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
                             );
                     }
                   case 'BROKERAGE':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
                             );
                     }
-                  case 'P/L':
-                    {
-                      return controller.arrListTitle[index].isSelected
-                          ? dynamicValueBox(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
-                          : SizedBox(
-                              key: Key('$index'),
-                            );
-                    }
+                  // case 'P/L':
+                  //   {
+                  //     return controller.arrListTitle[index].isSelected
+                  //         ? dynamicValueBox(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
+                  //         : SizedBox(
+                  //             key: Key('$index'),
+                  //           );
+                  //   }
                   case 'RELEASE P/L':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -682,7 +683,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'MTM':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -690,7 +691,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'MTM WITH BROKERAGE':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(
                               (double.parse(scriptValue.profitLossValue!.toStringAsFixed(2)) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle,
                               isForDate: true)
@@ -700,7 +701,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'TOTAL':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.total.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -708,7 +709,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case 'OUR %':
                     {
-                      return controller.arrListTitle[index].isSelected
+                      return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(scriptValue.ourPer.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
@@ -840,14 +841,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                           key: Key('$index'),
                         );
                 }
-              case 'P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
+
               case 'RELEASE P/L':
                 {
                   return controller.arrListTitle[index].isSelected

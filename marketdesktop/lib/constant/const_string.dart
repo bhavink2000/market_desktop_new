@@ -151,3 +151,9 @@ class UserRollList {
   static const String broker = "64b63755c71461c502ea4716";
   static const String user = "64b63755c71461c502ea4717";
 }
+
+var screenTitles = {
+  "screen": [
+    {"name": "Login History", "id": "1"}
+  ]
+};

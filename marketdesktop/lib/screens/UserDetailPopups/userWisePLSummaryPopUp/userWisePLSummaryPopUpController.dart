@@ -10,6 +10,7 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/userWiseProfitLossSummaryModelClass.dart';
+import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class UserWisePLSummaryPopUpController extends BaseController {
   //*********************************************************************** */
@@ -24,6 +25,22 @@ class UserWisePLSummaryPopUpController extends BaseController {
   List<UserWiseProfitLossData> arrPlList = [];
   String selectedUserId = "";
   String selectedUserName = "";
+  List<ListItem> arrListTitle = [
+    ListItem("VIEW", true),
+    ListItem("USERNAME", true),
+    ListItem("SHARING %", true),
+    ListItem("BRK SHARING %", true),
+    ListItem("RELEASE CLIENT P/L", true),
+    ListItem("CLIENT BRK", true),
+    ListItem("CLIENT M2M", true),
+    ListItem("P/L WITH BRK", true),
+    ListItem("P/L SHARE %", true),
+    ListItem("BRK", true),
+    ListItem("NET P/L", true),
+  ];
+  refreshView() {
+    update();
+  }
 
   getProfitLossList(String text) async {
     var response = await service.userWiseProfitLossListCall(1, text, selectedUserId);

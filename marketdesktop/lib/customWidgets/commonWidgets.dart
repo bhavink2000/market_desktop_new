@@ -310,8 +310,8 @@ Widget dynamicTitleBox1(
             if ((globalMaxWidth + diff) >= globalScreenSize.width) {
               globalMaxWidth = globalScreenSize.width + diff;
             }
-            if ((arrListTitle[index].width! + diff) >= arrListTitle[index].defaultWidth!) {
-              arrListTitle[index].width = arrListTitle[index].defaultWidth! + diff;
+            if ((arrListTitle[index].width! + diff) >= arrListTitle[index].updatedWidth!) {
+              arrListTitle[index].width = arrListTitle[index].updatedWidth! + diff;
             }
             if (updateCallback != null) {
               updateCallback();
@@ -443,21 +443,22 @@ Widget dynamicValueBox(String title, Color? bgColor, Color? textColor, int index
   }
 }
 
-Widget dynamicValueBox1(String title, Color? bgColor, Color? textColor, int index, int titleIndex, List<ColumnItem> arrListTitle,
-    {bool isBig = false,
-    isUnderlined = false,
-    bool isLarge = false,
-    bool isSmall = false,
-    bool isForDate = false,
-    bool isExtraLarge = false,
-    bool isSmallLarge = false,
-    Function? onClickValue,
-    Function? onClickImage,
-    Function? onSwitchChanged,
-    bool isImage = false,
-    RxBool? switchValue,
-    bool isSwitch = false,
-    String? strImage = ""}) {
+Widget dynamicValueBox1(
+  String title,
+  Color? bgColor,
+  Color? textColor,
+  int index,
+  int titleIndex,
+  List<ColumnItem> arrListTitle, {
+  isUnderlined = false,
+  Function? onClickValue,
+  Function? onClickImage,
+  Function? onSwitchChanged,
+  bool isImage = false,
+  RxBool? switchValue,
+  bool isSwitch = false,
+  String? strImage = "",
+}) {
   try {
     return isImage == false && isSwitch == false
         ? IgnorePointer(
@@ -499,7 +500,7 @@ Widget dynamicValueBox1(String title, Color? bgColor, Color? textColor, int inde
         : isSwitch
             ? Obx(() {
                 return Container(
-                  width: (arrListTitle[index].width ?? 0) + 5,
+                  width: (arrListTitle[titleIndex].width ?? 0) + 5,
                   height: 3.h,
                   color: bgColor,
                   // padding: EdgeInsets.symmetric(horizontal: 80),
@@ -536,9 +537,9 @@ Widget dynamicValueBox1(String title, Color? bgColor, Color? textColor, int inde
                 },
                 child: Container(
                   height: 3.h,
-                  width: (arrListTitle[index].width ?? 0) + 2,
+                  width: (arrListTitle[titleIndex].width ?? 0) + 2,
                   color: bgColor,
-                  padding: EdgeInsets.only(left: isBig ? 3.4.w : 1.1.w, right: isBig ? 3.4.w : 1.1.w),
+                  padding: EdgeInsets.only(left: 22, right: 22),
                   child: Image.asset(
                     strImage ?? "",
                     width: 20,
@@ -698,6 +699,7 @@ var commonFocusBorder = InputDecoration(
   focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 2)),
   enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().lightOnlyText, width: 1)),
 );
+
 Widget filterPanel(
   BuildContext context, {
   bool? isRecordDisplay = false,

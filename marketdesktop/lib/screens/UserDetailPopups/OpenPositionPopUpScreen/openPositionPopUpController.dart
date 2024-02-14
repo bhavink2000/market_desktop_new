@@ -30,10 +30,10 @@ class OpenPositionPopUpController extends BaseController {
   List<ListItem> arrListTitle = [
     // ListItem("", true),
     ListItem("USERNAME", true),
-    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
+    // if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
     ListItem("EXCHANGE", true),
-    ListItem("SCRIPT NAME", true),
-    ListItem("TOTAL BUY QTY", true),
+    ListItem("SYMBOL NAME", true),
+    ListItem("TOTAL BUY A QTY", true),
     ListItem("TOTAL BUY A PRICE", true),
     ListItem("TOTAL SELL QTY", true),
     ListItem("SELL A PRICE", true),

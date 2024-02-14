@@ -32,7 +32,7 @@ class marketColumnScreen extends BaseView<MarketColumnController> {
                   child: ReorderableListView(
                     buildDefaultDragHandles: false,
                     children: <Widget>[
-                      for (int index = 0; index < controller.arrListTitle.length; index++)
+                      for (int index = 0; index < controller.arrListTitleMarket.length; index++)
                         ColoredBox(
                           key: Key('$index'),
                           color: Colors.white,
@@ -59,9 +59,9 @@ class marketColumnScreen extends BaseView<MarketColumnController> {
                         newIndex -= 1;
                       }
 
-                      final ListItem item = controller.arrListTitle.removeAt(oldIndex);
+                      final ListItem item = controller.arrListTitleMarket.removeAt(oldIndex);
 
-                      controller.arrListTitle.insert(newIndex, item);
+                      controller.arrListTitleMarket.insert(newIndex, item);
                       controller.update();
                     },
                   ),
@@ -84,8 +84,8 @@ class marketColumnScreen extends BaseView<MarketColumnController> {
                         textSize: 14,
                         onPress: () async {
                           // var marketVC = Get.find<MarketWatchController>();
-                          // marketVC.arrListTitle.clear();
-                          // marketVC.arrListTitle.addAll(controller.arrListTitle);
+                          // marketVC.arrListTitleMarket.clear();
+                          // marketVC.arrListTitleMarket.addAll(controller.arrListTitleMarket);
                           // marketVC.update();
                           Get.back();
                           await Get.delete<MarketColumnController>();
@@ -137,8 +137,8 @@ class marketColumnScreen extends BaseView<MarketColumnController> {
     return GestureDetector(
       key: Key('$index'),
       onTap: () {
-        controller.arrListTitle[index].isSelected = !controller.arrListTitle[index].isSelected;
-        Get.find<MarketWatchController>().arrListTitle = controller.arrListTitle;
+        controller.arrListTitleMarket[index].isSelected = !controller.arrListTitleMarket[index].isSelected;
+        Get.find<MarketWatchController>().arrListTitleMarket = controller.arrListTitleMarket;
         Get.find<MarketWatchController>().update();
         controller.update();
       },
@@ -152,10 +152,10 @@ class marketColumnScreen extends BaseView<MarketColumnController> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              child: Text(controller.arrListTitle[index].title, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+              child: Text(controller.arrListTitleMarket[index].title, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
             ),
             Spacer(),
-            controller.arrListTitle[index].isSelected
+            controller.arrListTitleMarket[index].isSelected
                 ? Icon(
                     Icons.check_box,
                     color: AppColors().blueColor,

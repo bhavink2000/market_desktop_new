@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/accountSummaryNewListModelClass.dart';
@@ -62,9 +63,12 @@ class ClientAccountReportController extends BaseController {
 
     super.onInit();
     updateTitleList();
-    isApiCallRunning = true;
-    if (Get.find<MainContainerController>().isInitCallRequired) {
-      getAccountSummaryNewList("");
+    if (userData!.role == UserRollList.user) {
+      isApiCallRunning = true;
+
+      if (Get.find<MainContainerController>().isInitCallRequired) {
+        getAccountSummaryNewList("");
+      }
     }
 
     getUserList();
@@ -87,7 +91,7 @@ class ClientAccountReportController extends BaseController {
       ListItem("NET A PRICE", true),
       ListItem("CMP", true),
       ListItem("BROKERAGE", true),
-      ListItem("P/L", true),
+
       if (selectedplType.value == "All" || selectedplType.value == "Only Release") ListItem("RELEASE P/L", true),
       if (selectedplType.value != "Only Release") ListItem("MTM", true),
       if (selectedplType.value != "Only Release") ListItem("MTM WITH BROKERAGE", true),
@@ -152,6 +156,7 @@ class ClientAccountReportController extends BaseController {
 
       outPerGrandTotal.value = outPerGrandTotal.value + element.ourPer;
     });
+
     isApiCallRunning = false;
     updateTitleList();
     update();

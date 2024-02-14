@@ -68,6 +68,7 @@ class ConstantData {
   SettingData? settingData;
   List<Type>? instrumentType;
   List<Type>? userLogFilter;
+  List<Type>? rejectedTradeStatusFilter;
 
   ConstantData({
     this.tradeAttribute,
@@ -105,6 +106,7 @@ class ConstantData {
     this.tradeStatusFilter,
     this.instrumentType,
     this.userLogFilter,
+    this.rejectedTradeStatusFilter,
   });
 
   factory ConstantData.fromJson(Map<String, dynamic> json) => ConstantData(
@@ -143,6 +145,7 @@ class ConstantData {
         productTypeForAccount: json["productTypeForAccount"] == null ? [] : List<Type>.from(json["productTypeForAccount"]!.map((x) => Type.fromJson(x))),
         instrumentType: json["instrumentType"] == null ? [] : List<Type>.from(json["instrumentType"]!.map((x) => Type.fromJson(x))),
         userLogFilter: json["userLogFilter"] == null ? [] : List<Type>.from(json["userLogFilter"]!.map((x) => Type.fromJson(x))),
+        rejectedTradeStatusFilter: json["rejectedTradeStatusFilter"] == null ? [] : List<Type>.from(json["rejectedTradeStatusFilter"]!.map((x) => Type.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -180,6 +183,7 @@ class ConstantData {
         "productTypeForAccount": productTypeForAccount == null ? [] : List<dynamic>.from(productTypeForAccount!.map((x) => x.toJson())),
         "instrumentType": instrumentType == null ? [] : List<dynamic>.from(instrumentType!.map((x) => x.toJson())),
         "userLogFilter": userLogFilter == null ? [] : List<dynamic>.from(userLogFilter!.map((x) => x.toJson())),
+        "rejectedTradeStatusFilter": rejectedTradeStatusFilter == null ? [] : List<dynamic>.from(userLogFilter!.map((x) => x.toJson())),
       };
 }
 

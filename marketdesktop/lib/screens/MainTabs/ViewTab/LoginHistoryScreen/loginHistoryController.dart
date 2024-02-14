@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:marketdesktop/constant/screenColumnData.dart';
 import 'package:marketdesktop/modelClass/loginHistoryModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/tableColumnsModelClass.dart';
+import 'package:marketdesktop/service/database/dbService.dart';
 import '../../../../constant/index.dart';
 import '../../../BaseController/baseController.dart';
 import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
@@ -20,37 +22,15 @@ class LoginHistoryController extends BaseController {
   int totalPage = 0;
   int currentPage = 1;
   ScrollController mainScroll = ScrollController();
-  List<ColumnItem> arrListTitle = [];
-  var dict = {
-    "1": {
-      "title": "Login History",
-      "columns": [
-        {"title": "LOGIN TIME", "columnId": 0, "width": 180.0, "defaultWidth": 180.0, "position": 1},
-        {"title": "LOGOUT TIME", "columnId": 1, "width": 180.0, "defaultWidth": 180.0, "position": 0},
-        {"title": "USERNAME", "columnId": 2, "width": 102.0, "defaultWidth": 102.0, "position": 2},
-        {"title": "USER TYPE", "columnId": 3, "width": 102.0, "defaultWidth": 102.0, "position": 3},
-        {"title": "IP ADDRESS", "columnId": 4, "width": 102.0, "defaultWidth": 102.0, "position": 4},
-        {"title": "DEVICE ID", "columnId": 5, "width": 102.0, "defaultWidth": 102.0, "position": 5}
-      ]
-    }
-  };
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     isApiCallRunning = true;
-    (dict["1"]?["columns"] as List).forEach((element) {
-      arrListTitle.add(ColumnItem.fromJson(element));
-    });
-    arrListTitle.sort((a, b) {
-      return a.position!.compareTo(b.position!);
-    });
-
-    loginHistoryList();
-  }
-
-  refreshView() {
+    getColumnListFromDB(ScreenIds().loginHistory, arrListTitle1);
     update();
+    loginHistoryList();
   }
 
   loginHistoryList() async {

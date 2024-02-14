@@ -67,7 +67,7 @@ class MarketWatchController extends BaseController {
   var typedString = "";
 
   // FocusNode userListDropDownFocus = FocusNode();
-  List<ListItem> arrListTitle = [
+  List<ListItem> arrListTitleMarket = [
     ListItem("EXCHANGE", true),
     ListItem("SYMBOL", true),
     ListItem("BUY QTY", false),
@@ -312,21 +312,21 @@ class MarketWatchController extends BaseController {
   sortScript(String name) {
     arrScript.removeWhere((element) => element.symbol!.isEmpty);
     arrPreScript.removeWhere((element) => element.symbol!.isEmpty);
-    var index = arrListTitle.indexWhere((element) => element.title == name);
+    var index = arrListTitleMarket.indexWhere((element) => element.title == name);
     switch (name) {
       case "EXCHANGE":
-        switch (arrListTitle[index].sortType) {
+        switch (arrListTitleMarket[index].sortType) {
           case 0:
           case -1:
             {
-              arrListTitle[index].sortType = 1;
+              arrListTitleMarket[index].sortType = 1;
               arrScript.sort((a, b) => b.exchange!.compareTo(a.exchange!));
 
               break;
             }
           case 1:
             {
-              arrListTitle[index].sortType = -1;
+              arrListTitleMarket[index].sortType = -1;
               arrScript.sort((a, b) => a.exchange!.compareTo(b.exchange!));
               break;
             }
@@ -334,18 +334,18 @@ class MarketWatchController extends BaseController {
         break;
       case "SYMBOL":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.symbol!.compareTo(a.symbol!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.symbol!.compareTo(b.symbol!));
                 break;
               }
@@ -355,18 +355,18 @@ class MarketWatchController extends BaseController {
         }
       case "EXPIRY":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.expiry!.compareTo(a.expiry!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.expiry!.compareTo(b.expiry!));
                 break;
               }
@@ -376,18 +376,18 @@ class MarketWatchController extends BaseController {
         }
       case "BUY QTY":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.tbq!.compareTo(a.tbq!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.tbq!.compareTo(b.tbq!));
                 break;
               }
@@ -397,18 +397,18 @@ class MarketWatchController extends BaseController {
         }
       case "BUY PRICE":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.bid!.compareTo(a.bid!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.bid!.compareTo(b.bid!));
                 break;
               }
@@ -418,18 +418,18 @@ class MarketWatchController extends BaseController {
         }
       case "SELL PRICE":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ask!.compareTo(a.ask!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ask!.compareTo(b.ask!));
                 break;
               }
@@ -439,18 +439,18 @@ class MarketWatchController extends BaseController {
         }
       case "SELL QTY":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.tsq!.compareTo(a.tsq!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.tsq!.compareTo(b.tsq!));
                 break;
               }
@@ -460,18 +460,18 @@ class MarketWatchController extends BaseController {
         }
       case "NET CHANGE":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ch!.compareTo(a.ch!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ch!.compareTo(b.ch!));
                 break;
               }
@@ -481,18 +481,18 @@ class MarketWatchController extends BaseController {
         }
       case "HIGH":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.high!.compareTo(a.high!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.high!.compareTo(b.high!));
                 break;
               }
@@ -502,18 +502,18 @@ class MarketWatchController extends BaseController {
         }
       case "LOW":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.low!.compareTo(a.low!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.low!.compareTo(b.low!));
                 break;
               }
@@ -523,18 +523,18 @@ class MarketWatchController extends BaseController {
         }
       case "OPEN":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.open!.compareTo(a.open!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.open!.compareTo(b.open!));
                 break;
               }
@@ -544,18 +544,18 @@ class MarketWatchController extends BaseController {
         }
       case "CLOSE":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.close!.compareTo(a.close!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.close!.compareTo(b.close!));
                 break;
               }
@@ -565,18 +565,18 @@ class MarketWatchController extends BaseController {
         }
       case "LTP":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ltp!.compareTo(a.ltp!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ltp!.compareTo(b.ltp!));
                 break;
               }
@@ -586,18 +586,18 @@ class MarketWatchController extends BaseController {
         }
       case "NET CHANGE %":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.chp!.compareTo(a.chp!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.chp!.compareTo(b.chp!));
                 break;
               }
@@ -607,18 +607,18 @@ class MarketWatchController extends BaseController {
         }
       case "STRIKE PRICE":
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.chp!.compareTo(a.chp!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.chp!.compareTo(b.chp!));
                 break;
               }
@@ -645,18 +645,18 @@ class MarketWatchController extends BaseController {
     arrPreScript.removeWhere((element) => element.symbol!.isEmpty);
     switch (index) {
       case 0:
-        switch (arrListTitle[index].sortType) {
+        switch (arrListTitleMarket[index].sortType) {
           case 0:
           case -1:
             {
-              arrListTitle[index].sortType = 1;
+              arrListTitleMarket[index].sortType = 1;
               arrScript.sort((a, b) => b.exchange!.compareTo(a.exchange!));
 
               break;
             }
           case 1:
             {
-              arrListTitle[index].sortType = -1;
+              arrListTitleMarket[index].sortType = -1;
               arrScript.sort((a, b) => a.exchange!.compareTo(b.exchange!));
               break;
             }
@@ -664,18 +664,18 @@ class MarketWatchController extends BaseController {
         break;
       case 1:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.symbol!.compareTo(a.symbol!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.symbol!.compareTo(b.symbol!));
                 break;
               }
@@ -685,18 +685,18 @@ class MarketWatchController extends BaseController {
         }
       case 2:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.expiry!.compareTo(a.expiry!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.expiry!.compareTo(b.expiry!));
                 break;
               }
@@ -706,18 +706,18 @@ class MarketWatchController extends BaseController {
         }
       case 3:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ls!.compareTo(a.ls!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ls!.compareTo(b.ls!));
                 break;
               }
@@ -727,18 +727,18 @@ class MarketWatchController extends BaseController {
         }
       case 4:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.bid!.compareTo(a.bid!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.bid!.compareTo(b.bid!));
                 break;
               }
@@ -748,18 +748,18 @@ class MarketWatchController extends BaseController {
         }
       case 5:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ask!.compareTo(a.ask!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ask!.compareTo(b.ask!));
                 break;
               }
@@ -769,18 +769,18 @@ class MarketWatchController extends BaseController {
         }
       case 6:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ts!.compareTo(a.ts!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ts!.compareTo(b.ts!));
                 break;
               }
@@ -790,18 +790,18 @@ class MarketWatchController extends BaseController {
         }
       case 7:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ltp!.compareTo(a.ltp!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ltp!.compareTo(b.ltp!));
                 break;
               }
@@ -811,18 +811,18 @@ class MarketWatchController extends BaseController {
         }
       case 8:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.ch!.compareTo(a.ch!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.ch!.compareTo(b.ch!));
                 break;
               }
@@ -832,18 +832,18 @@ class MarketWatchController extends BaseController {
         }
       case 9:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.open!.compareTo(a.open!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.open!.compareTo(b.open!));
                 break;
               }
@@ -853,18 +853,18 @@ class MarketWatchController extends BaseController {
         }
       case 10:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.high!.compareTo(a.high!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.high!.compareTo(b.high!));
                 break;
               }
@@ -874,18 +874,18 @@ class MarketWatchController extends BaseController {
         }
       case 11:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.low!.compareTo(a.low!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.low!.compareTo(b.low!));
                 break;
               }
@@ -895,18 +895,18 @@ class MarketWatchController extends BaseController {
         }
       case 12:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.close!.compareTo(a.close!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.close!.compareTo(b.close!));
                 break;
               }
@@ -916,18 +916,18 @@ class MarketWatchController extends BaseController {
         }
       case 13:
         {
-          switch (arrListTitle[index].sortType) {
+          switch (arrListTitleMarket[index].sortType) {
             case 0:
             case -1:
               {
-                arrListTitle[index].sortType = 1;
+                arrListTitleMarket[index].sortType = 1;
                 arrScript.sort((a, b) => b.expiry!.compareTo(a.expiry!));
 
                 break;
               }
             case 1:
               {
-                arrListTitle[index].sortType = -1;
+                arrListTitleMarket[index].sortType = -1;
                 arrScript.sort((a, b) => a.expiry!.compareTo(b.expiry!));
                 break;
               }

@@ -12,6 +12,7 @@ import 'package:marketdesktop/modelClass/ltpUpdateModelClass.dart';
 import 'package:marketdesktop/modelClass/myTradeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../customWidgets/appTextField.dart';
 import '../../../../customWidgets/incrimentField.dart';
@@ -62,28 +63,12 @@ class TradeListController extends BaseController {
   FocusNode CancelFocus = FocusNode();
 
   List<LtpUpdateModel> arrLtpUpdate = [];
-  List<ListItem> arrListTitle = [
-    if (userData!.role != UserRollList.user) ListItem("USERNAME", true),
-    if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
-    ListItem("SEGMENT", true),
-    ListItem("SYMBOL", true),
-    ListItem("B/S", true),
-    ListItem("QTY", true),
-    ListItem("LOT", true),
-    ListItem("PRICE", true),
-    ListItem("ORDER D/T", true),
-    ListItem("TYPE", true),
-    ListItem("CMP", true),
-    ListItem("REFERENCE PRICE", true),
-    ListItem("IP ADDRESS", true),
-    ListItem("DEVICE", true),
-    ListItem("DEVICE ID", true),
-  ];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().pendingOrder, arrListTitle1);
     getTradeList();
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {
@@ -140,10 +125,6 @@ class TradeListController extends BaseController {
         }
       }
     });
-  }
-
-  refreshView() {
-    update();
   }
 
   getTradeList({bool isFromClear = false}) async {

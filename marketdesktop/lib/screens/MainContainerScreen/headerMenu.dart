@@ -149,7 +149,7 @@ class MyMenuBar extends StatelessWidget {
         label: 'File',
         menuChildren: <MenuEntry>[
           MenuEntry(
-            label: isMarketSocketConnected.value ? 'Disconnect' : 'Connect',
+            label: isMarketSocketConnected.value ? 'Reconnect' : 'Reconnect',
             onPressed: () async {
               if (isMarketSocketConnected.value) {
                 socket.channel?.sink.close(status.normalClosure);
@@ -364,19 +364,19 @@ class MyMenuBar extends StatelessWidget {
       MenuEntry(
         label: 'Report',
         menuChildren: <MenuEntry>[
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
-            MenuEntry(
-              label: ScreenViewNames.openPosition,
-              onPressed: () {
-                if (marketViewObj.isBuyOpen != -1) {
-                  return;
-                }
-                isCommonScreenPopUpOpen = true;
-                currentOpenedScreen = ScreenViewNames.openPosition;
-                var openVc = Get.put(OpenPositionController());
-                generalContainerPopup(view: OpenPositionScreen(), title: ScreenViewNames.openPosition, isFilterAvailable: true, filterClick: openVc.onCLickFilter);
-              },
-            ),
+          // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          //   MenuEntry(
+          //     label: ScreenViewNames.openPosition,
+          //     onPressed: () {
+          //       if (marketViewObj.isBuyOpen != -1) {
+          //         return;
+          //       }
+          //       isCommonScreenPopUpOpen = true;
+          //       currentOpenedScreen = ScreenViewNames.openPosition;
+          //       var openVc = Get.put(OpenPositionController());
+          //       generalContainerPopup(view: OpenPositionScreen(), title: ScreenViewNames.openPosition, isFilterAvailable: true, filterClick: openVc.onCLickFilter);
+          //     },
+          //   ),
           // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
           //   MenuEntry(
           //     label: ScreenViewNames.manageTrades,
@@ -505,20 +505,20 @@ class MyMenuBar extends StatelessWidget {
               generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter);
             },
           ),
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
-            MenuEntry(
-              label: ScreenViewNames.pAndlSummary,
-              onPressed: () {
-                if (marketViewObj.isBuyOpen != -1) {
-                  return;
-                }
+          // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          //   MenuEntry(
+          //     label: ScreenViewNames.pAndlSummary,
+          //     onPressed: () {
+          //       if (marketViewObj.isBuyOpen != -1) {
+          //         return;
+          //       }
 
-                isCommonScreenPopUpOpen = true;
-                currentOpenedScreen = ScreenViewNames.pAndlSummary;
-                var scriptVC = Get.put(ProfitAndLossSummaryController());
-                generalContainerPopup(view: ProfitAndLossSummaryScreen(), title: ScreenViewNames.pAndlSummary, isFilterAvailable: true, filterClick: scriptVC.onCLickFilter);
-              },
-            ),
+          //       isCommonScreenPopUpOpen = true;
+          //       currentOpenedScreen = ScreenViewNames.pAndlSummary;
+          //       var scriptVC = Get.put(ProfitAndLossSummaryController());
+          //       generalContainerPopup(view: ProfitAndLossSummaryScreen(), title: ScreenViewNames.pAndlSummary, isFilterAvailable: true, filterClick: scriptVC.onCLickFilter);
+          //     },
+          //   ),
 
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
             MenuEntry(

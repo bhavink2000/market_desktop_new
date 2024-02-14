@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:dio/dio.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,7 +9,10 @@ import 'package:marketdesktop/constant/dropdownFunctions.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../../constant/const_string.dart';
+import '../../../constant/index.dart';
 import '../../../constant/utilities.dart';
+import '../../../customWidgets/appTextField.dart';
+import '../../../customWidgets/commonWidgets.dart';
 import '../../../main.dart';
 import '../../../navigation/routename.dart';
 import '../../BaseController/baseController.dart';
@@ -34,7 +38,7 @@ class SignInController extends BaseController {
   FocusNode passwordFocus = FocusNode();
   RxBool isLoadingSignIn = false.obs;
   List<String> arrServerName = [];
-
+  RxString selectedServerName = "".obs;
   bool isEyeOpen = true;
 
   @override
@@ -170,5 +174,128 @@ class SignInController extends BaseController {
     } else {
       showWarningToast(msg, isFromTop: true);
     }
+  }
+
+  Widget serverListDropDown(RxString selectedServer, {double? width}) {
+    return Obx(() {
+      return SizedBox(
+          width: width ?? 250,
+          // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          height: 40,
+          child: Center(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButtonFormField2<String>(
+                isExpanded: true,
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                  contentPadding: const EdgeInsets.only(left: 0),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().blueColor, width: 1)),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().grayLightLine, width: 1)),
+                ),
+                iconStyleData: IconStyleData(
+                  icon: Container(
+                    width: 35,
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 2,
+                          height: 25,
+                          color: AppColors().grayBorderColor,
+                          margin: EdgeInsets.only(right: 10),
+                        ),
+                        Image.asset(
+                          AppImages.earthIcon,
+                          width: 22,
+                          height: 22,
+                          color: AppColors().iconsColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                dropdownSearchData: DropdownSearchData(
+                  searchController: userEditingController,
+                  searchBarWidgetHeight: 50,
+                  searchBarWidget: SizedBox(
+                    height: 30,
+                    // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
+                    child: CustomTextField(
+                      type: '',
+                      keyBoardType: TextInputType.text,
+                      isEnabled: true,
+                      isOptional: false,
+                      inValidMsg: "",
+                      placeHolderMsg: "Search",
+                      emptyFieldMsg: "",
+                      controller: userEditingController,
+                      focus: userEditingFocus,
+                      isSecure: false,
+                      borderColor: AppColors().grayLightLine,
+                      keyboardButtonType: TextInputAction.done,
+                      maxLength: 64,
+                      isShowPrefix: false,
+                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                      suffixIcon: Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            userEditingController.clear();
+                          },
+                          child: Image.asset(
+                            AppImages.crossIcon,
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  searchMatchFn: (item, searchValue) {
+                    return item.value!.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                  },
+                ),
+                hint: Text(
+                  'Select Server',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontFamily: CustomFonts.family2Regular,
+                    color: AppColors().darkText,
+                  ),
+                ),
+                items: arrServerName
+                    .map((String item) => DropdownItem<String>(
+                          value: item,
+                          height: 30,
+                          child: Text(item, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
+                        ))
+                    .toList(),
+                selectedItemBuilder: (context) {
+                  return arrServerName
+                      .map((String item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                fontFamily: CustomFonts.family1Medium,
+                                fontSize: 14,
+                                color: AppColors().darkText,
+                              ),
+                            ),
+                          ))
+                      .toList();
+                },
+                value: selectedServerName.value == "" ? null : selectedServerName.value,
+                onChanged: (String? value) {
+                  serverController.text = value!;
+                },
+                buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.only(left: 7, right: -6),
+                  height: 30,
+                ),
+                dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+              ),
+            ),
+          ));
+    });
   }
 }

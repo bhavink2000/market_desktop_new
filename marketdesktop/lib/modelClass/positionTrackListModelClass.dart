@@ -44,6 +44,7 @@ class PositionTrackData {
   String? symbolTitle;
   int? quantity;
   int? lotSize;
+  num? price;
   int? totalQuantity;
   String? orderType;
   String? ipAddress;
@@ -66,6 +67,7 @@ class PositionTrackData {
     this.lotSize,
     this.totalQuantity,
     this.orderType,
+    this.price,
     this.ipAddress,
     this.deviceId,
     this.status,
@@ -88,6 +90,7 @@ class PositionTrackData {
         totalQuantity: json["totalQuantity"],
         orderType: json["orderType"],
         ipAddress: json["ipAddress"],
+        price: json["price"],
         deviceId: json["deviceId"],
         status: json["status"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
@@ -106,6 +109,7 @@ class PositionTrackData {
         "symbolTitle": symbolTitle,
         "quantity": quantity,
         "lotSize": lotSize,
+        "price": price,
         "totalQuantity": totalQuantity,
         "orderType": orderType,
         "ipAddress": ipAddress,

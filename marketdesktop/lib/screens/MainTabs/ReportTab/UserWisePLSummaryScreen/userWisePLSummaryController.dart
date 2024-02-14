@@ -32,7 +32,9 @@ class UserWisePLSummaryController extends BaseController {
   List<ListItem> arrListTitle = [
     ListItem("VIEW", true),
     ListItem("USERNAME", true),
-    ListItem("CLIENT P/L", true),
+    ListItem("SHARING %", true),
+    ListItem("BRK SHARING %", true),
+    ListItem("RELEASE CLIENT P/L", true),
     ListItem("CLIENT BRK", true),
     ListItem("CLIENT M2M", true),
     ListItem("P/L WITH BRK", true),
@@ -97,12 +99,6 @@ class UserWisePLSummaryController extends BaseController {
           userObj.totalProfitLossValue += element.profitLossValue ?? 0.0;
         }
         userObj.plWithBrk = userObj.totalProfitLossValue + userObj.childUserProfitLossTotal! - userObj.childUserBrokerageTotal!;
-
-        var tempShare = userObj.role == UserRollList.master ? userObj.profitAndLossSharing : userObj.profitAndLossSharingDownLine;
-        userObj.netPL = ((userObj.plWithBrk * tempShare!) / 100) + userObj.parentBrokerageTotal!;
-        if (userObj.netPL != 0.0) {
-          userObj.netPL = userObj.netPL * -1;
-        }
       });
       update();
     }

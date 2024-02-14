@@ -6,6 +6,7 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
 
@@ -281,11 +282,39 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                             })
                           : const SizedBox();
                     }
-                  case 'CLIENT P/L':
+                  case 'SHARING %':
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(
-                              plObj.childUserProfitLossTotal!.toStringAsFixed(2),
+                              plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine!.toString() : plObj.profitAndLossSharing!.toString(),
+                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle,
+                              isBig: true,
+                            )
+                          : const SizedBox();
+                    }
+                  case 'BRK SHARING %':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(
+                              plObj.role == UserRollList.user ? plObj.brkSharingDownLine!.toString() : plObj.brkSharing!.toString(),
+                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle,
+                              isSmallLarge: true,
+                            )
+                          : const SizedBox();
+                    }
+                  case 'RELEASE CLIENT P/L':
+                    {
+                      return controller.arrListTitle[indexT].isSelected
+                          ? dynamicValueBox(
+                              plObj.role == UserRollList.user ? plObj.profitLoss!.toStringAsFixed(2) : plObj.childUserProfitLossTotal!.toStringAsFixed(2),
                               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                               plObj.totalProfitLossValue < 0
                                   ? AppColors().redColor
@@ -295,7 +324,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                               index,
                               indexT,
                               controller.arrListTitle,
-                              isBig: false)
+                              isSmallLarge: true)
                           : const SizedBox();
                     }
                   case 'CLIENT BRK':
@@ -338,9 +367,17 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                     }
                   case 'P/L SHARE %':
                     {
+                      var pl = plObj.role == UserRollList.user ? plObj.profitLoss! : plObj.childUserProfitLossTotal!;
+                      var m2m = plObj.totalProfitLossValue;
+                      var sharingPer = plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine! : plObj.profitAndLossSharing!;
+                      var total = pl + m2m;
+                      var finalValue = total * sharingPer / 100;
+
+                      finalValue = finalValue * -1;
+
                       return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(
-                              plObj.brkSharing!.toStringAsFixed(2),
+                              finalValue.toStringAsFixed(2),
                               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                               plObj.plWithBrk > 0
                                   ? AppColors().greenColor
@@ -359,9 +396,18 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                     }
                   case 'NET P/L':
                     {
+                      var pl = plObj.role == UserRollList.user ? plObj.profitLoss! : plObj.childUserProfitLossTotal!;
+                      var m2m = plObj.totalProfitLossValue;
+                      var sharingPer = plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine! : plObj.profitAndLossSharing!;
+                      var total = pl + m2m;
+                      var finalValue = total * sharingPer / 100;
+
+                      finalValue = finalValue * -1;
+
+                      finalValue = finalValue + plObj.parentBrokerageTotal!;
                       return controller.arrListTitle[indexT].isSelected
                           ? dynamicValueBox(
-                              plObj.netPL.toStringAsFixed(2),
+                              finalValue.toStringAsFixed(2),
                               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                               plObj.netPL > 0
                                   ? AppColors().greenColor
@@ -416,10 +462,26 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                           key: Key('$index'),
                         );
                 }
-              case 'CLIENT P/L':
+              case 'SHARING %':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CLIENT P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("SHARING %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'BRK SHARING %':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("BRK SHARING %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'RELEASE CLIENT P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("RELEASE CLIENT P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -496,6 +558,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
       ],
     );
   }
+
 }
 // view
 // username

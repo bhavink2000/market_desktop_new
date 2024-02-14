@@ -10,6 +10,8 @@ import '../../../service/network/allApiCallService.dart';
 import '../../constant/color.dart';
 import '../../constant/font_family.dart';
 import '../../modelClass/allSymbolListModelClass.dart';
+import '../../modelClass/tableColumnsModelClass.dart';
+import '../../service/database/dbService.dart';
 
 class BaseController extends GetxController {
   //*********************************************************************** */
@@ -27,8 +29,19 @@ class BaseController extends GetxController {
   List<GlobalSymbolData> arrExchangeWiseScript = [];
   bool isFilterOpen = false;
   RxBool isScrollEnable = true.obs;
+  bool isAllSelected = false;
+  List<ColumnItem> arrListTitle1 = [];
   onCLickFilter() {
     isFilterOpen = !isFilterOpen;
+    update();
+  }
+
+  isAllSelectedUpdate(bool change) {}
+  refreshView() {
+    arrListTitle1.forEach((element) {
+      element.position = arrListTitle1.indexOf(element);
+    });
+    DbService().addColumns(arrListTitle1);
     update();
   }
 }
