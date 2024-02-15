@@ -605,7 +605,7 @@ class TradeListScreen extends BaseView<TradeListController> {
                       }
                     case PendingOrderColumns.segment:
                       {
-                        dynamicValueBox1(
+                        return dynamicValueBox1(
                           historyValue.exchangeName ?? "",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
@@ -616,7 +616,7 @@ class TradeListScreen extends BaseView<TradeListController> {
                       }
                     case PendingOrderColumns.symbol:
                       {
-                        dynamicValueBox1(
+                        return dynamicValueBox1(
                           historyValue.symbolTitle ?? "",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
@@ -627,7 +627,7 @@ class TradeListScreen extends BaseView<TradeListController> {
                       }
                     case PendingOrderColumns.bs:
                       {
-                        dynamicValueBox1(
+                        return dynamicValueBox1(
                           controller.arrTrade[index].tradeTypeValue!.toUpperCase(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,

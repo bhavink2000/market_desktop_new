@@ -74,9 +74,9 @@ class SymbolWisePositionReportController extends BaseController {
 
     super.onInit();
 
-    isApiCallRunning = true;
+    // isApiCallRunning = true;
 
-    getAccountSummaryNewList("");
+    // getAccountSummaryNewList("");
     getUserList();
     update();
   }

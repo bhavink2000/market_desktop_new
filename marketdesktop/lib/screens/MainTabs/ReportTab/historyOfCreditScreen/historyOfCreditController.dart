@@ -84,7 +84,11 @@ class HistoryOfCreditController extends BaseController {
     }
     totalAmount = 0;
     for (var element in arrAccountSummary) {
-      totalAmount = element.amount! + totalAmount;
+      if (element.transactionType == "debit") {
+        totalAmount = totalAmount - element.amount!;
+      } else {
+        totalAmount = element.amount! + totalAmount;
+      }
     }
     update();
   }

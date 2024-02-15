@@ -91,7 +91,7 @@ class ClientAccountReportController extends BaseController {
       ListItem("NET A PRICE", true),
       ListItem("CMP", true),
       ListItem("BROKERAGE", true),
-
+      ListItem("P/L", true),
       if (selectedplType.value == "All" || selectedplType.value == "Only Release") ListItem("RELEASE P/L", true),
       if (selectedplType.value != "Only Release") ListItem("MTM", true),
       if (selectedplType.value != "Only Release") ListItem("MTM WITH BROKERAGE", true),

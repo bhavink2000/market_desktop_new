@@ -64,7 +64,7 @@ dependencies:
   url_launcher: ^6.2.1
   syncfusion_flutter_pdfviewer: ^23.2.6
   flutter_calendar_carousel: ^2.4.2
-  marquee: ^2.2.3
+  marquee_text: ^2.5.0+1
   check_vpn_connection: ^0.0.2
   spinner_date_time_picker: ^0.0.8
   omni_datetime_picker: ^1.0.9

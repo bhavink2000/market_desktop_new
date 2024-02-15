@@ -209,7 +209,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.big,
           "updatedWidth": ColumnSizes.big,
           "position": 1,
-          "columnId": "${ScreenIds().pendingOrder}1",
+          "columnId": "${ScreenIds().pendingOrder}-1",
         },
         {
           "title": PendingOrderColumns.segment,
@@ -217,7 +217,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 2,
-          "columnId": "${ScreenIds().pendingOrder}2",
+          "columnId": "${ScreenIds().pendingOrder}-2",
         },
         {
           "title": PendingOrderColumns.symbol,
@@ -225,7 +225,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.big,
           "updatedWidth": ColumnSizes.big,
           "position": 3,
-          "columnId": "${ScreenIds().pendingOrder}3",
+          "columnId": "${ScreenIds().pendingOrder}-3",
         },
         {
           "title": PendingOrderColumns.bs,
@@ -233,7 +233,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
           "position": 4,
-          "columnId": "${ScreenIds().pendingOrder}4",
+          "columnId": "${ScreenIds().pendingOrder}-4",
         },
         {
           "title": PendingOrderColumns.qty,
@@ -241,7 +241,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
           "position": 5,
-          "columnId": "${ScreenIds().pendingOrder}5",
+          "columnId": "${ScreenIds().pendingOrder}-5",
         },
         {
           "title": PendingOrderColumns.lot,
@@ -249,7 +249,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
           "position": 6,
-          "columnId": "${ScreenIds().pendingOrder}6",
+          "columnId": "${ScreenIds().pendingOrder}-6",
         },
         {
           "title": PendingOrderColumns.price,
@@ -257,7 +257,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 7,
-          "columnId": "${ScreenIds().pendingOrder}7",
+          "columnId": "${ScreenIds().pendingOrder}-7",
         },
         {
           "title": PendingOrderColumns.orderDT,
@@ -265,7 +265,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
           "position": 8,
-          "columnId": "${ScreenIds().pendingOrder}8",
+          "columnId": "${ScreenIds().pendingOrder}-8",
         },
         {
           "title": PendingOrderColumns.type,
@@ -273,7 +273,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 9,
-          "columnId": "${ScreenIds().pendingOrder}9",
+          "columnId": "${ScreenIds().pendingOrder}-9",
         },
         {
           "title": PendingOrderColumns.cmp,
@@ -281,7 +281,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 10,
-          "columnId": "${ScreenIds().pendingOrder}10",
+          "columnId": "${ScreenIds().pendingOrder}-10",
         },
         {
           "title": PendingOrderColumns.refPrice,
@@ -289,7 +289,7 @@ List<Map> getColumnNames() {
           "width": 220.0,
           "updatedWidth": 220.0,
           "position": 11,
-          "columnId": "${ScreenIds().pendingOrder}11",
+          "columnId": "${ScreenIds().pendingOrder}-11",
         },
         {
           "title": PendingOrderColumns.ipAddress,
@@ -297,7 +297,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 12,
-          "columnId": "${ScreenIds().pendingOrder}12",
+          "columnId": "${ScreenIds().pendingOrder}-12",
         },
         {
           "title": PendingOrderColumns.device,
@@ -305,7 +305,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 13,
-          "columnId": "${ScreenIds().pendingOrder}13",
+          "columnId": "${ScreenIds().pendingOrder}-13",
         },
         {
           "title": PendingOrderColumns.deviceId,
@@ -313,7 +313,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 14,
-          "columnId": "${ScreenIds().pendingOrder}14",
+          "columnId": "${ScreenIds().pendingOrder}-14",
         }
       ]
     },

@@ -15,7 +15,8 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeL
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListWrapper.dart';
-import 'package:marquee/marquee.dart';
+
+import 'package:marquee_text/marquee_text.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../../constant/color.dart';
@@ -171,11 +172,12 @@ class MainContainerScreen extends BaseView<MainContainerController> {
           height: 40,
           color: AppColors().whiteColor,
           child: Center(
-            child: Marquee(text: (constantValues!.settingData?.banMessage ?? "") + "     ", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor)
-                // child: Text(constantValues!.settingData?.banMessage ?? "",
-                //     textAlign: TextAlign.center,
-                //     style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor)),
-                ),
+            child: MarqueeText(
+              alwaysScroll: true,
+              text: TextSpan(text: (constantValues!.settingData?.banMessage ?? "") + "     "),
+              style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor),
+              speed: 30,
+            ),
           ),
         ),
       ],

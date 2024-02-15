@@ -665,18 +665,18 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               key: Key('$index'),
                             );
                     }
-                  // case 'P/L':
-                  //   {
-                  //     return controller.arrListTitle[index].isSelected
-                  //         ? dynamicValueBox(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
-                  //         : SizedBox(
-                  //             key: Key('$index'),
-                  //           );
-                  //   }
+                  case 'P/L':
+                    {
+                      return controller.arrListTitle[index].isSelected
+                          ? dynamicValueBox(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
+                          : SizedBox(
+                              key: Key('$index'),
+                            );
+                    }
                   case 'RELEASE P/L':
                     {
                       return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
+                          ? dynamicValueBox(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
                           : SizedBox(
                               key: Key('$index'),
                             );
@@ -837,6 +837,14 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                 {
                   return controller.arrListTitle[index].isSelected
                       ? dynamicTitleBox("BROKERAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      : SizedBox(
+                          key: Key('$index'),
+                        );
+                }
+              case 'P/L':
+                {
+                  return controller.arrListTitle[index].isSelected
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );

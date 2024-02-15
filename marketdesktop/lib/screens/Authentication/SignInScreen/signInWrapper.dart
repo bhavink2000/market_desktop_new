@@ -88,8 +88,8 @@ class SignInScreen extends BaseView<SignInController> {
                       SizedBox(
                         height: 3.h,
                       ),
-                      // searchBox(),
-                      controller.serverListDropDown(controller.selectedServerName, width: 360),
+                      searchBox(),
+                      // controller.serverListDropDown(controller.selectedServerName, width: 360),
 
                       SizedBox(
                         height: 15,
