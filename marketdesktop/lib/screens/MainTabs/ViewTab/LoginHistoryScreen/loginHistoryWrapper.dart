@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/popUpFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:paginable/paginable.dart';
@@ -401,7 +402,7 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
       scrollDirection: Axis.horizontal,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        width: globalMaxWidth,
+        width: globalMaxWidth - 5.w,
         // margin: EdgeInsets.only(right: 1.w),
         color: Colors.white,
         child: Column(
@@ -421,23 +422,26 @@ class LoginHistoryScreen extends BaseView<LoginHistoryController> {
             Expanded(
               child: controller.isApiCallRunning == false && controller.arrLoginHistory.isEmpty
                   ? dataNotFoundView("Login history not found")
-                  : PaginableListView.builder(
-                      loadMore: () async {
-                        if (controller.totalPage >= controller.currentPage) {
-                          //print(controller.currentPage);
-                          controller.loginHistoryList();
-                        }
-                      },
-                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                      progressIndicatorWidget: displayIndicator(),
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.arrLoginHistory.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return loginHistoryContent(context, index);
-                      }),
+                  : CustomScrollBar(
+                      bgColor: AppColors().blueColor,
+                      child: PaginableListView.builder(
+                          loadMore: () async {
+                            if (controller.totalPage >= controller.currentPage) {
+                              //print(controller.currentPage);
+                              controller.loginHistoryList();
+                            }
+                          },
+                          errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                          progressIndicatorWidget: displayIndicator(),
+                          physics: const ClampingScrollPhysics(),
+                          clipBehavior: Clip.hardEdge,
+                          itemCount: controller.arrLoginHistory.length,
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return loginHistoryContent(context, index);
+                          }),
+                    ),
             ),
           ],
         ),

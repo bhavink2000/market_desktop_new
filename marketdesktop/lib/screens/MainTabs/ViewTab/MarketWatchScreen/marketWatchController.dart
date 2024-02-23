@@ -144,9 +144,9 @@ class MarketWatchController extends BaseController {
       if (tempFocus.value.hasFocus) {
         // selectedScriptIndex = 0;
       } else {
-        if (isBuyOpen == -1) {
-          selectedScriptIndex = -1;
-        }
+        // if (isBuyOpen == -1) {
+        //   selectedScriptIndex = -1;
+        // }
       }
       update();
     });
@@ -163,6 +163,7 @@ class MarketWatchController extends BaseController {
     } else if (userData!.role == UserRollList.user) {
       arrOrderType.add(Type(name: "Intraday", id: "123"));
     }
+    arrOrderType.removeAt(0);
     Future.delayed(const Duration(milliseconds: 100), () async {
       Screen? size = await getCurrentScreen();
       screenSize = Size(size!.frame.width, size.frame.height);
@@ -197,14 +198,6 @@ class MarketWatchController extends BaseController {
     //   //print("has focus on market     ${focusNode.hasFocus}");
     // });
     // focusNode.requestFocus();
-  }
-
-  @override
-  void onClose() async {
-    // var MainVC = Get.find<MainContainerController>();
-    // MainVC.focusNode.requestFocus();
-
-    socket.channel?.sink.close(status.normalClosure);
   }
 
   getUserList() async {
@@ -1463,15 +1456,23 @@ class MarketWatchController extends BaseController {
           arrPreScript.add(ScriptData.fromJson(response.data!.toJson()));
         } else {
           if (selectedScriptIndex != -1 && selectedScriptIndex < arrScript.length) {
-            if (arrScript[selectedScriptIndex - 1].symbol!.isEmpty) {
+            if (selectedScriptIndex == 0) {
+              if (arrScript[selectedScriptIndex + 1].symbol!.isEmpty) {
+                arrScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
+                arrPreScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
+              } else {
+                arrScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
+                arrPreScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
+              }
+            } else if (arrScript[selectedScriptIndex - 1].symbol!.isEmpty) {
               arrScript[selectedScriptIndex - 1] = ScriptData.fromJson(response.data!.toJson());
               arrPreScript[selectedScriptIndex - 1] = ScriptData.fromJson(response.data!.toJson());
             } else if (arrScript[selectedScriptIndex + 1].symbol!.isEmpty) {
               arrScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
               arrPreScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
             } else {
-              arrScript.add(ScriptData.fromJson(response.data!.toJson()));
-              arrPreScript.add(ScriptData.fromJson(response.data!.toJson()));
+              arrScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
+              arrPreScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
             }
           } else {
             arrScript.add(ScriptData.fromJson(response.data!.toJson()));
@@ -1493,7 +1494,7 @@ class MarketWatchController extends BaseController {
         showErrorToast(response?.message ?? "");
       }
     } catch (e) {
-      //print(e);
+      print(e);
     }
   }
 
@@ -2078,9 +2079,10 @@ class MarketWatchController extends BaseController {
                 onChanged: (ExchangeData? newSelectedValue) {
                   // setState(() {
                   value.value = newSelectedValue!;
+                  selectedSymbolForTopDropDown.value = GlobalSymbolData();
                   //focusNode.requestFocus();
                   update();
-                  selectedSymbolForTopDropDown.value = GlobalSymbolData();
+
                   getScriptList();
                   // });
                 },
@@ -2404,6 +2406,7 @@ class MarketWatchController extends BaseController {
                   } else {
                     addSymbolToTab(value!.symbolId.toString());
                   }
+                  selectedSymbolForTopDropDown.value = GlobalSymbolData();
                 }
               },
               buttonStyleData: const ButtonStyleData(

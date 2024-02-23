@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/const_string.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/customWidgets/appTextField.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
@@ -17,6 +18,7 @@ import '../../../constant/font_family.dart';
 import '../../../customWidgets/appButton.dart';
 import '../../../customWidgets/commonWidgets.dart';
 
+import '../../../main.dart';
 import '../../BaseController/baseController.dart';
 import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import '../userDetailsPopUpController.dart';
@@ -51,7 +53,7 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
             SizedBox(
               height: 2,
             ),
-            Container(height: 40, child: UpdateBrkContent(context)),
+            if (selectedUserForUserDetailPopupParentID == userData!.userId!) Container(height: 40, child: UpdateBrkContent(context)),
             SizedBox(
               height: 2,
             ),
@@ -83,7 +85,7 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
         controller.arrBrokerage.clear();
         controller.selectedExchange.value = ExchangeData();
         controller.arrListTitle = [
-          ListItem("", true),
+          if (selectedUserForUserDetailPopupParentID == userData!.userId!) ListItem("", true),
           ListItem("EXCHANGE", true),
           ListItem("SCRIPT", true),
           if (controller.selectedCurrentTab == 0) ListItem("TURNOVER WISE BRK(RS. PER 1/CR))", true),
@@ -113,42 +115,48 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: controller.isFilterOpen ? 1750 : 1860,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  // if (controller.selectedCurrentTab == 0) turnOverWiseTitleContent(),
-                  // if (controller.selectedCurrentTab == 1) symbolWiseTitleContent()
-                  listTitleContent()
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: controller.isFilterOpen ? 1750 : 1860,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    // if (controller.selectedCurrentTab == 0) turnOverWiseTitleContent(),
+                    // if (controller.selectedCurrentTab == 1) symbolWiseTitleContent()
+                    listTitleContent()
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrBrokerage.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return groupContent(context, index);
-                  }),
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.arrBrokerage.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return groupContent(context, index);
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

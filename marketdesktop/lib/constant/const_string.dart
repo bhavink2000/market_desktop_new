@@ -157,3 +157,4 @@ var screenTitles = {
     {"name": "Login History", "id": "1"}
   ]
 };
+String selectedUserForUserDetailPopupParentID = "";

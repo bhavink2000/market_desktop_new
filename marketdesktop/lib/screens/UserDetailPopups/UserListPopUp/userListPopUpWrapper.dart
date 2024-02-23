@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
@@ -306,43 +307,49 @@ class UserListPopUpScreen extends BaseView<UserListPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        width: 1370,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          width: 1370,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrUserListData.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return orderContent(context, index);
-                  }),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.arrUserListData.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return orderContent(context, index);
+                      }),
+                ),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

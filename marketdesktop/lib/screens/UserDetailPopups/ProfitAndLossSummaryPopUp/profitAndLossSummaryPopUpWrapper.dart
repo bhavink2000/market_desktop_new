@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -456,71 +457,77 @@ class ProfitAndLossSummaryPopUpScreen
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 76.5.w : 96.w,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: controller.isFilterOpen ? 76.5.w : 96.w,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: 5,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return orderContent(context, index);
-                  }),
-            ),
-            Container(
-              height: 2.h,
-              child: Center(
-                  child: Row(
-                children: [
-                  totalContent(
-                      value: "Total",
-                      textColor: AppColors().darkText,
-                      width: 150),
-                  totalContent(
-                      value: "2495.40",
-                      textColor: AppColors().blueColor,
-                      width: 150),
-                  totalContent(
-                      value: "1100.00",
-                      textColor: AppColors().blueColor,
-                      width: 110),
-                  totalContent(
-                      value: "1395.00",
-                      textColor: AppColors().blueColor,
-                      width: 110),
-                  totalContent(
-                      value: "-1500.00",
-                      textColor: AppColors().redColor,
-                      width: 110),
-                  totalContent(
-                      value: "-105.00",
-                      textColor: AppColors().redColor,
-                      width: 110),
-                ],
-              )),
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: 5,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return orderContent(context, index);
+                      }),
+                ),
+              ),
+              Container(
+                height: 2.h,
+                child: Center(
+                    child: Row(
+                  children: [
+                    totalContent(
+                        value: "Total",
+                        textColor: AppColors().darkText,
+                        width: 150),
+                    totalContent(
+                        value: "2495.40",
+                        textColor: AppColors().blueColor,
+                        width: 150),
+                    totalContent(
+                        value: "1100.00",
+                        textColor: AppColors().blueColor,
+                        width: 110),
+                    totalContent(
+                        value: "1395.00",
+                        textColor: AppColors().blueColor,
+                        width: 110),
+                    totalContent(
+                        value: "-1500.00",
+                        textColor: AppColors().redColor,
+                        width: 110),
+                    totalContent(
+                        value: "-105.00",
+                        textColor: AppColors().redColor,
+                        width: 110),
+                  ],
+                )),
+              ),
+            ],
+          ),
         ),
       ),
     );

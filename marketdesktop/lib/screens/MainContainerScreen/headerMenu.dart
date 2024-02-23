@@ -26,16 +26,8 @@ import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/bill
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogHistoryScreen/logHistoryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogHistoryScreen/logHistoryWrapper.dart';
-
-import 'package:marketdesktop/screens/MainTabs/ReportTab/OpenPositionScreen/openPositionController.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/OpenPositionScreen/openPositionWrapper.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/ProfitAndLossSummaryScreen/profitAndLossSummaryController.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/ProfitAndLossSummaryScreen/profitAndLossSummaryWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ScriptMasterScreen/scriptMasterController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ScriptMasterScreen/scriptMasterWrapper.dart';
-
-import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeAccountScreen/tradeAccountController.dart';
-import 'package:marketdesktop/screens/MainTabs/ReportTab/TradeAccountScreen/tradeAccountWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserScriptPositionTrackScreen/userScriptPositionTrackController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserScriptPositionTrackScreen/userScriptPostionTrackWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
@@ -180,7 +172,7 @@ class MyMenuBar extends StatelessWidget {
             onPressed: () async {
               // GetStorage().erase();
               service.logoutCall();
-
+              isLogoutRunning = true;
               arrSymbolNames.clear();
               socket.channel?.sink.close(status.normalClosure);
               socketIO.socketForTrade.emit('unsubscribe', userData!.userName);
@@ -191,6 +183,7 @@ class MyMenuBar extends StatelessWidget {
               isMarketSocketConnected.value = false;
               CancelToken().cancel();
               isShowToastAfterLogout = true;
+
               await windowManager.setFullScreen(false);
               setWindowMinSize(const Size(400, 490));
               Future.delayed(Duration(seconds: 2), () {
@@ -592,18 +585,18 @@ class MyMenuBar extends StatelessWidget {
               dashBoardVC.update();
             },
           ),
-          MenuEntry(
-            label: 'Notification Alert',
-            onPressed: () {
-              if (marketViewObj.isBuyOpen != -1) {
-                return;
-              }
-              var dashbaordScreen = Get.find<MainContainerController>();
-              dashbaordScreen.isCreateUserClick = false;
-              dashbaordScreen.isNotificationSettingClick = true;
-              dashbaordScreen.update();
-            },
-          ),
+          // MenuEntry(
+          //   label: 'Notification Alert',
+          //   onPressed: () {
+          //     if (marketViewObj.isBuyOpen != -1) {
+          //       return;
+          //     }
+          //     var dashbaordScreen = Get.find<MainContainerController>();
+          //     dashbaordScreen.isCreateUserClick = false;
+          //     dashbaordScreen.isNotificationSettingClick = true;
+          //     dashbaordScreen.update();
+          //   },
+          // ),
           MenuEntry(
             label: 'Market Timings',
             onPressed: () {

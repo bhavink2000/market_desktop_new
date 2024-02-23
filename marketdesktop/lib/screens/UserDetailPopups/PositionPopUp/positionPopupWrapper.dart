@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 
 import 'package:marketdesktop/screens/UserDetailPopups/PositionPopUp/positionPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
@@ -41,41 +42,47 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: Container(
-        width: 1765,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: 1765,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              height: 2,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrPositionScriptList.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return orderContent(context, index);
-                  }),
-            ),
-          ],
+              Container(
+                height: 2,
+              ),
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.arrPositionScriptList.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return orderContent(context, index);
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

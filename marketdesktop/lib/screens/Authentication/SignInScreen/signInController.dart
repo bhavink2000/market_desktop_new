@@ -91,11 +91,13 @@ class SignInController extends BaseController {
       msg = AppString.emptyUserName;
     } else if (passwordController.text.trim().isEmpty) {
       msg = AppString.emptyPassword;
-    } else if (serverController.text.trim().isEmpty) {
-      msg = AppString.emptyServer;
-    } else if (serverController.text.trim().toLowerCase() != serverName.toLowerCase()) {
-      msg = AppString.invalidServer;
     }
+    //  else
+    // if (serverController.text.trim().isEmpty) {
+    //   msg = AppString.emptyServer;
+    // } else if (serverController.text.trim().toLowerCase() != serverName.toLowerCase()) {
+    //   msg = AppString.invalidServer;
+    // }
     return msg;
   }
 
@@ -115,9 +117,11 @@ class SignInController extends BaseController {
 
       if (response != null) {
         if (response.statusCode == 200) {
+          isLogoutRunning = false;
           print(response.message);
           update();
           if (response.statusCode == 200) {
+            isAccessTokenExpired = false;
             await localStorage.write(LocalStorageKeys.userToken, response.meta?.token);
             await localStorage.write(LocalStorageKeys.userId, response.data?.userId);
             await localStorage.write(LocalStorageKeys.userData, response.data!.toJson());

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/utilities.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/GroupSettingPopUp/groupSettingPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/QuantitySettingPopUp/quantitySettingPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
@@ -39,40 +40,46 @@ class GroupSettingPopUpScreen extends BaseView<GroupSettingPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: 1860,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: 1860,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrGroupSetting.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return groupContent(context, index);
-                  }),
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.arrGroupSetting.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return groupContent(context, index);
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

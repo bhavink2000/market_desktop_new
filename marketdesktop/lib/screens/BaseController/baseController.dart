@@ -8,6 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../service/network/allApiCallService.dart';
 import '../../constant/color.dart';
+import '../../constant/dropdownFunctions.dart';
 import '../../constant/font_family.dart';
 import '../../modelClass/allSymbolListModelClass.dart';
 import '../../modelClass/tableColumnsModelClass.dart';
@@ -43,6 +44,14 @@ class BaseController extends GetxController {
     });
     DbService().addColumns(arrListTitle1);
     update();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    userEditingController.text = "";
+    exchangeEditingController.text = "";
+    scriptEditingController.text = "";
   }
 }
 

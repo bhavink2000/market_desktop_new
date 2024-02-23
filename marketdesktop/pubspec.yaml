@@ -70,6 +70,8 @@ dependencies:
   omni_datetime_picker: ^1.0.9
   sqflite: ^2.3.0
   sqflite_common_ffi: any
+  file_picker: ^6.1.1
+
   window_size:
     git:
       url: https://github.com/google/flutter-desktop-embedding.git

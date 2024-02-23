@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import '../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../customWidgets/appButton.dart';
@@ -214,40 +215,46 @@ class ScriptMasterPopUpScreen extends BaseView<ScriptMasterPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: controller.isFilterOpen ? 1750 : 1860,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: controller.isFilterOpen ? 1750 : 1860,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: 5,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return tradeContent(context, index);
-                  }),
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: 5,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return tradeContent(context, index);
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

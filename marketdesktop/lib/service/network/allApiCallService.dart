@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:marketdesktop/modelClass/expiryListModelClass.dart';
@@ -1687,17 +1688,32 @@ class AllApiCallService {
           }
         },
       );
+      try {
+        // await FileSaver.instance.saveAs(name: fileName, ext: filePath.split(".").last, mimeType: MimeType.pdf, filePath: filePath);
+        final path = await FilePicker.platform.saveFile(
+          dialogTitle: 'Please select an output file:',
+          fileName: fileName + ".pdf",
+        );
 
-      String path = await FileSaver.instance.saveFile(
-        name: fileName,
-        //link:  linkController.text,
-        // bytes: Uint8List.fromList(excel.encode()!),
-        file: File(filePath),
-        ext: filePath.split(".").last,
+        if (path != null) {
+          final file = File(path);
+          var dataFile = File(filePath); // await file.writeAsString(data);
+          dataFile.copySync(path);
+        }
+      } catch (e) {
+        print(e);
+      }
 
-        ///extController.text,
-        mimeType: MimeType.microsoftExcel,
-      );
+      // String path = await FileSaver.instance.saveFile(
+      //   name: fileName,
+      //   //link:  linkController.text,
+      //   // bytes: Uint8List.fromList(excel.encode()!),
+      //   file: File(filePath),
+      //   ext: filePath.split(".").last,
+
+      //   ///extController.text,
+      //   mimeType: MimeType.pdf,
+      // );
 
       return Future.value(File(filePath));
     } catch (e) {

@@ -40,7 +40,8 @@ class SuccessTradeListController extends BaseController {
   int totalPage = 0;
   bool isFromSocket = false;
   Rx<Type> selectedTradeStatus = Type().obs;
-
+  bool isPagingApiCall = false;
+  int totalCount = 0;
   FocusNode deleteTradeFocus = FocusNode();
 
   @override
@@ -51,62 +52,7 @@ class SuccessTradeListController extends BaseController {
     arrTradeStatus = constantValues!.tradeStatusFilter ?? [];
     Future.delayed(Duration(seconds: 1), () {
       if (isFromSocket == false) {
-        getTradeList();
-      }
-    });
-
-    listcontroller.addListener(() async {
-      if ((listcontroller.position.pixels > listcontroller.position.maxScrollExtent / 2.5 && totalPage > 1 && pageNumber < totalPage && !isLocalDataLoading)) {
-        isLocalDataLoading = true;
-        pageNumber++;
-        String strFromDate = "";
-        String strToDate = "";
-        if (fromDate.value != "Start Date") {
-          strFromDate = fromDate.value;
-        }
-        if (endDate.value != "End Date") {
-          strToDate = endDate.value;
-        }
-        update();
-        var response = await service.getMyTradeListCall(
-          status: "executed",
-          page: pageNumber,
-          text: "",
-          userId: selectedUser.value.userId ?? "",
-          symbolId: selectedScriptFromFilter.value.symbolId ?? "",
-          exchangeId: selectedExchange.value.exchangeId ?? "",
-          startDate: strFromDate,
-          endDate: strToDate,
-          tradeStatus: selectedTradeStatus.value.id,
-        );
-        if (response != null) {
-          if (response.statusCode == 200) {
-            totalPage = response.meta?.totalPage ?? 0;
-            if (isSuccessSelected) {
-              totalSuccessRecord = response.meta?.totalCount ?? 0;
-            } else {
-              totalPendingRecord = response.meta?.totalCount ?? 0;
-            }
-
-            for (var v in response.data!) {
-              arrTrade.add(v);
-            }
-            isLocalDataLoading = false;
-            update();
-            var arrTemp = [];
-            for (var element in response.data!) {
-              if (!arrSymbolNames.contains(element.symbolName)) {
-                arrTemp.insert(0, element.symbolName);
-                arrSymbolNames.insert(0, element.symbolName!);
-              }
-            }
-
-            if (arrTemp.isNotEmpty) {
-              var txt = {"symbols": arrTemp};
-              socket.connectScript(jsonEncode(txt));
-            }
-          }
-        }
+        getTradeList(isFromFilter: true);
       }
     });
   }
@@ -136,17 +82,20 @@ class SuccessTradeListController extends BaseController {
     update();
   }
 
-  getTradeList({bool isFromClear = false}) async {
-    arrTrade.clear();
-    pageNumber = 1;
-
+  getTradeList({bool isFromClear = false, bool isFromFilter = false}) async {
     isLocalDataLoading = true;
     if (isFromClear) {
+      pageNumber = 1;
       isResetCall = true;
-    } else {
+    }
+    if (isFromFilter) {
+      pageNumber = 1;
       isApiCallRunning = true;
     }
-
+    if (isPagingApiCall) {
+      return;
+    }
+    isPagingApiCall = true;
     String strFromDate = "";
     String strToDate = "";
     update();
@@ -168,13 +117,19 @@ class SuccessTradeListController extends BaseController {
       endDate: strToDate,
       tradeStatus: selectedTradeStatus.value.id,
     );
-    isLocalDataLoading = false;
-    isApiCallRunning = false;
-    isResetCall = false;
+
     if (response != null) {
       if (response.statusCode == 200) {
+        totalPage = response.meta!.totalPage!;
+        if (totalPage >= pageNumber) {
+          pageNumber = pageNumber + 1;
+        }
+        totalCount = response.meta!.totalCount!;
         var arrTemp = [];
-        arrTrade.clear();
+        if (isFromClear || isFromFilter) {
+          arrTrade.clear();
+        }
+
         response.data?.forEach((v) {
           arrTrade.add(v);
         });
@@ -191,7 +146,10 @@ class SuccessTradeListController extends BaseController {
             arrSymbolNames.insert(0, element.symbolName!);
           }
         }
-
+        isLocalDataLoading = false;
+        isApiCallRunning = false;
+        isResetCall = false;
+        isPagingApiCall = false;
         if (arrTemp.isNotEmpty) {
           var txt = {"symbols": arrTemp};
           socket.connectScript(jsonEncode(txt));

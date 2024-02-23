@@ -398,6 +398,7 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
 }
 
 Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
+  
   return Obx(() {
     return SizedBox(
         width: width ?? 250,
@@ -1657,16 +1658,20 @@ getExchangeList() async {
   if (response != null) {
     if (response.statusCode == 200) {
       arrExchange = response.exchangeData ?? [];
+      arrExchange.insert(0, ExchangeData(exchangeId: "", name: "ALL"));
     }
   }
 }
 
-getScriptList({String exchangeId = "", List<GlobalSymbolData>? arrSymbol}) async {
+getScriptList({String exchangeId = "", List<GlobalSymbolData>? arrSymbol, isFromOrder = false}) async {
   var response = await service.allSymbolListCall(1, "", exchangeId);
   if (arrSymbol != null) {
     arrSymbol.clear();
 
     arrSymbol.addAll(response!.data ?? []);
+    if (isFromOrder == false) {
+      arrSymbol.insert(0, GlobalSymbolData(symbolId: "", symbolName: "ALL", symbolTitle: "ALL"));
+    }
   } else {
     arrAllScript = response!.data ?? [];
   }
@@ -1675,6 +1680,12 @@ getScriptList({String exchangeId = "", List<GlobalSymbolData>? arrSymbol}) async
 getUserList() async {
   var response = await service.getMyUserListCall();
   arrUserList = response?.data ?? [];
+  arrUserList.insert(
+      0,
+      UserData(
+        userId: "",
+        userName: "ALL",
+      ));
 }
 
 callForBrokerList() async {

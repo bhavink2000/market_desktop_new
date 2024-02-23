@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
+import 'package:paginable/paginable.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -22,7 +24,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrTrade.length, onCLickFilter: () {
+          filterPanel(context, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -376,7 +378,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               title: "View",
                               textSize: 14,
                               onPress: () {
-                                controller.getTradeList();
+                                controller.getTradeList(isFromFilter: true);
                               },
                               focusKey: controller.viewFocus,
                               borderColor: Colors.transparent,
@@ -436,62 +438,76 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
 
   Widget mainContent(BuildContext context) {
     print(globalMaxWidth);
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: globalMaxWidth + 500,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(controller),
-                ],
-              ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrTrade.isEmpty
-                  ? dataNotFoundView("Trades not found")
-                  : ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrTrade.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return tradeContent(context, index);
-                      }),
-            ),
-            if (userData!.role == UserRollList.superAdmin)
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: globalMaxWidth + 500,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
               Container(
-                height: 40,
-                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                child: Center(
-                    child: Row(
-                  children: [deleteTradeBtn()],
-                )),
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(controller),
+                  ],
+                ),
               ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrTrade.isEmpty
+                    ? dataNotFoundView("Trades not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.pageNumber) {
+                                //print(controller.currentPage);
+                                controller.getTradeList();
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrTrade.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return tradeContent(context, index);
+                            }),
+                      ),
+              ),
+              if (userData!.role == UserRollList.superAdmin)
+                Container(
+                  height: 40,
+                  decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                  child: Center(
+                      child: Row(
+                    children: [deleteTradeBtn()],
+                  )),
+                ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget tradeContent(BuildContext context, int index) {
-    if (controller.isApiCallRunning || controller.isResetCall) {
+    if ((controller.isApiCallRunning || controller.isResetCall)) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
         child: Shimmer.fromColors(

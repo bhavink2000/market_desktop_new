@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -294,7 +295,10 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                             SizedBox(
                               width: 10,
                             ),
-                            exchangeTypeDropDown(controller.selectedExchange, width: 150),
+                            exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
+                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
+                              controller.update();
+                            }, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -321,7 +325,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, width: 150),
+                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -434,50 +438,56 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: globalMaxWidth,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(controller),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: globalMaxWidth - 5.w,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(controller),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrRejectLog.isEmpty
-                  ? dataNotFoundView("Rejection log not found")
-                  : PaginableListView.builder(
-                      loadMore: () async {
-                        if (controller.totalPage >= controller.currentPage) {
-                          //print(controller.currentPage);
-                          controller.rejectLogList();
-                        }
-                      },
-                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                      progressIndicatorWidget: displayIndicator(),
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrRejectLog.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return rejectionLogContent(context, index);
-                      }),
-            ),
-          ],
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrRejectLog.isEmpty
+                    ? dataNotFoundView("Rejection log not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.currentPage) {
+                                //print(controller.currentPage);
+                                controller.rejectLogList();
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrRejectLog.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return rejectionLogContent(context, index);
+                            }),
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );

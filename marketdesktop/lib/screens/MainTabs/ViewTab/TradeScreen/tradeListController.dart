@@ -69,6 +69,11 @@ class TradeListController extends BaseController {
     // TODO: implement onInit
     super.onInit();
     getColumnListFromDB(ScreenIds().pendingOrder, arrListTitle1);
+    arrExchange.removeAt(0);
+    arrUserList.removeAt(0);
+    // selectedUser.value = arrUserList.first;
+    // selectedExchange.value = arrExchange.first;
+
     getTradeList();
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {

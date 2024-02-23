@@ -138,14 +138,16 @@ class SocketService {
         },
         onDone: () {
           print("here");
-          socket.channel?.sink.close(status.normalClosure);
-          bouncer.run(() async {
-            await socket.connectSocket();
-            var txt = {"symbols": arrSymbolNames};
-            if (arrSymbolNames.isNotEmpty) {
-              socket.connectScript(jsonEncode(txt));
-            }
-          });
+          if (isLogoutRunning == false) {
+            socket.channel?.sink.close(status.normalClosure);
+            bouncer.run(() async {
+              await socket.connectSocket();
+              var txt = {"symbols": arrSymbolNames};
+              if (arrSymbolNames.isNotEmpty) {
+                socket.connectScript(jsonEncode(txt));
+              }
+            });
+          }
         },
         onError: (err) => {
           isMarketSocketConnected.value = false,
@@ -163,17 +165,10 @@ class SocketService {
     try {
       channel?.sink.add(symbols);
     } catch (e) {
+      // await socket.connectSocket();
+      // socket.connectScript(symbols);
+      print("socketDisconnected123");
       print(e);
-      try {
-        socket.channel?.sink.close(status.normalClosure);
-        isMarketSocketConnected.value = false;
-        arrSymbolNames.clear();
-        await socket.connectSocket();
-        socketIO.init();
-      } catch (e) {
-        print(e);
-      }
-      connectScript(symbols);
     }
   }
 }

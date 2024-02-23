@@ -94,6 +94,7 @@ class PositionController extends BaseController {
       arrOrderType.removeWhere((element) => element.id == "stopLoss");
       arrOrderType.removeWhere((element) => element.id == "limit");
     }
+    arrOrderType.removeAt(0);
     selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
     isApiCallRunning = true;
 

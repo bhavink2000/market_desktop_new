@@ -1,4 +1,5 @@
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
@@ -195,45 +196,51 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: globalMaxWidth,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: globalMaxWidth,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrPlList.isEmpty
-                  ? dataNotFoundView("PL Summary not found")
-                  : ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrPlList.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return profitAndLossContent(context, index);
-                      }),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrPlList.isEmpty
+                    ? dataNotFoundView("PL Summary not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrPlList.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return profitAndLossContent(context, index);
+                            }),
+                      ),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -558,7 +565,6 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
       ],
     );
   }
-
 }
 // view
 // username

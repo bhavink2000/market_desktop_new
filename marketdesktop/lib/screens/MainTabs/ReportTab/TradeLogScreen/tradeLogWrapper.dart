@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
@@ -402,54 +403,60 @@ class TradeLogScreen extends BaseView<TradeLogController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: globalMaxWidth,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: globalMaxWidth - 5.w,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.arrTrade.isEmpty
-                  ? dataNotFoundView("Trade Logs not found")
-                  : PaginableListView.builder(
-                      loadMore: () async {
-                        if (controller.totalPage >= controller.currentPage) {
-                          //print(controller.currentPage);
-                          controller.getTradeList();
-                        }
-                      },
-                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                      progressIndicatorWidget: displayIndicator(),
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning ? 50 : controller.arrTrade.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return tradeContent(context, index);
-                      }),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.arrTrade.isEmpty
+                    ? dataNotFoundView("Trade Logs not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.currentPage) {
+                                //print(controller.currentPage);
+                                controller.getTradeList();
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning ? 50 : controller.arrTrade.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return tradeContent(context, index);
+                            }),
+                      ),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

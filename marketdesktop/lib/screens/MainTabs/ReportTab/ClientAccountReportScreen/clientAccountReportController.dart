@@ -108,6 +108,7 @@ class ClientAccountReportController extends BaseController {
   getUserList() async {
     var response = await service.getMyUserListCall(roleId: UserRollList.user);
     arrUserListOnlyClient = response!.data ?? [];
+    update();
     if (arrUserListOnlyClient.isNotEmpty) {
       // selectedUser.value = arrUserListOnlyClient.first;
     }

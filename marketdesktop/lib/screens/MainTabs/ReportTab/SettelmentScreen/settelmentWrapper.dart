@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/SettelmentScreen/settelmentController.dart';
 import 'package:shimmer/shimmer.dart';
@@ -349,15 +350,18 @@ class SettlementScreen extends BaseView<SettlementController> {
                   Expanded(
                     child: controller.isApiCallFirstTime == false && controller.isApiCallFromReset == false && controller.isApiCallFromSearch == false && controller.arrProfitList.isEmpty
                         ? dataNotFoundView("Profit history not found")
-                        : ListView.builder(
-                            physics: const ClampingScrollPhysics(),
-                            clipBehavior: Clip.hardEdge,
-                            itemCount: controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? 50 : controller.arrProfitList.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return profitLossContent(context, index, controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? Profit() : controller.arrProfitList[index]);
-                            }),
+                        : CustomScrollBar(
+                            bgColor: AppColors().blueColor,
+                            child: ListView.builder(
+                                physics: const ClampingScrollPhysics(),
+                                clipBehavior: Clip.hardEdge,
+                                itemCount: controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? 50 : controller.arrProfitList.length,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return profitLossContent(context, index, controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? Profit() : controller.arrProfitList[index]);
+                                }),
+                          ),
                   ),
                   if (controller.isApiCallFirstTime == false)
                     Container(
@@ -366,7 +370,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                       child: Center(
                           child: Row(
                         children: [
-                          totalContent(value: "Net Profit ${controller.totalValues!.plStatus == 1 ? ": " + controller.totalValues!.myPLTotal!.toStringAsFixed(2) : ""}", textColor: AppColors().darkText, width: 300),
+                          totalContent(value: "Net Profit ${controller.totalValues!.plStatus == 1 ? ": " + controller.totalValues!.myPLTotal!.toStringAsFixed(2) : ""}", textColor: AppColors().darkText, width: 230),
                           totalContent(value: controller.totalValues!.plProfitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                           totalContent(value: controller.totalValues!.brkProfitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                           totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
@@ -412,15 +416,18 @@ class SettlementScreen extends BaseView<SettlementController> {
                   Expanded(
                     child: controller.isApiCallFirstTime == false && controller.isApiCallFromReset == false && controller.isApiCallFromSearch == false && controller.arrLossList.isEmpty
                         ? dataNotFoundView("Loss history not found")
-                        : ListView.builder(
-                            physics: const ClampingScrollPhysics(),
-                            clipBehavior: Clip.hardEdge,
-                            itemCount: controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? 50 : controller.arrLossList.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return profitLossContent(context, index, controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? Profit() : controller.arrLossList[index]);
-                            }),
+                        : CustomScrollBar(
+                            bgColor: AppColors().blueColor,
+                            child: ListView.builder(
+                                physics: const ClampingScrollPhysics(),
+                                clipBehavior: Clip.hardEdge,
+                                itemCount: controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? 50 : controller.arrLossList.length,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return profitLossContent(context, index, controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? Profit() : controller.arrLossList[index]);
+                                }),
+                          ),
                   ),
                   if (controller.isApiCallFirstTime == false)
                     Container(
@@ -490,7 +497,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                     }
                   case 'P/L':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
                     }
                   case 'BRK':
                     {
@@ -498,7 +505,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                     }
                   case 'TOTAL':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.total!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.total!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
                     }
 
                   default:
@@ -529,7 +536,7 @@ class SettlementScreen extends BaseView<SettlementController> {
               case 'USERNAME':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
                       : SizedBox(
                           key: Key('$index'),
                         );

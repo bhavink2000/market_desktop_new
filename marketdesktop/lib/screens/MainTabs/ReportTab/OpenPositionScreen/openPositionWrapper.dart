@@ -1,4 +1,5 @@
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -272,77 +273,83 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 1510 : 1840,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
-              ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrPositionScriptList.isEmpty
-                  ? dataNotFoundView("Open Position not found")
-                  : PaginableListView.builder(
-                      loadMore: () async {
-                        if (controller.totalPage >= controller.currentPage) {
-                          //print(controller.currentPage);
-                          controller.getPositionList("");
-                        }
-                      },
-                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                      progressIndicatorWidget: displayIndicator(),
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrPositionScriptList.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return orderContent(context, index);
-                      }),
-            ),
-            if (controller.selectedUserData != null)
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: controller.isFilterOpen ? 1510 : 1840,
+          color: Colors.white,
+          child: Column(
+            children: [
               Container(
-                height: 30,
-                decoration: BoxDecoration(
-                    color: AppColors().whiteColor,
-                    border: Border(
-                      top: BorderSide(color: AppColors().lightOnlyText, width: 1),
-                    )),
+                height: 3.h,
+                color: AppColors().whiteColor,
                 child: Row(
                   children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                        "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal!.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance!.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
-                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
-                    Spacer(),
-                    Text("Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
-                    SizedBox(
-                      width: 35.w,
-                    ),
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
                   ],
                 ),
               ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrPositionScriptList.isEmpty
+                    ? dataNotFoundView("Open Position not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.currentPage) {
+                                //print(controller.currentPage);
+                                controller.getPositionList("");
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrPositionScriptList.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return orderContent(context, index);
+                            }),
+                      ),
+              ),
+              if (controller.selectedUserData != null)
+                Container(
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: AppColors().whiteColor,
+                      border: Border(
+                        top: BorderSide(color: AppColors().lightOnlyText, width: 1),
+                      )),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                          "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal!.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance!.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
+                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                      Spacer(),
+                      Text("Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                      SizedBox(
+                        width: 35.w,
+                      ),
+                    ],
+                  ),
+                ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

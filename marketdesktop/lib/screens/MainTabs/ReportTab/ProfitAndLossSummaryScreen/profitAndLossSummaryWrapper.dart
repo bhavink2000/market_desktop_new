@@ -1,4 +1,5 @@
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ProfitAndLossSummaryScreen/profitAndLossSummaryController.dart';
 import 'package:shimmer/shimmer.dart';
@@ -198,57 +199,63 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: globalMaxWidth,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: globalMaxWidth,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrProfitLoss.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return orderContent(context, index);
-                  }),
-            ),
-            Container(
-              height: 2.h,
-              child: Center(
-                  child: Row(
-                children: [
-                  totalContent(value: "Total", textColor: AppColors().darkText, width: 280),
-                  totalContent(value: controller.getTotal("pl").toStringAsFixed(2), textColor: controller.getTotal("pl") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 150),
-                  totalContent(value: controller.getTotal("brk").toStringAsFixed(2), textColor: controller.getTotal("brk") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                  totalContent(value: controller.getTotal("Total").toStringAsFixed(2), textColor: controller.getTotal("Total") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                  totalContent(value: controller.getTotal("m2m").toStringAsFixed(2), textColor: controller.getTotal("m2m") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                  totalContent(value: controller.getTotal("netPL").toStringAsFixed(2), textColor: controller.getTotal("netPL") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                ],
-              )),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.arrProfitLoss.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return orderContent(context, index);
+                      }),
+                ),
+              ),
+              Container(
+                height: 2.h,
+                child: Center(
+                    child: Row(
+                  children: [
+                    totalContent(value: "Total", textColor: AppColors().darkText, width: 280),
+                    totalContent(value: controller.getTotal("pl").toStringAsFixed(2), textColor: controller.getTotal("pl") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 150),
+                    totalContent(value: controller.getTotal("brk").toStringAsFixed(2), textColor: controller.getTotal("brk") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
+                    totalContent(value: controller.getTotal("Total").toStringAsFixed(2), textColor: controller.getTotal("Total") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
+                    totalContent(value: controller.getTotal("m2m").toStringAsFixed(2), textColor: controller.getTotal("m2m") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
+                    totalContent(value: controller.getTotal("netPL").toStringAsFixed(2), textColor: controller.getTotal("netPL") >= 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
+                  ],
+                )),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

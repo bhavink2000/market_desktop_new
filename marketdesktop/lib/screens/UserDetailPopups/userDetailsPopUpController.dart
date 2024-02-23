@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/index.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/PositionPopUp/positionPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/PositionPopUp/positionPopupWrapper.dart';
@@ -58,10 +59,9 @@ class UserDetailsPopUpController extends BaseController {
     Get.put(TradeListPopUpController());
     // Get.put(ScriptMasterPopUpController());
     Get.put(GroupSettingPopUpController());
-    Get.put(QuantitySettingPopUpController());
-    Get.put(BrkPopUpController());
+
     Get.put(UserListPopUpController());
-    Get.put(CreditPopUpController());
+
     // Get.put(AccountSummaryPopUpController());
     // Get.put(SettlementPopUpController());
     Get.put(RejectionLogPopUpController());
@@ -71,6 +71,7 @@ class UserDetailsPopUpController extends BaseController {
   }
 
   deleteAllController() {
+    selectedUserForUserDetailPopupParentID = "";
     Get.delete<UserDetailsPopUpController>();
     Get.delete<PositionPopUpController>();
     Get.delete<TradeListPopUpController>();
@@ -98,6 +99,10 @@ class UserDetailsPopUpController extends BaseController {
       if (userResponse.statusCode == 200) {
         userRoll = userResponse.data!.role!;
         selectedUserData = userResponse.data;
+        selectedUserForUserDetailPopupParentID = selectedUserData?.parentId ?? "";
+        Get.put(QuantitySettingPopUpController());
+        Get.put(BrkPopUpController());
+        Get.put(CreditPopUpController());
         if (userResponse.data!.role == UserRollList.master || userResponse.data!.role == UserRollList.admin || userResponse.data!.role == UserRollList.superAdmin) {
           arrMasterMenuList = [
             "Position",
@@ -168,7 +173,7 @@ class UserDetailsPopUpController extends BaseController {
         isFilterAvailable = false;
         break;
       case "Credit":
-        isFilterAvailable = true;
+        isFilterAvailable = selectedUserForUserDetailPopupParentID == userData!.userId;
         break;
       case "User List":
         isFilterAvailable = false;

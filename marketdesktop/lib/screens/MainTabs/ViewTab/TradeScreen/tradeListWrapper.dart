@@ -3,6 +3,7 @@ import 'package:marketdesktop/constant/screenColumnData.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -301,7 +302,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                               width: 10,
                             ),
                             exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
-                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
+                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript, isFromOrder: true);
+
+                              // controller.selectedScriptFromFilter.value = controller.arrExchangeWiseScript.first;
                               controller.update();
                             }, width: 150),
                             SizedBox(
@@ -445,118 +448,124 @@ class TradeListScreen extends BaseView<TradeListController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: globalMaxWidth,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(controller)
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: globalMaxWidth,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(controller)
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrTrade.isEmpty
-                  ? dataNotFoundView("Orders not found")
-                  : ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrTrade.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        if (controller.isApiCallRunning || controller.isResetCall) {
-                          return tradeContent(context, index);
-                        }
-                        return ContextMenuRegion(
-                          contextMenuBuilder: (BuildContext context, Offset offset) {
-                            // The custom context menu will look like the default context menu
-                            // on the current platform with a single 'Print' button.
-                            return AdaptiveTextSelectionToolbar.buttonItems(
-                              anchors: TextSelectionToolbarAnchors(
-                                primaryAnchor: offset,
-                              ),
-                              buttonItems: <ContextMenuButtonItem>[
-                                ContextMenuButtonItem(
-                                  onPressed: () {
-                                    ContextMenuController.removeAny();
-                                    if (controller.selectedOrderIndex == -1) {
-                                      showWarningToast("Please select order to modify.");
-                                      return;
-                                    }
-                                    showPendingTradeInfoPopup();
-                                    controller.openPopUpCount++;
-                                  },
-                                  label: 'Modify Order',
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrTrade.isEmpty
+                    ? dataNotFoundView("Orders not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrTrade.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              if (controller.isApiCallRunning || controller.isResetCall) {
+                                return tradeContent(context, index);
+                              }
+                              return ContextMenuRegion(
+                                contextMenuBuilder: (BuildContext context, Offset offset) {
+                                  // The custom context menu will look like the default context menu
+                                  // on the current platform with a single 'Print' button.
+                                  return AdaptiveTextSelectionToolbar.buttonItems(
+                                    anchors: TextSelectionToolbarAnchors(
+                                      primaryAnchor: offset,
+                                    ),
+                                    buttonItems: <ContextMenuButtonItem>[
+                                      ContextMenuButtonItem(
+                                        onPressed: () {
+                                          ContextMenuController.removeAny();
+                                          if (controller.selectedOrderIndex == -1) {
+                                            showWarningToast("Please select order to modify.");
+                                            return;
+                                          }
+                                          showPendingTradeInfoPopup();
+                                          controller.openPopUpCount++;
+                                        },
+                                        label: 'Modify Order',
+                                      ),
+                                      if (userData!.role != UserRollList.admin || (userData!.role == UserRollList.admin && userData!.deleteTrade == 1))
+                                        ContextMenuButtonItem(
+                                          onPressed: () {
+                                            ContextMenuController.removeAny();
+                                            if (controller.selectedOrderIndex == -1) {
+                                              showWarningToast("Please select order to cancel.");
+                                              return;
+                                            }
+                                            showPermissionDialog(
+                                                message: "Are you sure you want to cancel order?",
+                                                acceptButtonTitle: "Yes",
+                                                rejectButtonTitle: "No",
+                                                yesClick: () {
+                                                  Get.back();
+                                                  controller.cancelTrade();
+                                                },
+                                                noclick: () {
+                                                  Get.back();
+                                                });
+                                          },
+                                          label: 'Cancel Order',
+                                        ),
+                                      if (userData!.role != UserRollList.admin || (userData!.role == UserRollList.admin && userData!.deleteTrade == 1))
+                                        ContextMenuButtonItem(
+                                          onPressed: () {
+                                            ContextMenuController.removeAny();
+                                            showPermissionDialog(
+                                                message: "Are you sure you want to cancel all order?",
+                                                acceptButtonTitle: "Yes",
+                                                rejectButtonTitle: "No",
+                                                yesClick: () {
+                                                  Get.back();
+                                                  controller.cancelAllTrade();
+                                                },
+                                                noclick: () {
+                                                  Get.back();
+                                                });
+                                          },
+                                          label: 'Cancel All Order',
+                                        ),
+                                    ],
+                                  );
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(height: 30, color: Colors.transparent, child: tradeContent(context, index)),
+                                  ],
                                 ),
-                                if (userData!.role != UserRollList.admin || (userData!.role == UserRollList.admin && userData!.deleteTrade == 1))
-                                  ContextMenuButtonItem(
-                                    onPressed: () {
-                                      ContextMenuController.removeAny();
-                                      if (controller.selectedOrderIndex == -1) {
-                                        showWarningToast("Please select order to cancel.");
-                                        return;
-                                      }
-                                      showPermissionDialog(
-                                          message: "Are you sure you want to cancel order?",
-                                          acceptButtonTitle: "Yes",
-                                          rejectButtonTitle: "No",
-                                          yesClick: () {
-                                            Get.back();
-                                            controller.cancelTrade();
-                                          },
-                                          noclick: () {
-                                            Get.back();
-                                          });
-                                    },
-                                    label: 'Cancel Order',
-                                  ),
-                                if (userData!.role != UserRollList.admin || (userData!.role == UserRollList.admin && userData!.deleteTrade == 1))
-                                  ContextMenuButtonItem(
-                                    onPressed: () {
-                                      ContextMenuController.removeAny();
-                                      showPermissionDialog(
-                                          message: "Are you sure you want to cancel all order?",
-                                          acceptButtonTitle: "Yes",
-                                          rejectButtonTitle: "No",
-                                          yesClick: () {
-                                            Get.back();
-                                            controller.cancelAllTrade();
-                                          },
-                                          noclick: () {
-                                            Get.back();
-                                          });
-                                    },
-                                    label: 'Cancel All Order',
-                                  ),
-                              ],
-                            );
-                          },
-                          child: Row(
-                            children: <Widget>[
-                              Container(height: 30, color: Colors.transparent, child: tradeContent(context, index)),
-                            ],
-                          ),
-                        );
-                      }),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+                              );
+                            }),
+                      ),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

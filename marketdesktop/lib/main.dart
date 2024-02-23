@@ -95,6 +95,7 @@ double globalMaxWidth = 0.0;
 bool currentDarkModeOn = false;
 bool isAccessTokenExpired = false;
 bool isScoketDisconnted = false;
+bool isLogoutRunning = false;
 List<String> arrSymbolNames = [];
 
 class MyApp extends StatelessWidget {

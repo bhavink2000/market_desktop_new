@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 // import 'package:get_storage/get_storage.dart';
-
+import 'package:web_socket_channel/status.dart' as status;
 import '../../constant/const_string.dart';
 import '../../constant/utilities.dart';
 import '../../main.dart';
@@ -40,6 +40,11 @@ class ApiService {
         CancelToken().cancel();
         if (isAccessTokenExpired == false) {
           showWarningToast("Your access token has been expired.".tr, isFromTop: true);
+          arrSymbolNames.clear();
+          socket.channel?.sink.close(status.normalClosure);
+          // socketIO.socketForTrade.emit('unsubscribe', userData!.userName);
+          // socketIO.socketForTrade.disconnect();
+          // socketIO.socketForTrade.dispose();
           Get.offAllNamed(RouterName.signInScreen);
           isAccessTokenExpired = true;
         }

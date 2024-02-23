@@ -1,4 +1,5 @@
 import 'package:floating_dialog/floating_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
@@ -16,6 +17,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../customWidgets/appScrollBar.dart';
 import '../../../MainContainerScreen/mainContainerController.dart';
 
 class UserListScreen extends BaseView<UserListController> {
@@ -326,75 +328,81 @@ class UserListScreen extends BaseView<UserListController> {
 
   Widget mainContent(BuildContext context) {
     print(controller.isScrollEnable.value);
-    return SingleChildScrollView(
-      physics: controller.isLoadingData == false && controller.arrUserListData.isEmpty
-          ? NeverScrollableScrollPhysics()
-          : controller.isScrollEnable.value
-              ? ClampingScrollPhysics()
-              : NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: globalMaxWidth > 3375 ? globalMaxWidth : 3375,
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: controller.isLoadingData == false && controller.arrUserListData.isEmpty
+            ? NeverScrollableScrollPhysics()
+            : controller.isScrollEnable.value
+                ? ClampingScrollPhysics()
+                : NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: globalMaxWidth > 3375 ? globalMaxWidth : 3375,
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: (controller.isLoadingData == false && controller.isResetData == false) && controller.arrUserListData.isEmpty
-                  ? Container(
-                      width: 100.w,
-                      child: Center(
-                        child: Text("Users not found", style: TextStyle(fontSize: 20, fontFamily: CustomFonts.family1Medium, color: AppColors().lightOnlyText)),
-                      ))
-                  : PaginableListView.builder(
-                      loadMore: () async {
-                        if (controller.totalPage >= controller.currentPage) {
-                          //print(controller.currentPage);
-                          controller.getUserList();
-                        }
-                      },
-                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                      progressIndicatorWidget: displayIndicator(),
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isLoadingData || controller.isResetData ? 50 : controller.arrUserListData.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return orderContent(context, index);
-                      }),
-            ),
-            Container(
-              height: 30,
-              decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-              child: Center(
-                  child: Row(
-                children: [
-                  totalContent(value: "Total", textColor: AppColors().darkText, width: 1200),
-                  totalContent(value: controller.totalPL.toStringAsFixed(2), textColor: controller.totalPL < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
-                  totalContent(value: controller.totalPLPercentage.toStringAsFixed(2), textColor: controller.totalPLPercentage < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
-                ],
-              )),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: (controller.isLoadingData == false && controller.isResetData == false) && controller.arrUserListData.isEmpty
+                    ? Container(
+                        width: 100.w,
+                        child: Center(
+                          child: Text("Users not found", style: TextStyle(fontSize: 20, fontFamily: CustomFonts.family1Medium, color: AppColors().lightOnlyText)),
+                        ))
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.currentPage) {
+                                //print(controller.currentPage);
+                                controller.getUserList();
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isLoadingData || controller.isResetData ? 50 : controller.arrUserListData.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return orderContent(context, index);
+                            }),
+                      ),
+              ),
+              Container(
+                height: 30,
+                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                child: Center(
+                    child: Row(
+                  children: [
+                    totalContent(value: "Total", textColor: AppColors().darkText, width: 1200),
+                    totalContent(value: controller.totalPL.toStringAsFixed(2), textColor: controller.totalPL < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
+                    totalContent(value: controller.totalPLPercentage.toStringAsFixed(2), textColor: controller.totalPLPercentage < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
+                  ],
+                )),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

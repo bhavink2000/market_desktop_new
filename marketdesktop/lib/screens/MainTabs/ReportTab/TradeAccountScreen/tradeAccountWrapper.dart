@@ -1,4 +1,5 @@
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -250,58 +251,64 @@ class TradeAccountScreen extends BaseView<TradeAccountController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: 96.w,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: 96.w,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: 5,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return orderContent(context, index);
-                  }),
-            ),
-            Container(
-              height: 30,
-              child: Center(
-                  child: Row(
-                children: [
-                  totalContent(value: "Total", textColor: AppColors().darkText),
-                  totalContent(value: "10 40 215.40", textColor: AppColors().darkText, width: 150),
-                  totalContent(value: "1 44 841.43", textColor: AppColors().darkText, width: 150),
-                  totalContent(value: "8 95 373.97", textColor: AppColors().darkText, width: 150),
-                  totalContent(value: "56 67 457.25", textColor: AppColors().darkText, width: 150),
-                  totalContent(value: "86 67 457.25", textColor: AppColors().darkText, width: 150),
-                  totalContent(value: "47 78 457.25", textColor: AppColors().darkText, width: 150),
-                ],
-              )),
-            ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: 5,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return orderContent(context, index);
+                      }),
+                ),
+              ),
+              Container(
+                height: 30,
+                child: Center(
+                    child: Row(
+                  children: [
+                    totalContent(value: "Total", textColor: AppColors().darkText),
+                    totalContent(value: "10 40 215.40", textColor: AppColors().darkText, width: 150),
+                    totalContent(value: "1 44 841.43", textColor: AppColors().darkText, width: 150),
+                    totalContent(value: "8 95 373.97", textColor: AppColors().darkText, width: 150),
+                    totalContent(value: "56 67 457.25", textColor: AppColors().darkText, width: 150),
+                    totalContent(value: "86 67 457.25", textColor: AppColors().darkText, width: 150),
+                    totalContent(value: "47 78 457.25", textColor: AppColors().darkText, width: 150),
+                  ],
+                )),
+              ),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

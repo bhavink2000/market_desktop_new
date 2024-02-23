@@ -1,4 +1,5 @@
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/WeeklyAdminScreen/weeklyAdminController.dart';
 import 'package:shimmer/shimmer.dart';
@@ -197,63 +198,69 @@ class WeeklyAdminScreen extends BaseView<WeeklyAdminController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 76.5.w : 96.w,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          width: controller.isFilterOpen ? 76.5.w : 96.w,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.arrWeeklyAdmin.isEmpty
-                  ? dataNotFoundView("Weekly Admin not found")
-                  : ListView.builder(
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning ? 50 : controller.arrWeeklyAdmin.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return orderContent(context, index);
-                      }),
-            ),
-            if (controller.arrWeeklyAdmin.isNotEmpty)
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.arrWeeklyAdmin.isEmpty
+                    ? dataNotFoundView("Weekly Admin not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning ? 50 : controller.arrWeeklyAdmin.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return orderContent(context, index);
+                            }),
+                      ),
+              ),
+              if (controller.arrWeeklyAdmin.isNotEmpty)
+                Container(
+                  height: 2.h,
+                  child: Center(
+                      child: Row(
+                    children: [
+                      totalContent(value: "Total", textColor: AppColors().darkText, width: 480),
+                      totalContent(value: controller.getTotal("ReleasedPl").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("ReleasedPl")), width: 110),
+                      totalContent(value: controller.getTotal("M2mPL").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("M2mPL")), width: 110),
+                      totalContent(value: controller.getTotal("TotalPL").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("TotalPL")), width: 110),
+                      totalContent(value: controller.getTotal("brk").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("brk")), width: 110),
+                      totalContent(value: controller.getTotal("netPL").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("netPL")), width: 110),
+                      totalContent(value: controller.getTotal("adminProfit").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("adminProfit")), width: 110),
+                      totalContent(value: controller.getTotal("adminBrk").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("adminBrk")), width: 110),
+                      totalContent(value: controller.getTotal("totalAdminBrk").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("totalAdminBrk")), width: 150),
+                    ],
+                  )),
+                ),
               Container(
                 height: 2.h,
-                child: Center(
-                    child: Row(
-                  children: [
-                    totalContent(value: "Total", textColor: AppColors().darkText, width: 480),
-                    totalContent(value: controller.getTotal("ReleasedPl").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("ReleasedPl")), width: 110),
-                    totalContent(value: controller.getTotal("M2mPL").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("M2mPL")), width: 110),
-                    totalContent(value: controller.getTotal("TotalPL").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("TotalPL")), width: 110),
-                    totalContent(value: controller.getTotal("brk").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("brk")), width: 110),
-                    totalContent(value: controller.getTotal("netPL").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("netPL")), width: 110),
-                    totalContent(value: controller.getTotal("adminProfit").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("adminProfit")), width: 110),
-                    totalContent(value: controller.getTotal("adminBrk").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("adminBrk")), width: 110),
-                    totalContent(value: controller.getTotal("totalAdminBrk").toStringAsFixed(2), textColor: controller.getColor(controller.getTotal("totalAdminBrk")), width: 150),
-                  ],
-                )),
+                color: AppColors().headerBgColor,
               ),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

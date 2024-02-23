@@ -5,6 +5,7 @@ import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/modelClass/userwiseBrokerageListModelClass.dart';
 
 import '../../../customWidgets/appTextField.dart';
+import '../../../main.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../../modelClass/exchangeListModelClass.dart';
 import '../../BaseController/baseController.dart';
@@ -52,12 +53,13 @@ class BrkPopUpController extends BaseController {
     // TODO: implement onInit
     super.onInit();
     arrListTitle = [
-      ListItem("", true),
+      if (selectedUserForUserDetailPopupParentID == userData!.userId!) ListItem("", true),
       ListItem("EXCHANGE", true),
       ListItem("SCRIPT", true),
       if (selectedCurrentTab == 0) ListItem("TURNOVER WISE BRK(RS. PER 1/CR))", true),
       if (selectedCurrentTab == 1) ListItem("Brk(Rs.)", true),
     ];
+
     update();
   }
 

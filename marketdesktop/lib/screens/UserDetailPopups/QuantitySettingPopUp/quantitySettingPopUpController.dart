@@ -3,7 +3,9 @@ import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/quantitySettingListMmodelClass.dart';
 import '../../../constant/index.dart';
+import '../../../main.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
+import '../../../modelClass/profileInfoModelClass.dart';
 import '../../BaseController/baseController.dart';
 import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import '../userDetailsPopUpController.dart';
@@ -25,6 +27,7 @@ class QuantitySettingPopUpController extends BaseController {
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
   String selectedUserId = "";
+
   String selectedGroupId = "";
   bool isAllSelected = false;
   bool isApiCallRunning = false;
@@ -50,6 +53,11 @@ class QuantitySettingPopUpController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+
+    if (selectedUserForUserDetailPopupParentID != userData!.userId!) {
+      arrListTitle.removeAt(0);
+      update();
+    }
   }
 
   refreshView() {

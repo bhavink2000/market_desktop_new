@@ -76,6 +76,6 @@ class BillGenerateController extends BaseController {
       fileDownloading.value = 00;
     });
     update();
-    showSuccessToast("File successfully saved on your download folder.");
+    showSuccessToast("File successfully saved.");
   }
 }

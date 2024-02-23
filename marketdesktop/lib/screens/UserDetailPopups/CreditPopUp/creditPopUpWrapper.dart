@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/utilities.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/CreditPopUp/creditPopUpController.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -36,12 +37,12 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                 Expanded(
                   child: Row(
                     children: [
-                      if (controller.selectedUserData?.parentId == userData!.userId)
+                      if (selectedUserForUserDetailPopupParentID == userData!.userId)
                         filterPanel(context, name: "Add Credit", bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
                           controller.isFilterOpen = !controller.isFilterOpen;
                           controller.update();
                         }),
-                      if (controller.selectedUserData!.parentId == userData!.userId) filterContent(context),
+                      if (selectedUserForUserDetailPopupParentID == userData!.userId) filterContent(context),
                       Expanded(
                         flex: 8,
                         child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
@@ -228,40 +229,46 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: 1860,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: 1860,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
+                height: 3.h,
+                color: AppColors().whiteColor,
+                child: Row(
+                  children: [
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  clipBehavior: Clip.hardEdge,
-                  itemCount: controller.arrCreditList.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return creditContent(context, index);
-                  }),
-            ),
-          ],
+              Expanded(
+                child: CustomScrollBar(
+                  bgColor: AppColors().blueColor,
+                  child: ListView.builder(
+                      physics: const ClampingScrollPhysics(),
+                      clipBehavior: Clip.hardEdge,
+                      itemCount: controller.arrCreditList.length,
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return creditContent(context, index);
+                      }),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

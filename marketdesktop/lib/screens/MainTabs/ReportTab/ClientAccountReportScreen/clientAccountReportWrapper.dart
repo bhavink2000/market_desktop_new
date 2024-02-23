@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportController.dart';
 import 'package:paginable/paginable.dart';
@@ -455,70 +456,76 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        width: globalMaxWidth + 1000,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: 3.h,
-              color: AppColors().whiteColor,
-              child: Row(
-                children: [
-                  // Container(
-                  //   width: 30,
-                  // ),
-                  listTitleContent(),
-                ],
-              ),
-            ),
-            Expanded(
-              child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrSummaryList.isEmpty
-                  ? dataNotFoundView("Account Summary not found")
-                  : PaginableListView.builder(
-                      loadMore: () async {
-                        if (controller.totalPage >= controller.currentPage) {
-                          //print(controller.currentPage);
-                          controller.getAccountSummaryNewList("");
-                        }
-                      },
-                      errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                      progressIndicatorWidget: displayIndicator(),
-                      physics: const ClampingScrollPhysics(),
-                      clipBehavior: Clip.hardEdge,
-                      itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrSummaryList.length,
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return tradeContent(context, index);
-                      }),
-            ),
-            Obx(() {
-              return Container(
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          width: globalMaxWidth + 1000,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Container(
                 height: 3.h,
-                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                child: Center(
-                    child: Row(
+                color: AppColors().whiteColor,
+                child: Row(
                   children: [
-                    totalContent(value: "Total :", textColor: AppColors().darkText, width: 1600),
-
-                    // totalContent(value: controller.outPerGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
-                    totalContent(value: controller.grandTotal.value.toStringAsFixed(2), textColor: controller.grandTotal.value > 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                    // totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                    // Container(
+                    //   width: 30,
+                    // ),
+                    listTitleContent(),
                   ],
-                )),
-              );
-            }),
-            Container(
-              height: 2.h,
-              color: AppColors().headerBgColor,
-            ),
-          ],
+                ),
+              ),
+              Expanded(
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrSummaryList.isEmpty
+                    ? dataNotFoundView("Account Summary not found")
+                    : CustomScrollBar(
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.currentPage) {
+                                //print(controller.currentPage);
+                                controller.getAccountSummaryNewList("");
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrSummaryList.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return tradeContent(context, index);
+                            }),
+                      ),
+              ),
+              Obx(() {
+                return Container(
+                  height: 3.h,
+                  decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                  child: Center(
+                      child: Row(
+                    children: [
+                      totalContent(value: "Total :", textColor: AppColors().darkText, width: 1600),
+
+                      // totalContent(value: controller.outPerGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                      totalContent(value: controller.grandTotal.value.toStringAsFixed(2), textColor: controller.grandTotal.value > 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
+                      // totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                    ],
+                  )),
+                );
+              }),
+              Container(
+                height: 2.h,
+                color: AppColors().headerBgColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

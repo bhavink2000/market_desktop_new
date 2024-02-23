@@ -63,13 +63,13 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
   }
 
   isUserDetailPopUpOpen = true;
-  Future.delayed(Duration(milliseconds: 200), () {
+  Future.delayed(Duration(milliseconds: 200), () async {
     Get.find<PositionPopUpController>().selectedUserId = userId;
     var detailVC = Get.find<UserDetailsPopUpController>();
     detailVC.userName = userName;
     detailVC.userId = userId;
     detailVC.userRoll = roll;
-    detailVC.getUSerInfo();
+    await detailVC.getUSerInfo();
 
     var positionVC = Get.find<PositionPopUpController>();
     positionVC.getPositionList("");
@@ -96,6 +96,7 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
     groupSettingVc.groupSettingList();
 
     var qtySettingVC = Get.find<QuantitySettingPopUpController>();
+    
     qtySettingVC.selectedUserId = userId;
     // Get.find<QuantitySettingPopUpController>().quantitySettingList();
 

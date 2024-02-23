@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:get/get.dart';
+import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
 import '../../../constant/index.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/SettlementPopUp/settlementPopUpController.dart';
@@ -375,156 +376,162 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
   }
 
   Widget mainContent(BuildContext context) {
-    return SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      scrollDirection: Axis.horizontal,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        width: controller.isFilterOpen ? 920 : 1300,
-        // margin: EdgeInsets.only(right: 1.w),
-        color: Colors.white,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(1),
-                decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 3.h,
-                      decoration: BoxDecoration(
-                          color: AppColors().whiteColor,
-                          border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                      child: Center(
-                        child: Text("Profit",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: CustomFonts.family1Medium,
-                              color: AppColors().greenColor,
-                            )),
+    return CustomScrollBar(
+      bgColor: AppColors().blueColor,
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          width: controller.isFilterOpen ? 920 : 1300,
+          // margin: EdgeInsets.only(right: 1.w),
+          color: Colors.white,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 3.h,
+                        decoration: BoxDecoration(
+                            color: AppColors().whiteColor,
+                            border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                        child: Center(
+                          child: Text("Profit",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().greenColor,
+                              )),
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: 3.h,
-                      color: AppColors().whiteColor,
-                      child: listTitleContent(),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                          physics: const ClampingScrollPhysics(),
-                          clipBehavior: Clip.hardEdge,
-                          itemCount: controller.arrProfitList.length,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return profitLossContent(context, index, controller.arrProfitList[index]);
-                          }),
-                    ),
-                    Container(
-                      height: 3.h,
-                      decoration: BoxDecoration(
-                          color: AppColors().whiteColor,
-                          border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                      child: Center(
-                          child: Row(
-                        children: [
-                          totalContent(value: "Net Profit", textColor: AppColors().darkText, width: 110),
-                          totalContent(
-                              value: controller.totalValues!.plProfitGrandTotal.toStringAsFixed(2),
-                              textColor: AppColors().darkText,
-                              width: 110),
-                          totalContent(
-                              value: controller.totalValues!.brkProfitGrandTotal.toStringAsFixed(2),
-                              textColor: AppColors().darkText,
-                              width: 110),
-                          totalContent(
-                              value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2),
-                              textColor: AppColors().darkText,
-                              width: 110),
-                        ],
-                      )),
-                    ),
-                  ],
+                      Container(
+                        height: 3.h,
+                        color: AppColors().whiteColor,
+                        child: listTitleContent(),
+                      ),
+                      Expanded(
+                        child: CustomScrollBar(
+                          bgColor: AppColors().blueColor,
+                          child: ListView.builder(
+                              physics: const ClampingScrollPhysics(),
+                              clipBehavior: Clip.hardEdge,
+                              itemCount: controller.arrProfitList.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return profitLossContent(context, index, controller.arrProfitList[index]);
+                              }),
+                        ),
+                      ),
+                      Container(
+                        height: 3.h,
+                        decoration: BoxDecoration(
+                            color: AppColors().whiteColor,
+                            border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                        child: Center(
+                            child: Row(
+                          children: [
+                            totalContent(value: "Net Profit", textColor: AppColors().darkText, width: 110),
+                            totalContent(
+                                value: controller.totalValues!.plProfitGrandTotal.toStringAsFixed(2),
+                                textColor: AppColors().darkText,
+                                width: 110),
+                            totalContent(
+                                value: controller.totalValues!.brkProfitGrandTotal.toStringAsFixed(2),
+                                textColor: AppColors().darkText,
+                                width: 110),
+                            totalContent(
+                                value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2),
+                                textColor: AppColors().darkText,
+                                width: 110),
+                          ],
+                        )),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 3,
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(1),
-                decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 3.h,
-                      decoration: BoxDecoration(
-                          color: AppColors().whiteColor,
-                          border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                      child: Center(
-                        child: Text("Loss",
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: CustomFonts.family1Medium,
-                              color: AppColors().redColor,
-                            )),
+              const SizedBox(
+                width: 3,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 3.h,
+                        decoration: BoxDecoration(
+                            color: AppColors().whiteColor,
+                            border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                        child: Center(
+                          child: Text("Loss",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().redColor,
+                              )),
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: 3.h,
-                      color: AppColors().whiteColor,
-                      child: Row(
-                        children: [
-                          // Container(
-                          //   width: 30,
-                          // ),
-                          listTitleContent(),
-                        ],
+                      Container(
+                        height: 3.h,
+                        color: AppColors().whiteColor,
+                        child: Row(
+                          children: [
+                            // Container(
+                            //   width: 30,
+                            // ),
+                            listTitleContent(),
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                          physics: const ClampingScrollPhysics(),
-                          clipBehavior: Clip.hardEdge,
-                          itemCount: controller.arrLossList.length,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return profitLossContent(context, index, controller.arrLossList[index]);
-                          }),
-                    ),
-                    Container(
-                      height: 3.h,
-                      decoration: BoxDecoration(
-                          color: AppColors().whiteColor,
-                          border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                      child: Center(
-                          child: Row(
-                        children: [
-                          totalContent(value: "Net Loss", textColor: AppColors().darkText, width: 110),
-                          totalContent(
-                              value: controller.totalValues!.plLossGrandTotal.toStringAsFixed(2),
-                              textColor: AppColors().darkText,
-                              width: 110),
-                          totalContent(
-                              value: controller.totalValues!.brkLossGrandTotal.toStringAsFixed(2),
-                              textColor: AppColors().darkText,
-                              width: 110),
-                          totalContent(
-                              value: controller.totalValues!.LossGrandTotal.toStringAsFixed(2),
-                              textColor: AppColors().darkText,
-                              width: 110),
-                        ],
-                      )),
-                    ),
-                  ],
+                      Expanded(
+                        child: ListView.builder(
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.arrLossList.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return profitLossContent(context, index, controller.arrLossList[index]);
+                            }),
+                      ),
+                      Container(
+                        height: 3.h,
+                        decoration: BoxDecoration(
+                            color: AppColors().whiteColor,
+                            border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                        child: Center(
+                            child: Row(
+                          children: [
+                            totalContent(value: "Net Loss", textColor: AppColors().darkText, width: 110),
+                            totalContent(
+                                value: controller.totalValues!.plLossGrandTotal.toStringAsFixed(2),
+                                textColor: AppColors().darkText,
+                                width: 110),
+                            totalContent(
+                                value: controller.totalValues!.brkLossGrandTotal.toStringAsFixed(2),
+                                textColor: AppColors().darkText,
+                                width: 110),
+                            totalContent(
+                                value: controller.totalValues!.LossGrandTotal.toStringAsFixed(2),
+                                textColor: AppColors().darkText,
+                                width: 110),
+                          ],
+                        )),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

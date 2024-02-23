@@ -115,6 +115,9 @@ class PositionPopUpController extends BaseController {
         var indexOfScript = arrPositionScriptList.indexWhere((element) => element.symbolName == socketData.data?.symbol);
         if (indexOfScript != -1) {
           arrPositionScriptList[indexOfScript].scriptDataFromSocket = socketData.data!.obs;
+          arrPositionScriptList[indexOfScript].bid = socketData.data!.bid;
+          arrPositionScriptList[indexOfScript].ask = socketData.data!.ask;
+          arrPositionScriptList[indexOfScript].ltp = socketData.data!.ltp;
           if (indexOfScript == 0) {}
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {

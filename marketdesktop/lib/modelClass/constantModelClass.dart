@@ -109,44 +109,79 @@ class ConstantData {
     this.rejectedTradeStatusFilter,
   });
 
-  factory ConstantData.fromJson(Map<String, dynamic> json) => ConstantData(
-        tradeAttribute: json["tradeAttribute"] == null ? [] : List<String>.from(json["tradeAttribute"]!.map((x) => x)),
-        allowTrade: json["allowTrade"] == null ? [] : List<AddMaster>.from(json["allowTrade"]!.map((x) => AddMaster.fromJson(x))),
-        symbolStatus: json["symbolStatus"] == null ? [] : List<AddMaster>.from(json["symbolStatus"]!.map((x) => AddMaster.fromJson(x))),
-        tradeTimingBy: json["tradeTimingBy"] == null ? [] : List<AddMaster>.from(json["tradeTimingBy"]!.map((x) => AddMaster.fromJson(x))),
-        orderType: json["orderType"] == null ? [] : List<Type>.from(json["orderType"]!.map((x) => Type.fromJson(x))),
-        tradeType: json["tradeType"] == null ? [] : List<Type>.from(json["tradeType"]!.map((x) => Type.fromJson(x))),
-        productType: json["productType"] == null ? [] : List<Type>.from(json["productType"]!.map((x) => Type.fromJson(x))),
-        highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<AddMaster>.from(json["highLowBetweenTradeLimit"]!.map((x) => AddMaster.fromJson(x))),
-        oddLotTrade: json["oddLotTrade"] == null ? [] : List<AddMaster>.from(json["oddLotTrade"]!.map((x) => AddMaster.fromJson(x))),
-        autoLotTrade: json["autoLotTrade"] == null ? [] : List<AddMaster>.from(json["autoLotTrade"]!.map((x) => AddMaster.fromJson(x))),
-        exchangeStatus: json["exchangeStatus"] == null ? [] : List<AddMaster>.from(json["exchangeStatus"]!.map((x) => AddMaster.fromJson(x))),
-        brockerageType: json["brockerageType"] == null ? [] : List<Type>.from(json["brockerageType"]!.map((x) => Type.fromJson(x))),
-        autoTickSize: json["autoTickSize"] == null ? [] : List<AddMaster>.from(json["autoTickSize"]!.map((x) => AddMaster.fromJson(x))),
-        weekDays: json["weekDays"] == null ? [] : List<AddMaster>.from(json["weekDays"]!.map((x) => AddMaster.fromJson(x))),
-        cmpOrder: json["cmpOrder"] == null ? [] : List<AddMaster>.from(json["cmpOrder"]!.map((x) => AddMaster.fromJson(x))),
-        manualOrder: json["manualOrder"] == null ? [] : List<AddMaster>.from(json["manualOrder"]!.map((x) => AddMaster.fromJson(x))),
-        addMaster: json["addMaster"] == null ? [] : List<AddMaster>.from(json["addMaster"]!.map((x) => AddMaster.fromJson(x))),
-        modifyOrder: json["modifyOrder"] == null ? [] : List<AddMaster>.from(json["modifyOrder"]!.map((x) => AddMaster.fromJson(x))),
-        autoSquareOff: json["autoSquareOff"] == null ? [] : List<AddMaster>.from(json["autoSquareOff"]!.map((x) => AddMaster.fromJson(x))),
-        lotWise: json["lotWise"] == null ? [] : List<AddMaster>.from(json["lotWise"]!.map((x) => AddMaster.fromJson(x))),
-        allPositionClose: json["allPositionClose"] == null ? [] : List<AddMaster>.from(json["allPositionClose"]!.map((x) => AddMaster.fromJson(x))),
-        intraday: json["intraday"] == null ? [] : List<AddMaster>.from(json["intraday"]!.map((x) => AddMaster.fromJson(x))),
-        leverageList: json["leverageList"] == null ? [] : List<AddMaster>.from(json["leverageList"]!.map((x) => AddMaster.fromJson(x))),
-        status: json["status"] == null ? [] : List<AddMaster>.from(json["status"]!.map((x) => AddMaster.fromJson(x))),
-        userFilterType: json["userFilterType"] == null ? [] : List<AddMaster>.from(json["userFilterType"]!.map((x) => AddMaster.fromJson(x))),
-        serverName: json["serverName"],
-        transactionType: json["transactionType"] == null ? [] : List<Type>.from(json["transactionType"]!.map((x) => Type.fromJson(x))),
-        roleData: json["roleData"] == null ? [] : List<RoleDatum>.from(json["roleData"]!.map((x) => RoleDatum.fromJson(x))),
-        settingData: json["settingData"] == null ? null : SettingData.fromJson(json["settingData"]),
-        orderTypeFilter: json["orderTypeFilter"] == null ? [] : List<Type>.from(json["orderTypeFilter"]!.map((x) => Type.fromJson(x))),
-        tradeStatusFilter: json["tradeStatusFilter"] == null ? [] : List<Type>.from(json["tradeStatusFilter"]!.map((x) => Type.fromJson(x))),
-        manuallyTradeAddedFor: json["manuallyTradeAddedFor"] == null ? [] : List<Type>.from(json["manuallyTradeAddedFor"]!.map((x) => Type.fromJson(x))),
-        productTypeForAccount: json["productTypeForAccount"] == null ? [] : List<Type>.from(json["productTypeForAccount"]!.map((x) => Type.fromJson(x))),
-        instrumentType: json["instrumentType"] == null ? [] : List<Type>.from(json["instrumentType"]!.map((x) => Type.fromJson(x))),
-        userLogFilter: json["userLogFilter"] == null ? [] : List<Type>.from(json["userLogFilter"]!.map((x) => Type.fromJson(x))),
-        rejectedTradeStatusFilter: json["rejectedTradeStatusFilter"] == null ? [] : List<Type>.from(json["rejectedTradeStatusFilter"]!.map((x) => Type.fromJson(x))),
-      );
+  factory ConstantData.fromJson(Map<String, dynamic> json) {
+    var allMaster = AddMaster(name: "ALL", id: null);
+    var allType = Type(name: "ALL", id: "");
+    var values = ConstantData(
+      tradeAttribute: json["tradeAttribute"] == null ? [] : List<String>.from(json["tradeAttribute"]!.map((x) => x))
+        ..insert(0, "ALL"),
+      allowTrade: json["allowTrade"] == null ? [] : List<AddMaster>.from(json["allowTrade"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      symbolStatus: json["symbolStatus"] == null ? [] : List<AddMaster>.from(json["symbolStatus"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      tradeTimingBy: json["tradeTimingBy"] == null ? [] : List<AddMaster>.from(json["tradeTimingBy"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      orderType: json["orderType"] == null ? [] : List<Type>.from(json["orderType"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      tradeType: json["tradeType"] == null ? [] : List<Type>.from(json["tradeType"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      productType: json["productType"] == null ? [] : List<Type>.from(json["productType"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<AddMaster>.from(json["highLowBetweenTradeLimit"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      oddLotTrade: json["oddLotTrade"] == null ? [] : List<AddMaster>.from(json["oddLotTrade"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      autoLotTrade: json["autoLotTrade"] == null ? [] : List<AddMaster>.from(json["autoLotTrade"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      exchangeStatus: json["exchangeStatus"] == null ? [] : List<AddMaster>.from(json["exchangeStatus"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      brockerageType: json["brockerageType"] == null ? [] : List<Type>.from(json["brockerageType"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      autoTickSize: json["autoTickSize"] == null ? [] : List<AddMaster>.from(json["autoTickSize"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      weekDays: json["weekDays"] == null ? [] : List<AddMaster>.from(json["weekDays"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      cmpOrder: json["cmpOrder"] == null ? [] : List<AddMaster>.from(json["cmpOrder"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      manualOrder: json["manualOrder"] == null ? [] : List<AddMaster>.from(json["manualOrder"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      addMaster: json["addMaster"] == null ? [] : List<AddMaster>.from(json["addMaster"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      modifyOrder: json["modifyOrder"] == null ? [] : List<AddMaster>.from(json["modifyOrder"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      autoSquareOff: json["autoSquareOff"] == null ? [] : List<AddMaster>.from(json["autoSquareOff"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      lotWise: json["lotWise"] == null ? [] : List<AddMaster>.from(json["lotWise"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      allPositionClose: json["allPositionClose"] == null ? [] : List<AddMaster>.from(json["allPositionClose"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      intraday: json["intraday"] == null ? [] : List<AddMaster>.from(json["intraday"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      leverageList: json["leverageList"] == null ? [] : List<AddMaster>.from(json["leverageList"]!.map((x) => AddMaster.fromJson(x))),
+      status: json["status"] == null ? [] : List<AddMaster>.from(json["status"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
+      userFilterType: json["userFilterType"] == null ? [] : List<AddMaster>.from(json["userFilterType"]!.map((x) => AddMaster.fromJson(x))),
+      serverName: json["serverName"],
+      transactionType: json["transactionType"] == null ? [] : List<Type>.from(json["transactionType"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      roleData: json["roleData"] == null ? [] : List<RoleDatum>.from(json["roleData"]!.map((x) => RoleDatum.fromJson(x))),
+      settingData: json["settingData"] == null ? null : SettingData.fromJson(json["settingData"]),
+      orderTypeFilter: json["orderTypeFilter"] == null ? [] : List<Type>.from(json["orderTypeFilter"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      tradeStatusFilter: json["tradeStatusFilter"] == null ? [] : List<Type>.from(json["tradeStatusFilter"]!.map((x) => Type.fromJson(x))),
+      manuallyTradeAddedFor: json["manuallyTradeAddedFor"] == null ? [] : List<Type>.from(json["manuallyTradeAddedFor"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      productTypeForAccount: json["productTypeForAccount"] == null ? [] : List<Type>.from(json["productTypeForAccount"]!.map((x) => Type.fromJson(x))),
+      instrumentType: json["instrumentType"] == null ? [] : List<Type>.from(json["instrumentType"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      userLogFilter: json["userLogFilter"] == null ? [] : List<Type>.from(json["userLogFilter"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+      rejectedTradeStatusFilter: json["rejectedTradeStatusFilter"] == null ? [] : List<Type>.from(json["rejectedTradeStatusFilter"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
+    );
+
+    return values;
+  }
 
   Map<String, dynamic> toJson() => {
         "tradeAttribute": tradeAttribute == null ? [] : List<dynamic>.from(tradeAttribute!.map((x) => x)),

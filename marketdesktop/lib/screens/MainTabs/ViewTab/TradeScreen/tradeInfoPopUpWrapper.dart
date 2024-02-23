@@ -60,7 +60,7 @@ class TradeInfoPopUpScreen extends BaseView<TradeListController> {
                           child: CustomButton(
                             isEnabled: true,
                             shimmerColor: AppColors().whiteColor,
-                            title: "Modify Trade",
+                            title: "Modify Order",
                             textSize: 14,
                             onPress: () {
                               controller.priceController.text = controller.arrTrade[controller.selectedOrderIndex].price!.toString();
