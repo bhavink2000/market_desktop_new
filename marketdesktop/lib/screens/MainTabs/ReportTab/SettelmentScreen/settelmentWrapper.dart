@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 
 import 'package:responsive_framework/responsive_framework.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
 
@@ -345,7 +346,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                   Container(
                     height: 3.h,
                     color: AppColors().whiteColor,
-                    child: listTitleContent(),
+                    child: listTitleContent(controller),
                   ),
                   Expanded(
                     child: controller.isApiCallFirstTime == false && controller.isApiCallFromReset == false && controller.isApiCallFromSearch == false && controller.arrProfitList.isEmpty
@@ -409,7 +410,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                         // Container(
                         //   width: 30,
                         // ),
-                        listTitleContent(),
+                        listTitleContent(controller),
                       ],
                     ),
                   ),
@@ -486,26 +487,47 @@ class SettlementScreen extends BaseView<SettlementController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'USERNAME':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.displayName!, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true) : const SizedBox();
+                      return dynamicValueBox1(
+                        value.displayName!,
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'P/L':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                      return dynamicValueBox1(
+                        value.profitLoss!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'BRK':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'TOTAL':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(value.total!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                      return dynamicValueBox1(
+                        value.total!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
 
                   default:
@@ -519,74 +541,5 @@ class SettlementScreen extends BaseView<SettlementController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BRK':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TOTAL':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 }

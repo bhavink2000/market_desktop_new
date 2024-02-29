@@ -11,7 +11,6 @@ import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../modelClass/constantModelClass.dart';
-import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class SuccessTradeListController extends BaseController {
   //*********************************************************************** */

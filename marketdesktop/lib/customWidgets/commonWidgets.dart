@@ -152,11 +152,11 @@ Widget dynamicTitleBox(
         cursor: SystemMouseCursors.resizeColumn,
         child: GestureDetector(
           onPanStart: (details) {
-            arrListTitle![index].start = details.localPosition;
+            arrListTitle[index].start = details.localPosition;
             isScrollEnable.value = false;
           },
           onPanEnd: (details) {
-            arrListTitle![index].start = null;
+            arrListTitle[index].start = null;
             if (updateCallback != null) {
               isScrollEnable.value = true;
               updateCallback();
@@ -177,7 +177,7 @@ Widget dynamicTitleBox(
             }
           },
           onPanUpdate: (details) {
-            var diff = details.localPosition.dx - arrListTitle![index].start!.dx;
+            var diff = details.localPosition.dx - arrListTitle[index].start!.dx;
             if ((globalMaxWidth + diff) >= globalScreenSize.width) {
               globalMaxWidth = globalScreenSize.width + diff;
             }
@@ -295,18 +295,18 @@ Widget dynamicTitleBox1(
         cursor: SystemMouseCursors.resizeColumn,
         child: GestureDetector(
           onPanStart: (details) {
-            arrListTitle![index].start = details.localPosition;
+            arrListTitle[index].start = details.localPosition;
             isScrollEnable.value = false;
           },
           onPanEnd: (details) {
-            arrListTitle![index].start = Offset.zero;
+            arrListTitle[index].start = Offset.zero;
             if (updateCallback != null) {
               isScrollEnable.value = true;
               updateCallback();
             }
           },
           onPanUpdate: (details) {
-            var diff = details.localPosition.dx - arrListTitle![index].start!.dx;
+            var diff = details.localPosition.dx - arrListTitle[index].start.dx;
             if ((globalMaxWidth + diff) >= globalScreenSize.width) {
               globalMaxWidth = globalScreenSize.width + diff;
             }

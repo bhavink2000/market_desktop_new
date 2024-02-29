@@ -5,7 +5,6 @@ import 'package:marketdesktop/modelClass/quantitySettingListMmodelClass.dart';
 import '../../../constant/index.dart';
 import '../../../main.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
-import '../../../modelClass/profileInfoModelClass.dart';
 import '../../BaseController/baseController.dart';
 import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import '../userDetailsPopUpController.dart';

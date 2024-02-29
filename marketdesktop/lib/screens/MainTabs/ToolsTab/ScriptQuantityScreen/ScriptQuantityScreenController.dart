@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../constant/const_string.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
@@ -9,7 +10,7 @@ import '../../../../modelClass/groupListModelClass.dart';
 import '../../../../modelClass/myUserListModelClass.dart';
 import '../../../../modelClass/scriptQuantityModelClass.dart';
 import '../../../BaseController/baseController.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class ScriptQuantityControllerBinding implements Bindings {
   @override
@@ -42,27 +43,17 @@ class ScriptQuantityController extends BaseController {
   bool isApiCallRunning = false;
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
-  List<ListItem> arrListTitle = [
-    ListItem("SYMBOL", true),
-    ListItem("BREAKUP QTY", true),
-    ListItem("MAX QTY", true),
-    ListItem("BREAKUP LOT", true),
-    ListItem("MAX LOT", true),
-  ];
 
   @override
   void onInit() async {
     super.onInit();
+    getColumnListFromDB(ScreenIds().scriptQty, arrListTitle1);
     if (userData!.role == UserRollList.user) {
       selectUserdropdownValue.value = UserData(userId: userData!.userId);
     }
     getExchangeList();
     getUserList();
     // getQuantityList();
-    update();
-  }
-
-  refreshView() {
     update();
   }
 

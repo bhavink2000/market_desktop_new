@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveSizer(builder: (context, orientation, screenType) {
       return GetMaterialApp(
-        title: 'TESLA',
+        title: AppString.appName,
         initialRoute: RouterName.signInScreen,
         debugShowCheckedModeBanner: false,
         getPages: Pages.pages(),

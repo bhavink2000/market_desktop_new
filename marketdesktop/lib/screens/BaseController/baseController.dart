@@ -46,6 +46,10 @@ class BaseController extends GetxController {
     update();
   }
 
+  bool isHiddenTitle(String title) {
+    return false;
+  }
+
   @override
   void onClose() {
     super.onClose();

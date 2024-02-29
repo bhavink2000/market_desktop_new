@@ -172,13 +172,16 @@ class GlobalSymbolData {
         "status": status,
       };
   @override
-  bool operator == (dynamic other) {
+  bool operator ==(dynamic other) {
     if (other is GlobalSymbolData) {
       return this.symbolId == other.symbolId;
     } else {
       return false;
     }
   }
+
+  @override
+  int get hashCode => symbolId.hashCode;
 }
 
 class Meta {

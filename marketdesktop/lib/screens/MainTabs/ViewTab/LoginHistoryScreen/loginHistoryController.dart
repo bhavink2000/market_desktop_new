@@ -2,11 +2,8 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/constant/screenColumnData.dart';
 import 'package:marketdesktop/modelClass/loginHistoryModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-import 'package:marketdesktop/modelClass/tableColumnsModelClass.dart';
-import 'package:marketdesktop/service/database/dbService.dart';
 import '../../../../constant/index.dart';
 import '../../../BaseController/baseController.dart';
-import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class LoginHistoryController extends BaseController {
   //*********************************************************************** */

@@ -4,7 +4,8 @@ import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
 import '../../../../constant/index.dart';
-import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+import '../../../constant/screenColumnData.dart';
+
 
 class RejectionLogPopUpController extends BaseController {
   //*********************************************************************** */
@@ -22,27 +23,12 @@ class RejectionLogPopUpController extends BaseController {
   String selectedUserId = "";
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
-  List<ListItem> arrListTitle = [
-    ListItem("DATE", true),
-    ListItem("MESSAGE", true),
-    ListItem("USERNAME", true),
-    ListItem("SYMBOL", true),
-    ListItem("TYPE", true),
-    ListItem("QUANTITY", true),
-    ListItem("PRICE", true),
-    ListItem("IP ADDRESS", true),
-    ListItem("DEVICE ID", true),
 
-  ];
-   
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-  }
-
-  refreshView() {
-    update();
+    getColumnListFromDB(ScreenIds().userRejectionLog, arrListTitle1);
   }
 
   rejectLogList() async {

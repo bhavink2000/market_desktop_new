@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/scriptMasterPopUp/scriptMasterPopUpController.dart';
 
+import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../modelClass/tradeMarginListModelClass.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class ScriptMasterController extends BaseController {
   //*********************************************************************** */
@@ -33,24 +33,12 @@ class ScriptMasterController extends BaseController {
   int totalCount = 0;
   List<TradeMarginData> arrTradeMargin = [];
 
-  List<ListItem> arrListTitle = [
-    ListItem("EXCHANGE", true),
-    ListItem("SCRIPT", true),
-    ListItem("EXPIRY DATE", true),
-    ListItem("DESCRIPTION", true),
-    ListItem("TRADE ATTRIBUTE", true),
-    ListItem("ALLOW TRADE", true),
-  ];
-
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().scriptMaster, arrListTitle1);
     tradeMarginList(isFromFilter: true);
-  }
-
-  refreshView() {
-    update();
   }
 
   tradeMarginList({bool isFromFilter = false, bool isFromClear = false}) async {

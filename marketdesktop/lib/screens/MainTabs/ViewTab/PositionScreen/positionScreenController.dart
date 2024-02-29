@@ -17,7 +17,6 @@ import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
-import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class PositionController extends BaseController {
   //*********************************************************************** */

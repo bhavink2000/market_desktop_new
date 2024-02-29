@@ -58,6 +58,7 @@ class ConstantData {
   List<AddMaster>? leverageList;
   List<AddMaster>? status;
   List<AddMaster>? userFilterType;
+  List<AddMaster>? billType;
   List<Type>? orderTypeFilter;
   String? serverName;
   List<Type>? transactionType;
@@ -107,6 +108,7 @@ class ConstantData {
     this.instrumentType,
     this.userLogFilter,
     this.rejectedTradeStatusFilter,
+    this.billType,
   });
 
   factory ConstantData.fromJson(Map<String, dynamic> json) {
@@ -178,6 +180,8 @@ class ConstantData {
         ..insert(0, allType),
       rejectedTradeStatusFilter: json["rejectedTradeStatusFilter"] == null ? [] : List<Type>.from(json["rejectedTradeStatusFilter"]!.map((x) => Type.fromJson(x)))
         ..insert(0, allType),
+      billType: json["billType"] == null ? [] : List<AddMaster>.from(json["billType"]!.map((x) => AddMaster.fromJson(x)))
+        ..insert(0, allMaster),
     );
 
     return values;
@@ -219,6 +223,7 @@ class ConstantData {
         "instrumentType": instrumentType == null ? [] : List<dynamic>.from(instrumentType!.map((x) => x.toJson())),
         "userLogFilter": userLogFilter == null ? [] : List<dynamic>.from(userLogFilter!.map((x) => x.toJson())),
         "rejectedTradeStatusFilter": rejectedTradeStatusFilter == null ? [] : List<dynamic>.from(userLogFilter!.map((x) => x.toJson())),
+        "billType": billType == null ? [] : List<dynamic>.from(billType!.map((x) => x.toJson())),
       };
 }
 

@@ -11,6 +11,8 @@ import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/chan
 import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/changePasswordWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/MarketTimingScreen/marketTimingScreenController.dart';
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/MarketTimingScreen/marketTimingScreenWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/ToolsTab/ShortcutScreen/shortcutController.dart';
+import 'package:marketdesktop/screens/MainTabs/ToolsTab/ShortcutScreen/shortcutWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeController.dart';
@@ -19,7 +21,6 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/ScriptD
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchScriptInfoPopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeInfoPopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
-import 'package:marketdesktop/screens/UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/BrkPopUp/brkPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/CreditPopUp/creditPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/FilterPopup/filterPopUpController.dart';
@@ -96,7 +97,7 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
     groupSettingVc.groupSettingList();
 
     var qtySettingVC = Get.find<QuantitySettingPopUpController>();
-    
+
     qtySettingVC.selectedUserId = userId;
     // Get.find<QuantitySettingPopUpController>().quantitySettingList();
 
@@ -533,6 +534,34 @@ showMarketTimingPopup() {
               height: 600,
               decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: MarketTimingScreen(),
+            ),
+          ));
+}
+
+showAppShortcutPopup() {
+  Get.put(ShortcutController());
+  showDialog<String>(
+      context: Get.context!,
+      // barrierColor: Colors.transparent,
+      barrierDismissible: true,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: Container(
+              // width: 30.w,
+              // height: 28.h,
+              width: 400,
+              height: 500,
+              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              child: ShortcutScreen(),
             ),
           ));
 }

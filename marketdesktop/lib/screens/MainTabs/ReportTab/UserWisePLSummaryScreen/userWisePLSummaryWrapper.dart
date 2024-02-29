@@ -7,8 +7,8 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 
 class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
@@ -215,7 +215,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                     // Container(
                     //   width: 30,
                     // ),
-                    listTitleContent(),
+                    listTitleContent(controller),
                   ],
                 ),
               ),
@@ -267,110 +267,94 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'VIEW':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
-                              isUserViewPopUpOpen = true;
-                              showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!);
-                            })
-                          : const SizedBox();
+                      return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isImage: true, strImage: AppImages.viewIcon, onClickImage: () {
+                        isUserViewPopUpOpen = true;
+                        showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!);
+                      });
                     }
                   case 'USERNAME':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(plObj.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true, isUnderlined: true, onClickValue: () {
-                              showUserDetailsPopUp(userId: plObj.userId!, userName: plObj.userName!);
-                            })
-                          : const SizedBox();
+                      return dynamicValueBox1(plObj.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
+                        showUserDetailsPopUp(userId: plObj.userId!, userName: plObj.userName!);
+                      });
                     }
                   case 'SHARING %':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine!.toString() : plObj.profitAndLossSharing!.toString(),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isBig: true,
-                            )
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine!.toString() : plObj.profitAndLossSharing!.toString(),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'BRK SHARING %':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              plObj.role == UserRollList.user ? plObj.brkSharingDownLine!.toString() : plObj.brkSharing!.toString(),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isSmallLarge: true,
-                            )
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        plObj.role == UserRollList.user ? plObj.brkSharingDownLine!.toString() : plObj.brkSharing!.toString(),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'RELEASE CLIENT P/L':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              plObj.role == UserRollList.user ? plObj.profitLoss!.toStringAsFixed(2) : plObj.childUserProfitLossTotal!.toStringAsFixed(2),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              plObj.totalProfitLossValue < 0
-                                  ? AppColors().redColor
-                                  : plObj.totalProfitLossValue > 0
-                                      ? AppColors().greenColor
-                                      : AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isSmallLarge: true)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        plObj.role == UserRollList.user ? plObj.profitLoss!.toStringAsFixed(2) : plObj.childUserProfitLossTotal!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        plObj.totalProfitLossValue < 0
+                            ? AppColors().redColor
+                            : plObj.totalProfitLossValue > 0
+                                ? AppColors().greenColor
+                                : AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'CLIENT BRK':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? valueBox(plObj.childUserBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: false) : const SizedBox();
+                      return valueBox(plObj.childUserBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: false);
                     }
                   case 'CLIENT M2M':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              plObj.totalProfitLossValue.toStringAsFixed(2),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              plObj.totalProfitLossValue > 0
-                                  ? AppColors().greenColor
-                                  : plObj.totalProfitLossValue < 0
-                                      ? AppColors().redColor
-                                      : AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isBig: false)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        plObj.totalProfitLossValue.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        plObj.totalProfitLossValue > 0
+                            ? AppColors().greenColor
+                            : plObj.totalProfitLossValue < 0
+                                ? AppColors().redColor
+                                : AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'P/L WITH BRK':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              plObj.plWithBrk.toStringAsFixed(2),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              plObj.plWithBrk > 0
-                                  ? AppColors().greenColor
-                                  : plObj.plWithBrk < 0
-                                      ? AppColors().redColor
-                                      : AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isBig: true)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        plObj.plWithBrk.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        plObj.plWithBrk > 0
+                            ? AppColors().greenColor
+                            : plObj.plWithBrk < 0
+                                ? AppColors().redColor
+                                : AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'P/L SHARE %':
                     {
@@ -382,24 +366,22 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
 
                       finalValue = finalValue * -1;
 
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              finalValue.toStringAsFixed(2),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              plObj.plWithBrk > 0
-                                  ? AppColors().greenColor
-                                  : plObj.plWithBrk < 0
-                                      ? AppColors().redColor
-                                      : AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                            )
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        finalValue.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        plObj.plWithBrk > 0
+                            ? AppColors().greenColor
+                            : plObj.plWithBrk < 0
+                                ? AppColors().redColor
+                                : AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'BRK':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(plObj.parentBrokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(plObj.parentBrokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'NET P/L':
                     {
@@ -412,20 +394,18 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       finalValue = finalValue * -1;
 
                       finalValue = finalValue + plObj.parentBrokerageTotal!;
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              finalValue.toStringAsFixed(2),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              plObj.netPL > 0
-                                  ? AppColors().greenColor
-                                  : plObj.netPL < 0.0
-                                      ? AppColors().redColor
-                                      : AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isBig: false)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        finalValue.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        plObj.netPL > 0
+                            ? AppColors().greenColor
+                            : plObj.netPL < 0.0
+                                ? AppColors().redColor
+                                : AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
 
                   default:
@@ -440,138 +420,4 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
       );
     }
   }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'VIEW':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("VIEW", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SHARING %':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SHARING %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BRK SHARING %':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BRK SHARING %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'RELEASE CLIENT P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("RELEASE CLIENT P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CLIENT BRK':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CLIENT BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CLIENT M2M':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CLIENT M2M", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'P/L WITH BRK':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L WITH BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'P/L SHARE %':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L SHARE %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BRK':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BRK", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'NET P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
-  }
 }
-// view
-// username
-// client P/L  - childUserProfitLossTotal
-// client Brk-childUserBrokerageTotal
-// client m2m - childUserDataPosition
-// P/L with Brk (client P/L + client Brk + client m2m)
-// admin %
-// Brk - parentBrokerageTotal (popup -> brokerageTotal)
-// Net P/L (Brk + client P/L with Brk calculation with admin % )

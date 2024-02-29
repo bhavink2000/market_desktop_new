@@ -199,6 +199,71 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
   });
 }
 
+Widget billTypeDropDown(Rx<AddMaster?> selectedBillType, {double? width}) {
+  return Obx(() {
+    return SizedBox(
+        width: width ?? 250,
+        // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        height: 30,
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField2<AddMaster>(
+              isExpanded: true,
+              decoration: commonFocusBorder,
+              iconStyleData: IconStyleData(
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
+                ),
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 150),
+              hint: Text(
+                '',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                ),
+              ),
+              items: constantValues!.billType!
+                  .map((AddMaster item) => DropdownItem<AddMaster>(
+                        height: 30,
+                        value: item,
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return constantValues!.billType!
+                    .map((AddMaster item) => DropdownMenuItem<AddMaster>(
+                          value: item,
+                          child: Text(
+                            item.name ?? "",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().darkText,
+                            ),
+                          ),
+                        ))
+                    .toList();
+              },
+              value: selectedBillType.value?.name == null ? null : selectedBillType.value,
+              onChanged: (AddMaster? value) {
+                selectedBillType.value = value!;
+              },
+              buttonStyleData: const ButtonStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                height: 40,
+                // width: 140,
+              ),
+            ),
+          ),
+        ));
+  });
+}
+
 Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? width}) {
   return Obx(() {
     return SizedBox(
@@ -398,7 +463,6 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
 }
 
 Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
-  
   return Obx(() {
     return SizedBox(
         width: width ?? 250,

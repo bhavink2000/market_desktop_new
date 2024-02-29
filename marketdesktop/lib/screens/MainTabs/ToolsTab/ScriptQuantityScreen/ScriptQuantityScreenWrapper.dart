@@ -1,9 +1,8 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:marketdesktop/main.dart';
 import 'package:paginable/paginable.dart';
-import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shimmer/shimmer.dart';
@@ -11,6 +10,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../constant/color.dart';
 import '../../../../constant/assets.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
@@ -176,7 +176,6 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
                               title: "View",
                               textSize: 14,
                               onPress: () {
-                                
                                 controller.arrData.clear();
                                 controller.pageNumber = 1;
                                 controller.update();
@@ -255,7 +254,7 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
                   // Container(
                   //   width: 30,
                   // ),
-                  listTitleContent(),
+                  listTitleContent(controller),
                 ],
               ),
             ),
@@ -312,34 +311,34 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'INDEX':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(index.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(index.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'SYMBOL':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'BREAKUP QTY':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.breakQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.breakQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'MAX QTY':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.quantityMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.quantityMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'BREAKUP LOT':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.breakUpLot!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.breakUpLot!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'MAX LOT':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.lotMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.lotMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   default:
@@ -353,90 +352,5 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'INDEX':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("INDEX", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SYMBOL':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BREAKUP QTY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BREAKUP QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'MAX QTY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("MAX QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BREAKUP LOT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BREAKUP LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'MAX LOT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("MAX LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 }

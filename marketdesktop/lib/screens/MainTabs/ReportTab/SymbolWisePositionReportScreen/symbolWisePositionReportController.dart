@@ -6,11 +6,12 @@ import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/getScriptFromSocket.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class SymbolWisePositionReportController extends BaseController {
   //*********************************************************************** */
@@ -55,33 +56,16 @@ class SymbolWisePositionReportController extends BaseController {
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
 
-  List<ListItem> arrListTitle = [
-    ListItem("EXCHANGE", true),
-    ListItem("SYMBOL", true),
-    ListItem("NET QTY", true),
-    ListItem("NET QTY % WISE", true),
-    ListItem("NET A PRICE", true),
-    ListItem("BROKERAGE", true),
-    ListItem("WITH BROKERAGE A PRICE", true),
-    ListItem("CMP", true),
-    ListItem("P/L", true),
-    ListItem("P/L (%)", true),
-    ListItem("BROKERAGE %", true),
-  ];
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
-
+    getColumnListFromDB(ScreenIds().symbolWisePositionReport, arrListTitle1);
     // isApiCallRunning = true;
 
     // getAccountSummaryNewList("");
     getUserList();
-    update();
-  }
-
-  refreshView() {
     update();
   }
 

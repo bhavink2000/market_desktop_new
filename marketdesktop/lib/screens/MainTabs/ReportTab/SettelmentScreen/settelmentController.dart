@@ -3,8 +3,9 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class SettlementController extends BaseController {
   //*********************************************************************** */
@@ -24,23 +25,15 @@ class SettlementController extends BaseController {
   FocusNode searchFocus = FocusNode();
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
-  List<ListItem> arrListTitle = [
-    ListItem("USERNAME", true),
-    ListItem("P/L", true),
-    ListItem("BRK", true),
-    ListItem("TOTAL", true),
-  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().settlement, arrListTitle1);
     fromDate.value = shortDateForBackend(findFirstDateOfTheWeek(DateTime.now()));
     endDate.value = shortDateForBackend(findLastDateOfTheWeek(DateTime.now()));
     getSettelementList();
-  }
-
-  refreshView() {
-    update();
   }
 
   DateTime findFirstDateOfTheWeek(DateTime dateTime) {

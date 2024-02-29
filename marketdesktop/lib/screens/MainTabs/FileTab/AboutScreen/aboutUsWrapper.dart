@@ -144,7 +144,7 @@ class AboutUsPopUpScreen extends BaseView<AboutUsPopUpController> {
                   children: [
                     SizedBox(
                       width: 25.w,
-                      child: Text("TESLA",
+                      child: Text(AppString.appName,
                           style: TextStyle(
                             fontSize: 14,
                             fontFamily: CustomFonts.family1SemiBold,

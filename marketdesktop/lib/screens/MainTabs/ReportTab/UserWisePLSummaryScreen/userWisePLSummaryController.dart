@@ -8,9 +8,10 @@ import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/userWiseProfitLossSummaryModelClass.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class UserWisePLSummaryController extends BaseController {
   //*********************************************************************** */
@@ -29,28 +30,12 @@ class UserWisePLSummaryController extends BaseController {
   FocusNode applyFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
 
-  List<ListItem> arrListTitle = [
-    ListItem("VIEW", true),
-    ListItem("USERNAME", true),
-    ListItem("SHARING %", true),
-    ListItem("BRK SHARING %", true),
-    ListItem("RELEASE CLIENT P/L", true),
-    ListItem("CLIENT BRK", true),
-    ListItem("CLIENT M2M", true),
-    ListItem("P/L WITH BRK", true),
-    ListItem("P/L SHARE %", true),
-    ListItem("BRK", true),
-    ListItem("NET P/L", true),
-  ];
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().userWisePLSummary, arrListTitle1);
     getProfitLossList("");
-  }
-
-  refreshView() {
-    update();
   }
 
   getProfitLossList(String text, {bool isFromClear = false}) async {

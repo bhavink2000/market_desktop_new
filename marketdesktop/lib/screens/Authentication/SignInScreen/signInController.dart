@@ -12,7 +12,6 @@ import '../../../constant/const_string.dart';
 import '../../../constant/index.dart';
 import '../../../constant/utilities.dart';
 import '../../../customWidgets/appTextField.dart';
-import '../../../customWidgets/commonWidgets.dart';
 import '../../../main.dart';
 import '../../../navigation/routename.dart';
 import '../../BaseController/baseController.dart';
@@ -45,7 +44,7 @@ class SignInController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    await windowManager.setTitle("TESLA");
+    await windowManager.setTitle(AppString.appName);
     // serverController.text = "bazaar";
     // userNameController.text = "prem";
     // passwordController.text = "123456";

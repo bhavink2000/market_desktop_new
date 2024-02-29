@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/accountSummaryNewListModelClass.dart';
@@ -11,6 +10,7 @@ import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
@@ -62,6 +62,7 @@ class ClientAccountReportController extends BaseController {
     // TODO: implement onInit
 
     super.onInit();
+    getColumnListFromDB(ScreenIds().accountReport, arrListTitle1);
     updateTitleList();
     if (userData!.role == UserRollList.user) {
       isApiCallRunning = true;
@@ -75,33 +76,25 @@ class ClientAccountReportController extends BaseController {
     update();
   }
 
-  updateTitleList() {
-    arrListTitle = [
-      // ListItem("", true),
+  @override
+  bool isHiddenTitle(String title) {
+    if ((selectedplType.value != "All" || selectedplType.value != "Only Release") && title == "RELEASE P/L") {
+      return true;
+    }
+    if (selectedplType.value == "Only Release") {
+      if (title == "MTM" || title == "MTM WITH BROKERAGE") {
+        return true;
+      }
+    }
 
-      if (userData!.role != UserRollList.user) ListItem("USERNAME", true),
-      if (userData!.role != UserRollList.user) ListItem("PARENT USER", true),
-      ListItem("EXCHANGE", true),
-      ListItem("SYMBOL", true),
-      ListItem("TOTAL BUY QTY", true),
-      ListItem("TOTAL BUY A PRICE", true),
-      ListItem("TOTAL SELL QTY", true),
-      ListItem("TOTAL SELL A PRICE", true),
-      ListItem("NET QTY", true),
-      ListItem("NET A PRICE", true),
-      ListItem("CMP", true),
-      ListItem("BROKERAGE", true),
-      ListItem("P/L", true),
-      if (selectedplType.value == "All" || selectedplType.value == "Only Release") ListItem("RELEASE P/L", true),
-      if (selectedplType.value != "Only Release") ListItem("MTM", true),
-      if (selectedplType.value != "Only Release") ListItem("MTM WITH BROKERAGE", true),
-      if (selectedplType.value == "All" && selectedplType.value != "Only Release") ListItem("TOTAL", true),
-      if (userData!.role != UserRollList.user) ListItem("OUR %", true),
-    ];
-    update();
+    if ((selectedplType.value != "All" && selectedplType.value == "Only Release") && title == "TOTAL") {
+      return true;
+    }
+
+    return false;
   }
 
-  refreshView() {
+  updateTitleList() {
     update();
   }
 

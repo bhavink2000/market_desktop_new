@@ -3,6 +3,7 @@ import 'package:paginable/paginable.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import '../../../constant/screenColumnData.dart';
 import '../../../constant/utilities.dart';
 
 class MessagesScreen extends BaseView<MessagesController> {
@@ -42,7 +43,7 @@ class MessagesScreen extends BaseView<MessagesController> {
                   // Container(
                   //   width: 30,
                   // ),
-                  listTitleContent(),
+                  listTitleContent(controller),
                 ],
               ),
             ),
@@ -95,22 +96,36 @@ class MessagesScreen extends BaseView<MessagesController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'INDEX':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox((index + 1).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1((index + 1).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'MESSAGE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.message!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true) : const SizedBox();
+                      return dynamicValueBox1(
+                        scriptValue.message!.toString(),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'RECEIVED ON':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(shortFullDateTime(scriptValue.createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                      return dynamicValueBox1(
+                        shortFullDateTime(scriptValue.createdAt!),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
 
                   default:
@@ -124,66 +139,5 @@ class MessagesScreen extends BaseView<MessagesController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'INDEX':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("INDEX", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'MESSAGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("MESSAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'RECEIVED ON':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("RECEIVED ON", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 }

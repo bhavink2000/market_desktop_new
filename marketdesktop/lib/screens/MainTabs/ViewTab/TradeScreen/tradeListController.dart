@@ -16,7 +16,7 @@ import '../../../../constant/screenColumnData.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../customWidgets/appTextField.dart';
 import '../../../../customWidgets/incrimentField.dart';
-import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class TradeListController extends BaseController {
   //*********************************************************************** */

@@ -4,10 +4,12 @@ import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/screens/BaseController/baseController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/historyOfCreditScreen/historyOfCreditController.dart';
 import 'package:paginable/paginable.dart';
-import 'package:responsive_framework/utils/scroll_behavior.dart';
+import 'package:responsive_framework/responsive_framework.dart';
+
 import 'package:shimmer/shimmer.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../main.dart';
@@ -467,7 +469,7 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                     // Container(
                     //   width: 30,
                     // ),
-                    listTitleContent(),
+                    listTitleContent(controller),
                   ],
                 ),
               ),
@@ -544,7 +546,7 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var historyValue = controller.arrAccountSummary[index];
+      //   var historyValue = controller.arrAccountSummary[index];
       return Container(
         height: 30,
         child: Row(
@@ -552,43 +554,46 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'DATE TIME':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(shortFullDateTime(controller.arrAccountSummary[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        shortFullDateTime(controller.arrAccountSummary[index].createdAt!),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'USERNAME':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(controller.arrAccountSummary[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'OPENING':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox((controller.arrAccountSummary[index].amount! + controller.arrAccountSummary[index].closing!).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
-                          : const SizedBox();
+                      return dynamicValueBox1((controller.arrAccountSummary[index].amount! + controller.arrAccountSummary[index].closing!).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'AMOUNT':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(controller.arrAccountSummary[index].amount!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'CLOSING':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'COMMENT':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(controller.arrAccountSummary[index].comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   case 'ACTION BY':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(controller.arrAccountSummary[index].fromUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(controller.arrAccountSummary[index].fromUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   default:
@@ -602,99 +607,5 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'DATE TIME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DATE TIME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'OPENING':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("OPENING", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'AMOUNT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("AMOUNT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CLOSING':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CLOSING", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'COMMENT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("COMMENT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              case 'ACTION BY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("ACTION BY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 }

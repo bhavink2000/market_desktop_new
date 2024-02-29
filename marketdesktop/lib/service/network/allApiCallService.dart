@@ -2,7 +2,6 @@
 
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:file_saver/file_saver.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:marketdesktop/modelClass/expiryListModelClass.dart';
 import 'package:marketdesktop/modelClass/groupListModelClass.dart';
@@ -586,7 +585,7 @@ class AllApiCallService {
       final payload = {"page": page, "limit": 1000000, "search": search, "userId": userId, "type": type, "startDate": startDate, "endDate": endDate, "sortKey": "createdAt", "sortBy": -1};
       //print(payload);
       final data = await _dio.post(Api.accountSummary, data: payload);
-      //print(data.data);
+      print(data.data);
       return AccountSuumaryListModel.fromJson(data.data);
     } catch (e) {
       return null;
@@ -1531,11 +1530,11 @@ class AllApiCallService {
     }
   }
 
-  Future<BillGenerateModel?> billGenerateCall(String startDate, String search, String endDate, String userId) async {
+  Future<BillGenerateModel?> billGenerateCall(String startDate, String search, String endDate, String userId, int billType) async {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
-      final payload = {"startDate": startDate, "endDate": endDate, "search": search, "userId": userId};
+      final payload = {"startDate": startDate, "endDate": endDate, "search": search, "userId": userId, "billType": billType};
       final data = await _dio.post(Api.billGenerate, data: payload);
       //print(data.data);
       return BillGenerateModel.fromJson(data.data);
@@ -1692,7 +1691,7 @@ class AllApiCallService {
         // await FileSaver.instance.saveAs(name: fileName, ext: filePath.split(".").last, mimeType: MimeType.pdf, filePath: filePath);
         final path = await FilePicker.platform.saveFile(
           dialogTitle: 'Please select an output file:',
-          fileName: fileName + ".pdf",
+          fileName: fileName + ".$type",
         );
 
         if (path != null) {

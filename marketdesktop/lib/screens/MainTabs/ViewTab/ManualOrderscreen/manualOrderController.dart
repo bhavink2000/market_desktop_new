@@ -62,9 +62,14 @@ class manualOrderController extends BaseController {
   TextEditingController lotController = TextEditingController();
   FocusNode lotFocus = FocusNode();
   Rx<DateTime?> fromDate = DateTime.now().obs;
+  List<ExchangeData> arrExchangeForManualOrder = [];
   @override
   void onInit() async {
     super.onInit();
+    arrExchangeForManualOrder.addAll(arrExchange);
+    arrExchangeForManualOrder.removeAt(0);
+
+    update();
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {
       if (!qtyFocus.hasFocus) {

@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
@@ -270,7 +271,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
                     // Container(
                     //   width: 30,
                     // ),
-                    listTitleContent(),
+                    listTitleContent(controller),
                   ],
                 ),
               ),
@@ -330,34 +331,34 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'EXCHANGE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(tradeValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(tradeValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'SCRIPT':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(tradeValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(tradeValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'EXPIRY DATE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(shortFullDateTime(tradeValue.expiryDate!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true) : const SizedBox();
+                      return dynamicValueBox1(shortFullDateTime(tradeValue.expiryDate!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'DESCRIPTION':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(tradeValue.symbolName ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                      return dynamicValueBox1(tradeValue.symbolName ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'TRADE ATTRIBUTE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox((tradeValue.tradeAttribute ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true) : const SizedBox();
+                      return dynamicValueBox1((tradeValue.tradeAttribute ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'ALLOW TRADE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox((tradeValue.allowTradeValue ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                      return dynamicValueBox1((tradeValue.allowTradeValue ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   default:
@@ -371,90 +372,5 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'EXCHANGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SCRIPT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SCRIPT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'EXPIRY DATE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EXPIRY DATE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isForDate: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DESCRIPTION':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DESCRIPTION", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TRADE ATTRIBUTE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TRADE ATTRIBUTE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'ALLOW TRADE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("ALLOW TRADE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 }

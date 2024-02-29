@@ -398,25 +398,25 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
                 child: controller.isApiCallRunning == false && controller.arrLog.isEmpty
                     ? dataNotFoundView("User Logs not found")
                     : CustomScrollBar(
-                      bgColor: AppColors().blueColor,
-                      child: PaginableListView.builder(
-                          loadMore: () async {
-                            if (controller.totalPage >= controller.currentPage) {
-                              //print(controller.currentPage);
-                              controller.getUserLogList();
-                            }
-                          },
-                          errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
-                          progressIndicatorWidget: displayIndicator(),
-                          physics: const ClampingScrollPhysics(),
-                          clipBehavior: Clip.hardEdge,
-                          itemCount: controller.isApiCallRunning ? 50 : controller.arrLog.length,
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return tradeContent(context, index);
-                          }),
-                    ),
+                        bgColor: AppColors().blueColor,
+                        child: PaginableListView.builder(
+                            loadMore: () async {
+                              if (controller.totalPage >= controller.currentPage) {
+                                //print(controller.currentPage);
+                                controller.getUserLogList();
+                              }
+                            },
+                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            progressIndicatorWidget: displayIndicator(),
+                            physics: const ClampingScrollPhysics(),
+                            clipBehavior: Clip.hardEdge,
+                            itemCount: controller.isApiCallRunning ? 50 : controller.arrLog.length,
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return tradeContent(context, index);
+                            }),
+                      ),
               ),
               Container(
                 height: 2.h,

@@ -654,6 +654,15 @@ class MyMenuBar extends StatelessWidget {
               });
             },
           ),
+          MenuEntry(
+            label: 'Shortcuts',
+            onPressed: () {
+              if (marketViewObj.isBuyOpen != -1) {
+                return;
+              }
+              showAppShortcutPopup();
+            },
+          ),
         ],
       ),
     ];

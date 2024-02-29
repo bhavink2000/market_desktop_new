@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/screens/BaseController/baseController.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/accountSummaryModelClass.dart';
@@ -11,7 +12,7 @@ import '../../../../modelClass/myUserListModelClass.dart';
 import '../../../../modelClass/tradeDetailModelClass.dart';
 import '../../../UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
 import '../../../../modelClass/constantModelClass.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class HistoryOfCreditController extends BaseController {
 //*********************************************************************** */
@@ -36,26 +37,14 @@ class HistoryOfCreditController extends BaseController {
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
 
-  List<ListItem> arrListTitle = [
-    ListItem("DATE TIME", true),
-    ListItem("USERNAME", true),
-    ListItem("OPENING", true),
-    ListItem("AMOUNT", true),
-    ListItem("CLOSING", true),
-    ListItem("COMMENT", true),
-    ListItem("ACTION BY", true),
-  ];
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().creditHistory, arrListTitle1);
     isApiCallRunning = true;
     selectedType = constantValues!.transactionType!.first;
     accountSummaryList();
-  }
-
-  refreshView() {
-    update();
   }
 
   accountSummaryList({bool isFromFilter = false, bool isFromClear = false}) async {
@@ -74,10 +63,10 @@ class HistoryOfCreditController extends BaseController {
     var response = await service.accountSummaryCall(search: "", startDate: fromDate.value, endDate: endDate.value, page: currentPage, userId: selectedUser.value.userId != null ? selectedUser.value.userId! : "", type: selectedType != null ? selectedType!.id : "");
     isApiCallRunning = false;
     isResetCall = false;
-
+    isPagingApiCall = false;
     update();
     arrAccountSummary.addAll(response!.data!);
-    isPagingApiCall = false;
+
     totalPage = response.meta!.totalPage!;
     if (totalPage >= currentPage) {
       currentPage = currentPage + 1;

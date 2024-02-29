@@ -15,6 +15,8 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../../constant/screenColumnData.dart';
+
 class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportController> {
   const SymbolWisePositionReportScreen({Key? key}) : super(key: key);
 
@@ -101,152 +103,152 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                   color: AppColors().slideGrayBG,
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Spacer(),
-                            Container(
-                              child: Text("From:",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
-                                    color: AppColors().fontColor,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.fromDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.fromDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // SizedBox(
-                            //   width: 30,
-                            // ),
-                            Spacer(),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Container(
+                      //   height: 35,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Spacer(),
+                      //       Container(
+                      //         child: Text("From:",
+                      //             style: TextStyle(
+                      //               fontSize: 12,
+                      //               fontFamily: CustomFonts.family1Regular,
+                      //               color: AppColors().fontColor,
+                      //             )),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       GestureDetector(
+                      //         onTap: () {
+                      //           showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                      //             controller.fromDate.value = shortDateForBackend(selectedDate);
+                      //           });
+                      //         },
+                      //         child: Obx(() {
+                      //           return Container(
+                      //             height: 35,
+                      //             width: 150,
+                      //             decoration: BoxDecoration(
+                      //                 color: AppColors().whiteColor,
+                      //                 border: Border.all(
+                      //                   color: AppColors().lightOnlyText,
+                      //                   width: 1.5,
+                      //                 ),
+                      //                 borderRadius: BorderRadius.circular(3)),
+                      //             // color: AppColors().whiteColor,
+                      //             padding: const EdgeInsets.only(right: 10),
+                      //             child: Row(
+                      //               children: [
+                      //                 const SizedBox(
+                      //                   width: 5,
+                      //                 ),
+                      //                 Text(
+                      //                   controller.fromDate.value,
+                      //                   style: TextStyle(
+                      //                     fontSize: 10,
+                      //                     fontFamily: CustomFonts.family1Medium,
+                      //                     color: AppColors().darkText,
+                      //                   ),
+                      //                 ),
+                      //                 const Spacer(),
+                      //                 Image.asset(
+                      //                   AppImages.calendarIcon,
+                      //                   width: 25,
+                      //                   height: 25,
+                      //                   color: AppColors().fontColor,
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           );
+                      //         }),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 30,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Container(
+                      //   height: 35,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       // SizedBox(
+                      //       //   width: 30,
+                      //       // ),
+                      //       Spacer(),
 
-                            Container(
-                              child: Text("To:",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
-                                    color: AppColors().fontColor,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // selectToDate(controller.endDate);
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.endDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.endDate.value,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                          ],
-                        ),
-                      ),
+                      //       Container(
+                      //         child: Text("To:",
+                      //             style: TextStyle(
+                      //               fontSize: 12,
+                      //               fontFamily: CustomFonts.family1Regular,
+                      //               color: AppColors().fontColor,
+                      //             )),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       GestureDetector(
+                      //         onTap: () {
+                      //           // selectToDate(controller.endDate);
+                      //           showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                      //             controller.endDate.value = shortDateForBackend(selectedDate);
+                      //           });
+                      //         },
+                      //         child: Obx(() {
+                      //           return Container(
+                      //             height: 35,
+                      //             width: 150,
+                      //             decoration: BoxDecoration(
+                      //                 color: AppColors().whiteColor,
+                      //                 border: Border.all(
+                      //                   color: AppColors().lightOnlyText,
+                      //                   width: 1.5,
+                      //                 ),
+                      //                 borderRadius: BorderRadius.circular(3)),
+                      //             // color: AppColors().whiteColor,
+                      //             padding: const EdgeInsets.only(right: 10),
+                      //             child: Row(
+                      //               children: [
+                      //                 const SizedBox(
+                      //                   width: 5,
+                      //                 ),
+                      //                 Text(
+                      //                   controller.endDate.value,
+                      //                   style: TextStyle(
+                      //                     fontSize: 12,
+                      //                     fontFamily: CustomFonts.family1Medium,
+                      //                     color: AppColors().darkText,
+                      //                   ),
+                      //                 ),
+                      //                 const Spacer(),
+                      //                 Image.asset(
+                      //                   AppImages.calendarIcon,
+                      //                   width: 25,
+                      //                   height: 25,
+                      //                   color: AppColors().fontColor,
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           );
+                      //         }),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 30,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       SizedBox(
                         height: 10,
                       ),
@@ -396,7 +398,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                     // Container(
                     //   width: 30,
                     // ),
-                    listTitleContent(),
+                    listTitleContent(controller),
                   ],
                 ),
               ),
@@ -471,104 +473,106 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'EXCHANGE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'SYMBOL':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              scriptValue.symbolTitle ?? "",
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                            )
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        scriptValue.symbolTitle ?? "",
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'NET QTY':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
-                              isCommonScreenPopUpOpen = true;
-                              Get.find<MainContainerController>().isInitCallRequired = false;
-                              currentOpenedScreen = ScreenViewNames.clientAccountReport;
-                              var tradeVC = Get.put(ClientAccountReportController());
-                              tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
-                              tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrSummaryList[index].symbolId, symbolName: controller.arrSummaryList[index].symbolName, symbolTitle: controller.arrSummaryList[index].symbolTitle);
-                              // tradeVC.update();
-                              // tradeVC.getTradeList();
+                      return dynamicValueBox1(scriptValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
+                        isCommonScreenPopUpOpen = true;
+                        Get.find<MainContainerController>().isInitCallRequired = false;
+                        currentOpenedScreen = ScreenViewNames.clientAccountReport;
+                        var tradeVC = Get.put(ClientAccountReportController());
+                        tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrSummaryList[index].exchangeId, name: controller.arrSummaryList[index].exchangeName);
+                        tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrSummaryList[index].symbolId, symbolName: controller.arrSummaryList[index].symbolName, symbolTitle: controller.arrSummaryList[index].symbolTitle);
+                        // tradeVC.update();
+                        // tradeVC.getTradeList();
 
-                              tradeVC.isPagingApiCall = false;
-                              tradeVC.getAccountSummaryNewList("");
-                              tradeVC.isPagingApiCall = true;
-                              Get.find<MainContainerController>().isInitCallRequired = true;
-                              Get.delete<SymbolWisePositionReportController>();
-                              Get.back();
+                        tradeVC.isPagingApiCall = false;
+                        tradeVC.getAccountSummaryNewList("");
+                        tradeVC.isPagingApiCall = true;
+                        Get.find<MainContainerController>().isInitCallRequired = true;
+                        Get.delete<SymbolWisePositionReportController>();
+                        Get.back();
 
-                              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
-                            })
-                          : const SizedBox();
+                        generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
+                      });
                     }
                   case 'NET QTY % WISE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.totalShareQuantity!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        scriptValue.totalShareQuantity!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'NET A PRICE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
-                          : const SizedBox();
+                      return dynamicValueBox1(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'BROKERAGE':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'WITH BROKERAGE A PRICE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox(
-                              scriptValue.totalQuantity! != 0
-                                  ? scriptValue.brokerageTotal! > 0
-                                      ? (scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2)
-                                      : scriptValue.avgPrice!.toStringAsFixed(2)
-                                  : "0.00",
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              AppColors().darkText,
-                              index,
-                              indexT,
-                              controller.arrListTitle,
-                              isLarge: true)
-                          : const SizedBox();
+                      return dynamicValueBox1(
+                        scriptValue.totalQuantity! != 0
+                            ? scriptValue.brokerageTotal! > 0
+                                ? (scriptValue.avgPrice! + (scriptValue.brokerageTotal! / scriptValue.totalQuantity!)).toStringAsFixed(2)
+                                : scriptValue.avgPrice!.toStringAsFixed(2)
+                            : "0.00",
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
                   case 'CMP':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case 'P/L':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle) : const SizedBox();
+                      return dynamicValueBox1(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   case 'P/L (%)':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? dynamicValueBox((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle)
-                          : const SizedBox();
+                      return dynamicValueBox1((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   case 'BROKERAGE %':
                     {
-                      return controller.arrListTitle[indexT].isSelected ? dynamicValueBox(scriptValue.adminBrokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true) : const SizedBox();
+                      return dynamicValueBox1(
+                        scriptValue.adminBrokerageTotal!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
                     }
 
                   default:
@@ -582,131 +586,6 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
         ),
       );
     }
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'EXCHANGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SYMBOL':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'NET QTY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'NET QTY % WISE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET QTY % WISE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'NET A PRICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BROKERAGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BROKERAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'WITH BROKERAGE A PRICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("WITH BROKERAGE A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isLarge: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CMP':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CMP", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'P/L (%)':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L (%)", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BROKERAGE %':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BROKERAGE %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
   }
 
   Widget totalContent({String? value, Color? textColor, double? width}) {

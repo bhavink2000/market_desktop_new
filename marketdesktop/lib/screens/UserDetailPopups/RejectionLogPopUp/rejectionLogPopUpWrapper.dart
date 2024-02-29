@@ -10,6 +10,7 @@ import 'package:marketdesktop/screens/UserDetailPopups/RejectionLogPopUp/rejecti
 import '../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import '../../../constant/screenColumnData.dart';
 import '../userDetailsPopUpController.dart';
 
 class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
@@ -390,7 +391,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
         scrollDirection: Axis.horizontal,
         child: AnimatedContainer(
           duration: Duration(milliseconds: 300),
-          width: 1420,
+          width: 1800,
           // margin: EdgeInsets.only(right: 1.w),
           color: Colors.white,
           child: Column(
@@ -403,7 +404,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                     // Container(
                     //   width: 30,
                     // ),
-                    listTitleContent(),
+                    listTitleContent(controller),
                   ],
                 ),
               ),
@@ -445,81 +446,71 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
           children: [
             ListView.builder(
               padding: EdgeInsets.zero,
-              itemCount: controller.arrListTitle.length,
+              itemCount: controller.arrListTitle1.length,
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
-                switch (controller.arrListTitle[indexT].title) {
+                switch (controller.arrListTitle1[indexT].title) {
                   case 'DATE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(child: dynamicValueBox(shortFullDateTime(logValue.createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true))
-                          : const SizedBox();
+                      return IgnorePointer(
+                          child: dynamicValueBox1(
+                        shortFullDateTime(logValue.createdAt!),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      ));
                     }
                   case 'MESSAGE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.status ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.status ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   case 'USERNAME':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   case 'SYMBOL':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   case 'TYPE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.tradeTypeValue ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.tradeTypeValue ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   case 'QUANTITY':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   case 'PRICE':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   case 'IP ADDRESS':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.ipAddress ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.ipAddress ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
 
                   case 'DEVICE ID':
                     {
-                      return controller.arrListTitle[indexT].isSelected
-                          ? IgnorePointer(
-                              child: dynamicValueBox(logValue.deviceId ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
-                            )
-                          : const SizedBox();
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.deviceId ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
                     }
                   default:
                     {
@@ -531,114 +522,6 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'DATE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DATE", index, controller.arrListTitle, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'MESSAGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("MESSAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'SYMBOL':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SYMBOL", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TYPE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'QUANTITY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("QUANTITY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'PRICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'IP ADDRESS':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DEVICE ID':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DEVICE ID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
     );
   }
 }

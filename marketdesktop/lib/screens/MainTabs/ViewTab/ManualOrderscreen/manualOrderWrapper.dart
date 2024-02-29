@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
@@ -245,7 +244,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         color: AppColors().darkText,
                       ),
                     ),
-                    items: arrExchange
+                    items: controller.arrExchangeForManualOrder
                         .map((ExchangeData item) => DropdownItem<ExchangeData>(
                               value: item,
                               height: 30,
@@ -253,7 +252,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                             ))
                         .toList(),
                     selectedItemBuilder: (context) {
-                      return arrExchange
+                      return controller.arrExchangeForManualOrder
                           .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
                                 value: item,
                                 child: Text(

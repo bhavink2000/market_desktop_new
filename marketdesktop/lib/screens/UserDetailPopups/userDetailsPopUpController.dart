@@ -9,7 +9,6 @@ import 'package:marketdesktop/screens/UserDetailPopups/RejectionLogPopUp/rejecti
 import 'package:marketdesktop/screens/UserDetailPopups/TradeListPopUp/tradeListPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/TradeListPopUp/tradeListPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
-import 'package:marketdesktop/screens/UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/BrkPopUp/brkPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/BrkPopUp/brkPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/CreditPopUp/creditPopUpController.dart';

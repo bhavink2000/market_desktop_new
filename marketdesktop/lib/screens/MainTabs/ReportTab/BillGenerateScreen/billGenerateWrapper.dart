@@ -1,4 +1,6 @@
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:get/get.dart';
+import 'package:marketdesktop/constant/dropdownFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -306,6 +308,33 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                           ),
                         ),
                       SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        height: 35,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Container(
+                              child: Text("Bill Type:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().fontColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            billTypeDropDown(controller.selectedBillType, width: 150),
+                            SizedBox(
+                              width: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
                         height: 10,
                       ),
                       SizedBox(
@@ -424,7 +453,13 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
               ? Expanded(
                   child: SfPdfViewer.network(controller.pdfUrl, key: controller.pdfViewerKey, initialZoomLevel: -15, canShowScrollHead: false, scrollDirection: PdfScrollDirection.vertical),
                 )
-              : Spacer(),
+              : controller.billHtml.isNotEmpty
+                  ? Expanded(
+                      child: HtmlWidget(
+                        controller.billHtml,
+                      ),
+                    )
+                  : Spacer(),
           Container(
             height: 2.h,
             color: AppColors().headerBgColor,

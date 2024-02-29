@@ -1,9 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:get/get.dart';
-import 'package:marketdesktop/constant/utilities.dart';
+
 import 'package:marketdesktop/customWidgets/appButton.dart';
-import 'package:marketdesktop/customWidgets/appTextField.dart';
-import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/changePasswordController.dart';
 
 import '../../../../../constant/index.dart';
 import '../../../../../modelClass/constantModelClass.dart';

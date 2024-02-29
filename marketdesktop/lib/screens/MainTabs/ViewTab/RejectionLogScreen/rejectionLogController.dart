@@ -6,7 +6,6 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
-import '../MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 
 class RejectionLogController extends BaseController {
   //*********************************************************************** */

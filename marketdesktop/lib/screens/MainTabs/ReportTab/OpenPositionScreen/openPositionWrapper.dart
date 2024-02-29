@@ -368,7 +368,7 @@ class OpenPositionScreen extends BaseView<OpenPositionController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var historyValue = controller.arrPositionScriptList[index];
+   //   var historyValue = controller.arrPositionScriptList[index];
       return Container(
         height: 30,
         child: Row(

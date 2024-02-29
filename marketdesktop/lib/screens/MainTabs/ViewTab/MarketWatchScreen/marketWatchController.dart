@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/service/database/dbService.dart';
-import 'package:web_socket_channel/status.dart' as status;
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';

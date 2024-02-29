@@ -1,7 +1,8 @@
 import 'package:marketdesktop/modelClass/notificationListModelClass.dart';
 
 import '../../../../constant/index.dart';
-import '../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+import '../../../constant/screenColumnData.dart';
+
 
 class MessagesController extends BaseController {
   //*********************************************************************** */
@@ -13,21 +14,14 @@ class MessagesController extends BaseController {
   int currentPage = 1;
   ScrollController mainScroll = ScrollController();
   List<NotificationData> arrNotification = [];
-  List<ListItem> arrListTitle = [
-    ListItem("INDEX", true),
-    ListItem("MESSAGE", true),
-    ListItem("RECEIVED ON", true),
-  ];
+
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().message, arrListTitle1);
     isApiCallRunning = true;
     notificationList();
-  }
-
-  refreshView() {
-    update();
   }
 
   notificationList() async {

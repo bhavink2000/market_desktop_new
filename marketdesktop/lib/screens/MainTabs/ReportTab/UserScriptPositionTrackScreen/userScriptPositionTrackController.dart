@@ -2,10 +2,11 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/positionTrackListModelClass.dart';
 
+import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../constant/index.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+
 
 class UserScriptPositionTrackController extends BaseController {
   //*********************************************************************** */
@@ -29,23 +30,13 @@ class UserScriptPositionTrackController extends BaseController {
   int currentPage = 1;
   int totalCount = 0;
 
-  List<ListItem> arrListTitle = [
-    ListItem("POSITION DATE", true),
-    ListItem("USERNAME", true),
-    ListItem("SYMBOL", true),
-    ListItem("POSITION", true),
-    ListItem("OPEN A PRICE", true),
-  ];
   @override
   void onInit() async {
     // TODO: implement onInit
 
     super.onInit();
+    getColumnListFromDB(ScreenIds().userScriptPositionTracking, arrListTitle1);
     trackList();
-  }
-
-  refreshView() {
-    update();
   }
 
   trackList() async {

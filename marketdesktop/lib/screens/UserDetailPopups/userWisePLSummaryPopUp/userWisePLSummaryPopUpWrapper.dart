@@ -10,7 +10,6 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userWisePLSummaryPopUp/userWisePLSummaryPopUpController.dart';
 
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../../../constant/index.dart';
 import '../../../main.dart';

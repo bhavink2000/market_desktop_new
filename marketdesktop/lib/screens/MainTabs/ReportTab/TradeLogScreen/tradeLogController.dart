@@ -5,7 +5,8 @@ import 'package:marketdesktop/modelClass/myTradeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/tradeLogsModelClass.dart';
 import '../../../../constant/index.dart';
-import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+import '../../../../constant/screenColumnData.dart';
+
 
 class TradeLogController extends BaseController {
   //*********************************************************************** */
@@ -34,25 +35,13 @@ class TradeLogController extends BaseController {
   int totalPage = 0;
   bool isPagingApiCall = false;
   int currentPage = 1;
-  List<ListItem> arrListTitle = [
-    ListItem("USERNAME", true),
-    ListItem("EXCHANGE", true),
-    ListItem("SYMBOL", true),
-    ListItem("OLD UPDATE TYPE", true),
-    ListItem("UPDATE TYPE", true),
-    ListItem("UPDATE TIME", true),
-    ListItem("MODIFY BY", true),
-  ];
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    getColumnListFromDB(ScreenIds().tradeLog, arrListTitle1);
     getTradeList();
-  }
-
-  refreshView() {
-    update();
   }
 
   getTradeList({bool isFromClear = false}) async {

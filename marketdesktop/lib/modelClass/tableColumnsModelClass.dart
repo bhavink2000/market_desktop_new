@@ -26,6 +26,7 @@ class ColumnItem {
   int? position;
   int? screenId;
   String? columnId;
+
   double? updatedWidth;
   Offset start = Offset.zero;
   ColumnItem({

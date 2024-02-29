@@ -38,17 +38,25 @@ class BillGenerateModel {
 
 class BillGenerateData {
   String? pdfUrl;
+  String? excelUrl;
+  String? html;
 
   BillGenerateData({
     this.pdfUrl,
+    this.excelUrl,
+    this.html,
   });
 
   factory BillGenerateData.fromJson(Map<String, dynamic> json) => BillGenerateData(
         pdfUrl: json["pdfUrl"],
+        excelUrl: json["excelUrl"],
+        html: json["html"],
       );
 
   Map<String, dynamic> toJson() => {
         "pdfUrl": pdfUrl,
+        "excelUrl": excelUrl,
+        "html": html,
       };
 }
 

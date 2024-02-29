@@ -17,6 +17,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constant/index.dart';
+import '../../../../constant/screenColumnData.dart';
 import '../../../../customWidgets/appScrollBar.dart';
 import '../../../MainContainerScreen/mainContainerController.dart';
 
@@ -353,7 +354,7 @@ class UserListScreen extends BaseView<UserListController> {
                     // Container(
                     //   width: 30,
                     // ),
-                    listTitleContent(),
+                    listTitleContent(controller),
                   ],
                 ),
               ),
@@ -449,30 +450,28 @@ class UserListScreen extends BaseView<UserListController> {
             children: [
               ListView.builder(
                 padding: EdgeInsets.zero,
-                itemCount: controller.arrListTitle.length,
+                itemCount: controller.arrListTitle1.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int indexT) {
-                  switch (controller.arrListTitle[indexT].title) {
+                  switch (controller.arrListTitle1[indexT].title) {
                     case 'EDIT':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isImage: true, strImage: AppImages.editUserImage, isSmall: true, onClickImage: () async {
-                                var dashbaordScreen = Get.find<MainContainerController>();
-                                dashbaordScreen.isCreateUserClick = true;
-                                dashbaordScreen.isNotificationSettingClick = false;
-                                // dashbaordScreen.widgetOptions.clear();
-                                // dashbaordScreen.arrAvailableController.clear();
-                                // dashbaordScreen.arrAvailableTabs.clear();
-                                Get.back();
-                                await callForRoleList();
-                                var createUserVC = Get.find<CreateUserController>();
-                                createUserVC.selectedUserForEdit = null;
-                                createUserVC.selectedUserForEdit = controller.arrUserListData[index];
-                                createUserVC.fillUserDataForEdit();
-                                dashbaordScreen.update();
-                              })
-                            : const SizedBox();
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isImage: true, strImage: AppImages.editUserImage, onClickImage: () async {
+                          var dashbaordScreen = Get.find<MainContainerController>();
+                          dashbaordScreen.isCreateUserClick = true;
+                          dashbaordScreen.isNotificationSettingClick = false;
+                          // dashbaordScreen.widgetOptions.clear();
+                          // dashbaordScreen.arrAvailableController.clear();
+                          // dashbaordScreen.arrAvailableTabs.clear();
+                          Get.back();
+                          await callForRoleList();
+                          var createUserVC = Get.find<CreateUserController>();
+                          createUserVC.selectedUserForEdit = null;
+                          createUserVC.selectedUserForEdit = controller.arrUserListData[index];
+                          createUserVC.fillUserDataForEdit();
+                          dashbaordScreen.update();
+                        });
                       }
                     case '...':
                       {
@@ -504,15 +503,14 @@ class UserListScreen extends BaseView<UserListController> {
                           ],
                           child: IgnorePointer(
                             ignoring: true,
-                            child: dynamicValueBox(
+                            child: dynamicValueBox1(
                               "",
                               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                               Colors.transparent,
                               index,
                               indexT,
-                              controller.arrListTitle,
+                              controller.arrListTitle1,
                               isImage: true,
-                              isSmall: true,
                               strImage: AppImages.cpImage,
                             ),
                           ),
@@ -520,76 +518,83 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'USERNAME':
                       {
-                        return dynamicValueBox(controller.arrUserListData[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isUnderlined: true, onClickValue: () {
+                        return dynamicValueBox1(controller.arrUserListData[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
                           showUserDetailsPopUp(userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!, roll: controller.arrUserListData[index].role!);
                         });
                       }
                     case 'PARENT USER':
                       {
-                        return dynamicValueBox(controller.arrUserListData[index].parentUser ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true);
+                        return dynamicValueBox1(controller.arrUserListData[index].parentUser ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
                     case 'TYPE':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].roleName ?? "",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'NAME':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].name ?? "",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'OUR %':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           "${controller.arrUserListData[index].ourProfitAndLossSharing}",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().blueColor,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'BRK SHARING':
                       {
-                        return dynamicValueBox("${controller.arrUserListData[index].ourBrkSharing}", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isBig: true);
+                        return dynamicValueBox1(
+                          "${controller.arrUserListData[index].ourBrkSharing}",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'LEVERAGE':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].leverage!.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().blueColor,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'CREDIT':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].credit.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'P/L':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].role == UserRollList.user
                               ? (controller.arrUserListData[index].profitLoss! - controller.arrUserListData[index].brokerageTotal!).toStringAsFixed(2)
                               : (controller.arrUserListData[index].profitLoss! + controller.arrUserListData[index].brokerageTotal!).toStringAsFixed(2),
@@ -597,37 +602,56 @@ class UserListScreen extends BaseView<UserListController> {
                           AppColors().blueColor,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'EQUITY':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           (controller.arrUserListData[index].credit! + controller.arrUserListData[index].profitLoss!).toStringAsFixed(2),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().blueColor,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'TOTAL MARGIN':
                       {
-                        return dynamicValueBox(controller.arrUserListData[index].marginBalance!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isBig: true);
+                        return dynamicValueBox1(
+                          controller.arrUserListData[index].marginBalance!.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'USED MARGIN':
                       {
-                        return dynamicValueBox(controller.arrUserListData[index].role == UserRollList.user ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2) : "0", index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                            AppColors().blueColor, index, indexT, controller.arrListTitle,
-                            isBig: true);
+                        return dynamicValueBox1(
+                          controller.arrUserListData[index].role == UserRollList.user ? (controller.arrUserListData[index].marginBalance! - controller.arrUserListData[index].tradeMarginBalance!).toStringAsFixed(2) : "0",
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'FREE MARGIN':
                       {
-                        return dynamicValueBox(controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isBig: true);
+                        return dynamicValueBox1(
+                          controller.arrUserListData[index].tradeMarginBalance!.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().blueColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'BET':
                       {
-                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs, onSwitchChanged: (value) {
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isSwitch: true, switchValue: controller.arrUserListData[index].bet!.obs, onSwitchChanged: (value) {
                           final payload = {
                             "userId": controller.arrUserListData[index].userId,
                             "bet": value,
@@ -638,7 +662,7 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'CLOSE ONLY':
                       {
-                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isSwitch: true, switchValue: controller.arrUserListData[index].closeOnly!.obs, onSwitchChanged: (value) {
                           final payload = {
                             "userId": controller.arrUserListData[index].userId,
                             "closeOnly": value,
@@ -649,7 +673,7 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'AUTO SQROFF':
                       {
-                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isBig: true, isSwitch: true, switchValue: controller.arrUserListData[index].autoSquareOff == 0 ? false.obs : true.obs,
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isSwitch: true, switchValue: controller.arrUserListData[index].autoSquareOff == 0 ? false.obs : true.obs,
                             onSwitchChanged: (value) {
                           final payload = {
                             "userId": controller.arrUserListData[index].userId,
@@ -661,7 +685,7 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'VIEW ONLY':
                       {
-                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].viewOnly!.obs, onSwitchChanged: (value) {
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isSwitch: true, switchValue: controller.arrUserListData[index].viewOnly!.obs, onSwitchChanged: (value) {
                           final payload = {
                             "userId": controller.arrUserListData[index].userId,
                             "viewOnly": value,
@@ -672,7 +696,7 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'STATUS':
                       {
-                        return dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs, onSwitchChanged: (value) {
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isSwitch: true, switchValue: controller.arrUserListData[index].status == 1 ? true.obs : false.obs, onSwitchChanged: (value) {
                           final payload = {
                             "userId": controller.arrUserListData[index].userId,
                             "status": value ? 1 : 2,
@@ -683,43 +707,57 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'CREATED DATE':
                       {
-                        return dynamicValueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isForDate: true);
+                        return dynamicValueBox1(
+                          shortFullDateTime(controller.arrUserListData[index].createdAt!),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'LAST LOGIN DATE/TIME':
                       {
-                        return dynamicValueBox(shortFullDateTime(controller.arrUserListData[index].createdAt!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isLarge: true);
+                        return dynamicValueBox1(
+                          shortFullDateTime(controller.arrUserListData[index].createdAt!),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case 'DEVICE':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].deviceType ?? "--",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'DEVICE ID':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].deviceId ?? "--",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     case 'IP ADDRESS':
                       {
-                        return dynamicValueBox(
+                        return dynamicValueBox1(
                           controller.arrUserListData[index].ipAddress ?? "--",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
-                          controller.arrListTitle,
+                          controller.arrListTitle1,
                         );
                       }
                     default:
@@ -765,290 +803,290 @@ class UserListScreen extends BaseView<UserListController> {
     );
   }
 
-  Widget listTitleContentFinal() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        titleBox("EDIT", isSmall: true),
-        // titleBox("Share Details", isBig: true),
-        titleBox("...", isSmall: true),
-        titleBox("Username"),
-        titleBox("PARENT USER"),
-        titleBox("Type"),
-        titleBox("Name", isBig: true),
-        titleBox("our %"),
-        titleBox("Brk Sharing"),
-        titleBox("Leverage"),
+  // Widget listTitleContentFinal() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       titleBox("EDIT", isSmall: true),
+  //       // titleBox("Share Details", isBig: true),
+  //       titleBox("...", isSmall: true),
+  //       titleBox("Username"),
+  //       titleBox("PARENT USER"),
+  //       titleBox("Type"),
+  //       titleBox("Name", isBig: true),
+  //       titleBox("our %"),
+  //       titleBox("Brk Sharing"),
+  //       titleBox("Leverage"),
 
-        titleBox("Credit"),
+  //       titleBox("Credit"),
 
-        titleBox("P/L"),
-        titleBox("equity"),
-        // titleBox("P/L % WISE"),
-        titleBox("Total Margin", isBig: true),
-        titleBox("Used Margin", isBig: true),
-        titleBox("free margin"),
+  //       titleBox("P/L"),
+  //       titleBox("equity"),
+  //       // titleBox("P/L % WISE"),
+  //       titleBox("Total Margin", isBig: true),
+  //       titleBox("Used Margin", isBig: true),
+  //       titleBox("free margin"),
 
-        titleBox("bet"),
-        titleBox("Close only"),
+  //       titleBox("bet"),
+  //       titleBox("Close only"),
 
-        // titleBox("Modify Order", isBig: true),
+  //       // titleBox("Modify Order", isBig: true),
 
-        titleBox("AUTO SQROFF", isBig: true),
-        titleBox("View only"),
-        titleBox("Status"),
+  //       titleBox("AUTO SQROFF", isBig: true),
+  //       titleBox("View only"),
+  //       titleBox("Status"),
 
-        titleBox("CREATED DATE", isForDate: true),
-        titleBox("last login date/time", isLarge: true),
-        titleBox("Device"),
-        titleBox("Device Id", isBig: true),
-        titleBox("IP ADRESS"),
-      ],
-    );
-  }
+  //       titleBox("CREATED DATE", isForDate: true),
+  //       titleBox("last login date/time", isLarge: true),
+  //       titleBox("Device"),
+  //       titleBox("Device Id", isBig: true),
+  //       titleBox("IP ADRESS"),
+  //     ],
+  //   );
+  // }
 
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        ReorderableListView.builder(
-          scrollDirection: Axis.horizontal,
-          buildDefaultDragHandles: false,
-          padding: EdgeInsets.zero,
-          itemCount: controller.arrListTitle.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            switch (controller.arrListTitle[index].title) {
-              case 'EDIT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EDIT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case '...':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("...", index, isSmall: true, hasFilterIcon: true, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USERNAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'PARENT USER':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TYPE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TYPE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'NAME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'OUR %':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("OUR %", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BRK SHARING':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BRK SHARING", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'LEVERAGE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("LEVERAGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CREDIT':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CREDIT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'P/L':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'EQUITY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EQUITY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'TOTAL MARGIN':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL MARGIN", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'USED MARGIN':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USED MARGIN", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'FREE MARGIN':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("FREE MARGIN", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'BET':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("BET", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CLOSE ONLY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox(
-                          "CLOSE ONLY",
-                          index,
-                          controller.arrListTitle,
-                          controller.isScrollEnable,
-                          updateCallback: controller.refreshView,
-                        )
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'AUTO SQROFF':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("AUTO SQROFF", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'VIEW ONLY':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("VIEW ONLY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'STATUS':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("STATUS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'CREATED DATE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CREATED DATE", index, controller.arrListTitle, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'LAST LOGIN DATE/TIME':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("LAST LOGIN DATE/TIME", index, controller.arrListTitle, controller.isScrollEnable, isLarge: true, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DEVICE':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DEVICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'DEVICE ID':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("DEVICE ID", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
-              case 'IP ADDRESS':
-                {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
-                }
+  // Widget listTitleContent() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.start,
+  //     children: [
+  //       ReorderableListView.builder(
+  //         scrollDirection: Axis.horizontal,
+  //         buildDefaultDragHandles: false,
+  //         padding: EdgeInsets.zero,
+  //         itemCount: controller.arrListTitle1.length,
+  //         shrinkWrap: true,
+  //         itemBuilder: (BuildContext context, int index) {
+  //           switch (controller.arrListTitle1[index].title) {
+  //             case 'EDIT':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("EDIT", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case '...':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("...", index, isSmall: true, hasFilterIcon: true, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'USERNAME':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("USERNAME", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'PARENT USER':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle1, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'TYPE':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("TYPE", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'NAME':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("NAME", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'OUR %':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("OUR %", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'BRK SHARING':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("BRK SHARING", index, controller.arrListTitle1, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'LEVERAGE':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("LEVERAGE", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'CREDIT':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("CREDIT", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'P/L':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("P/L", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'EQUITY':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("EQUITY", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'TOTAL MARGIN':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("TOTAL MARGIN", index, controller.arrListTitle1, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'USED MARGIN':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("USED MARGIN", index, controller.arrListTitle1, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'FREE MARGIN':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("FREE MARGIN", index, controller.arrListTitle1, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'BET':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("BET", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'CLOSE ONLY':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox(
+  //                         "CLOSE ONLY",
+  //                         index,
+  //                         controller.arrListTitle1,
+  //                         controller.isScrollEnable,
+  //                         updateCallback: controller.refreshView,
+  //                       )
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'AUTO SQROFF':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("AUTO SQROFF", index, controller.arrListTitle1, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'VIEW ONLY':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("VIEW ONLY", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'STATUS':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("STATUS", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'CREATED DATE':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("CREATED DATE", index, controller.arrListTitle1, controller.isScrollEnable, isForDate: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'LAST LOGIN DATE/TIME':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("LAST LOGIN DATE/TIME", index, controller.arrListTitle1, controller.isScrollEnable, isLarge: true, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'DEVICE':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("DEVICE", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'DEVICE ID':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("DEVICE ID", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
+  //             case 'IP ADDRESS':
+  //               {
+  //                 return controller.arrListTitle1[index].isSelected
+  //                     ? dynamicTitleBox("IP ADDRESS", index, controller.arrListTitle1, controller.isScrollEnable, updateCallback: controller.refreshView)
+  //                     : SizedBox(
+  //                         key: Key('$index'),
+  //                       );
+  //               }
 
-              default:
-                {
-                  return SizedBox(
-                    key: Key('$index'),
-                  );
-                }
-            }
-          },
-          onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            var temp = controller.arrListTitle.removeAt(oldIndex);
-            if (newIndex > controller.arrListTitle.length) {
-              newIndex = controller.arrListTitle.length;
-            }
-            controller.arrListTitle.insert(newIndex, temp);
-            controller.update();
-          },
-        ),
-      ],
-    );
-  }
+  //             default:
+  //               {
+  //                 return SizedBox(
+  //                   key: Key('$index'),
+  //                 );
+  //               }
+  //           }
+  //         },
+  //         onReorder: (int oldIndex, int newIndex) {
+  //           if (oldIndex < newIndex) {
+  //             newIndex -= 1;
+  //           }
+  //           var temp = controller.arrListTitle1.removeAt(oldIndex);
+  //           if (newIndex > controller.arrListTitle1.length) {
+  //             newIndex = controller.arrListTitle1.length;
+  //           }
+  //           controller.arrListTitle1.insert(newIndex, temp);
+  //           controller.update();
+  //         },
+  //       ),
+  //     ],
+  //   );
+  // }
 
   showSharingPopup() {
     isUserDetailPopUpOpen = true;
@@ -1228,7 +1266,7 @@ class UserListScreen extends BaseView<UserListController> {
                 width: 10,
               ),
               Expanded(
-                child: Text("TESLA",
+                child: Text(AppString.appName,
                     style: TextStyle(
                       fontSize: 16,
                       fontFamily: CustomFonts.family1Medium,

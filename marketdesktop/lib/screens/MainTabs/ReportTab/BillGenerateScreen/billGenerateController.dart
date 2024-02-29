@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/main.dart';
+import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -13,9 +14,10 @@ class BillGenerateController extends BaseController {
   RxString fromDate = "Start Date".obs;
   Rx<DateTime> fromDateValue = DateTime.now().obs;
   RxString endDate = "End Date".obs;
-
+  String billHtml = "";
   bool isApiCall = false;
   Rx<UserData> selectedUser = UserData().obs;
+  Rx<AddMaster> selectedBillType = AddMaster().obs;
   final GlobalKey<SfPdfViewerState> pdfViewerKey = GlobalKey();
   String pdfUrl = "";
   RxDouble fileDownloading = 0.0.obs;
@@ -29,6 +31,9 @@ class BillGenerateController extends BaseController {
     isFilterOpen = true;
     update();
     super.onInit();
+    if (constantValues!.billType!.isNotEmpty) {
+      constantValues!.billType!.removeAt(0);
+    }
     if (userData!.role == UserRollList.user) {
       selectedUser.value = UserData(userId: userData!.userId);
     }
@@ -48,11 +53,22 @@ class BillGenerateController extends BaseController {
     }
     isApiCall = true;
     update();
-    var response = await service.billGenerateCall(fromDate.value != "Start Date" ? fromDate.value : "", "", endDate.value != "End Date" ? endDate.value : "", selectedUser.value.userId ?? "");
+    var response = await service.billGenerateCall(fromDate.value != "Start Date" ? fromDate.value : "", "", endDate.value != "End Date" ? endDate.value : "", selectedUser.value.userId ?? "", selectedBillType.value.id!);
     if (response?.statusCode == 200) {
-      pdfUrl = response!.data!.pdfUrl!;
+      if (selectedBillType.value.id == 1) {
+        pdfUrl = response!.data!.pdfUrl!;
+      } else if (selectedBillType.value.id == 2) {
+        await service.downloadFilefromUrl(response!.data!.excelUrl!, type: "xlsx");
+      } else if (selectedBillType.value.id == 3) {
+        billHtml = response!.data!.html ?? "";
+      }
+
       //print(response!.data);
-      // await service.downloadFilefromUrl(response!.data!.pdfUrl!);
+
+      // else if (selectedBillType.value.id == 3) {
+      //   await service.downloadFilefromUrl(response!.data!.html!);
+      // }
+
       selectedUser.value = UserData();
       fromDate.value = "";
       endDate.value = "";
@@ -68,7 +84,7 @@ class BillGenerateController extends BaseController {
   }
 
   downloadFile() async {
-    await service.downloadFilefromUrl(pdfUrl, progress: (value) {
+    await service.downloadFilefromUrl(pdfUrl, type: "pdf", progress: (value) {
       fileDownloading.value = value;
       print(value);
     });
