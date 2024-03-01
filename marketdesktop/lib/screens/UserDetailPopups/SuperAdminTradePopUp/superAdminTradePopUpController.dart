@@ -33,7 +33,13 @@ class SuperAdminTradePopUpController extends BaseController {
 
     isCommonScreenPopUpOpen = true;
     currentOpenedScreen = ScreenViewNames.trades;
-    Get.put(SuccessTradeListController());
+    var tradeVC = Get.put(SuccessTradeListController());
+    tradeVC.selectedExchange.value.exchangeId = values!.exchangeId!;
+    tradeVC.selectedExchange.value.name = values!.exchangeName!;
+    tradeVC.selectedScriptFromFilter.value.symbolId = values!.symbolId!;
+    tradeVC.selectedScriptFromFilter.value.symbolName = values!.symbolName!;
+    tradeVC.selectedScriptFromFilter.value.symbolTitle = values!.symbolTitle!;
+
     generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades);
   }
 }

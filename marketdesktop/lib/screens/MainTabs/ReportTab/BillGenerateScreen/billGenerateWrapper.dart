@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/constant/dropdownFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
+import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateController.dart';
 
@@ -377,9 +378,17 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
-                                controller.selectedUser.value = UserData();
+                                if (userData!.role != UserRollList.user) {
+                                  controller.selectedUser.value = UserData();
+                                }
+
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";
+                                controller.selectStatusdropdownValue = "".obs;
+                                controller.selectedBillType.value = AddMaster();
+                                controller.pdfUrl = "";
+                                controller.billHtml = "";
+                                controller.update();
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,
@@ -455,8 +464,10 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                 )
               : controller.billHtml.isNotEmpty
                   ? Expanded(
-                      child: HtmlWidget(
-                        controller.billHtml,
+                      child: SingleChildScrollView(
+                        child: HtmlWidget(
+                          controller.billHtml,
+                        ),
                       ),
                     )
                   : Spacer(),

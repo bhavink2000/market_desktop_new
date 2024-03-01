@@ -39,7 +39,7 @@ class AccountSummaryData {
   String? naOfUser;
   String? symbolName;
   String? type;
-  List<String> tradeId;
+  String? tradeId;
   String? transactionType;
   num? amount;
   int? quantity;
@@ -90,7 +90,7 @@ class AccountSummaryData {
         naOfUser: json["naOfUser"],
         symbolName: json["symbolName"],
         type: json["type"],
-        tradeId: json["tradeId"] == null ? [] : List<String>.from(json["tradeId"]!.map((x) => x)),
+        tradeId: json["tradeId"],
         transactionType: json["transactionType"],
         amount: json["amount"],
         comment: json["comment"],

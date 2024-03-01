@@ -171,8 +171,7 @@ class ConstantData {
       orderTypeFilter: json["orderTypeFilter"] == null ? [] : List<Type>.from(json["orderTypeFilter"]!.map((x) => Type.fromJson(x)))
         ..insert(0, allType),
       tradeStatusFilter: json["tradeStatusFilter"] == null ? [] : List<Type>.from(json["tradeStatusFilter"]!.map((x) => Type.fromJson(x))),
-      manuallyTradeAddedFor: json["manuallyTradeAddedFor"] == null ? [] : List<Type>.from(json["manuallyTradeAddedFor"]!.map((x) => Type.fromJson(x)))
-        ..insert(0, allType),
+      manuallyTradeAddedFor: json["manuallyTradeAddedFor"] == null ? [] : List<Type>.from(json["manuallyTradeAddedFor"]!.map((x) => Type.fromJson(x))),
       productTypeForAccount: json["productTypeForAccount"] == null ? [] : List<Type>.from(json["productTypeForAccount"]!.map((x) => Type.fromJson(x))),
       instrumentType: json["instrumentType"] == null ? [] : List<Type>.from(json["instrumentType"]!.map((x) => Type.fromJson(x)))
         ..insert(0, allType),
@@ -180,8 +179,7 @@ class ConstantData {
         ..insert(0, allType),
       rejectedTradeStatusFilter: json["rejectedTradeStatusFilter"] == null ? [] : List<Type>.from(json["rejectedTradeStatusFilter"]!.map((x) => Type.fromJson(x)))
         ..insert(0, allType),
-      billType: json["billType"] == null ? [] : List<AddMaster>.from(json["billType"]!.map((x) => AddMaster.fromJson(x)))
-        ..insert(0, allMaster),
+      billType: json["billType"] == null ? [] : List<AddMaster>.from(json["billType"]!.map((x) => AddMaster.fromJson(x))),
     );
 
     return values;

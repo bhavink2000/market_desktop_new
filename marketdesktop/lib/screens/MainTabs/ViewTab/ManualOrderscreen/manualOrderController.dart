@@ -6,6 +6,7 @@ import '../../../../../../constant/utilities.dart';
 import '../../../../../../modelClass/profileInfoModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../customWidgets/appTextField.dart';
+import '../../../../main.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../modelClass/myUserListModelClass.dart';
@@ -69,6 +70,10 @@ class manualOrderController extends BaseController {
     arrExchangeForManualOrder.addAll(arrExchange);
     arrExchangeForManualOrder.removeAt(0);
 
+    var index = constantValues!.manuallyTradeAddedFor!.indexWhere((element) => element.name == "ALL");
+    if (index != -1) {
+      constantValues!.manuallyTradeAddedFor!.removeAt(index);
+    }
     update();
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {

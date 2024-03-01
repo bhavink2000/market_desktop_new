@@ -31,9 +31,9 @@ class BillGenerateController extends BaseController {
     isFilterOpen = true;
     update();
     super.onInit();
-    if (constantValues!.billType!.isNotEmpty) {
-      constantValues!.billType!.removeAt(0);
-    }
+
+    constantValues!.billType!.removeWhere((element) => element.name == "ALL");
+    update();
     if (userData!.role == UserRollList.user) {
       selectedUser.value = UserData(userId: userData!.userId);
     }
@@ -55,6 +55,8 @@ class BillGenerateController extends BaseController {
     update();
     var response = await service.billGenerateCall(fromDate.value != "Start Date" ? fromDate.value : "", "", endDate.value != "End Date" ? endDate.value : "", selectedUser.value.userId ?? "", selectedBillType.value.id!);
     if (response?.statusCode == 200) {
+      pdfUrl = "";
+      billHtml = "";
       if (selectedBillType.value.id == 1) {
         pdfUrl = response!.data!.pdfUrl!;
       } else if (selectedBillType.value.id == 2) {
@@ -69,9 +71,9 @@ class BillGenerateController extends BaseController {
       //   await service.downloadFilefromUrl(response!.data!.html!);
       // }
 
-      selectedUser.value = UserData();
-      fromDate.value = "";
-      endDate.value = "";
+      // selectedUser.value = UserData();
+      // fromDate.value = "";
+      // endDate.value = "";
       update();
       // showSuccessToast("File successfully saved on your download folder.");
     } else {

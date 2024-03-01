@@ -64,6 +64,8 @@ class ClientAccountReportController extends BaseController {
     super.onInit();
     getColumnListFromDB(ScreenIds().accountReport, arrListTitle1);
     updateTitleList();
+    await getScriptList(exchangeId: "", arrSymbol: arrExchangeWiseScript);
+    update();
     if (userData!.role == UserRollList.user) {
       isApiCallRunning = true;
 
@@ -127,6 +129,7 @@ class ClientAccountReportController extends BaseController {
     arrSummaryList.addAll(response!.data!);
     isPagingApiCall = false;
     isResetCall = false;
+    update();
     totalPage = response.meta!.totalPage!.toInt();
     if (totalPage >= currentPage) {
       currentPage = currentPage + 1;

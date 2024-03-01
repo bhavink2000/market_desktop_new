@@ -144,6 +144,7 @@ class SignInController extends BaseController {
               var response = await service.getConstantCall();
               if (response != null) {
                 constantValues = response.data;
+                constantValues!.billType!.removeWhere((element) => element.name == "ALL");
                 arrStatuslist = constantValues?.status ?? [];
                 arrFilterType = constantValues?.userFilterType ?? [];
                 getExchangeList();

@@ -424,13 +424,20 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               title: "Clear",
                               textSize: 14,
                               prefixWidth: 0,
-                              onPress: () {
+                              onPress: () async {
                                 controller.selectedExchange.value = ExchangeData();
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";
-                                controller.getAccountSummaryNewList("", isFromClear: true);
+                                controller.arrExchangeWiseScript.clear();
+                                controller.isResetCall = true;
+                                controller.update();
+                                await getScriptList(exchangeId: "", arrSymbol: controller.arrExchangeWiseScript, isFromOrder: false);
+                                controller.arrSummaryList.clear();
+                                controller.isResetCall = false;
+                                controller.update();
+                                // await controller.getAccountSummaryNewList("", isFromClear: true);
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,

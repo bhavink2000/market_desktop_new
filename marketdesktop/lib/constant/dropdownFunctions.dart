@@ -200,6 +200,8 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
 }
 
 Widget billTypeDropDown(Rx<AddMaster?> selectedBillType, {double? width}) {
+
+
   return Obx(() {
     return SizedBox(
         width: width ?? 250,

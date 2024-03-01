@@ -503,7 +503,7 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                 child: Center(
                     child: Row(
                   children: [
-                    totalContent(value: "Total Amount", textColor: AppColors().darkText, width: 27.w),
+                    totalContent(value: "Total Amount", textColor: AppColors().darkText, width: 40.w),
                     totalContent(value: controller.totalAmount.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
                   ],
                 )),
