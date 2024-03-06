@@ -38,12 +38,12 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                 Expanded(
                   child: Row(
                     children: [
-                      if (selectedUserForUserDetailPopupParentID == userData!.userId)
+                      if (selectedUserForUserDetailPopupParentID == userData!.userId || userData!.role == UserRollList.admin)
                         filterPanel(context, name: "Add Credit", bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
                           controller.isFilterOpen = !controller.isFilterOpen;
                           controller.update();
                         }),
-                      if (selectedUserForUserDetailPopupParentID == userData!.userId) filterContent(context),
+                      if (selectedUserForUserDetailPopupParentID == userData!.userId || userData!.role == UserRollList.admin) filterContent(context),
                       Expanded(
                         flex: 8,
                         child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
@@ -327,7 +327,20 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                         ),
                       );
                     }
-                  case 'COMMENT':
+                  case 'BALANCE':
+                    {
+                      return IgnorePointer(
+                        child: dynamicValueBox1(
+                          controller.arrCreditList[index].balance.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        ),
+                      );
+                    }
+                  case 'COMMENTS':
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(

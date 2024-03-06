@@ -53,7 +53,7 @@ class BrkPopUpController extends BaseController {
     // TODO: implement onInit
     super.onInit();
     arrListTitle = [
-      if (selectedUserForUserDetailPopupParentID == userData!.userId!) ListItem("", true),
+      if (selectedUserForUserDetailPopupParentID == userData!.userId! || userData!.role == UserRollList.admin) ListItem("", true),
       ListItem("EXCHANGE", true),
       ListItem("SCRIPT", true),
       if (selectedCurrentTab == 0) ListItem("TURNOVER WISE BRK(RS. PER 1/CR))", true),

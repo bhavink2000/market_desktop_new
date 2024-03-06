@@ -71,4 +71,6 @@ abstract class Api {
   static const userChangeStatus = 'user/change-status';
   static const userLogList = 'user-log/list';
   static const updateLeverage = 'user/change-leverage';
+  static const holidayList = 'holiday/list';
+  static const bulkTradeList = 'bulk-trade-alert/list';
 }

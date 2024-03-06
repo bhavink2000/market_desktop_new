@@ -16,7 +16,7 @@ import '../../../../constant/screenColumnData.dart';
 import '../../../../customWidgets/appButton.dart';
 import '../../../../customWidgets/appTextField.dart';
 import '../../../../customWidgets/incrimentField.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 
 class TradeListController extends BaseController {
   //*********************************************************************** */
@@ -273,13 +273,13 @@ class TradeListController extends BaseController {
   pendingToSuccessTrade(bool isFromBuy) async {
     var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrTrade[selectedOrderIndex].symbolName);
     if (ltpObj == null) {
-      showWarningToast("Something went wrong in trade price.");
+      showWarningToast("INVALID SERVER TIME");
       return;
     } else {
       var difference = DateTime.now().difference(ltpObj.dateTime!);
       var differenceInSeconds = difference.inSeconds;
       if (differenceInSeconds >= 40) {
-        showWarningToast("Something went wrong in trade price.");
+        showWarningToast("INVALID SERVER TIME");
         return;
       }
     }
@@ -902,5 +902,97 @@ class TradeListController extends BaseController {
                 );
               }),
             ));
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrTrade.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case PendingOrderColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.userName ?? ""));
+            }
+          case PendingOrderColumns.parentUser:
+            {
+              list.add(excelLib.TextCellValue(element.parentUserName ?? ""));
+            }
+          case PendingOrderColumns.segment:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName ?? ""));
+            }
+          case PendingOrderColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle ?? ""));
+            }
+          case PendingOrderColumns.bs:
+            {
+              list.add(excelLib.TextCellValue(element.tradeTypeValue!.toUpperCase()));
+            }
+          case PendingOrderColumns.qty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+            }
+          case PendingOrderColumns.lot:
+            {
+              list.add(excelLib.TextCellValue(element.quantity.toString()));
+            }
+
+          case PendingOrderColumns.price:
+            {
+              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+            }
+
+          case PendingOrderColumns.orderDT:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case PendingOrderColumns.type:
+            {
+              list.add(excelLib.TextCellValue(element.productTypeValue.toString()));
+            }
+          case PendingOrderColumns.cmp:
+            {
+              list.add(excelLib.TextCellValue(element.currentPriceFromSocket.toString()));
+            }
+          case PendingOrderColumns.refPrice:
+            {
+              list.add(excelLib.TextCellValue(element.referencePrice!.toStringAsFixed(2)));
+            }
+          case PendingOrderColumns.ipAddress:
+            {
+              list.add(excelLib.TextCellValue(element.ipAddress ?? ""));
+            }
+          case PendingOrderColumns.device:
+            {
+              list.add(excelLib.TextCellValue(element.orderMethod ?? ""));
+            }
+          case PendingOrderColumns.deviceId:
+            {
+              list.add(excelLib.TextCellValue(element.deviceId ?? ""));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("Orders", titleList, dataList);
+    }
+    exportExcelFile("Orders.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

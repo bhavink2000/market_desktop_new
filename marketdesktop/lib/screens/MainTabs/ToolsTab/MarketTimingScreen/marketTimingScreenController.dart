@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:marketdesktop/modelClass/holidayListModelClass.dart';
 
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../modelClass/marketTimingModelClass.dart';
@@ -31,6 +32,7 @@ class MarketTimingController extends BaseController {
   Size? screenSize;
   List<ExchangeData> arrExchangeList = [];
   List<TimingData> arrTiming = [];
+  List<HolidayData> arrHoliday = [];
   FocusNode viewFocus = FocusNode();
   @override
   void onInit() async {
@@ -47,6 +49,17 @@ class MarketTimingController extends BaseController {
         arrExchangeList = response.exchangeData ?? [];
         update();
       }
+    }
+  }
+
+  getHolidayList() async {
+    var response = await service.holidayListCall(selectedExchangedropdownValue!.value!.exchangeId!);
+    isApiCallRunning = false;
+    update();
+    if (response?.statusCode == 200) {
+      arrHoliday = response?.data ?? [];
+
+      update();
     }
   }
 

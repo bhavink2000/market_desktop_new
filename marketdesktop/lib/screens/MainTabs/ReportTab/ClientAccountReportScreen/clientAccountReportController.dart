@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
@@ -13,6 +14,7 @@ import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+import 'package:excel/excel.dart' as excelLib;
 
 class ClientAccountReportController extends BaseController {
   //*********************************************************************** */
@@ -80,7 +82,7 @@ class ClientAccountReportController extends BaseController {
 
   @override
   bool isHiddenTitle(String title) {
-    if ((selectedplType.value != "All" || selectedplType.value != "Only Release") && title == "RELEASE P/L") {
+    if ((selectedplType.value != "All" && selectedplType.value != "Only Release") && title == "RELEASE P/L") {
       return true;
     }
     if (selectedplType.value == "Only Release") {
@@ -243,5 +245,109 @@ class ClientAccountReportController extends BaseController {
         outPerGrandTotal.value = outPerGrandTotal.value + element.ourPer;
       });
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrSummaryList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case AccountReportColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.userName ?? ""));
+            }
+          case AccountReportColumns.parentUser:
+            {
+              list.add(excelLib.TextCellValue(element.parentUserName ?? ""));
+            }
+          case AccountReportColumns.exchange:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName ?? ""));
+            }
+          case AccountReportColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle ?? ""));
+            }
+          case AccountReportColumns.totalBuyQty:
+            {
+              list.add(excelLib.TextCellValue(element.buyTotalQuantity.toString()));
+            }
+          case AccountReportColumns.totalBuyAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.buyTotalPrice!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.totalSellQty:
+            {
+              list.add(excelLib.TextCellValue(element.sellTotalQuantity.toString()));
+            }
+
+          case AccountReportColumns.totalSellAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.sellTotalPrice!.toStringAsFixed(2)));
+            }
+
+          case AccountReportColumns.netQty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+            }
+          case AccountReportColumns.netAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.avgPrice!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.cmp:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2) : element.bid!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.brk:
+            {
+              list.add(excelLib.TextCellValue(element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.pAndL:
+            {
+              list.add(excelLib.TextCellValue(element.profitLoss!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.releasepl:
+            {
+              list.add(excelLib.TextCellValue(element.profitLoss!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.mtm:
+            {
+              list.add(excelLib.TextCellValue(element.profitLossValue!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.mtmWithBrk:
+            {
+              list.add(excelLib.TextCellValue((double.parse(element.profitLossValue!.toStringAsFixed(2)) - double.parse(element.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2)));
+            }
+          case AccountReportColumns.total:
+            {
+              list.add(excelLib.TextCellValue(element.total.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.ourPer:
+            {
+              list.add(excelLib.TextCellValue(element.ourPer.toStringAsFixed(2)));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("AccountReport", titleList, dataList);
+    }
+    exportExcelFile("AccountReport.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

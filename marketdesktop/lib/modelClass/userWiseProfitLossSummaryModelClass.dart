@@ -7,8 +7,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 
-UserWiseProfitLossSummaryModel userWiseProfitLossSummaryModelFromJson(String str) =>
-    UserWiseProfitLossSummaryModel.fromJson(json.decode(str));
+UserWiseProfitLossSummaryModel userWiseProfitLossSummaryModelFromJson(String str) => UserWiseProfitLossSummaryModel.fromJson(json.decode(str));
 
 String userWiseProfitLossSummaryModelToJson(UserWiseProfitLossSummaryModel data) => json.encode(data.toJson());
 
@@ -25,9 +24,7 @@ class UserWiseProfitLossSummaryModel {
 
   factory UserWiseProfitLossSummaryModel.fromJson(Map<String, dynamic> json) => UserWiseProfitLossSummaryModel(
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-        data: json["data"] == null
-            ? []
-            : List<UserWiseProfitLossData>.from(json["data"]!.map((x) => UserWiseProfitLossData.fromJson(x))),
+        data: json["data"] == null ? [] : List<UserWiseProfitLossData>.from(json["data"]!.map((x) => UserWiseProfitLossData.fromJson(x))),
         statusCode: json["statusCode"],
       );
 
@@ -58,6 +55,8 @@ class UserWiseProfitLossData {
   List<ChildUserDataPosition>? childUserDataPosition;
   double totalProfitLossValue = 0;
   double plWithBrk = 0;
+  double plSharePer = 0.0;
+
   double netPL = 0;
 
   UserWiseProfitLossData({
@@ -97,9 +96,7 @@ class UserWiseProfitLossData {
         brkSharing: json["brkSharing"],
         brkSharingDownLine: json["brkSharingDownLine"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
-        childUserDataPosition: json["childUserDataPosition"] == null
-            ? []
-            : List<ChildUserDataPosition>.from(json["childUserDataPosition"]!.map((x) => ChildUserDataPosition.fromJson(x))),
+        childUserDataPosition: json["childUserDataPosition"] == null ? [] : List<ChildUserDataPosition>.from(json["childUserDataPosition"]!.map((x) => ChildUserDataPosition.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -119,8 +116,7 @@ class UserWiseProfitLossData {
         "brkSharing": brkSharing,
         "brkSharingDownLine": brkSharingDownLine,
         "createdAt": createdAt?.toIso8601String(),
-        "childUserDataPosition":
-            childUserDataPosition == null ? [] : List<dynamic>.from(childUserDataPosition!.map((x) => x.toJson())),
+        "childUserDataPosition": childUserDataPosition == null ? [] : List<dynamic>.from(childUserDataPosition!.map((x) => x.toJson())),
       };
 }
 

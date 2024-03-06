@@ -17,6 +17,7 @@ import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
+import 'package:excel/excel.dart' as excelLib;
 
 class PositionController extends BaseController {
   //*********************************************************************** */
@@ -321,12 +322,12 @@ class PositionController extends BaseController {
     if (selectedOrderType.value.id != "limit") {
       var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrPositionScriptList[selectedScriptIndex].symbolName);
       if (ltpObj == null) {
-        return "Something went wrong in trade price.";
+        return "INVALID SERVER TIME";
       } else {
         var difference = DateTime.now().difference(ltpObj.dateTime!);
         var differenceInSeconds = difference.inSeconds;
         if (differenceInSeconds >= 40) {
-          return "Something went wrong in trade price.";
+          return "INVALID SERVER TIME";
         }
       }
     }
@@ -1309,5 +1310,94 @@ class PositionController extends BaseController {
             ),
           ));
     });
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrPositionScriptList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case NetPositionColumns.checkBox:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+          case NetPositionColumns.view:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+          case NetPositionColumns.parentUser:
+            {
+              list.add(excelLib.TextCellValue(element.parentUserName!));
+            }
+          case NetPositionColumns.exchange:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName!));
+            }
+          case NetPositionColumns.symbolName:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle!));
+            }
+          case NetPositionColumns.totalBuyAQty:
+            {
+              list.add(excelLib.TextCellValue(element.buyTotalQuantity!.toString()));
+            }
+          case NetPositionColumns.totalBuyAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.buyPrice!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.totalSellQty:
+            {
+              list.add(excelLib.TextCellValue(element.sellTotalQuantity!.toString()));
+            }
+          case NetPositionColumns.sellAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.sellPrice!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.netQty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.netLot:
+            {
+              list.add(excelLib.TextCellValue(element.quantity!.toString()));
+            }
+          case NetPositionColumns.netAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.cmp:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString()));
+            }
+          case NetPositionColumns.pl:
+            {
+              list.add(excelLib.TextCellValue(element.profitLossValue!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.plPerWise:
+            {
+              list.add(excelLib.TextCellValue((getPlPer(percentage: element.profitAndLossSharing!, pl: element.profitLossValue!) * -1).toStringAsFixed(3)));
+            }
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("Position", titleList, dataList);
+    }
+    exportExcelFile("Position.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

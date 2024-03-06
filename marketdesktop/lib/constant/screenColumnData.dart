@@ -29,6 +29,7 @@ class ScreenIds {
   var userQtySetting = 22;
   var userCredit = 23;
   var userRejectionLog = 24;
+  var bulkTrade = 25;
 }
 
 class ScreenTitles {
@@ -56,6 +57,7 @@ class ScreenTitles {
   var userQtySetting = "User Quantity Setting";
   var userCredit = "User Credit";
   var userRejectionLog = "User Rejection Log";
+  var bulkTrade = "Bulk Trade";
 }
 
 class ColumnSizes {
@@ -312,10 +314,10 @@ class UserTradeColumns {
   static const segment = "SEGMENT";
   static const symbol = "SYMBOL";
   static const bs = "B/S";
-  static const type = "TRADE TYPE";
   static const qty = "QTY";
   static const lot = "LOT";
-  static const totalQty = "TOTAL Qty";
+  static const type = "TRADE TYPE";
+  static const totalQty = "TOTAL QTY";
   static const validity = "VALIDITY";
   static const tradePrice = "TRADE PRICE";
   static const brk = "BROKERAGE";
@@ -348,6 +350,7 @@ class UserCreditColumns {
   static const dateTime = "DATE TIME";
   static const type = "TYPE";
   static const amount = "AMOUNT";
+  static const balance = "BALANCE";
   static const comments = "COMMENTS";
 }
 
@@ -361,6 +364,14 @@ class UserRejectionLogColumns {
   static const price = "PRICE";
   static const ipAddress = "IP ADDRESS";
   static const deviceId = "DEVICE ID";
+}
+
+class BulkTradeColumns {
+  static const exchange = "EXCHANGE";
+  static const symbol = "SYMBOL";
+  static const buyTotalQty = "BUY TOTAL QTY";
+  static const sellTotalQty = "SELL TOTAL QTY";
+  static const totalQty = "TOTAL QTY";
 }
 
 Future<void> getColumnListFromDB(int screenId, List<ColumnItem> arrList) async {
@@ -2300,12 +2311,20 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userCredit}-2",
         },
         {
+          "title": UserCreditColumns.balance,
+          "screenId": ScreenIds().userCredit,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 4,
+          "columnId": "${ScreenIds().userCredit}-3",
+        },
+        {
           "title": UserCreditColumns.comments,
           "screenId": ScreenIds().userCredit,
           "width": ColumnSizes.large,
           "updatedWidth": ColumnSizes.large,
-          "position": 4,
-          "columnId": "${ScreenIds().userCredit}-3",
+          "position": 5,
+          "columnId": "${ScreenIds().userCredit}-4",
         },
       ]
     },
@@ -2384,6 +2403,52 @@ List<Map> getColumnNames() {
           "updatedWidth": ColumnSizes.normal,
           "position": 9,
           "columnId": "${ScreenIds().userRejectionLog}-8",
+        },
+      ]
+    },
+    {
+      "screenId": ScreenIds().bulkTrade,
+      "title": ScreenTitles().bulkTrade,
+      "columns": [
+        {
+          "title": BulkTradeColumns.exchange,
+          "screenId": ScreenIds().bulkTrade,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 1,
+          "columnId": "${ScreenIds().bulkTrade}-0",
+        },
+        {
+          "title": BulkTradeColumns.symbol,
+          "screenId": ScreenIds().bulkTrade,
+          "width": ColumnSizes.big,
+          "updatedWidth": ColumnSizes.big,
+          "position": 2,
+          "columnId": "${ScreenIds().bulkTrade}-1",
+        },
+        {
+          "title": BulkTradeColumns.buyTotalQty,
+          "screenId": ScreenIds().bulkTrade,
+          "width": ColumnSizes.big,
+          "updatedWidth": ColumnSizes.big,
+          "position": 3,
+          "columnId": "${ScreenIds().bulkTrade}-2",
+        },
+        {
+          "title": BulkTradeColumns.sellTotalQty,
+          "screenId": ScreenIds().bulkTrade,
+          "width": ColumnSizes.big,
+          "updatedWidth": ColumnSizes.big,
+          "position": 4,
+          "columnId": "${ScreenIds().bulkTrade}-3",
+        },
+        {
+          "title": BulkTradeColumns.totalQty,
+          "screenId": ScreenIds().bulkTrade,
+          "width": ColumnSizes.big,
+          "updatedWidth": ColumnSizes.big,
+          "position": 5,
+          "columnId": "${ScreenIds().bulkTrade}-4",
         },
       ]
     },

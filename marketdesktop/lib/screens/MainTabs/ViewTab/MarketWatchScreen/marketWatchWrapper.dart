@@ -418,11 +418,13 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
       child: controller.arrScript[index].symbol!.isNotEmpty
           ? Container(
               decoration: BoxDecoration(
-                  color: controller.arrScript[index].low! < controller.arrPreScript[index].low! || controller.arrScript[index].high! > controller.arrPreScript[index].high!
+                  color: controller.arrScript[index].low! < controller.arrPreScript[index].low!
                       ? AppColors().pinkColor
-                      : controller.selectedIndexforCut == index
-                          ? AppColors().lightOnlyText
-                          : Colors.transparent,
+                      : controller.arrScript[index].high! > controller.arrPreScript[index].high!
+                          ? AppColors().skyBlueColor
+                          : controller.selectedIndexforCut == index
+                              ? AppColors().lightOnlyText
+                              : Colors.transparent,
                   border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().whiteColor : Colors.transparent)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,

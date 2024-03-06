@@ -13,7 +13,6 @@ import '../../../../modelClass/tradeDetailModelClass.dart';
 import '../../../UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
 import '../../../../modelClass/constantModelClass.dart';
 
-
 class HistoryOfCreditController extends BaseController {
 //*********************************************************************** */
   // Variable Declaration
@@ -60,7 +59,7 @@ class HistoryOfCreditController extends BaseController {
     }
     isPagingApiCall = true;
     update();
-    var response = await service.accountSummaryCall(search: "", startDate: fromDate.value, endDate: endDate.value, page: currentPage, userId: selectedUser.value.userId != null ? selectedUser.value.userId! : "", type: selectedType != null ? selectedType!.id : "");
+    var response = await service.accountSummaryCall(search: "", startDate: fromDate.value, endDate: endDate.value, page: currentPage, userId: selectedUser.value.userId != null ? selectedUser.value.userId! : "", type: "credit");
     isApiCallRunning = false;
     isResetCall = false;
     isPagingApiCall = false;

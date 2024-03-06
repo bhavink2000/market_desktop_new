@@ -5,6 +5,9 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
+import 'package:excel/excel.dart' as excelLib;
+
+import '../../../../constant/utilities.dart';
 
 class UserListController extends BaseController {
   //*********************************************************************** */
@@ -116,5 +119,135 @@ class UserListController extends BaseController {
     isResetData = true;
     update();
     getUserList(isFromClear: true);
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrUserListData.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case 'EDIT':
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+          case '...':
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+          case 'USERNAME':
+            {
+              list.add(excelLib.TextCellValue(element.userName ?? ""));
+            }
+          case 'PARENT USER':
+            {
+              list.add(excelLib.TextCellValue(element.parentUser ?? ""));
+            }
+          case 'TYPE':
+            {
+              list.add(excelLib.TextCellValue(element.roleName ?? ""));
+            }
+          case 'NAME':
+            {
+              list.add(excelLib.TextCellValue(element.name ?? ""));
+            }
+          case 'OUR %':
+            {
+              list.add(excelLib.TextCellValue(element.ourProfitAndLossSharing.toString()));
+            }
+          case 'BRK SHARING':
+            {
+              list.add(excelLib.TextCellValue(element.ourBrkSharing.toString()));
+            }
+          case 'LEVERAGE':
+            {
+              list.add(excelLib.TextCellValue(element.leverage.toString()));
+            }
+          case 'CREDIT':
+            {
+              list.add(excelLib.TextCellValue(element.credit.toString()));
+            }
+          case 'P/L':
+            {
+              list.add(excelLib.TextCellValue(element.role == UserRollList.user ? (element.profitLoss! - element.brokerageTotal!).toStringAsFixed(2) : (element.profitLoss! + element.brokerageTotal!).toStringAsFixed(2)));
+            }
+          case 'EQUITY':
+            {
+              list.add(excelLib.TextCellValue(element.balance!.toStringAsFixed(2)));
+            }
+          case 'TOTAL MARGIN':
+            {
+              list.add(excelLib.TextCellValue(element.marginBalance!.toStringAsFixed(2)));
+            }
+          case 'USED MARGIN':
+            {
+              list.add(excelLib.TextCellValue(element.role == UserRollList.user ? (element.marginBalance! - element.tradeMarginBalance!).toStringAsFixed(2) : "0"));
+            }
+          case 'FREE MARGIN':
+            {
+              list.add(excelLib.TextCellValue(element.tradeMarginBalance!.toStringAsFixed(2)));
+            }
+          case 'BET':
+            {
+              list.add(excelLib.TextCellValue(element.bet!.toString()));
+            }
+          case 'CLOSE ONLY':
+            {
+              list.add(excelLib.TextCellValue(element.closeOnly!.toString()));
+            }
+          case 'AUTO SQROFF':
+            {
+              list.add(excelLib.TextCellValue(element.autoSquareOffValue!.toString()));
+            }
+          case 'VIEW ONLY':
+            {
+              list.add(excelLib.TextCellValue(element.viewOnly!.toString()));
+            }
+          case 'STATUS':
+            {
+              list.add(excelLib.TextCellValue(element.status!.toString()));
+            }
+          case 'CREATED DATE':
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case 'LAST LOGIN DATE/TIME':
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case 'DEVICE':
+            {
+              list.add(excelLib.TextCellValue(element.deviceType ?? ""));
+            }
+          case 'DEVICE ID':
+            {
+              list.add(excelLib.TextCellValue(element.deviceId ?? ""));
+            }
+          case 'IP ADDRESS':
+            {
+              list.add(excelLib.TextCellValue(element.ipAddress ?? ""));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("UserList", titleList, dataList);
+    }
+    exportExcelFile("UserList.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

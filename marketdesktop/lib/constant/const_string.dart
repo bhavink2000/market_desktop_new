@@ -90,6 +90,7 @@ class ScreenViewNames {
   static const String symbolWisePositionReport = "Symbol Wise Position Report";
   static const String messages = "Messages";
   static const String dashboard = "Dashboard";
+  static const String bulkTrade = "Bulk Trades";
 }
 
 class ListCellWidth {

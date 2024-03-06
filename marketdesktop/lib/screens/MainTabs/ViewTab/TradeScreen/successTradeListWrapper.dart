@@ -1,4 +1,6 @@
+import 'package:excel/excel.dart' as excelLib;
 import 'package:get/get.dart';
+import 'package:marketdesktop/constant/dropdownFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
@@ -24,10 +26,17 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
-            controller.isFilterOpen = !controller.isFilterOpen;
-            controller.update();
-          }),
+          filterPanel(
+            context,
+            isRecordDisplay: true,
+            totalRecord: controller.totalCount,
+            onCLickFilter: () {
+              controller.isFilterOpen = !controller.isFilterOpen;
+              controller.update();
+            },
+            onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,
+          ),
           filterContent(context),
           Expanded(
             flex: 8,
@@ -343,7 +352,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                           children: [
                             Spacer(),
                             Container(
-                              child: Text("Status:",
+                              child: Text("Type:",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: CustomFonts.family1Regular,
@@ -354,6 +363,33 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               width: 10,
                             ),
                             tradeStatusListDropDown(controller.selectedTradeStatus, width: 150),
+                            SizedBox(
+                              width: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 35,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Container(
+                              child: Text("Status:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().fontColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            tradeTypeListDropDown(controller.selectedTradeType, width: 150),
                             SizedBox(
                               width: 30,
                             ),

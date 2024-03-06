@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
+import 'package:marketdesktop/modelClass/bulkTradeModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
@@ -10,13 +11,11 @@ import 'package:excel/excel.dart' as excelLib;
 
 import '../../../../constant/utilities.dart';
 
-class RejectionLogController extends BaseController {
+class BulkTradeController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
 
-  RxString fromDate = "Start Date".obs;
-  RxString endDate = "End Date".obs;
   Rx<UserData> selectedUser = UserData().obs;
   RxString selectedTradeStatus = "".obs;
   Rx<Type> selectedStatus = Type().obs;
@@ -24,7 +23,7 @@ class RejectionLogController extends BaseController {
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
   List<ExchangeData> arrExchange = [];
   List<GlobalSymbolData> arrAllScript = [];
-  List<RejectLogData> arrRejectLog = [];
+  List<BulkTradeData> arrBulkTrade = [];
   bool isApiCallRunning = false;
   bool isResetCall = false;
   String selectedUserId = "";
@@ -38,12 +37,12 @@ class RejectionLogController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    getColumnListFromDB(ScreenIds().rejectionLog, arrListTitle1);
+    getColumnListFromDB(ScreenIds().bulkTrade, arrListTitle1);
     isApiCallRunning = true;
-    rejectLogList();
+    bulkTradeList();
   }
 
-  rejectLogList({bool isFromClear = false, bool isFromFilter = false}) async {
+  bulkTradeList({bool isFromClear = false, bool isFromFilter = false}) async {
     if (isFromFilter) {
       if (isFromClear) {
         isResetCall = true;
@@ -57,7 +56,7 @@ class RejectionLogController extends BaseController {
     isPagingApiCall = true;
 
     update();
-    var response = await service.getRejectLogListCall(page: currentPage, startDate: "", endDate: "", userId: selectedUser.value.userId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "", status: selectedStatus.value.id ?? "");
+    var response = await service.bulkTradeListCall(currentPage, selectedExchange.value.exchangeId ?? "", selectedScriptFromFilter.value.symbolId ?? "", selectedUser.value.userId ?? "");
 
     isApiCallRunning = false;
     isPagingApiCall = false;
@@ -67,7 +66,7 @@ class RejectionLogController extends BaseController {
       currentPage = currentPage + 1;
     }
     update();
-    arrRejectLog.addAll(response.data!);
+    arrBulkTrade.addAll(response.data!);
     update();
   }
 
@@ -77,45 +76,29 @@ class RejectionLogController extends BaseController {
       titleList.add(excelLib.TextCellValue(element.title!));
     });
     List<List<excelLib.TextCellValue?>> dataList = [];
-    arrRejectLog.forEach((element) {
+    arrBulkTrade.forEach((element) {
       List<excelLib.TextCellValue?> list = [];
       arrListTitle1.forEach((titleObj) {
         switch (titleObj.title) {
-          case RejectionLogColumns.date:
+          case BulkTradeColumns.exchange:
             {
-              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+              list.add(excelLib.TextCellValue(element.exchangeName!));
             }
-          case RejectionLogColumns.status:
+          case BulkTradeColumns.symbol:
             {
-              list.add(excelLib.TextCellValue(element.status ?? ""));
+              list.add(excelLib.TextCellValue(element.symbolTitle!));
             }
-          case RejectionLogColumns.username:
+          case BulkTradeColumns.buyTotalQty:
             {
-              list.add(excelLib.TextCellValue(element.userName ?? ""));
+              list.add(excelLib.TextCellValue(element.buyTotalQuantity.toString()));
             }
-          case RejectionLogColumns.symbol:
+          case BulkTradeColumns.sellTotalQty:
             {
-              list.add(excelLib.TextCellValue(element.symbolTitle ?? ""));
+              list.add(excelLib.TextCellValue(element.sellTotalQuantity.toString()));
             }
-          case RejectionLogColumns.type:
+          case BulkTradeColumns.totalQty:
             {
-              list.add(excelLib.TextCellValue(element.tradeTypeValue ?? ""));
-            }
-          case RejectionLogColumns.qty:
-            {
-              list.add(excelLib.TextCellValue(element.quantity!.toStringAsFixed(2)));
-            }
-          case RejectionLogColumns.price:
-            {
-              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
-            }
-          case RejectionLogColumns.ipAddress:
-            {
-              list.add(excelLib.TextCellValue(element.ipAddress ?? ""));
-            }
-          case RejectionLogColumns.deviceId:
-            {
-              list.add(excelLib.TextCellValue(element.deviceId ?? ""));
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
             }
 
           default:
@@ -127,9 +110,9 @@ class RejectionLogController extends BaseController {
       dataList.add(list);
     });
     if (isFromPDF) {
-      return exportPDFFile("RejectionLog", titleList, dataList);
+      return exportPDFFile("BulkTrade", titleList, dataList);
     }
-    exportExcelFile("RejectionLog.xlsx", titleList, dataList);
+    exportExcelFile("BulkTrade.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {

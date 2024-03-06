@@ -10,7 +10,6 @@ import '../../../constant/index.dart';
 import '../../../constant/screenColumnData.dart';
 import '../../BaseController/baseController.dart';
 
-
 enum TransType { Credit, Debit }
 
 class CreditPopUpController extends BaseController {
@@ -71,6 +70,17 @@ class CreditPopUpController extends BaseController {
     var response = await service.getCreditListCall(userId: selectedUserId);
     if (response?.statusCode == 200) {
       arrCreditList = response!.data ?? [];
+      for (var i = 0; i < arrCreditList.length; i++) {
+        if (arrCreditList[i].transactionType == "credit") {
+          if (i == 0) {
+            arrCreditList[i].balance = arrCreditList[i].amount!;
+          } else {
+            arrCreditList[i].balance = arrCreditList[i - 1].balance + arrCreditList[i].amount!;
+          }
+        } else {
+          arrCreditList[i].balance = arrCreditList[i - 1].balance - arrCreditList[i].amount!;
+        }
+      }
       update();
     }
 

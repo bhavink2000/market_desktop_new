@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
-
 
 class SettlementController extends BaseController {
   //*********************************************************************** */
@@ -119,5 +118,82 @@ class SettlementController extends BaseController {
     }
 
     return roll;
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList1 = [];
+    List<List<excelLib.TextCellValue?>> dataList2 = [];
+    arrProfitList.forEach((element) {
+      List<excelLib.TextCellValue?> list1 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list1.add(excelLib.TextCellValue(element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list1.add(excelLib.TextCellValue(element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list1.add(excelLib.TextCellValue(element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list1.add(excelLib.TextCellValue(element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list1.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList1.add(list1);
+    });
+    arrLossList.forEach((element) {
+      List<excelLib.TextCellValue?> list1 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list1.add(excelLib.TextCellValue(element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list1.add(excelLib.TextCellValue(element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list1.add(excelLib.TextCellValue(element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list1.add(excelLib.TextCellValue(element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list1.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList2.add(list1);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("Settlement_profit", titleList, dataList1);
+    }
+
+    exportExcelWithTwoSheetFile("Settlement.xlsx", "Profit", "Loss", titleList, dataList1, dataList2);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

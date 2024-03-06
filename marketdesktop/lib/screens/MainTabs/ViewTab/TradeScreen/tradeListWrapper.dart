@@ -28,10 +28,17 @@ class TradeListScreen extends BaseView<TradeListController> {
         },
         child: Row(
           children: [
-            filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrTrade.length, onCLickFilter: () {
-              controller.isFilterOpen = !controller.isFilterOpen;
-              controller.update();
-            }),
+            filterPanel(
+              context,
+              isRecordDisplay: true,
+              totalRecord: controller.arrTrade.length,
+              onCLickFilter: () {
+                controller.isFilterOpen = !controller.isFilterOpen;
+                controller.update();
+              },
+              onCLickExcell: controller.onClickExcel,
+              onCLickPDF: controller.onClickPDF,
+            ),
             filterContent(context),
             Expanded(
               flex: 8,

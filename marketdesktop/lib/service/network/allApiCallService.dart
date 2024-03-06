@@ -18,6 +18,7 @@ import 'package:marketdesktop/modelClass/creditListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeAllowModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/groupSettingListModelClass.dart';
+import 'package:marketdesktop/modelClass/holidayListModelClass.dart';
 import 'package:marketdesktop/modelClass/loginHistoryModelClass.dart';
 import 'package:marketdesktop/modelClass/m2mProfitLossModelClass.dart';
 import 'package:marketdesktop/modelClass/marketTimingModelClass.dart';
@@ -45,6 +46,7 @@ import 'package:path_provider/path_provider.dart';
 import '../../constant/const_string.dart';
 
 import '../../modelClass/accountSummaryNewListModelClass.dart';
+import '../../modelClass/bulkTradeModelClass.dart';
 import '../../modelClass/constantModelClass.dart';
 import '../../modelClass/myTradeListModelClass.dart';
 import '../../modelClass/myUserListModelClass.dart';
@@ -340,6 +342,7 @@ class AllApiCallService {
     String? startDate,
     String? endDate,
     String? orderType,
+    String? tradeTypeFilter,
   }) async {
     try {
       _dio.options.headers = getHeaders();
@@ -355,8 +358,9 @@ class AllApiCallService {
         "endDate": endDate,
         "orderTypeFilter": orderType,
         "tradeStatusFilter": tradeStatus,
+        "tradeTypeFilter": tradeTypeFilter,
       };
-
+      print(payload);
       final data = await _dio.post(Api.myTradeList, data: payload);
       print(data.data);
       return MyTradeListModel.fromJson(data.data);
@@ -1509,6 +1513,22 @@ class AllApiCallService {
     }
   }
 
+  Future<BulkTradeModel?> bulkTradeListCall(int page, String exchnageId, String symbolId, String userId) async {
+    try {
+      _dio.options.headers = getHeaders();
+      //print(_dio.options.headers);
+      final payload = {"page": page, "limit": pageLimit, "search": "", "exchangeId": exchnageId, "symbolId": symbolId, "userId": userId, "sortKey": "createdAt", "sortBy": -1};
+      final data = await _dio.post(Api.bulkTradeList, data: payload);
+      //print(data.data);
+      return BulkTradeModel.fromJson(data.data);
+    } catch (e) {
+      print(e);
+      return null;
+      // final errMsg = e.response?.data['message'];
+      // throw Exception(errMsg);
+    }
+  }
+
   Future<SettlementListModel?> settelementListCall(int page, String startDate, String endDate) async {
     try {
       _dio.options.headers = getHeaders();
@@ -1640,6 +1660,21 @@ class AllApiCallService {
       final data = await _dio.post(Api.marketTiming, data: payload);
       //print(data.data);
       return MarketTimingModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+      // final errMsg = e.response?.data['message'];
+      // throw Exception(errMsg);
+    }
+  }
+
+  Future<HolidayListModel?> holidayListCall(String exchangeId) async {
+    try {
+      _dio.options.headers = getHeaders();
+      //print(_dio.options.headers);
+      final payload = {"exchangeId": exchangeId};
+      final data = await _dio.post(Api.holidayList, data: payload);
+      //print(data.data);
+      return HolidayListModel.fromJson(data.data);
     } catch (e) {
       return null;
       // final errMsg = e.response?.data['message'];

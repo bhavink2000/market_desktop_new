@@ -15,6 +15,7 @@ class AppColors {
   var blueColor = const Color.fromRGBO(33, 115, 253, 1.0);
   var redColor = const Color.fromRGBO(255, 0, 0, 1);
   var pinkColor = const Color(0xffFB7CD7);
+  var skyBlueColor = const Color(0xff87CEEB);
 
   // var greenColor = const Color.fromRGBO(67, 154, 67, 1.0);
   var greenColor = const Color.fromRGBO(0, 0, 255, 1.0);

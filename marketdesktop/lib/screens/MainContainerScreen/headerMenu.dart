@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/navigation/routename.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/BulkTradeScreen/bulkTradeController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/BulkTradeScreen/bulkTradeWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/SettelmentScreen/settelmentController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/SettelmentScreen/settelmentWrapper.dart';
@@ -216,7 +218,7 @@ class MyMenuBar extends StatelessWidget {
 
                 currentOpenedScreen = ScreenViewNames.orders;
                 var tradeVC = Get.put(TradeListController());
-                generalContainerPopup(view: TradeListScreen(), title: ScreenViewNames.orders, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
+                generalContainerPopup(view: TradeListScreen(), title: ScreenViewNames.orders, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter, excelClick: tradeVC.onClickExcel, pdfClick: tradeVC.onClickPDF);
               });
             },
           ),
@@ -238,7 +240,7 @@ class MyMenuBar extends StatelessWidget {
                 currentOpenedScreen = ScreenViewNames.trades;
 
                 var tradeVC = Get.put(SuccessTradeListController());
-                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
+                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter, excelClick: tradeVC.onClickExcel, pdfClick: tradeVC.onClickPDF);
               });
             },
           ),
@@ -259,7 +261,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.positions;
                 var positionVc = Get.put(PositionController());
-                generalContainerPopup(view: PositionScreen(), title: ScreenViewNames.positions, isFilterAvailable: true, filterClick: positionVc.onCLickFilter);
+                generalContainerPopup(view: PositionScreen(), title: ScreenViewNames.positions, isFilterAvailable: true, filterClick: positionVc.onCLickFilter, excelClick: positionVc.onClickExcel, pdfClick: positionVc.onClickPDF);
               });
             },
           ),
@@ -285,7 +287,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.rejectionLog;
               var rejectionVC = Get.put(RejectionLogController());
-              generalContainerPopup(view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter);
+              generalContainerPopup(view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter, excelClick: rejectionVC.onClickExcel, pdfClick: rejectionVC.onClickPDF);
             },
           ),
           MenuEntry(
@@ -345,7 +347,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userList;
                 var userListVC = Get.put(UserListController());
-                generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
+                generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter, excelClick: userListVC.onClickExcel, pdfClick: userListVC.onClickPDF);
               },
             ),
             // MenuEntry(
@@ -383,7 +385,19 @@ class MyMenuBar extends StatelessWidget {
           //       generalContainerPopup(view: ManageTradeScreen(), title: ScreenViewNames.manageTrades, isFilterAvailable: true, filterClick: manageTradeVC.onCLickFilter);
           //     },
           //   ),
-          // if (userData?.role == UserRollList.master || userData?.role == UserRollList.superAdmin)
+          if (userData?.role == UserRollList.superAdmin)
+            MenuEntry(
+              label: ScreenViewNames.bulkTrade,
+              onPressed: () {
+                if (marketViewObj.isBuyOpen != -1) {
+                  return;
+                }
+                isCommonScreenPopUpOpen = true;
+                currentOpenedScreen = ScreenViewNames.bulkTrade;
+                var rejectionVC = Get.put(BulkTradeController());
+                generalContainerPopup(view: BulkTradeScreen(), title: ScreenViewNames.bulkTrade, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter, excelClick: rejectionVC.onClickExcel, pdfClick: rejectionVC.onClickPDF);
+              },
+            ),
           MenuEntry(
             label: ScreenViewNames.tradeLogs,
             onPressed: () {
@@ -393,7 +407,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeLogs;
               var tradeLogVC = Get.put(TradeLogController());
-              generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter);
+              generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter, excelClick: tradeLogVC.onClickExcel, pdfClick: tradeLogVC.onClickPDF);
             },
           ),
           // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -418,7 +432,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.clientAccountReport;
               var clientAccountVC = Get.put(ClientAccountReportController());
-              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport, isFilterAvailable: true, filterClick: clientAccountVC.onCLickFilter);
+              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport, isFilterAvailable: true, filterClick: clientAccountVC.onCLickFilter, excelClick: clientAccountVC.onClickExcel, pdfClick: clientAccountVC.onClickPDF);
             },
           ),
           MenuEntry(
@@ -430,7 +444,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeMargin;
               var marginVC = Get.put(TradeMarginController());
-              generalContainerPopup(view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin, isFilterAvailable: true, filterClick: marginVC.onCLickFilter);
+              generalContainerPopup(view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin, isFilterAvailable: true, filterClick: marginVC.onCLickFilter, excelClick: marginVC.onClickExcel, pdfClick: marginVC.onClickPDF);
             },
           ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -443,7 +457,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.settelment;
                 var settlementVC = Get.put(SettlementController());
-                generalContainerPopup(view: SettlementScreen(), title: ScreenViewNames.settelment, isFilterAvailable: true, filterClick: settlementVC.onCLickFilter);
+                generalContainerPopup(view: SettlementScreen(), title: ScreenViewNames.settelment, isFilterAvailable: true, filterClick: settlementVC.onCLickFilter, excelClick: settlementVC.onClickExcel, pdfClick: settlementVC.onClickPDF);
               },
             ),
           MenuEntry(

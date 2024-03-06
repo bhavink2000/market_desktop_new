@@ -156,6 +156,7 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               onChanged: (ExchangeData? value) {
                 // setState(() {
                 controller.selectedExchangedropdownValue!.value = value!;
+                controller.getHolidayList();
                 controller.update();
                 // });
               },
@@ -271,12 +272,16 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
               customCalenderHeader(),
               CalendarCarousel<Event>(
                 onDayPressed: (date, events) {
-                  if (valueObj.weekOff!.contains(date.weekday)) {
-                    controller.currentDate2 = date;
-                    events.forEach((event) => print(event.title));
-                    controller.isDateSelected = true.obs;
-                    controller.update();
-                  }
+                  // if (valueObj.weekOff!.contains(date.weekday)) {
+                  controller.currentDate2 = date;
+                  events.forEach((event) => print(event.title));
+                  controller.isDateSelected = true.obs;
+                  controller.update();
+                  // } else {
+                  //   controller.isDateSelected = false.obs;
+                  //   controller.currentDate2 = date;
+                  //   controller.update();
+                  // }
                 },
                 showOnlyCurrentMonthDate: false,
                 height: 307,
@@ -345,6 +350,24 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
 
   Widget dateTimingView(BuildContext context, int index) {
     var valueObj = controller.arrTiming[index];
+    var valueObj1 = controller.arrTiming.first;
+    var isWeekEnd = !valueObj1.weekOff!.contains(controller.currentDate2.weekday);
+    print(controller.currentDate2);
+    var isHoliday = false;
+    var holiday = "";
+
+    for (var element in controller.arrHoliday) {
+      print(element.startDate);
+      if (element.startDate == controller.currentDate2) {
+        print("Match");
+        isHoliday = true;
+        holiday = element.text ?? "";
+      }
+    }
+    if (isHoliday == false && isWeekEnd) {
+      isHoliday = true;
+      holiday = "WEEKEND";
+    }
     return Container(
       // height: 6.h,
 
@@ -358,12 +381,12 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
+                  color: isHoliday ? AppColors().redColor : AppColors().blueColor,
                 ),
               ),
               Container(
                 width: 48,
-                decoration: BoxDecoration(color: AppColors().blueColor, borderRadius: BorderRadius.circular(13.5)),
+                decoration: BoxDecoration(color: isHoliday ? AppColors().redColor : AppColors().blueColor, borderRadius: BorderRadius.circular(13.5)),
                 child: Center(
                   child: Text(
                     controller.currentDate2.day.toString(),
@@ -383,10 +406,10 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
           Expanded(
             child: Container(
               height: 5.7.h,
-              decoration: BoxDecoration(color: AppColors().blueColor, borderRadius: BorderRadius.circular(5)),
+              decoration: BoxDecoration(color: isHoliday ? AppColors().redColor : AppColors().blueColor, borderRadius: BorderRadius.circular(5)),
               child: Center(
                 child: Text(
-                  valueObj.startTime! + " - " + valueObj.endTime!,
+                  isHoliday ? holiday : valueObj.startTime! + " - " + valueObj.endTime!,
                   style: TextStyle(
                     fontSize: 14,
                     fontFamily: CustomFonts.family1Medium,

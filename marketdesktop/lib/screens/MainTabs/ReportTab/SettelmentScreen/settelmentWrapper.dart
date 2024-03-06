@@ -20,10 +20,17 @@ class SettlementScreen extends BaseView<SettlementController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
-            controller.isFilterOpen = !controller.isFilterOpen;
-            controller.update();
-          }),
+          filterPanel(
+            context,
+            bottomMargin: 0,
+            isRecordDisplay: false,
+            onCLickFilter: () {
+              controller.isFilterOpen = !controller.isFilterOpen;
+              controller.update();
+            },
+            onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,
+          ),
           filterContent(context),
           Expanded(
             flex: 8,
@@ -492,7 +499,7 @@ class SettlementScreen extends BaseView<SettlementController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'USERNAME':
+                  case SettlementColumns.username:
                     {
                       return dynamicValueBox1(
                         value.displayName!,
@@ -503,7 +510,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'P/L':
+                  case SettlementColumns.pl:
                     {
                       return dynamicValueBox1(
                         value.profitLoss!.toStringAsFixed(2),
@@ -514,11 +521,11 @@ class SettlementScreen extends BaseView<SettlementController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'BRK':
+                  case SettlementColumns.brk:
                     {
                       return dynamicValueBox1(value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'TOTAL':
+                  case SettlementColumns.total:
                     {
                       return dynamicValueBox1(
                         value.total!.toStringAsFixed(2),

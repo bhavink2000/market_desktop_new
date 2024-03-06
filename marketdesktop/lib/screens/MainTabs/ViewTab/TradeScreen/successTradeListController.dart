@@ -1,5 +1,7 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:excel/excel.dart' as excelLib;
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
@@ -11,6 +13,7 @@ import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../modelClass/constantModelClass.dart';
+
 
 class SuccessTradeListController extends BaseController {
   //*********************************************************************** */
@@ -39,6 +42,7 @@ class SuccessTradeListController extends BaseController {
   int totalPage = 0;
   bool isFromSocket = false;
   Rx<Type> selectedTradeStatus = Type().obs;
+  Rx<Type> selectedTradeType = Type().obs;
   bool isPagingApiCall = false;
   int totalCount = 0;
   FocusNode deleteTradeFocus = FocusNode();
@@ -106,16 +110,16 @@ class SuccessTradeListController extends BaseController {
     }
 
     var response = await service.getMyTradeListCall(
-      status: "executed",
-      page: pageNumber,
-      text: "",
-      userId: selectedUser.value.userId ?? "",
-      symbolId: selectedScriptFromFilter.value.symbolId ?? "",
-      exchangeId: selectedExchange.value.exchangeId ?? "",
-      startDate: strFromDate,
-      endDate: strToDate,
-      tradeStatus: selectedTradeStatus.value.id,
-    );
+        status: "executed",
+        page: pageNumber,
+        text: "",
+        userId: selectedUser.value.userId ?? "",
+        symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+        exchangeId: selectedExchange.value.exchangeId ?? "",
+        startDate: strFromDate,
+        endDate: strToDate,
+        tradeStatus: selectedTradeStatus.value.id,
+        tradeTypeFilter: selectedTradeType.value.id ?? "");
 
     if (response != null) {
       if (response.statusCode == 200) {
@@ -235,4 +239,108 @@ class SuccessTradeListController extends BaseController {
       }
     }
   }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrTrade.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case TradeColumns.checkBox:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+          case TradeColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.userName!));
+            }
+          case TradeColumns.parentUser:
+            {
+              list.add(excelLib.TextCellValue(element.parentUserName!));
+            }
+          case TradeColumns.segment:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName!));
+            }
+          case TradeColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle!));
+            }
+          case TradeColumns.bs:
+            {
+              list.add(excelLib.TextCellValue(element.tradeTypeValue!));
+            }
+          case TradeColumns.qty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+            }
+          case TradeColumns.lot:
+            {
+              list.add(excelLib.TextCellValue(element.quantity.toString()));
+            }
+          case TradeColumns.type:
+            {
+              list.add(excelLib.TextCellValue(element.productTypeValue!));
+            }
+          case TradeColumns.tradePrice:
+            {
+              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+            }
+          case TradeColumns.brk:
+            {
+              list.add(excelLib.TextCellValue(element.brokerageAmount!.toStringAsFixed(2)));
+            }
+          case TradeColumns.priceB:
+            {
+              list.add(excelLib.TextCellValue(getNetPrice(element.tradeType!, element.price ?? 0, (element.brokerageAmount! / element.totalQuantity!)).toStringAsFixed(2)));
+            }
+          case TradeColumns.orderDT:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case TradeColumns.executionDT:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.executionDateTime!)));
+            }
+          case TradeColumns.refPrice:
+            {
+              list.add(excelLib.TextCellValue(element.referencePrice!.toStringAsFixed(2)));
+            }
+          case TradeColumns.ipAddress:
+            {
+              list.add(excelLib.TextCellValue(element.ipAddress!));
+            }
+          case TradeColumns.device:
+            {
+              list.add(excelLib.TextCellValue(element.orderMethod!));
+            }
+          case TradeColumns.deviceId:
+            {
+              list.add(excelLib.TextCellValue(element.deviceId!));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("Trades", titleList, dataList);
+    }
+    exportExcelFile("Trades.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
+  }
+
+
 }

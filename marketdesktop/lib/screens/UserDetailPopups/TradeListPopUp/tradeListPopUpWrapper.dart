@@ -14,7 +14,6 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../constant/screenColumnData.dart';
 import '../../../constant/utilities.dart';
 
-
 class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
   const TradeListPopUpScreen({Key? key}) : super(key: key);
 
@@ -607,6 +606,17 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].totalQuantity.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
+                      }
+                    case 'TRADE TYPE':
+                      {
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].tradeTypeValue.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,

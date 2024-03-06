@@ -242,9 +242,9 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                     child: Row(
                   children: [
                     totalContent(value: "Total", textColor: AppColors().darkText, width: 43.w),
-                    totalContent(value: controller.totalPlSharePer.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
-                    totalContent(value: "", textColor: AppColors().darkText, width: 110),
-                    totalContent(value: controller.totalNetPl.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                    totalContent(value: controller.totalPlSharePer.toStringAsFixed(2), textColor: AppColors().darkText, width: 130),
+                    totalContent(value: "", textColor: AppColors().darkText, width: 120),
+                    totalContent(value: controller.totalNetPl.toStringAsFixed(2), textColor: AppColors().darkText, width: 140),
                   ],
                 )),
               ),
@@ -394,7 +394,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       finalValue = finalValue * -1;
 
                       return dynamicValueBox1(
-                        finalValue.toStringAsFixed(2),
+                        plObj.plSharePer.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                         plObj.plWithBrk > 0
                             ? AppColors().greenColor
@@ -422,7 +422,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
 
                       finalValue = finalValue + plObj.parentBrokerageTotal!;
                       return dynamicValueBox1(
-                        finalValue.toStringAsFixed(2),
+                        plObj.netPL.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                         plObj.netPL > 0
                             ? AppColors().greenColor

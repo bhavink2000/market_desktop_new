@@ -19,10 +19,18 @@ class TradeMarginScreen extends BaseView<TradeMarginController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
-            controller.isFilterOpen = !controller.isFilterOpen;
-            controller.update();
-          }),
+          filterPanel(
+            context,
+            bottomMargin: 0,
+            isRecordDisplay: true,
+            totalRecord: controller.totalCount,
+            onCLickFilter: () {
+              controller.isFilterOpen = !controller.isFilterOpen;
+              controller.update();
+            },
+            onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,
+          ),
           filterContent(context),
           Expanded(
             flex: 8,
@@ -503,27 +511,27 @@ class TradeMarginScreen extends BaseView<TradeMarginController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'EXCHANGE':
+                  case TradeMarginColumns.exchange:
                     {
                       return dynamicValueBox1(tradeValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'SCRIPT':
+                  case TradeMarginColumns.script:
                     {
                       return IgnorePointer(child: dynamicValueBox1(tradeValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1));
                     }
-                  case 'EXPIRY DATE':
+                  case TradeMarginColumns.expiryDate:
                     {
                       return dynamicValueBox1(shortFullDateTime(tradeValue.expiryDate!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'MARGIN (%)':
+                  case TradeMarginColumns.marginPer:
                     {
                       return dynamicValueBox1(tradeValue.tradeMargin!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'MARGIN (AMOUNT)':
+                  case TradeMarginColumns.marginAmount:
                     {
                       return dynamicValueBox1(tradeValue.tradeMarginAmount!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'DESCRIPTION':
+                  case TradeMarginColumns.description:
                     {
                       return dynamicValueBox1(tradeValue.symbolName ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }

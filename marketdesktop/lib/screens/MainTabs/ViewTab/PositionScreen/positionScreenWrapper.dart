@@ -29,7 +29,7 @@ class PositionScreen extends BaseView<PositionController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPositionScriptList.length, onCLickFilter: () {
+          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPositionScriptList.length, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),

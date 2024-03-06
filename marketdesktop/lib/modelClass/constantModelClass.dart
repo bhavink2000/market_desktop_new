@@ -60,6 +60,7 @@ class ConstantData {
   List<AddMaster>? userFilterType;
   List<AddMaster>? billType;
   List<Type>? orderTypeFilter;
+  List<Type>? tradeTypeFilter;
   String? serverName;
   List<Type>? transactionType;
   List<Type>? tradeStatusFilter;
@@ -102,9 +103,10 @@ class ConstantData {
     this.roleData,
     this.settingData,
     this.orderTypeFilter,
+    this.tradeStatusFilter,
     this.manuallyTradeAddedFor,
     this.productTypeForAccount,
-    this.tradeStatusFilter,
+    this.tradeTypeFilter,
     this.instrumentType,
     this.userLogFilter,
     this.rejectedTradeStatusFilter,
@@ -170,6 +172,8 @@ class ConstantData {
       settingData: json["settingData"] == null ? null : SettingData.fromJson(json["settingData"]),
       orderTypeFilter: json["orderTypeFilter"] == null ? [] : List<Type>.from(json["orderTypeFilter"]!.map((x) => Type.fromJson(x)))
         ..insert(0, allType),
+      tradeTypeFilter: json["tradeTypeFilter"] == null ? [] : List<Type>.from(json["tradeTypeFilter"]!.map((x) => Type.fromJson(x)))
+        ..insert(0, allType),
       tradeStatusFilter: json["tradeStatusFilter"] == null ? [] : List<Type>.from(json["tradeStatusFilter"]!.map((x) => Type.fromJson(x))),
       manuallyTradeAddedFor: json["manuallyTradeAddedFor"] == null ? [] : List<Type>.from(json["manuallyTradeAddedFor"]!.map((x) => Type.fromJson(x))),
       productTypeForAccount: json["productTypeForAccount"] == null ? [] : List<Type>.from(json["productTypeForAccount"]!.map((x) => Type.fromJson(x))),
@@ -214,6 +218,7 @@ class ConstantData {
         "serverName": serverName,
         "roleData": roleData == null ? [] : List<dynamic>.from(roleData!.map((x) => x.toJson())),
         "orderTypeFilter": orderTypeFilter == null ? [] : List<dynamic>.from(orderTypeFilter!.map((x) => x.toJson())),
+        "tradeTypeFilter": tradeTypeFilter == null ? [] : List<dynamic>.from(tradeTypeFilter!.map((x) => x.toJson())),
         "settingData": settingData?.toJson(),
         "tradeStatusFilter": tradeStatusFilter == null ? [] : List<dynamic>.from(tradeStatusFilter!.map((x) => x.toJson())),
         "manuallyTradeAddedFor": manuallyTradeAddedFor == null ? [] : List<dynamic>.from(manuallyTradeAddedFor!.map((x) => x.toJson())),

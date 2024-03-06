@@ -7,6 +7,7 @@ import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/BulkTradeScreen/bulkTradeController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/RejectionLogScreen/rejectionLogController.dart';
 import 'package:paginable/paginable.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,8 +18,8 @@ import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 
-class RejectionLogScreen extends BaseView<RejectionLogController> {
-  const RejectionLogScreen({Key? key}) : super(key: key);
+class BulkTradeScreen extends BaseView<BulkTradeController> {
+  const BulkTradeScreen({Key? key}) : super(key: key);
 
   @override
   Widget vBuilder(BuildContext context) {
@@ -121,7 +122,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                           children: [
                             Spacer(),
                             Container(
-                              child: Text("From:",
+                              child: Text("Username:",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: CustomFonts.family1Regular,
@@ -131,161 +132,13 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                             SizedBox(
                               width: 10,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.fromDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.fromDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
+                            userListDropDown(controller.selectedUser, width: 150),
                             SizedBox(
                               width: 30,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // SizedBox(
-                            //   width: 30,
-                            // ),
-                            Spacer(),
-
-                            Container(
-                              child: Text("To:",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
-                                    color: AppColors().fontColor,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // selectToDate(controller.endDate);
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.endDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.endDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (userData!.role != UserRollList.user)
-                        SizedBox(
-                          height: 10,
-                        ),
-                      if (userData!.role != UserRollList.user)
-                        Container(
-                          height: 35,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              Container(
-                                child: Text("Username:",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
-                                      color: AppColors().fontColor,
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              userListDropDown(controller.selectedUser, width: 150),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ],
-                          ),
-                        ),
                       SizedBox(
                         height: 10,
                       ),
@@ -346,35 +199,6 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                       SizedBox(
                         height: 10,
                       ),
-                      if (userData!.role == UserRollList.superAdmin)
-                        Container(
-                          height: 35,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Spacer(),
-                              Container(
-                                child: Text("Status:",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: CustomFonts.family1Regular,
-                                      color: AppColors().fontColor,
-                                    )),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              rejectedstatusListDropDown(controller.selectedStatus, width: 150),
-                              SizedBox(
-                                width: 30,
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (userData!.role == UserRollList.superAdmin)
-                        SizedBox(
-                          height: 10,
-                        ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -387,9 +211,9 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                               title: "View",
                               textSize: 14,
                               onPress: () {
-                                controller.arrRejectLog.clear();
+                                controller.arrAllScript.clear();
                                 controller.currentPage = 1;
-                                controller.rejectLogList(isFromFilter: true);
+                                controller.bulkTradeList(isFromFilter: true);
                               },
                               focusKey: controller.viewFocus,
                               borderColor: Colors.transparent,
@@ -418,11 +242,10 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
                                 controller.selectedTradeStatus.value = "";
                                 controller.selectedUser.value = UserData();
-                                controller.fromDate.value = "";
-                                controller.endDate.value = "";
-                                controller.arrRejectLog.clear();
+
+                                controller.arrBulkTrade.clear();
                                 controller.currentPage = 1;
-                                controller.rejectLogList(isFromClear: true, isFromFilter: true);
+                                controller.bulkTradeList(isFromClear: true, isFromFilter: true);
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,
@@ -474,26 +297,26 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                 ),
               ),
               Expanded(
-                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrRejectLog.isEmpty
-                    ? dataNotFoundView("Rejection log not found")
+                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrBulkTrade.isEmpty
+                    ? dataNotFoundView("Bulk Trade not found")
                     : CustomScrollBar(
                         bgColor: AppColors().blueColor,
                         child: PaginableListView.builder(
                             loadMore: () async {
                               if (controller.totalPage >= controller.currentPage) {
                                 //print(controller.currentPage);
-                                controller.rejectLogList();
+                                controller.bulkTradeList();
                               }
                             },
                             errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
                             progressIndicatorWidget: displayIndicator(),
                             physics: const ClampingScrollPhysics(),
                             clipBehavior: Clip.hardEdge,
-                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrRejectLog.length,
+                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrBulkTrade.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return rejectionLogContent(context, index);
+                              return bulkTradeContent(context, index);
                             }),
                       ),
               ),
@@ -504,7 +327,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
     );
   }
 
-  Widget rejectionLogContent(BuildContext context, int index) {
+  Widget bulkTradeContent(BuildContext context, int index) {
     if (controller.isApiCallRunning) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
@@ -517,7 +340,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
             highlightColor: AppColors().grayBg),
       );
     } else {
-      var historyValue = controller.arrRejectLog[index];
+      var historyValue = controller.arrBulkTrade[index];
       return GestureDetector(
         onTap: () {
           // controller.selectedScriptIndex = index;
@@ -535,10 +358,10 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int indexT) {
                   switch (controller.arrListTitle1[indexT].title) {
-                    case RejectionLogColumns.date:
+                    case BulkTradeColumns.exchange:
                       {
                         return dynamicValueBox1(
-                          shortFullDateTime(historyValue.createdAt!),
+                          historyValue.exchangeName ?? "",
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
@@ -546,36 +369,14 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case RejectionLogColumns.status:
-                      {
-                        return dynamicValueBox1(historyValue.status ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
-                      }
-                    case RejectionLogColumns.username:
-                      {
-                        return dynamicValueBox1(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
-                          showUserDetailsPopUp(userId: controller.arrRejectLog[index].userId!, userName: controller.arrRejectLog[index].userName ?? "");
-                        });
-                      }
-                    case RejectionLogColumns.symbol:
+                    case BulkTradeColumns.symbol:
                       {
                         return dynamicValueBox1(historyValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
-                    case RejectionLogColumns.type:
-                      {
-                        return dynamicValueBox1(historyValue.tradeTypeValue ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
-                      }
-                    case RejectionLogColumns.qty:
-                      {
-                        return dynamicValueBox1(historyValue.quantity!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
-                      }
-                    case RejectionLogColumns.price:
-                      {
-                        return dynamicValueBox1(historyValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
-                      }
-                    case RejectionLogColumns.ipAddress:
+                    case BulkTradeColumns.buyTotalQty:
                       {
                         return dynamicValueBox1(
-                          historyValue.ipAddress ?? "",
+                          historyValue.buyTotalQuantity!.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
@@ -583,16 +384,13 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case RejectionLogColumns.deviceId:
+                    case BulkTradeColumns.sellTotalQty:
                       {
-                        return dynamicValueBox1(
-                          historyValue.deviceId ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          AppColors().darkText,
-                          index,
-                          indexT,
-                          controller.arrListTitle1,
-                        );
+                        return dynamicValueBox1(historyValue.sellTotalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                      }
+                    case BulkTradeColumns.totalQty:
+                      {
+                        return dynamicValueBox1(historyValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
 
                     default:

@@ -200,8 +200,6 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
 }
 
 Widget billTypeDropDown(Rx<AddMaster?> selectedBillType, {double? width}) {
-
-
   return Obx(() {
     return SizedBox(
         width: width ?? 250,
@@ -1033,6 +1031,70 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                   .toList(),
               selectedItemBuilder: (context) {
                 return arrTradeStatus
+                    .map((Type item) => DropdownMenuItem<Type>(
+                          value: item,
+                          child: Text(
+                            item.name ?? "",
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: CustomFonts.family1Regular,
+                              color: AppColors().darkText,
+                            ),
+                          ),
+                        ))
+                    .toList();
+              },
+              value: selectedTradeStatus.value?.name == null ? null : selectedTradeStatus.value,
+              onChanged: (Type? value) {
+                selectedTradeStatus.value = value!;
+              },
+              buttonStyleData: const ButtonStyleData(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                // height: 25,
+                // width: 135,
+              ),
+            ),
+          ),
+        ));
+  });
+}
+
+Widget tradeTypeListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
+  return Obx(() {
+    return Container(
+        width: width ?? 250,
+        height: 30,
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButtonFormField2<Type>(
+              isExpanded: true,
+              decoration: commonFocusBorder,
+              iconStyleData: IconStyleData(
+                icon: Image.asset(
+                  AppImages.arrowDown,
+                  height: 20,
+                  width: 20,
+                  color: AppColors().fontColor,
+                ),
+              ),
+              dropdownStyleData: const DropdownStyleData(maxHeight: 150),
+              hint: Text(
+                '',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText,
+                ),
+              ),
+              items: constantValues!.tradeTypeFilter!
+                  .map((Type item) => DropdownItem<Type>(
+                        value: item,
+                        height: 30,
+                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                      ))
+                  .toList(),
+              selectedItemBuilder: (context) {
+                return constantValues!.tradeTypeFilter!
                     .map((Type item) => DropdownMenuItem<Type>(
                           value: item,
                           child: Text(

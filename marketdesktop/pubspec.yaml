@@ -72,6 +72,8 @@ dependencies:
   sqflite_common_ffi: any
   file_picker: ^6.1.1
   flutter_widget_from_html_core: ^0.14.11
+  excel: ^4.0.2
+  pdf: ^3.10.8
 
   window_size:
     git:

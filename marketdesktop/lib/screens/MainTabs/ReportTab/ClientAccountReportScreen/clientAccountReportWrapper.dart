@@ -22,7 +22,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -583,13 +583,13 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                 }
 
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'USERNAME':
+                  case AccountReportColumns.username:
                     {
                       return dynamicValueBox1(controller.arrSummaryList[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
                         showUserDetailsPopUp(userId: controller.arrSummaryList[index].userId!, userName: controller.arrSummaryList[index].userName ?? "");
                       });
                     }
-                  case 'PARENT USER':
+                  case AccountReportColumns.parentUser:
                     {
                       return dynamicValueBox1(
                         controller.arrSummaryList[index].parentUserName ?? "",
@@ -600,11 +600,11 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                         controller.arrListTitle1,
                       );
                     }
-                  case 'EXCHANGE':
+                  case AccountReportColumns.exchange:
                     {
                       return dynamicValueBox1(scriptValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'SYMBOL':
+                  case AccountReportColumns.symbol:
                     {
                       return dynamicValueBox1(
                         scriptValue.symbolTitle ?? "",
@@ -615,7 +615,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                         controller.arrListTitle1,
                       );
                     }
-                  case 'TOTAL BUY QTY':
+                  case AccountReportColumns.totalBuyQty:
                     {
                       return dynamicValueBox1(
                         scriptValue.buyTotalQuantity!.toString(),
@@ -626,7 +626,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                         controller.arrListTitle1,
                       );
                     }
-                  case 'TOTAL BUY A PRICE':
+                  case AccountReportColumns.totalBuyAPrice:
                     {
                       return dynamicValueBox1(
                         scriptValue.buyTotalPrice!.toStringAsFixed(2),
@@ -637,7 +637,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                         controller.arrListTitle1,
                       );
                     }
-                  case 'TOTAL SELL QTY':
+                  case AccountReportColumns.totalSellQty:
                     {
                       return dynamicValueBox1(
                         scriptValue.sellTotalQuantity!.toString(),
@@ -649,7 +649,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                       );
                     }
 
-                  case 'TOTAL SELL A PRICE':
+                  case AccountReportColumns.totalSellAPrice:
                     {
                       return dynamicValueBox1(
                         scriptValue.sellTotalPrice!.toStringAsFixed(2),
@@ -661,36 +661,36 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                       );
                     }
 
-                  case 'NET QTY':
+                  case AccountReportColumns.netQty:
                     {
                       return dynamicValueBox1(scriptValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'NET A PRICE':
+                  case AccountReportColumns.netAPrice:
                     {
                       return dynamicValueBox1(scriptValue.avgPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'CMP':
+                  case AccountReportColumns.cmp:
                     {
                       return dynamicValueBox1(scriptValue.totalQuantity! < 0 ? scriptValue.ask!.toStringAsFixed(2) : scriptValue.bid!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           scriptValue.currentPriceFromSocket! > scriptValue.avgPrice! ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle1);
                     }
-                  case 'BROKERAGE':
+                  case AccountReportColumns.brk:
                     {
                       return dynamicValueBox1(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'P/L':
-                    {
-                      return dynamicValueBox1(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
-                    }
-                  case 'RELEASE P/L':
+                  case AccountReportColumns.pAndL:
                     {
                       return dynamicValueBox1(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'MTM':
+                  case AccountReportColumns.releasepl:
+                    {
+                      return dynamicValueBox1(scriptValue.profitLoss!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                    }
+                  case AccountReportColumns.mtm:
                     {
                       return dynamicValueBox1(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'MTM WITH BROKERAGE':
+                  case AccountReportColumns.mtmWithBrk:
                     {
                       return dynamicValueBox1(
                         (double.parse(scriptValue.profitLossValue!.toStringAsFixed(2)) - double.parse(scriptValue.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2),
@@ -701,11 +701,11 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                         controller.arrListTitle1,
                       );
                     }
-                  case 'TOTAL':
+                  case AccountReportColumns.total:
                     {
                       return dynamicValueBox1(scriptValue.total.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'OUR %':
+                  case AccountReportColumns.ourPer:
                     {
                       return dynamicValueBox1(scriptValue.ourPer.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }

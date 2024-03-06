@@ -104,17 +104,17 @@ class UserWisePLSummaryController extends BaseController {
             var total = pl + m2m;
             var finalValue = total * sharingPer / 100;
 
-            finalValue = finalValue * -1;
-            totalPlSharePer = totalPlSharePer + finalValue;
+            // finalValue = finalValue * -1;
+            userObj.plSharePer = finalValue * -1;
 
             var sharingPLPer = userObj.role == UserRollList.user ? userObj.profitAndLossSharingDownLine! : userObj.profitAndLossSharing!;
             var totalPL = pl + m2m;
             var finalValuePL = totalPL * sharingPLPer / 100;
 
-            finalValuePL = finalValuePL * -1;
+            userObj.netPL = finalValuePL * -1;
+            // finalValuePL = finalValuePL * -1;
 
             finalValuePL = finalValuePL + userObj.parentBrokerageTotal!;
-            totalNetPl = totalNetPl + finalValuePL;
           }
         }
         userObj.totalProfitLossValue = 0.0;
@@ -123,6 +123,12 @@ class UserWisePLSummaryController extends BaseController {
         }
         userObj.plWithBrk = userObj.totalProfitLossValue + userObj.childUserProfitLossTotal! - userObj.childUserBrokerageTotal!;
       });
+      totalNetPl = 0.0;
+      totalPlSharePer = 0.0;
+      for (var element in arrPlList) {
+        totalPlSharePer = totalPlSharePer + element.plSharePer;
+        totalNetPl = totalNetPl + element.netPL;
+      }
       update();
     }
   }

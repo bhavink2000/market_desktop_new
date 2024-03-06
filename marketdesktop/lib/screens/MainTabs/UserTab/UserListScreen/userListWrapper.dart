@@ -33,7 +33,8 @@ class UserListScreen extends BaseView<UserListController> {
           filterPanel(context, isRecordDisplay: true, totalRecord: controller.totalRecord, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
-          }),
+          },  onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,),
           filterContent(context),
           Expanded(
             flex: 8,
@@ -608,7 +609,7 @@ class UserListScreen extends BaseView<UserListController> {
                     case 'EQUITY':
                       {
                         return dynamicValueBox1(
-                          (controller.arrUserListData[index].credit! + controller.arrUserListData[index].profitLoss!).toStringAsFixed(2),
+                          controller.arrUserListData[index].balance!.toStringAsFixed(2),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().blueColor,
                           index,

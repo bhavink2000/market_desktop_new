@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import 'package:get/get.dart';
-
+import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 import 'package:marketdesktop/main.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'color.dart';
 import 'constantTextStyle.dart';
@@ -25,6 +27,167 @@ class Debouncer {
     _timer?.cancel();
     _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
+}
+
+getAlphabetMap() {
+  List<String> excelStyleAlphabetSequence = [];
+
+  for (int row = 1; row <= 26; row++) {
+    for (int col = 1; col <= 26; col++) {
+      int position = (row - 1) * 26 + col;
+      if (position <= 26) {
+        excelStyleAlphabetSequence.add(String.fromCharCode(position + 64));
+      } else {
+        int firstDigit = (position - 1) ~/ 26;
+        int secondDigit = (position - 1) % 26 + 1;
+        excelStyleAlphabetSequence.add('${String.fromCharCode(firstDigit + 64)}${String.fromCharCode(secondDigit + 64)}');
+      }
+    }
+  }
+  return excelStyleAlphabetSequence;
+}
+
+Future<void> generatePdfFromExcel(String excelFilePath) async {
+  final pdf = pw.Document();
+
+  // Read the Excel file
+  var file = File(excelFilePath);
+  var bytes = file.readAsBytesSync();
+  var excel = excelLib.Excel.decodeBytes(bytes);
+
+  excel.tables.keys.forEach((sheetName) {
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            children: excel.tables[sheetName]!.rows.map((row) {
+              return pw.Text(row.join(', ')); // Create a text widget for each row
+            }).toList(),
+          );
+        },
+      ),
+    );
+  });
+  final path = await FilePicker.platform.saveFile(
+    dialogTitle: 'Please select an output file:',
+    fileName: excelFilePath.split("/").last.split(".").first + ".pdf",
+  );
+  if (path != null) {
+    final file = File(path);
+
+    file.writeAsBytesSync(await pdf.save());
+  }
+}
+
+exportExcelFile(String fileName, List<excelLib.TextCellValue?> titleList, List<List<excelLib.TextCellValue?>> dataList) async {
+  final excel = excelLib.Excel.createExcel();
+  final sheet = excel['Sheet1'];
+  var listCellHeader = getAlphabetMap();
+  sheet.appendRow(titleList);
+  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff");
+  for (var i = 0; i < titleList.length; i++) {
+    sheet.setColumnAutoFit(i);
+    var cell = sheet.cell(excelLib.CellIndex.indexByString("${listCellHeader[i]}1"));
+    cell.cellStyle = cellStyle;
+  }
+
+  for (var element in dataList) {
+    sheet.appendRow(element);
+  }
+
+  fileName = fileName.split(".").first;
+
+  final path = await FilePicker.platform.saveFile(
+    dialogTitle: 'Please select an output file:',
+    fileName: fileName + ".xlsx",
+  );
+  if (path != null) {
+    final file = File(path);
+
+    file.writeAsBytesSync(excel.encode()!);
+  }
+}
+
+Future<void> exportExcelWithTwoSheetFile(
+  String fileName,
+  String sheet1Name,
+  String sheet2Name,
+  List<excelLib.TextCellValue?> titleList,
+  List<List<excelLib.TextCellValue?>> dataList1,
+  List<List<excelLib.TextCellValue?>> dataList2,
+) async {
+  final excel = excelLib.Excel.createExcel();
+  // Use your existing code to create or reference sheet1 and sheet2
+  final sheet1 = excel["Sheet1"];
+  final sheet2 = excel["Sheet2"];
+
+  // Assuming getAlphabetMap() gives you a mapping to Excel columns ('A', 'B', 'C', ...)
+  var listCellHeader = getAlphabetMap();
+
+  sheet1.merge(excelLib.CellIndex.indexByString("A1"), excelLib.CellIndex.indexByString("D1"), customValue: excelLib.TextCellValue("Profit"));
+
+  sheet2.merge(excelLib.CellIndex.indexByString("A1"), excelLib.CellIndex.indexByString("D1"), customValue: excelLib.TextCellValue("Loss"));
+
+  excelLib.CellStyle cellStyleHeader = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff", horizontalAlign: excelLib.HorizontalAlign.Center, fontSize: 16);
+  var cell1 = sheet1.cell(excelLib.CellIndex.indexByString("A1"));
+  var cell2 = sheet2.cell(excelLib.CellIndex.indexByString("A1"));
+  cell1.cellStyle = cellStyleHeader;
+  cell2.cellStyle = cellStyleHeader;
+
+  sheet1.appendRow(titleList);
+  sheet2.appendRow(titleList);
+  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff");
+  for (var i = 0; i < titleList.length; i++) {
+    sheet2.setColumnAutoFit(i);
+    sheet1.setColumnAutoFit(i);
+    var cell1 = sheet1.cell(excelLib.CellIndex.indexByString("${listCellHeader[i]}2"));
+    var cell2 = sheet2.cell(excelLib.CellIndex.indexByString("${listCellHeader[i]}2"));
+    cell1.cellStyle = cellStyle;
+    cell2.cellStyle = cellStyle;
+  }
+
+  for (var element in dataList1) {
+    sheet1.appendRow(element);
+  }
+  for (var element in dataList2) {
+    sheet2.appendRow(element);
+  }
+  fileName = fileName.split(".").first;
+
+  final path = await FilePicker.platform.saveFile(
+    dialogTitle: 'Please select an output file:',
+    fileName: fileName + ".xlsx",
+  );
+  if (path != null) {
+    final file = File(path);
+
+    file.writeAsBytesSync(excel.encode()!);
+  }
+}
+
+exportPDFFile(String fileName, List<excelLib.TextCellValue?> titleList, List<List<excelLib.TextCellValue?>> dataList) async {
+  final excel = excelLib.Excel.createExcel();
+  final sheet = excel['Sheet1'];
+  var listCellHeader = getAlphabetMap();
+  sheet.appendRow(titleList);
+  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff");
+  for (var i = 0; i < titleList.length; i++) {
+    var cell = sheet.cell(excelLib.CellIndex.indexByString("${listCellHeader[i]}1"));
+    cell.cellStyle = cellStyle;
+  }
+
+  for (var element in dataList) {
+    sheet.appendRow(element);
+  }
+
+  var temp = await getTemporaryDirectory();
+
+  var filePath = "${temp.path}/" + fileName + ".xlsx";
+
+  final file = File(filePath);
+
+  file.writeAsBytesSync(excel.encode()!);
+  return filePath;
 }
 
 void showWarningToast(String msg, {bool? isFromTop}) {
@@ -424,10 +587,7 @@ showPermissionDialog({String? message, String? acceptButtonTitle, String? reject
                           width: 120,
                           height: 35,
                           // color: AppColors().extralightGrayThemeColor,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.transparent, width: 1),
-                              color: AppColors().redColor),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.transparent, width: 1), color: AppColors().redColor),
                           child: TextButton(
                             // style: ButtonStyle(
 
@@ -451,10 +611,7 @@ showPermissionDialog({String? message, String? acceptButtonTitle, String? reject
                           width: 120,
                           height: 35,
                           // color: AppColors().extralightGrayThemeColor,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.transparent, width: 1),
-                              color: AppColors().blueColor),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.transparent, width: 1), color: AppColors().blueColor),
                           child: TextButton(
                             onPressed: () {
                               if (yesClick == null) {

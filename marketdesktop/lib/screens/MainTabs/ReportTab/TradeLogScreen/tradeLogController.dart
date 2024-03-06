@@ -6,7 +6,9 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/tradeLogsModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
+import 'package:excel/excel.dart' as excelLib;
 
+import '../../../../constant/utilities.dart';
 
 class TradeLogController extends BaseController {
   //*********************************************************************** */
@@ -142,5 +144,64 @@ class TradeLogController extends BaseController {
         return AppColors().blueColor;
       }
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrTrade.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case TradeLogsColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.userName ?? ""));
+            }
+          case TradeLogsColumns.exchange:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName ?? ""));
+            }
+          case TradeLogsColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle ?? ""));
+            }
+          case TradeLogsColumns.oldUpdateType:
+            {
+              list.add(excelLib.TextCellValue(element.oldOrderTypeValue ?? ""));
+            }
+          case TradeLogsColumns.updateType:
+            {
+              list.add(excelLib.TextCellValue(element.orderTypeValue ?? ""));
+            }
+          case TradeLogsColumns.updateTime:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.updatedAt!)));
+            }
+
+          case TradeLogsColumns.modifyBy:
+            {
+              list.add(excelLib.TextCellValue(element.userUpdatedName!));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("TradeLogs", titleList, dataList);
+    }
+    exportExcelFile("TradeLogs.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

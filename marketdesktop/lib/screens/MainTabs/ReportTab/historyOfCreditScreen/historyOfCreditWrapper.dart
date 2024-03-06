@@ -586,6 +586,7 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                     {
                       return dynamicValueBox1(controller.arrAccountSummary[index].closing!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
+
                   case 'COMMENT':
                     {
                       return dynamicValueBox1(controller.arrAccountSummary[index].comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);

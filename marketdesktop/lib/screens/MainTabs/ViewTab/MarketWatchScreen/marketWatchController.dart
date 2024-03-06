@@ -944,12 +944,12 @@ class MarketWatchController extends BaseController {
       var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == selectedScript.value!.symbol);
 
       if (ltpObj == null) {
-        return "Something went wrong in trade price.";
+        return "INVALID SERVER TIME";
       } else {
         var difference = DateTime.now().difference(ltpObj.dateTime!);
         var differenceInSeconds = difference.inSeconds;
         if (differenceInSeconds >= 40) {
-          return "Something went wrong in trade price.";
+          return "INVALID SERVER TIME";
         }
       }
     }
@@ -1073,6 +1073,38 @@ class MarketWatchController extends BaseController {
     }
   }
 
+  double getLimitPrice(double inputPrice, bool isFromBuy) {
+    if (isFromBuy) {
+      if (inputPrice > selectedScript.value!.ask!.toDouble()) {
+        return selectedScript.value!.ask!.toDouble();
+      } else {
+        return inputPrice;
+      }
+    } else {
+      if (inputPrice < selectedScript.value!.bid!.toDouble()) {
+        return selectedScript.value!.bid!.toDouble();
+      } else {
+        return inputPrice;
+      }
+    }
+  }
+
+  bool isFromLimitCheck(double inputPrice, bool isFromBuy) {
+    if (isFromBuy) {
+      if (inputPrice > selectedScript.value!.ask!.toDouble()) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      if (inputPrice < selectedScript.value!.bid!.toDouble()) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
   initiateTrade(bool isFromBuy) async {
     var msg = validateForm();
 
@@ -1093,12 +1125,12 @@ class MarketWatchController extends BaseController {
                 ? selectedScript.value!.ask!.toDouble()
                 : selectedScript.value!.bid!.toDouble()
             : selectedOrderType.value.id == "limit"
-                ? double.parse(priceController.text)
+                ? getLimitPrice(double.parse(priceController.text), isFromBuy)
                 : isFromBuy
                     ? selectedScript.value!.ask!.toDouble()
                     : selectedScript.value!.bid!.toDouble(),
         lotSize: selectedSymbol!.lotSize!,
-        orderType: selectedOrderType.value.id == "123" ? "market" : selectedOrderType.value.id,
+        orderType: selectedOrderType.value.id == "123" || isFromLimitCheck(double.parse(priceController.text), isFromBuy) == false ? "market" : selectedOrderType.value.id,
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: selectedSymbol!.exchangeId,
         productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm",

@@ -23,10 +23,17 @@ class TradeLogScreen extends BaseView<TradeLogController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrTrade.length, onCLickFilter: () {
-            controller.isFilterOpen = !controller.isFilterOpen;
-            controller.update();
-          }),
+          filterPanel(
+            context,
+            isRecordDisplay: true,
+            totalRecord: controller.arrTrade.length,
+            onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,
+            onCLickFilter: () {
+              controller.isFilterOpen = !controller.isFilterOpen;
+              controller.update();
+            },
+          ),
           filterContent(context),
           Expanded(
             flex: 8,
@@ -489,7 +496,7 @@ class TradeLogScreen extends BaseView<TradeLogController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'USERNAME':
+                  case TradeLogsColumns.username:
                     {
                       return dynamicValueBox1(
                         controller.arrTrade[index].userName ?? "",
@@ -500,11 +507,11 @@ class TradeLogScreen extends BaseView<TradeLogController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'EXCHANGE':
+                  case TradeLogsColumns.exchange:
                     {
                       return dynamicValueBox1(controller.arrTrade[index].exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'SYMBOL':
+                  case TradeLogsColumns.symbol:
                     {
                       return dynamicValueBox1(
                         controller.arrTrade[index].symbolTitle ?? "",
@@ -515,7 +522,7 @@ class TradeLogScreen extends BaseView<TradeLogController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'OLD UPDATE TYPE':
+                  case TradeLogsColumns.oldUpdateType:
                     {
                       return dynamicValueBox1(
                         controller.arrTrade[index].oldOrderTypeValue ?? "",
@@ -526,7 +533,7 @@ class TradeLogScreen extends BaseView<TradeLogController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'UPDATE TYPE':
+                  case TradeLogsColumns.updateType:
                     {
                       return dynamicValueBox1(
                         controller.arrTrade[index].orderTypeValue ?? "",
@@ -537,7 +544,7 @@ class TradeLogScreen extends BaseView<TradeLogController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'UPDATE TIME':
+                  case TradeLogsColumns.updateTime:
                     {
                       return dynamicValueBox1(
                         shortFullDateTime(controller.arrTrade[index].updatedAt!),
@@ -549,7 +556,7 @@ class TradeLogScreen extends BaseView<TradeLogController> {
                       );
                     }
 
-                  case 'MODIFY BY':
+                  case TradeLogsColumns.modifyBy:
                     {
                       return dynamicValueBox1(controller.arrTrade[index].userUpdatedName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }

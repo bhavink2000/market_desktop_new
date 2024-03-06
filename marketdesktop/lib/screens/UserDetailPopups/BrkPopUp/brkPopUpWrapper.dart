@@ -53,7 +53,7 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
             SizedBox(
               height: 2,
             ),
-            if (selectedUserForUserDetailPopupParentID == userData!.userId!) Container(height: 40, child: UpdateBrkContent(context)),
+            if (selectedUserForUserDetailPopupParentID == userData!.userId! || userData!.role == UserRollList.admin) Container(height: 40, child: UpdateBrkContent(context)),
             SizedBox(
               height: 2,
             ),
