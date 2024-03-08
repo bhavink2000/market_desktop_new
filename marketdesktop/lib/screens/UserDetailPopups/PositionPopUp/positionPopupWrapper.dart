@@ -26,7 +26,7 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
         visible: Get.find<UserDetailsPopUpController>().selectedMenuName == "Position",
         child: Row(
           children: [
-            filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPositionScriptList.length, onCLickFilter: () {
+            filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPositionScriptList.length, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
               controller.isFilterOpen = !controller.isFilterOpen;
               controller.update();
             }),
@@ -347,19 +347,7 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int indexT) {
                   switch (controller.arrListTitle1[indexT].title) {
-                    case 'PARENT USER':
-                      {
-                        return IgnorePointer(
-                            child: dynamicValueBox1(
-                          historyValue.parentUserName ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          AppColors().darkText,
-                          index,
-                          indexT,
-                          controller.arrListTitle1,
-                        ));
-                      }
-                    case 'EXCHANGE':
+                    case UserPositionColumns.exchange:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
@@ -372,7 +360,7 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                           ),
                         );
                       }
-                    case 'SYMBOL NAME':
+                    case UserPositionColumns.symbolName:
                       {
                         return dynamicValueBox1(
                           controller.arrPositionScriptList[index].symbolTitle ?? "",
@@ -383,7 +371,7 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'TOTAL BUY A QTY':
+                    case UserPositionColumns.totalBuyAQty:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
@@ -396,7 +384,7 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                           ),
                         );
                       }
-                    case 'TOTAL BUY A PRICE':
+                    case UserPositionColumns.totalBuyAPrice:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
@@ -409,20 +397,8 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                           ),
                         );
                       }
-                    case 'BUY A PRICE':
-                      {
-                        return IgnorePointer(
-                          child: dynamicValueBox1(
-                            controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2),
-                            index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                            AppColors().darkText,
-                            index,
-                            indexT,
-                            controller.arrListTitle1,
-                          ),
-                        );
-                      }
-                    case 'TOTAL SELL QTY':
+
+                    case UserPositionColumns.totalSellQty:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
@@ -435,31 +411,31 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                           ),
                         );
                       }
-                    case 'SELL A PRICE':
+                    case UserPositionColumns.sellAPrice:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                         );
                       }
-                    case 'NET QTY':
+                    case UserPositionColumns.netQty:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(controller.arrPositionScriptList[index].totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                         );
                       }
-                    case 'NET LOT':
+                    case UserPositionColumns.netLot:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(controller.arrPositionScriptList[index].lotSize!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                         );
                       }
-                    case 'NET A PRICE':
+                    case UserPositionColumns.netAPrice:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(controller.arrPositionScriptList[index].price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                         );
                       }
-                    case 'CMP':
+                    case UserPositionColumns.cmp:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
@@ -471,14 +447,14 @@ class PositionPopUpScreen extends BaseView<PositionPopUpController> {
                               controller.arrListTitle1),
                         );
                       }
-                    case 'P/L':
+                    case UserPositionColumns.pl:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!), index,
                               indexT, controller.arrListTitle1),
                         );
                       }
-                    case 'P/L % WISE':
+                    case UserPositionColumns.plPerWise:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(

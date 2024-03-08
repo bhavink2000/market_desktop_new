@@ -1,16 +1,10 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BulkTradeScreen/bulkTradeController.dart';
-import 'package:marketdesktop/screens/MainTabs/ViewTab/RejectionLogScreen/rejectionLogController.dart';
 import 'package:paginable/paginable.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';
@@ -371,7 +365,9 @@ class BulkTradeScreen extends BaseView<BulkTradeController> {
                       }
                     case BulkTradeColumns.symbol:
                       {
-                        return dynamicValueBox1(historyValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                        return dynamicValueBox1(historyValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
+                          controller.redirectTradeScreen(historyValue);
+                        });
                       }
                     case BulkTradeColumns.buyTotalQty:
                       {
@@ -391,6 +387,10 @@ class BulkTradeScreen extends BaseView<BulkTradeController> {
                     case BulkTradeColumns.totalQty:
                       {
                         return dynamicValueBox1(historyValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                      }
+                    case BulkTradeColumns.dateTime:
+                      {
+                        return dynamicValueBox1(shortFullDateTime(historyValue.endDate!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
 
                     default:

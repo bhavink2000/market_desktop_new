@@ -11,7 +11,7 @@ import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/getScriptFromSocket.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 
 class SymbolWisePositionReportController extends BaseController {
   //*********************************************************************** */
@@ -200,5 +200,85 @@ class SymbolWisePositionReportController extends BaseController {
       });
       update();
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrSummaryList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SymbolWisePositionReportColumns.exchange:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName ?? ""));
+            }
+          case SymbolWisePositionReportColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle ?? ""));
+            }
+          case SymbolWisePositionReportColumns.netQty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+            }
+          case SymbolWisePositionReportColumns.netQtyPerWise:
+            {
+              list.add(excelLib.TextCellValue(element.totalShareQuantity!.toStringAsFixed(2)));
+            }
+          case SymbolWisePositionReportColumns.netAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity! != 0 ? element.avgPrice!.toStringAsFixed(2) : "0.00"));
+            }
+          case SymbolWisePositionReportColumns.brk:
+            {
+              list.add(excelLib.TextCellValue(element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SymbolWisePositionReportColumns.withBrkAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity! != 0
+                  ? element.brokerageTotal! > 0
+                      ? (element.avgPrice! + (element.brokerageTotal! / element.totalQuantity!)).toStringAsFixed(2)
+                      : element.avgPrice!.toStringAsFixed(2)
+                  : "0.00"));
+            }
+          case SymbolWisePositionReportColumns.cmp:
+            {
+              list.add(excelLib.TextCellValue(element.currentPriceFromSocket!.toStringAsFixed(2)));
+            }
+          case SymbolWisePositionReportColumns.pl:
+            {
+              list.add(excelLib.TextCellValue(element.profitLossValue!.toStringAsFixed(2)));
+            }
+
+          case SymbolWisePositionReportColumns.plPer:
+            {
+              list.add(excelLib.TextCellValue((((element.profitLossValue! * element.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2)));
+            }
+
+          case SymbolWisePositionReportColumns.brkPer:
+            {
+              list.add(excelLib.TextCellValue(element.adminBrokerageTotal!.toStringAsFixed(2)));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("SymbolWisePositionReport", titleList, dataList);
+    }
+    exportExcelFile("SymbolWisePositionReport.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

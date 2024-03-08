@@ -7,9 +7,10 @@ import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../constant/screenColumnData.dart';
+import '../../../constant/utilities.dart';
 import '../../../main.dart';
 import '../../../modelClass/myUserListModelClass.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 
 class PositionPopUpController extends BaseController {
   //*********************************************************************** */
@@ -136,5 +137,82 @@ class PositionPopUpController extends BaseController {
     } else {
       return AppColors().fontColor;
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrPositionScriptList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserPositionColumns.exchange:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName!));
+            }
+          case UserPositionColumns.symbolName:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle!));
+            }
+          case UserPositionColumns.totalBuyAQty:
+            {
+              list.add(excelLib.TextCellValue(element.buyTotalQuantity!.toString()));
+            }
+          case UserPositionColumns.totalBuyAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.buyPrice!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.totalSellQty:
+            {
+              list.add(excelLib.TextCellValue(element.sellTotalQuantity!.toString()));
+            }
+          case UserPositionColumns.sellAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.sellPrice!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.netQty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.netLot:
+            {
+              list.add(excelLib.TextCellValue(element.quantity!.toString()));
+            }
+          case UserPositionColumns.netAPrice:
+            {
+              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.cmp:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString()));
+            }
+          case UserPositionColumns.pl:
+            {
+              list.add(excelLib.TextCellValue(element.profitLossValue!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.plPerWise:
+            {
+              list.add(excelLib.TextCellValue(getPlPer(cmp: element.totalQuantity! < 0 ? element.ask! : element.bid!, netAPrice: element.price!).toStringAsFixed(3)));
+            }
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("UserPosition", titleList, dataList);
+    }
+    exportExcelFile("UserPosition.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

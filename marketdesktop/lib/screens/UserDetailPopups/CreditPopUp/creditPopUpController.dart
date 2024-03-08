@@ -4,11 +4,13 @@ import 'package:marketdesktop/modelClass/creditListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
 import 'package:number_to_indian_words/number_to_indian_words.dart';
 import '../../../constant/index.dart';
 import '../../../constant/screenColumnData.dart';
 import '../../BaseController/baseController.dart';
+import 'package:excel/excel.dart' as excelLib;
 
 enum TransType { Credit, Debit }
 
@@ -121,6 +123,9 @@ class CreditPopUpController extends BaseController {
           commentController.clear();
           Get.find<MainContainerController>().getOwnProfile();
           Get.find<UserDetailsPopUpController>().getUSerInfo();
+          Get.find<UserListController>().isPagingApiCall = false;
+          Get.find<UserListController>().currentPage = 1;
+          Get.find<UserListController>().getUserList(isFromClear: true);
           showSuccessToast(response.meta?.message ?? "");
         }
         getCreditList();
@@ -128,5 +133,56 @@ class CreditPopUpController extends BaseController {
     } else {
       showWarningToast(msg);
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrCreditList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserCreditColumns.dateTime:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case UserCreditColumns.type:
+            {
+              list.add(excelLib.TextCellValue(element.transactionType ?? ""));
+            }
+          case UserCreditColumns.amount:
+            {
+              list.add(excelLib.TextCellValue(element.amount!.toStringAsFixed(2)));
+            }
+          case UserCreditColumns.balance:
+            {
+              list.add(excelLib.TextCellValue(element.balance.toStringAsFixed(2)));
+            }
+
+          case UserCreditColumns.comments:
+            {
+              list.add(excelLib.TextCellValue(element.comment!));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("UserCredit", titleList, dataList);
+    }
+    exportExcelFile("UserCredit.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

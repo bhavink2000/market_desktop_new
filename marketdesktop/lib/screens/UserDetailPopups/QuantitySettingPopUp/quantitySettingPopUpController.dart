@@ -3,11 +3,13 @@ import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/quantitySettingListMmodelClass.dart';
 import '../../../constant/index.dart';
+import '../../../constant/screenColumnData.dart';
 import '../../../main.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../BaseController/baseController.dart';
 import '../../MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import '../userDetailsPopUpController.dart';
+import 'package:excel/excel.dart' as excelLib;
 
 class QuantitySettingPopUpController extends BaseController {
   //*********************************************************************** */
@@ -146,5 +148,58 @@ class QuantitySettingPopUpController extends BaseController {
     } else {
       showWarningToast(msg);
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrQuantitySetting.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserQtySettingColumns.script:
+            {
+              list.add(excelLib.TextCellValue(element.symbolName ?? ""));
+            }
+          case UserQtySettingColumns.lotMax:
+            {
+              list.add(excelLib.TextCellValue(element.lotMax.toString()));
+            }
+          case UserQtySettingColumns.qtyMax:
+            {
+              list.add(excelLib.TextCellValue(element.quantityMax.toString()));
+            }
+          case UserQtySettingColumns.breakupQty:
+            {
+              list.add(excelLib.TextCellValue(element.breakQuantity.toString()));
+            }
+          case UserQtySettingColumns.breakupLot:
+            {
+              list.add(excelLib.TextCellValue(element.breakUpLot.toString()));
+            }
+          case UserQtySettingColumns.lastUpdated:
+            {
+              list.add(excelLib.TextCellValue(element.updatedAt != null ? shortFullDateTime(element.updatedAt!) : ""));
+            }
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("QuantitySettings", titleList, dataList);
+    }
+    exportExcelFile("QuantitySettings.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

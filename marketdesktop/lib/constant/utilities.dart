@@ -361,6 +361,7 @@ void showSuccessToast(String msg, {bool? isFromTop, Color? bgColor}) {
     ));
   } else {
     Get.showSnackbar(GetSnackBar(
+      animationDuration: Duration(milliseconds: 500),
       messageText: Row(
         children: [
           Spacer(),

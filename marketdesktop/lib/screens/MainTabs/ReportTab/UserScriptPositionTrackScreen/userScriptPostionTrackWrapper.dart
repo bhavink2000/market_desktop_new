@@ -21,10 +21,18 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
-            controller.isFilterOpen = !controller.isFilterOpen;
-            controller.update();
-          }),
+          filterPanel(
+            context,
+            bottomMargin: 0,
+            isRecordDisplay: true,
+            totalRecord: controller.totalCount,
+            onCLickFilter: () {
+              controller.isFilterOpen = !controller.isFilterOpen;
+              controller.update();
+            },
+            onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,
+          ),
           filterContent(context),
           Expanded(
             flex: 8,
@@ -421,7 +429,7 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'POSITION DATE':
+                  case UserScriptPositionTrackingColumns.positionDate:
                     {
                       return dynamicValueBox1(
                         shortFullDateTime(scriptValue.createdAt!),
@@ -432,13 +440,13 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                         controller.arrListTitle1,
                       );
                     }
-                  case 'USERNAME':
+                  case UserScriptPositionTrackingColumns.username:
                     {
                       return dynamicValueBox1(scriptValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
                         showUserDetailsPopUp(userId: scriptValue.userId!, userName: scriptValue.userName!);
                       });
                     }
-                  case 'SYMBOL':
+                  case UserScriptPositionTrackingColumns.symbol:
                     {
                       return dynamicValueBox1(
                         scriptValue.symbolTitle ?? "",
@@ -449,11 +457,11 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                         controller.arrListTitle1,
                       );
                     }
-                  case 'POSITION':
+                  case UserScriptPositionTrackingColumns.position:
                     {
                       return dynamicValueBox1(scriptValue.orderType!.toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'OPEN A PRICE':
+                  case UserScriptPositionTrackingColumns.openAPrice:
                     {
                       return dynamicValueBox1(
                         scriptValue.price!.toString(),

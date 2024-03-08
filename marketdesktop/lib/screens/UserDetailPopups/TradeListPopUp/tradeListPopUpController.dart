@@ -7,8 +7,9 @@ import 'package:marketdesktop/modelClass/myTradeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../constant/screenColumnData.dart';
+import '../../../constant/utilities.dart';
 import '../../../modelClass/constantModelClass.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 
 class TradeListPopUpController extends BaseController {
   //*********************************************************************** */
@@ -33,7 +34,6 @@ class TradeListPopUpController extends BaseController {
   bool isApiCallRunning = false;
   bool isResetCall = false;
 
-
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -42,7 +42,6 @@ class TradeListPopUpController extends BaseController {
     arrTradeStatus = constantValues!.tradeStatusFilter ?? [];
     update();
   }
-
 
   getTradeList({bool isFromClear = false}) async {
     arrTrade.clear();
@@ -169,5 +168,115 @@ class TradeListPopUpController extends BaseController {
         return AppColors().blueColor;
       }
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrTrade.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserTradeColumns.sequence:
+            {
+              list.add(excelLib.TextCellValue(element.sequence.toString()));
+            }
+          case UserTradeColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.userName!));
+            }
+          case UserTradeColumns.parentUser:
+            {
+              list.add(excelLib.TextCellValue(element.parentUserName!));
+            }
+          case UserTradeColumns.segment:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName!));
+            }
+          case UserTradeColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle!));
+            }
+          case UserTradeColumns.bs:
+            {
+              list.add(excelLib.TextCellValue(element.tradeTypeValue!));
+            }
+          case UserTradeColumns.type:
+            {
+              list.add(excelLib.TextCellValue(element.productTypeValue!));
+            }
+          case UserTradeColumns.qty:
+            {
+              list.add(excelLib.TextCellValue(element.quantity.toString()));
+            }
+          case UserTradeColumns.lot:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+            }
+          case UserTradeColumns.totalQty:
+            {
+              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+            }
+          case UserTradeColumns.validity:
+            {
+              list.add(excelLib.TextCellValue(element.productTypeValue.toString()));
+            }
+          case UserTradeColumns.tradePrice:
+            {
+              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+            }
+          case UserTradeColumns.brk:
+            {
+              list.add(excelLib.TextCellValue(element.brokerageAmount!.toStringAsFixed(2)));
+            }
+          case UserTradeColumns.netPrice:
+            {
+              list.add(excelLib.TextCellValue(getNetPrice(element.tradeType!, element.price ?? 0, (element.brokerageAmount! / element.totalQuantity!)).toStringAsFixed(2)));
+            }
+          case UserTradeColumns.orderDT:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case UserTradeColumns.executionDT:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.executionDateTime!)));
+            }
+          case UserTradeColumns.refPrice:
+            {
+              list.add(excelLib.TextCellValue(element.referencePrice!.toStringAsFixed(2)));
+            }
+          case UserTradeColumns.ipAddress:
+            {
+              list.add(excelLib.TextCellValue(element.ipAddress!));
+            }
+          case UserTradeColumns.device:
+            {
+              list.add(excelLib.TextCellValue(element.orderMethod!));
+            }
+          case UserTradeColumns.deviceId:
+            {
+              list.add(excelLib.TextCellValue(element.deviceId!));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("UserTrades", titleList, dataList);
+    }
+    exportExcelFile("UserTrades.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

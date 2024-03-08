@@ -1130,7 +1130,7 @@ class MarketWatchController extends BaseController {
                     ? selectedScript.value!.ask!.toDouble()
                     : selectedScript.value!.bid!.toDouble(),
         lotSize: selectedSymbol!.lotSize!,
-        orderType: selectedOrderType.value.id == "123" || isFromLimitCheck(double.parse(priceController.text), isFromBuy) == false ? "market" : selectedOrderType.value.id,
+        orderType: selectedOrderType.value.id == "123" || (selectedOrderType.value.id == "limit" && isFromLimitCheck(double.parse(priceController.text), isFromBuy) == false) ? "market" : selectedOrderType.value.id,
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: selectedSymbol!.exchangeId,
         productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm",

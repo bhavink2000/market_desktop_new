@@ -26,7 +26,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -478,11 +478,11 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'EXCHANGE':
+                  case SymbolWisePositionReportColumns.exchange:
                     {
                       return dynamicValueBox1(scriptValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'SYMBOL':
+                  case SymbolWisePositionReportColumns.symbol:
                     {
                       return dynamicValueBox1(
                         scriptValue.symbolTitle ?? "",
@@ -493,7 +493,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                         controller.arrListTitle1,
                       );
                     }
-                  case 'NET QTY':
+                  case SymbolWisePositionReportColumns.netQty:
                     {
                       return dynamicValueBox1(scriptValue.totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
                         isCommonScreenPopUpOpen = true;
@@ -515,7 +515,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                         generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport);
                       });
                     }
-                  case 'NET QTY % WISE':
+                  case SymbolWisePositionReportColumns.netQtyPerWise:
                     {
                       return dynamicValueBox1(
                         scriptValue.totalShareQuantity!.toStringAsFixed(2),
@@ -526,15 +526,15 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                         controller.arrListTitle1,
                       );
                     }
-                  case 'NET A PRICE':
+                  case SymbolWisePositionReportColumns.netAPrice:
                     {
                       return dynamicValueBox1(scriptValue.totalQuantity! != 0 ? scriptValue.avgPrice!.toStringAsFixed(2) : "0.00", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'BROKERAGE':
+                  case SymbolWisePositionReportColumns.brk:
                     {
                       return dynamicValueBox1(scriptValue.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'WITH BROKERAGE A PRICE':
+                  case SymbolWisePositionReportColumns.withBrkAPrice:
                     {
                       return dynamicValueBox1(
                         scriptValue.totalQuantity! != 0
@@ -549,21 +549,21 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                         controller.arrListTitle1,
                       );
                     }
-                  case 'CMP':
+                  case SymbolWisePositionReportColumns.cmp:
                     {
                       return dynamicValueBox1(scriptValue.currentPriceFromSocket!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'P/L':
+                  case SymbolWisePositionReportColumns.pl:
                     {
                       return dynamicValueBox1(scriptValue.profitLossValue!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
-                  case 'P/L (%)':
+                  case SymbolWisePositionReportColumns.plPer:
                     {
                       return dynamicValueBox1((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
-                  case 'BROKERAGE %':
+                  case SymbolWisePositionReportColumns.brkPer:
                     {
                       return dynamicValueBox1(
                         scriptValue.adminBrokerageTotal!.toStringAsFixed(2),

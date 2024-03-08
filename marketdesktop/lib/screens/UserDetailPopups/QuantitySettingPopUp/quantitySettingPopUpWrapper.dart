@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:marketdesktop/constant/screenColumnData.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
@@ -490,7 +491,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle[indexT].title) {
-                  case '':
+                  case UserQtySettingColumns.checkBox:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? valueBox("", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, isImage: true, strImage: quantityValue.isSelected ? AppImages.checkBoxSelected : AppImages.checkBox, isSmall: true, onClickImage: () {
@@ -507,7 +508,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                             })
                           : const SizedBox();
                     }
-                  case 'SCRIPT':
+                  case UserQtySettingColumns.script:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? IgnorePointer(
@@ -522,7 +523,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                             )
                           : const SizedBox();
                     }
-                  case 'LOT MAX':
+                  case UserQtySettingColumns.lotMax:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? IgnorePointer(
@@ -537,7 +538,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                             )
                           : const SizedBox();
                     }
-                  case 'QTY MAX':
+                  case UserQtySettingColumns.qtyMax:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? IgnorePointer(
@@ -552,7 +553,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                             )
                           : const SizedBox();
                     }
-                  case 'BREAKUP QTY':
+                  case UserQtySettingColumns.breakupQty:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? IgnorePointer(
@@ -560,7 +561,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                             )
                           : const SizedBox();
                     }
-                  case 'BREAKUP LOT':
+                  case UserQtySettingColumns.breakupLot:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? IgnorePointer(
@@ -568,7 +569,7 @@ class QuantitySettingPopUpScreen extends BaseView<QuantitySettingPopUpController
                             )
                           : const SizedBox();
                     }
-                  case 'LAST UPDATED':
+                  case UserQtySettingColumns.lastUpdated:
                     {
                       return controller.arrListTitle[indexT].isSelected
                           ? IgnorePointer(

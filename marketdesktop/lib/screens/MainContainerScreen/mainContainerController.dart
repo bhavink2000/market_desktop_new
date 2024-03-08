@@ -10,6 +10,7 @@ import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/DashboardTab/dashboardController.dart';
 import 'package:marketdesktop/screens/MainTabs/FileTab/ChangePasswordScreen/changePasswordController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/BillGenerateScreen/billGenerateController.dart';
+import 'package:marketdesktop/screens/MainTabs/ReportTab/BulkTradeScreen/bulkTradeController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/ClientAccountReportScreen/clientAccountReportController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogHistoryScreen/logHistoryController.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/LogsHistoryNewScreen/logsHistoryNewController.dart';
@@ -330,6 +331,8 @@ class MainContainerController extends BaseController {
           await Get.delete<ClientAccountReportController>();
         } else if (currentOpenedScreen == ScreenViewNames.scriptQty) {
           await Get.delete<ScriptQuantityController>();
+        } else if (currentOpenedScreen == ScreenViewNames.bulkTrade) {
+          await Get.delete<BulkTradeController>();
         }
 
         currentOpenedScreen = ScreenViewNames.marketWatch;

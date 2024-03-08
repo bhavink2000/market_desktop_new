@@ -1,230 +1,104 @@
-import 'package:floating_dialog/floating_dialog.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:marketdesktop/screens/BaseController/baseController.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
-import '../../../../modelClass/accountSummaryModelClass.dart';
-import '../../../../modelClass/myUserListModelClass.dart';
-import '../../../../modelClass/tradeDetailModelClass.dart';
-import '../../../UserDetailPopups/AccountSummaryPopUp/accountSummaryPopUpController.dart';
-import '../../../../modelClass/constantModelClass.dart';
+import '../../../../modelClass/creditListModelClass.dart';
 
 class HistoryOfCreditController extends BaseController {
 //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
 
-  RxString fromDate = "".obs;
-  RxString endDate = "".obs;
-  AccountSummaryType? selectedAccountSummaryType;
-  Rx<UserData> selectedUser = UserData().obs;
-  Type? selectedType;
-  List<AccountSummaryData> arrAccountSummary = [];
   bool isApiCallRunning = false;
-  bool isResetCall = false;
-  num totalAmount = 0.0;
-  bool isPagingApiCall = false;
-  int totalPage = 0;
-  int currentPage = 1;
-  TradeDetailData tradeDetail = TradeDetailData();
-  bool isApiCall = false;
-  var tradeID = "";
-  FocusNode viewFocus = FocusNode();
-  FocusNode clearFocus = FocusNode();
-
+  List<creditData> arrCreditList = [];
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     getColumnListFromDB(ScreenIds().creditHistory, arrListTitle1);
     isApiCallRunning = true;
-    selectedType = constantValues!.transactionType!.first;
-    accountSummaryList();
+    update();
+
+    // accountSummaryList();
+    getCreditList();
   }
 
-  accountSummaryList({bool isFromFilter = false, bool isFromClear = false}) async {
-    if (isFromFilter) {
-      if (isFromClear) {
-        isResetCall = true;
-      } else {
-        isApiCallRunning = true;
-      }
-    }
-    if (isPagingApiCall) {
-      return;
-    }
-    isPagingApiCall = true;
-    update();
-    var response = await service.accountSummaryCall(search: "", startDate: fromDate.value, endDate: endDate.value, page: currentPage, userId: selectedUser.value.userId != null ? selectedUser.value.userId! : "", type: "credit");
-    isApiCallRunning = false;
-    isResetCall = false;
-    isPagingApiCall = false;
-    update();
-    arrAccountSummary.addAll(response!.data!);
+  getCreditList() async {
+    var response = await service.getCreditListCall(userId: userData!.userId!);
 
-    totalPage = response.meta!.totalPage!;
-    if (totalPage >= currentPage) {
-      currentPage = currentPage + 1;
-    }
-    totalAmount = 0;
-    for (var element in arrAccountSummary) {
-      if (element.transactionType == "debit") {
-        totalAmount = totalAmount - element.amount!;
-      } else {
-        totalAmount = element.amount! + totalAmount;
-      }
-    }
-    update();
-  }
-
-  getTradeDetail() async {
-    isApiCall = true;
-    update();
-    var response = await service.getTradeDetailCall(tradeID);
-    isApiCall = false;
-    update();
     if (response?.statusCode == 200) {
-      tradeDetail = response!.data!;
+      arrCreditList = response!.data ?? [];
+      isApiCallRunning = false;
+      for (var i = 0; i < arrCreditList.length; i++) {
+        if (arrCreditList[i].transactionType == "credit") {
+          if (i == 0) {
+            arrCreditList[i].balance = arrCreditList[i].amount!;
+          } else {
+            arrCreditList[i].balance = arrCreditList[i - 1].balance + arrCreditList[i].amount!;
+          }
+        } else {
+          arrCreditList[i].balance = arrCreditList[i - 1].balance - arrCreditList[i].amount!;
+        }
+      }
+
       update();
-      isUserDetailPopUpOpen = true;
-      tradeDetailBottomSheet();
     }
-
-    //print(response);
   }
 
-  Widget headerViewContent(BuildContext context) {
-    return Container(
-        width: 100.w,
-        height: 4.h,
-        decoration: BoxDecoration(
-            color: AppColors().whiteColor,
-            border: Border(
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-            )),
-        child: Row(
-          children: [
-            const SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              AppImages.appLogo,
-              width: 3.h,
-              height: 3.h,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text("Trade Details [${tradeDetail.userName}]",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: CustomFonts.family1Medium,
-                  color: AppColors().blueColor,
-                )),
-            const Spacer(),
-            GestureDetector(
-              onTap: () {
-                Get.back();
-              },
-              child: Container(
-                width: 3.h,
-                height: 3.h,
-                padding: EdgeInsets.all(0.5.h),
-                child: Image.asset(
-                  AppImages.closeIcon,
-                  color: AppColors().redColor,
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
-        ));
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrCreditList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case CreditHistoryColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.fromUserName!));
+            }
+          case CreditHistoryColumns.dateTime:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case CreditHistoryColumns.type:
+            {
+              list.add(excelLib.TextCellValue(element.transactionType ?? ""));
+            }
+          case CreditHistoryColumns.amount:
+            {
+              list.add(excelLib.TextCellValue(element.amount!.toStringAsFixed(2)));
+            }
+          case CreditHistoryColumns.balance:
+            {
+              list.add(excelLib.TextCellValue(element.balance.toStringAsFixed(2)));
+            }
+
+          case CreditHistoryColumns.comments:
+            {
+              list.add(excelLib.TextCellValue(element.comment!));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("CreditHistory", titleList, dataList);
+    }
+    exportExcelFile("CreditHistory.xlsx", titleList, dataList);
   }
 
-  tradeDetailBottomSheet() {
-    showDialog<String>(
-        context: Get.context!,
-        // barrierColor: Colors.transparent,
-        barrierDismissible: true,
-        builder: (BuildContext context) => FloatingDialog(
-              // titlePadding: EdgeInsets.zero,
-              // backgroundColor: AppColors().bgColor,
-              // surfaceTintColor: AppColors().bgColor,
-
-              // contentPadding: EdgeInsets.zero,
-              // insetPadding: EdgeInsets.symmetric(
-              //   horizontal: 20.w,
-              //   vertical: 32.h,
-              // ),
-              enableDragAnimation: false,
-              child: Container(
-                // width: 30.w,
-                // height: 28.h,
-                width: 25.w,
-                height: 40.h,
-                decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-                child: Column(
-                  children: [
-                    headerViewContent(Get.context!),
-                    Container(
-                        height: 35.5.h,
-                        decoration: BoxDecoration(borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)), color: AppColors().bgColor),
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView(
-                                physics: const ClampingScrollPhysics(),
-                                clipBehavior: Clip.hardEdge,
-                                shrinkWrap: true,
-                                children: [
-                                  sheetList("Username", tradeDetail.userName ?? "", 0),
-                                  sheetList("Order Time", tradeDetail.executionDateTime != null ? shortFullDateTime(tradeDetail.executionDateTime!) : "", 1),
-                                  sheetList("Symbol", tradeDetail.symbolName ?? "", 2),
-                                  sheetList("Order Type", tradeDetail.orderType ?? "", 3),
-                                  sheetList("Trade Type", tradeDetail.tradeTypeValue ?? "", 4),
-                                  sheetList("Quantity", tradeDetail.quantity!.toString(), 5),
-                                  sheetList("Price", tradeDetail.price.toString(), 6),
-                                  sheetList("Order Method", tradeDetail.orderMethod ?? "", 7),
-                                  sheetList("Device Id", tradeDetail.deviceId ?? "", 8),
-                                  // sheetList("Brk", "155.92", 6),
-                                  // sheetList("Reference Price", "389.8", 7),
-
-                                  // sheetList("Ipaddress", "152.58.4.124", 9),
-                                ],
-                              ),
-                            ),
-                          ],
-                        )),
-                  ],
-                ),
-              ),
-            ));
-  }
-
-  Widget sheetList(String name, String value, int index) {
-    Color backgroundColor = index % 2 == 1 ? AppColors().headerBgColor : AppColors().contentBg;
-    return Container(
-      width: 100.w,
-      height: 38,
-      color: backgroundColor,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 15,
-        ),
-        child: Row(
-          children: [
-            Text(name.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Regular, color: AppColors().lightText)),
-            const Spacer(),
-            Text(value.toString(), style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-          ],
-        ),
-      ),
-    );
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

@@ -21,7 +21,7 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -336,27 +336,27 @@ class ScriptMasterScreen extends BaseView<ScriptMasterController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'EXCHANGE':
+                  case ScriptMasterColumns.exchange:
                     {
                       return dynamicValueBox1(tradeValue.exchangeName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'SCRIPT':
+                  case ScriptMasterColumns.script:
                     {
                       return dynamicValueBox1(tradeValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'EXPIRY DATE':
+                  case ScriptMasterColumns.expiryDate:
                     {
                       return dynamicValueBox1(shortFullDateTime(tradeValue.expiryDate!), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'DESCRIPTION':
+                  case ScriptMasterColumns.desc:
                     {
                       return dynamicValueBox1(tradeValue.symbolName ?? "--", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'TRADE ATTRIBUTE':
+                  case ScriptMasterColumns.tradeAttribute:
                     {
                       return dynamicValueBox1((tradeValue.tradeAttribute ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'ALLOW TRADE':
+                  case ScriptMasterColumns.allowTrade:
                     {
                       return dynamicValueBox1((tradeValue.allowTradeValue ?? "").toUpperCase(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }

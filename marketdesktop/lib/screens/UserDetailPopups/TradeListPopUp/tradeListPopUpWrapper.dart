@@ -453,7 +453,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
         scrollDirection: Axis.horizontal,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: 2250,
+          width: 2500,
           // margin: EdgeInsets.only(right: 1.w),
           color: Colors.white,
           child: Column(
@@ -532,11 +532,15 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, int indexT) {
                   switch (controller.arrListTitle1[indexT].title) {
-                    case 'USERNAME':
+                    case UserTradeColumns.sequence:
+                      {
+                        return dynamicValueBox1(controller.arrTrade[index].sequence.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                      }
+                    case UserTradeColumns.username:
                       {
                         return dynamicValueBox1(controller.arrTrade[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
-                    case 'PARENT USER':
+                    case UserTradeColumns.parentUser:
                       {
                         return dynamicValueBox1(
                           historyValue.parentUserName ?? "",
@@ -547,7 +551,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'SEGMENT':
+                    case UserTradeColumns.segment:
                       {
                         return dynamicValueBox1(
                           historyValue.exchangeName ?? "",
@@ -558,7 +562,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'SYMBOL':
+                    case UserTradeColumns.symbol:
                       {
                         return dynamicValueBox1(
                           historyValue.symbolTitle ?? "",
@@ -569,7 +573,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'B/S':
+                    case UserTradeColumns.bs:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].tradeTypeValue!.toUpperCase(),
@@ -580,7 +584,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'QTY':
+                    case UserTradeColumns.qty:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].quantity.toString(),
@@ -591,7 +595,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'LOT':
+                    case UserTradeColumns.lot:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].totalQuantity.toString(),
@@ -602,7 +606,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'TOTAL QTY':
+                    case UserTradeColumns.totalQty:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].totalQuantity.toString(),
@@ -613,7 +617,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'TRADE TYPE':
+                    case UserTradeColumns.type:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].tradeTypeValue.toString(),
@@ -624,7 +628,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'VALIDITY':
+                    case UserTradeColumns.validity:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].productTypeValue.toString(),
@@ -635,7 +639,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'TRADE PRICE':
+                    case UserTradeColumns.tradePrice:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].price!.toStringAsFixed(2),
@@ -646,7 +650,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'BROKERAGE':
+                    case UserTradeColumns.brk:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].brokerageAmount!.toStringAsFixed(2),
@@ -657,7 +661,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'NET PRICE':
+                    case UserTradeColumns.netPrice:
                       {
                         return dynamicValueBox1(
                             controller.getNetPrice(controller.arrTrade[index].tradeType!, controller.arrTrade[index].price ?? 0, (controller.arrTrade[index].brokerageAmount! / controller.arrTrade[index].totalQuantity!)).toStringAsFixed(2),
@@ -667,7 +671,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                             indexT,
                             controller.arrListTitle1);
                       }
-                    case 'ORDER D/T':
+                    case UserTradeColumns.orderDT:
                       {
                         return dynamicValueBox1(
                           shortFullDateTime(controller.arrTrade[index].createdAt!),
@@ -678,7 +682,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'EXECUTION D/T':
+                    case UserTradeColumns.executionDT:
                       {
                         return dynamicValueBox1(
                           shortFullDateTime(controller.arrTrade[index].executionDateTime!),
@@ -689,7 +693,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'REFERENCE PRICE':
+                    case UserTradeColumns.refPrice:
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].referencePrice!.toStringAsFixed(2),
@@ -700,7 +704,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'IP ADDRESS':
+                    case UserTradeColumns.ipAddress:
                       {
                         return dynamicValueBox1(
                           historyValue.ipAddress ?? "",
@@ -711,7 +715,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'DEVICE':
+                    case UserTradeColumns.device:
                       {
                         return dynamicValueBox1(
                           historyValue.orderMethod ?? "",
@@ -722,7 +726,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                           controller.arrListTitle1,
                         );
                       }
-                    case 'DEVICE ID':
+                    case UserTradeColumns.deviceId:
                       {
                         return dynamicValueBox1(
                           historyValue.deviceId ?? "",

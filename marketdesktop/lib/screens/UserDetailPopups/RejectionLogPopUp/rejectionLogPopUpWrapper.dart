@@ -451,7 +451,7 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'DATE':
+                  case UserRejectionLogColumns.date:
                     {
                       return IgnorePointer(
                           child: dynamicValueBox1(
@@ -463,50 +463,50 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                         controller.arrListTitle1,
                       ));
                     }
-                  case 'MESSAGE':
+                  case UserRejectionLogColumns.message:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.status ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'USERNAME':
+                  case UserRejectionLogColumns.username:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'SYMBOL':
+                  case UserRejectionLogColumns.symbol:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'TYPE':
+                  case UserRejectionLogColumns.type:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.tradeTypeValue ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'QUANTITY':
+                  case UserRejectionLogColumns.qty:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'PRICE':
+                  case UserRejectionLogColumns.price:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'IP ADDRESS':
+                  case UserRejectionLogColumns.ipAddress:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.ipAddress ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
 
-                  case 'DEVICE ID':
+                  case UserRejectionLogColumns.deviceId:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(logValue.deviceId ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),

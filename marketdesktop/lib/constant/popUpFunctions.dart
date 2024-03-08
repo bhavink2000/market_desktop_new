@@ -623,7 +623,7 @@ showScriptInfoPopup() {
           ));
 }
 
-generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick}) {
+generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons = false, bool isFilterAvailable = false, bool isFilterIconHide = false, Function? filterClick, Function? pdfClick, Function? excelClick}) {
   showDialog<String>(
       context: Get.context!,
       // barrierColor: Colors.transparent,
@@ -638,7 +638,7 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
                 height: 80.h,
                 child: Column(
                   children: [
-                    headerViewContent(title: title, isFilterAvailable: isFilterAvailable, pdfClick: pdfClick, excelClick: excelClick, filterClick: filterClick),
+                    headerViewContent(title: title, isFilterAvailable: isFilterAvailable, pdfClick: pdfClick, excelClick: excelClick, filterClick: filterClick, isFilterIconHide: isFilterIconHide),
                     Expanded(child: view!),
                   ],
                 ),
@@ -647,7 +647,7 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
           ));
 }
 
-Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, Function? filterClick, Function? pdfClick, Function? excelClick, Function? closeClick}) {
+Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, bool isFilterIconHide = false, Function? filterClick, Function? pdfClick, Function? excelClick, Function? closeClick}) {
   return Container(
       width: 100.w,
       height: 35,
@@ -707,27 +707,28 @@ Widget headerViewContent({String title = "", bool isFromMarket = false, bool isF
                 SizedBox(
                   width: 20,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (filterClick != null) {
-                      filterClick();
-                    }
-                  },
-                  child: RotatedBox(
-                    quarterTurns: 1,
-                    child: Icon(
-                      Icons.tune,
-                      size: 25,
-                      color: AppColors().blueColor,
+                if (isFilterIconHide == false)
+                  GestureDetector(
+                    onTap: () {
+                      if (filterClick != null) {
+                        filterClick();
+                      }
+                    },
+                    child: RotatedBox(
+                      quarterTurns: 1,
+                      child: Icon(
+                        Icons.tune,
+                        size: 25,
+                        color: AppColors().blueColor,
+                      ),
                     ),
+                    // child: Text("Filter",
+                    //     style: TextStyle(
+                    //       fontSize: 14,
+                    //       fontFamily: CustomFonts.family1Medium,
+                    //       color: AppColors().fontColor,
+                    //     )),
                   ),
-                  // child: Text("Filter",
-                  //     style: TextStyle(
-                  //       fontSize: 14,
-                  //       fontFamily: CustomFonts.family1Medium,
-                  //       color: AppColors().fontColor,
-                  //     )),
-                ),
                 SizedBox(
                   width: 30,
                 ),

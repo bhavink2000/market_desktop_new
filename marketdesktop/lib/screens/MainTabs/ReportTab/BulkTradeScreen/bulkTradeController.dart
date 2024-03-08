@@ -4,12 +4,14 @@ import 'package:marketdesktop/modelClass/bulkTradeModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import 'package:excel/excel.dart' as excelLib;
 
 import '../../../../constant/utilities.dart';
+import '../../ViewTab/MarketWatchScreen/marketWatchController.dart';
+import '../../ViewTab/TradeScreen/successTradeListController.dart';
+import '../../ViewTab/TradeScreen/successTradeListWrapper.dart';
 
 class BulkTradeController extends BaseController {
   //*********************************************************************** */
@@ -70,6 +72,24 @@ class BulkTradeController extends BaseController {
     update();
   }
 
+  redirectTradeScreen(BulkTradeData values) async {
+    var marketViewObj = Get.find<MarketWatchController>();
+    if (marketViewObj.isBuyOpen != -1) {
+      return;
+    }
+
+    isCommonScreenPopUpOpen = true;
+    currentOpenedScreen = ScreenViewNames.trades;
+    var tradeVC = Get.put(SuccessTradeListController());
+    tradeVC.selectedExchange.value.exchangeId = values.exchangeId!;
+    tradeVC.selectedExchange.value.name = values.exchangeName!;
+    tradeVC.selectedScriptFromFilter.value.symbolId = values.symbolId!;
+    tradeVC.selectedScriptFromFilter.value.symbolName = values.symbolName!;
+    tradeVC.selectedScriptFromFilter.value.symbolTitle = values.symbolTitle!;
+
+    generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades);
+  }
+
   onClickExcel({bool isFromPDF = false}) {
     List<excelLib.TextCellValue?> titleList = [];
     arrListTitle1.forEach((element) {
@@ -100,7 +120,10 @@ class BulkTradeController extends BaseController {
             {
               list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
             }
-
+          case BulkTradeColumns.dateTime:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.endDate!)));
+            }
           default:
             {
               list.add(excelLib.TextCellValue(""));

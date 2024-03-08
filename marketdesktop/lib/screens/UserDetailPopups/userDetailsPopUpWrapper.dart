@@ -20,6 +20,9 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
                 filterClick: () {
                   controller.giveClickEvent();
                 },
+                excelClick: () {
+                  controller.giveExcelClickEvent();
+                },
                 closeClick: () {
                   Get.back();
                   isUserDetailPopUpOpen = false;

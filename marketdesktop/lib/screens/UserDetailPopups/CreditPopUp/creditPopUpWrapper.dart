@@ -296,7 +296,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'DATE TIME':
+                  case UserCreditColumns.dateTime:
                     {
                       return IgnorePointer(
                           child: dynamicValueBox1(
@@ -308,13 +308,13 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                         controller.arrListTitle1,
                       ));
                     }
-                  case 'TYPE':
+                  case UserCreditColumns.type:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(controller.arrCreditList[index].transactionType ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
-                  case 'AMOUNT':
+                  case UserCreditColumns.amount:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(
@@ -327,7 +327,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                         ),
                       );
                     }
-                  case 'BALANCE':
+                  case UserCreditColumns.balance:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(
@@ -340,7 +340,7 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
                         ),
                       );
                     }
-                  case 'COMMENTS':
+                  case UserCreditColumns.comments:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(

@@ -92,6 +92,9 @@ class UserListController extends BaseController {
     }
     if (response != null) {
       if (response.statusCode == 200) {
+        if (currentPage == 1) {
+          arrUserListData.clear();
+        }
         arrUserListData.addAll(response.data!);
         isPagingApiCall = false;
         totalPage = response.meta!.totalPage!;

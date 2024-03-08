@@ -40,6 +40,7 @@ class TradeData {
   String? userId;
   String? naOfUser;
   String? userName;
+  num? sequence;
   String? symbolId;
   String? symbolName;
   String? symbolTitle;
@@ -77,6 +78,7 @@ class TradeData {
   TradeData({
     this.tradeId,
     this.userId,
+    this.sequence,
     this.naOfUser,
     this.userName,
     this.symbolId,
@@ -114,6 +116,7 @@ class TradeData {
   factory TradeData.fromJson(Map<String, dynamic> json) => TradeData(
       tradeId: json["tradeId"],
       userId: json["userId"],
+      sequence: json["sequence"],
       naOfUser: json["naOfUser"],
       userName: json["userName"],
       symbolId: json["symbolId"],
@@ -152,6 +155,7 @@ class TradeData {
         "tradeId": tradeId,
         "userId": userId,
         "naOfUser": naOfUser,
+        "sequence": sequence,
         "userName": userName,
         "symbolId": symbolId,
         "symbolName": symbolName,

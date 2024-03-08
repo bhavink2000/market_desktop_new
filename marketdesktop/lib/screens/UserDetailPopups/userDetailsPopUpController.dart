@@ -172,7 +172,7 @@ class UserDetailsPopUpController extends BaseController {
         isFilterAvailable = false;
         break;
       case "Credit":
-        isFilterAvailable = selectedUserForUserDetailPopupParentID == userData!.userId;
+        isFilterAvailable = selectedUserForUserDetailPopupParentID == userData!.userId || userData!.role == UserRollList.admin;
         break;
       case "User List":
         isFilterAvailable = false;
@@ -195,6 +195,7 @@ class UserDetailsPopUpController extends BaseController {
     switch (selectedMenuName) {
       case "Position":
         Get.find<PositionPopUpController>().onCLickFilter();
+
         break;
       case "Trades":
         Get.find<TradeListPopUpController>().onCLickFilter();
@@ -223,6 +224,38 @@ class UserDetailsPopUpController extends BaseController {
       case "Share Details":
         Get.find<ShareDetailPopUpController>().onCLickFilter();
         break;
+      default:
+    }
+    return () {};
+  }
+
+  Function giveExcelClickEvent() {
+    switch (selectedMenuName) {
+      case "Position":
+        Get.find<PositionPopUpController>().onClickExcel();
+
+        break;
+      case "Trades":
+        Get.find<TradeListPopUpController>().onClickExcel();
+        break;
+
+      case "Quantity Settings":
+        Get.find<QuantitySettingPopUpController>().onClickExcel();
+        break;
+
+      case "Credit":
+        Get.find<CreditPopUpController>().onClickExcel();
+        break;
+      case "User List":
+        Get.find<UserListPopUpController>().onCLickFilter();
+        break;
+      case "Account Summary":
+        Get.find<AccountSummaryPopUpController>().onCLickFilter();
+        break;
+      case "Rejection Log":
+        Get.find<RejectionLogPopUpController>().onClickExcel();
+        break;
+
       default:
     }
     return () {};

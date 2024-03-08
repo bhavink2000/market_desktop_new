@@ -35,6 +35,7 @@ class BulkTradeModel {
 class BulkTradeData {
   String? bulkTradeAlertId;
   String? symbolName;
+  String? symbolId;
   String? symbolTitle;
   String? exchangeId;
   String? exchangeName;
@@ -48,6 +49,7 @@ class BulkTradeData {
   BulkTradeData({
     this.bulkTradeAlertId,
     this.symbolName,
+    this.symbolId,
     this.symbolTitle,
     this.exchangeId,
     this.exchangeName,
@@ -62,6 +64,7 @@ class BulkTradeData {
   factory BulkTradeData.fromJson(Map<String, dynamic> json) => BulkTradeData(
         bulkTradeAlertId: json["bulkTradeAlertId"],
         symbolName: json["symbolName"],
+        symbolId: json["symbolId"],
         symbolTitle: json["symbolTitle"],
         exchangeId: json["exchangeId"],
         exchangeName: json["exchangeName"],
@@ -76,6 +79,7 @@ class BulkTradeData {
   Map<String, dynamic> toJson() => {
         "bulkTradeAlertId": bulkTradeAlertId,
         "symbolName": symbolName,
+        "symbolId": symbolId,
         "symbolTitle": symbolTitle,
         "exchangeId": exchangeId,
         "exchangeName": exchangeName,

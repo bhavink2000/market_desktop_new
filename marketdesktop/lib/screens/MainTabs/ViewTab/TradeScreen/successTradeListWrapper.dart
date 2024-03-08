@@ -1,4 +1,3 @@
-import 'package:excel/excel.dart' as excelLib;
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/dropdownFunctions.dart';
 import 'package:marketdesktop/constant/utilities.dart';
@@ -588,6 +587,17 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                           }
                           controller.update();
                         });
+                      }
+                    case TradeColumns.sequence:
+                      {
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].sequence.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
                       }
                     case TradeColumns.username:
                       {

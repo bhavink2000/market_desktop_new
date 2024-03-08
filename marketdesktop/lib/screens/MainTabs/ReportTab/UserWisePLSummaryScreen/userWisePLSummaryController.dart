@@ -6,9 +6,10 @@ import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
+import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/userWiseProfitLossSummaryModelClass.dart';
 
@@ -94,9 +95,13 @@ class UserWisePLSummaryController extends BaseController {
       arrPlList.forEach((userObj) {
         for (var i = 0; i < userObj.childUserDataPosition!.length; i++) {
           if (socketData.data!.symbol == userObj.childUserDataPosition![i].symbolName) {
-            userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].tradeType!.toUpperCase() == "BUY"
-                ? (double.parse(socketData.data!.bid.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].quantity!
-                : (userObj.childUserDataPosition![i].price! - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].quantity!;
+            // userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].tradeType!.toUpperCase() == "BUY"
+            //     ? (double.parse(socketData.data!.bid.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].quantity!
+            //     : (userObj.childUserDataPosition![i].price! - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].quantity!;
+
+            userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].totalQuantity! < 0
+                ? (double.parse(socketData.data!.ask.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].totalQuantity!
+                : (double.parse(socketData.data!.bid.toString()) - double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2))) * userObj.childUserDataPosition![i].totalQuantity!;
 
             var pl = userObj.role == UserRollList.user ? userObj.profitLoss! : userObj.childUserProfitLossTotal!;
             var m2m = userObj.totalProfitLossValue;
@@ -110,18 +115,23 @@ class UserWisePLSummaryController extends BaseController {
             var sharingPLPer = userObj.role == UserRollList.user ? userObj.profitAndLossSharingDownLine! : userObj.profitAndLossSharing!;
             var totalPL = pl + m2m;
             var finalValuePL = totalPL * sharingPLPer / 100;
-
+            finalValuePL = finalValuePL + userObj.parentBrokerageTotal!;
             userObj.netPL = finalValuePL * -1;
             // finalValuePL = finalValuePL * -1;
-
-            finalValuePL = finalValuePL + userObj.parentBrokerageTotal!;
           }
         }
         userObj.totalProfitLossValue = 0.0;
         for (var element in userObj.childUserDataPosition!) {
           userObj.totalProfitLossValue += element.profitLossValue ?? 0.0;
         }
-        userObj.plWithBrk = userObj.totalProfitLossValue + userObj.childUserProfitLossTotal! - userObj.childUserBrokerageTotal!;
+        var brkTotal = 0.0;
+        if (userObj.role == UserRollList.master) {
+          brkTotal = double.parse(userObj.childUserBrokerageTotal!.toString());
+        } else {
+          brkTotal = double.parse(userObj.brokerageTotal!.toString());
+        }
+        var pl = userObj.role == UserRollList.user ? userObj.profitLoss! : userObj.childUserProfitLossTotal!;
+        userObj.plWithBrk = userObj.totalProfitLossValue + pl - brkTotal;
       });
       totalNetPl = 0.0;
       totalPlSharePer = 0.0;
@@ -131,5 +141,79 @@ class UserWisePLSummaryController extends BaseController {
       }
       update();
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrPlList.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserWisePLSummaryColumns.view:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+          case UserWisePLSummaryColumns.username:
+            {
+              list.add(excelLib.TextCellValue(element.userName ?? ""));
+            }
+          case UserWisePLSummaryColumns.sharingPer:
+            {
+              list.add(excelLib.TextCellValue(element.role == UserRollList.user ? element.profitAndLossSharingDownLine!.toString() : element.profitAndLossSharing!.toString()));
+            }
+          case UserWisePLSummaryColumns.brkSharingPer:
+            {
+              list.add(excelLib.TextCellValue(element.role == UserRollList.user ? element.brkSharingDownLine!.toString() : element.brkSharing!.toString()));
+            }
+          case UserWisePLSummaryColumns.releaseClientPL:
+            {
+              list.add(excelLib.TextCellValue(element.role == UserRollList.user ? element.profitLoss!.toStringAsFixed(2) : element.childUserProfitLossTotal!.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.clientBrk:
+            {
+              list.add(excelLib.TextCellValue(element.role == UserRollList.master ? element.childUserBrokerageTotal!.toStringAsFixed(2) : element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.clientM2M:
+            {
+              list.add(excelLib.TextCellValue(element.totalProfitLossValue.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.PLWithBrk:
+            {
+              list.add(excelLib.TextCellValue(element.plWithBrk.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.PLSharePer:
+            {
+              list.add(excelLib.TextCellValue(element.plSharePer.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.brk:
+            {
+              list.add(excelLib.TextCellValue(element.parentBrokerageTotal!.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.netPL:
+            {
+              list.add(excelLib.TextCellValue(element.netPL.toStringAsFixed(2)));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("UserwisePLSummary", titleList, dataList);
+    }
+    exportExcelFile("UserwisePLSummary.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

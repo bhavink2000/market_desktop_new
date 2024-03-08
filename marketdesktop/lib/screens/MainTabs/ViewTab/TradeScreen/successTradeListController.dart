@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:excel/excel.dart' as excelLib;
-import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
@@ -13,7 +11,6 @@ import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../modelClass/constantModelClass.dart';
-
 
 class SuccessTradeListController extends BaseController {
   //*********************************************************************** */
@@ -254,6 +251,10 @@ class SuccessTradeListController extends BaseController {
             {
               list.add(excelLib.TextCellValue(""));
             }
+          case TradeColumns.sequence:
+            {
+              list.add(excelLib.TextCellValue(element.sequence.toString()));
+            }
           case TradeColumns.username:
             {
               list.add(excelLib.TextCellValue(element.userName!));
@@ -341,6 +342,4 @@ class SuccessTradeListController extends BaseController {
     var filePath = await onClickExcel(isFromPDF: true);
     generatePdfFromExcel(filePath);
   }
-
-
 }

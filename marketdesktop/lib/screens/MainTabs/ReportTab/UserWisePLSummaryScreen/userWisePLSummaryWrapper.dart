@@ -20,7 +20,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPlList.length, onCLickFilter: () {
+          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPlList.length, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -299,20 +299,20 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'VIEW':
+                  case UserWisePLSummaryColumns.view:
                     {
                       return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isImage: true, strImage: AppImages.viewIcon, onClickImage: () {
                         isUserViewPopUpOpen = true;
                         showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!);
                       });
                     }
-                  case 'USERNAME':
+                  case UserWisePLSummaryColumns.username:
                     {
                       return dynamicValueBox1(plObj.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
                         showUserDetailsPopUp(userId: plObj.userId!, userName: plObj.userName!);
                       });
                     }
-                  case 'SHARING %':
+                  case UserWisePLSummaryColumns.sharingPer:
                     {
                       return dynamicValueBox1(
                         plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine!.toString() : plObj.profitAndLossSharing!.toString(),
@@ -323,7 +323,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'BRK SHARING %':
+                  case UserWisePLSummaryColumns.brkSharingPer:
                     {
                       return dynamicValueBox1(
                         plObj.role == UserRollList.user ? plObj.brkSharingDownLine!.toString() : plObj.brkSharing!.toString(),
@@ -334,7 +334,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'RELEASE CLIENT P/L':
+                  case UserWisePLSummaryColumns.releaseClientPL:
                     {
                       return dynamicValueBox1(
                         plObj.role == UserRollList.user ? plObj.profitLoss!.toStringAsFixed(2) : plObj.childUserProfitLossTotal!.toStringAsFixed(2),
@@ -349,11 +349,11 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'CLIENT BRK':
+                  case UserWisePLSummaryColumns.clientBrk:
                     {
-                      return valueBox(plObj.childUserBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: false);
+                      return valueBox(plObj.role == UserRollList.master ? plObj.childUserBrokerageTotal!.toStringAsFixed(2) : plObj.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: false);
                     }
-                  case 'CLIENT M2M':
+                  case UserWisePLSummaryColumns.clientM2M:
                     {
                       return dynamicValueBox1(
                         plObj.totalProfitLossValue.toStringAsFixed(2),
@@ -368,7 +368,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'P/L WITH BRK':
+                  case UserWisePLSummaryColumns.PLWithBrk:
                     {
                       return dynamicValueBox1(
                         plObj.plWithBrk.toStringAsFixed(2),
@@ -383,44 +383,23 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                         controller.arrListTitle1,
                       );
                     }
-                  case 'P/L SHARE %':
+                  case UserWisePLSummaryColumns.PLSharePer:
                     {
-                      var pl = plObj.role == UserRollList.user ? plObj.profitLoss! : plObj.childUserProfitLossTotal!;
-                      var m2m = plObj.totalProfitLossValue;
-                      var sharingPer = plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine! : plObj.profitAndLossSharing!;
-                      var total = pl + m2m;
-                      var finalValue = total * sharingPer / 100;
-
-                      finalValue = finalValue * -1;
-
                       return dynamicValueBox1(
                         plObj.plSharePer.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                        plObj.plWithBrk > 0
-                            ? AppColors().greenColor
-                            : plObj.plWithBrk < 0
-                                ? AppColors().redColor
-                                : AppColors().darkText,
+                        plObj.plSharePer < 0 ? AppColors().redColor : AppColors().darkText,
                         index,
                         indexT,
                         controller.arrListTitle1,
                       );
                     }
-                  case 'BRK':
+                  case UserWisePLSummaryColumns.brk:
                     {
                       return dynamicValueBox1(plObj.parentBrokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'NET P/L':
+                  case UserWisePLSummaryColumns.netPL:
                     {
-                      var pl = plObj.role == UserRollList.user ? plObj.profitLoss! : plObj.childUserProfitLossTotal!;
-                      var m2m = plObj.totalProfitLossValue;
-                      var sharingPer = plObj.role == UserRollList.user ? plObj.profitAndLossSharingDownLine! : plObj.profitAndLossSharing!;
-                      var total = pl + m2m;
-                      var finalValue = total * sharingPer / 100;
-
-                      finalValue = finalValue * -1;
-
-                      finalValue = finalValue + plObj.parentBrokerageTotal!;
                       return dynamicValueBox1(
                         plObj.netPL.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,

@@ -3,8 +3,10 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/constantModelClass.dart';
 import 'package:marketdesktop/modelClass/userLogListModelClass.dart';
 import '../../../../constant/index.dart';
+import '../../../../constant/utilities.dart';
 import '../../../../main.dart';
 import '../../ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
+import 'package:excel/excel.dart' as excelLib;
 
 class LogHistoryController extends BaseController {
   //*********************************************************************** */
@@ -127,5 +129,57 @@ class LogHistoryController extends BaseController {
     }
 
     return isOn;
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle.forEach((element) {
+      var title = element.title;
+      if (title.startsWith('NEW')) {
+        title = "NEW ${selectedLogType.value.name}".toUpperCase();
+      } else if (title.startsWith('OLD')) {
+        title = "OLD ${selectedLogType.value.name}".toUpperCase();
+      }
+      titleList.add(excelLib.TextCellValue(title));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrLog.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle.forEach((titleObj) {
+        switch (titleObj.title) {
+          case 'USERNAME':
+            {
+              list.add(excelLib.TextCellValue(element.userName ?? ""));
+            }
+          case 'UPDATED ON':
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+            }
+          case 'UPDATED BY':
+            {
+              list.add(excelLib.TextCellValue(element.updatedByName ?? ""));
+            }
+
+          default:
+            {
+              if (titleObj.title.startsWith('NEW')) {
+                list.add(excelLib.TextCellValue(getnewValue(index: arrLog.indexOf(element))));
+              } else if (titleObj.title.startsWith('OLD')) {
+                list.add(excelLib.TextCellValue(getnewValue(index: arrLog.indexOf(element), isOld: true)));
+              }
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("ActivityReport", titleList, dataList);
+    }
+    exportExcelFile("ActivityReport.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

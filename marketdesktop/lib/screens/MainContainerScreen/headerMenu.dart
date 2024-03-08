@@ -470,7 +470,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.creditHistory;
               var accountSummaryVC = Get.put(HistoryOfCreditController());
-              generalContainerPopup(view: HistoryOfCreditScreen(), title: ScreenViewNames.creditHistory, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter);
+              generalContainerPopup(view: HistoryOfCreditScreen(), title: ScreenViewNames.creditHistory, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter, excelClick: accountSummaryVC.onClickExcel, pdfClick: accountSummaryVC.onClickPDF, isFilterIconHide: true);
             },
           ),
           MenuEntry(
@@ -509,7 +509,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.logsHistory;
               var logsVc = Get.put(LogHistoryController());
-              generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter);
+              generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter, excelClick: logsVc.onClickExcel, pdfClick: logsVc.onClickPDF);
             },
           ),
           // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -537,7 +537,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userwisePAndLSummary;
                 var userWiseVC = Get.put(UserWisePLSummaryController());
-                generalContainerPopup(view: UserWisePLSummaryScreen(), title: ScreenViewNames.userwisePAndLSummary, isFilterAvailable: true, filterClick: userWiseVC.onCLickFilter);
+                generalContainerPopup(view: UserWisePLSummaryScreen(), title: ScreenViewNames.userwisePAndLSummary, isFilterAvailable: true, filterClick: userWiseVC.onCLickFilter, excelClick: userWiseVC.onClickExcel, pdfClick: userWiseVC.onClickPDF);
               },
             ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -550,7 +550,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userScriptPositionTracking;
                 var trackingVC = Get.put(UserScriptPositionTrackController());
-                generalContainerPopup(view: UserScriptPositionTrackScreen(), title: ScreenViewNames.userScriptPositionTracking, isFilterAvailable: true, filterClick: trackingVC.onCLickFilter);
+                generalContainerPopup(view: UserScriptPositionTrackScreen(), title: ScreenViewNames.userScriptPositionTracking, isFilterAvailable: true, filterClick: trackingVC.onCLickFilter, excelClick: trackingVC.onClickExcel, pdfClick: trackingVC.onClickPDF);
               },
             ),
           if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -563,7 +563,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.symbolWisePositionReport;
                 var symbolWiseVC = Get.put(SymbolWisePositionReportController());
-                generalContainerPopup(view: SymbolWisePositionReportScreen(), title: ScreenViewNames.symbolWisePositionReport, isFilterAvailable: true, filterClick: symbolWiseVC.onCLickFilter);
+                generalContainerPopup(view: SymbolWisePositionReportScreen(), title: ScreenViewNames.symbolWisePositionReport, isFilterAvailable: true, filterClick: symbolWiseVC.onCLickFilter, excelClick: symbolWiseVC.onClickExcel, pdfClick: symbolWiseVC.onClickPDF);
               },
             ),
         ],
@@ -631,7 +631,7 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.scriptMaster;
                 var masterVC = Get.put(ScriptMasterController());
-                generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
+                generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter, excelClick: masterVC.onClickExcel, pdfClick: masterVC.onClickPDF);
               },
             ),
           MenuEntry(
@@ -644,7 +644,7 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.scriptQty;
               var masterVC = Get.put(ScriptQuantityController());
-              generalContainerPopup(view: ScriptQuantityScreen(), title: ScreenViewNames.scriptQty, isFilterAvailable: true, filterClick: masterVC.onCLickFilter);
+              generalContainerPopup(view: ScriptQuantityScreen(), title: ScreenViewNames.scriptQty, isFilterAvailable: true, filterClick: masterVC.onCLickFilter, excelClick: masterVC.onClickExcel, pdfClick: masterVC.onClickPDF);
             },
           ),
           MenuEntry(

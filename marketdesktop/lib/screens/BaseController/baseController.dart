@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:excel/excel.dart' as excelLib;
 import '../../../service/network/allApiCallService.dart';
 import '../../constant/color.dart';
 import '../../constant/dropdownFunctions.dart';

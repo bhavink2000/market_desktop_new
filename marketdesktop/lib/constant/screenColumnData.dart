@@ -90,6 +90,7 @@ class PendingOrderColumns {
 
 class TradeColumns {
   static const checkBox = "";
+  static const sequence = "SEQUENCE";
   static const username = "USERNAME";
   static const parentUser = "PARENT USER";
   static const segment = "SEGMENT";
@@ -224,13 +225,19 @@ class SettlementColumns {
 }
 
 class CreditHistoryColumns {
-  static const dateTime = "DATE TIME";
+  // static const dateTime = "DATE TIME";
+  // static const username = "USERNAME";
+  // static const opening = "OPENING";
+  // static const amount = "AMOUNT";
+  // static const closing = "CLOSING";
+  // static const comment = "COMMENT";
+  // static const actionBy = "ACTION BY";
   static const username = "USERNAME";
-  static const opening = "OPENING";
+  static const dateTime = "DATE TIME";
+  static const type = "TYPE";
   static const amount = "AMOUNT";
-  static const closing = "CLOSING";
-  static const comment = "COMMENT";
-  static const actionBy = "ACTION BY";
+  static const balance = "BALANCE";
+  static const comments = "COMMENTS";
 }
 
 class UserWisePLSummaryColumns {
@@ -309,6 +316,7 @@ class UserPositionColumns {
 }
 
 class UserTradeColumns {
+  static const sequence = "SEQUENCE";
   static const username = "USERNAME";
   static const parentUser = "PARENT USER";
   static const segment = "SEGMENT";
@@ -372,6 +380,7 @@ class BulkTradeColumns {
   static const buyTotalQty = "BUY TOTAL QTY";
   static const sellTotalQty = "SELL TOTAL QTY";
   static const totalQty = "TOTAL QTY";
+  static const dateTime = "DATE & TIME";
 }
 
 Future<void> getColumnListFromDB(int screenId, List<ColumnItem> arrList) async {
@@ -602,14 +611,22 @@ List<Map> getColumnNames() {
             "position": 0,
             "columnId": "${ScreenIds().trades}-0",
           },
+        {
+          "title": TradeColumns.sequence,
+          "screenId": ScreenIds().trades,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 1,
+          "columnId": "${ScreenIds().trades}-1",
+        },
         if (userData!.role != UserRollList.user)
           {
             "title": TradeColumns.username,
             "screenId": ScreenIds().trades,
             "width": ColumnSizes.normal,
             "updatedWidth": ColumnSizes.normal,
-            "position": 1,
-            "columnId": "${ScreenIds().trades}-1",
+            "position": 2,
+            "columnId": "${ScreenIds().trades}-2",
           },
         if (userData!.role != UserRollList.user)
           {
@@ -617,35 +634,27 @@ List<Map> getColumnNames() {
             "screenId": ScreenIds().trades,
             "width": ColumnSizes.big,
             "updatedWidth": ColumnSizes.big,
-            "position": 2,
-            "columnId": "${ScreenIds().trades}-2",
+            "position": 3,
+            "columnId": "${ScreenIds().trades}-3",
           },
         {
           "title": TradeColumns.segment,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
-          "position": 3,
-          "columnId": "${ScreenIds().trades}-3",
+          "position": 4,
+          "columnId": "${ScreenIds().trades}-4",
         },
         {
           "title": TradeColumns.symbol,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.big,
           "updatedWidth": ColumnSizes.big,
-          "position": 4,
-          "columnId": "${ScreenIds().trades}-4",
-        },
-        {
-          "title": TradeColumns.bs,
-          "screenId": ScreenIds().trades,
-          "width": ColumnSizes.small,
-          "updatedWidth": ColumnSizes.small,
           "position": 5,
           "columnId": "${ScreenIds().trades}-5",
         },
         {
-          "title": TradeColumns.qty,
+          "title": TradeColumns.bs,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
@@ -653,7 +662,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-6",
         },
         {
-          "title": TradeColumns.lot,
+          "title": TradeColumns.qty,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
@@ -661,15 +670,15 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-7",
         },
         {
-          "title": TradeColumns.type,
+          "title": TradeColumns.lot,
           "screenId": ScreenIds().trades,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
+          "width": ColumnSizes.small,
+          "updatedWidth": ColumnSizes.small,
           "position": 8,
           "columnId": "${ScreenIds().trades}-8",
         },
         {
-          "title": TradeColumns.tradePrice,
+          "title": TradeColumns.type,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -677,7 +686,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-9",
         },
         {
-          "title": TradeColumns.brk,
+          "title": TradeColumns.tradePrice,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -685,7 +694,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-10",
         },
         {
-          "title": TradeColumns.priceB,
+          "title": TradeColumns.brk,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -693,15 +702,15 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-11",
         },
         {
-          "title": TradeColumns.orderDT,
+          "title": TradeColumns.priceB,
           "screenId": ScreenIds().trades,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 12,
           "columnId": "${ScreenIds().trades}-12",
         },
         {
-          "title": TradeColumns.executionDT,
+          "title": TradeColumns.orderDT,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
@@ -709,23 +718,23 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-13",
         },
         {
-          "title": TradeColumns.refPrice,
+          "title": TradeColumns.executionDT,
           "screenId": ScreenIds().trades,
-          "width": 160.0,
-          "updatedWidth": 160.0,
+          "width": ColumnSizes.date,
+          "updatedWidth": ColumnSizes.date,
           "position": 14,
           "columnId": "${ScreenIds().trades}-14",
         },
         {
-          "title": TradeColumns.ipAddress,
+          "title": TradeColumns.refPrice,
           "screenId": ScreenIds().trades,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
+          "width": 160.0,
+          "updatedWidth": 160.0,
           "position": 15,
           "columnId": "${ScreenIds().trades}-15",
         },
         {
-          "title": TradeColumns.device,
+          "title": TradeColumns.ipAddress,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -733,12 +742,20 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-16",
         },
         {
-          "title": TradeColumns.deviceId,
+          "title": TradeColumns.device,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 17,
           "columnId": "${ScreenIds().trades}-17",
+        },
+        {
+          "title": TradeColumns.deviceId,
+          "screenId": ScreenIds().trades,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 18,
+          "columnId": "${ScreenIds().trades}-18",
         }
       ]
     },
@@ -1513,27 +1530,27 @@ List<Map> getColumnNames() {
       "title": ScreenTitles().creditHistory,
       "columns": [
         {
+          "title": CreditHistoryColumns.username,
+          "screenId": ScreenIds().creditHistory,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 0,
+          "columnId": "${ScreenIds().creditHistory}-0",
+        },
+        {
           "title": CreditHistoryColumns.dateTime,
           "screenId": ScreenIds().creditHistory,
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
           "position": 1,
-          "columnId": "${ScreenIds().creditHistory}-0",
+          "columnId": "${ScreenIds().creditHistory}-1",
         },
         {
-          "title": CreditHistoryColumns.username,
+          "title": CreditHistoryColumns.type,
           "screenId": ScreenIds().creditHistory,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 2,
-          "columnId": "${ScreenIds().creditHistory}-1",
-        },
-        {
-          "title": CreditHistoryColumns.opening,
-          "screenId": ScreenIds().creditHistory,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 3,
           "columnId": "${ScreenIds().creditHistory}-2",
         },
         {
@@ -1541,32 +1558,24 @@ List<Map> getColumnNames() {
           "screenId": ScreenIds().creditHistory,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
-          "position": 4,
+          "position": 3,
           "columnId": "${ScreenIds().creditHistory}-3",
         },
         {
-          "title": CreditHistoryColumns.closing,
+          "title": CreditHistoryColumns.balance,
+          "screenId": ScreenIds().creditHistory,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 4,
+          "columnId": "${ScreenIds().creditHistory}-4",
+        },
+        {
+          "title": CreditHistoryColumns.comments,
           "screenId": ScreenIds().creditHistory,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 5,
-          "columnId": "${ScreenIds().creditHistory}-4",
-        },
-        {
-          "title": CreditHistoryColumns.comment,
-          "screenId": ScreenIds().creditHistory,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 6,
           "columnId": "${ScreenIds().creditHistory}-5",
-        },
-        {
-          "title": CreditHistoryColumns.actionBy,
-          "screenId": ScreenIds().creditHistory,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 7,
-          "columnId": "${ScreenIds().creditHistory}-6",
         },
       ]
     },
@@ -2034,12 +2043,20 @@ List<Map> getColumnNames() {
       "title": ScreenTitles().userTrade,
       "columns": [
         {
+          "title": UserTradeColumns.sequence,
+          "screenId": ScreenIds().userTrade,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 0,
+          "columnId": "${ScreenIds().userTrade}-0",
+        },
+        {
           "title": UserTradeColumns.username,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 1,
-          "columnId": "${ScreenIds().userTrade}-0",
+          "columnId": "${ScreenIds().userTrade}-1",
         },
         if (userData!.role != UserRollList.user)
           {
@@ -2048,7 +2065,7 @@ List<Map> getColumnNames() {
             "width": ColumnSizes.big,
             "updatedWidth": ColumnSizes.big,
             "position": 2,
-            "columnId": "${ScreenIds().userTrade}-1",
+            "columnId": "${ScreenIds().userTrade}-2",
           },
         {
           "title": UserTradeColumns.segment,
@@ -2056,7 +2073,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 3,
-          "columnId": "${ScreenIds().userTrade}-2",
+          "columnId": "${ScreenIds().userTrade}-3",
         },
         {
           "title": UserTradeColumns.symbol,
@@ -2064,7 +2081,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.big,
           "updatedWidth": ColumnSizes.big,
           "position": 4,
-          "columnId": "${ScreenIds().userTrade}-3",
+          "columnId": "${ScreenIds().userTrade}-4",
         },
         if (userData!.role != UserRollList.user)
           {
@@ -2073,7 +2090,7 @@ List<Map> getColumnNames() {
             "width": ColumnSizes.small,
             "updatedWidth": ColumnSizes.small,
             "position": 5,
-            "columnId": "${ScreenIds().userTrade}-4",
+            "columnId": "${ScreenIds().userTrade}-5",
           },
         if (userData!.role != UserRollList.user)
           {
@@ -2082,7 +2099,7 @@ List<Map> getColumnNames() {
             "width": ColumnSizes.normal,
             "updatedWidth": ColumnSizes.normal,
             "position": 6,
-            "columnId": "${ScreenIds().userTrade}-5",
+            "columnId": "${ScreenIds().userTrade}-6",
           },
         {
           "title": UserTradeColumns.qty,
@@ -2090,7 +2107,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
           "position": 7,
-          "columnId": "${ScreenIds().userTrade}-6",
+          "columnId": "${ScreenIds().userTrade}-7",
         },
         {
           "title": UserTradeColumns.lot,
@@ -2098,7 +2115,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.small,
           "updatedWidth": ColumnSizes.small,
           "position": 8,
-          "columnId": "${ScreenIds().userTrade}-7",
+          "columnId": "${ScreenIds().userTrade}-8",
         },
         {
           "title": UserTradeColumns.totalQty,
@@ -2106,7 +2123,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 9,
-          "columnId": "${ScreenIds().userTrade}-8",
+          "columnId": "${ScreenIds().userTrade}-9",
         },
         {
           "title": UserTradeColumns.validity,
@@ -2114,7 +2131,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 10,
-          "columnId": "${ScreenIds().userTrade}-9",
+          "columnId": "${ScreenIds().userTrade}-10",
         },
         {
           "title": UserTradeColumns.tradePrice,
@@ -2122,7 +2139,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 11,
-          "columnId": "${ScreenIds().userTrade}-10",
+          "columnId": "${ScreenIds().userTrade}-11",
         },
         {
           "title": UserTradeColumns.brk,
@@ -2130,7 +2147,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 12,
-          "columnId": "${ScreenIds().userTrade}-11",
+          "columnId": "${ScreenIds().userTrade}-12",
         },
         {
           "title": UserTradeColumns.netPrice,
@@ -2138,7 +2155,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 13,
-          "columnId": "${ScreenIds().userTrade}-12",
+          "columnId": "${ScreenIds().userTrade}-13",
         },
         {
           "title": UserTradeColumns.orderDT,
@@ -2146,7 +2163,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
           "position": 14,
-          "columnId": "${ScreenIds().userTrade}-13",
+          "columnId": "${ScreenIds().userTrade}-14",
         },
         {
           "title": UserTradeColumns.executionDT,
@@ -2154,7 +2171,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
           "position": 15,
-          "columnId": "${ScreenIds().userTrade}-14",
+          "columnId": "${ScreenIds().userTrade}-15",
         },
         {
           "title": UserTradeColumns.refPrice,
@@ -2162,7 +2179,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 16,
-          "columnId": "${ScreenIds().userTrade}-15",
+          "columnId": "${ScreenIds().userTrade}-16",
         },
         {
           "title": UserTradeColumns.ipAddress,
@@ -2170,7 +2187,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 17,
-          "columnId": "${ScreenIds().userTrade}-16",
+          "columnId": "${ScreenIds().userTrade}-17",
         },
         {
           "title": UserTradeColumns.device,
@@ -2178,7 +2195,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 18,
-          "columnId": "${ScreenIds().userTrade}-17",
+          "columnId": "${ScreenIds().userTrade}-18",
         },
         {
           "title": UserTradeColumns.deviceId,
@@ -2186,7 +2203,7 @@ List<Map> getColumnNames() {
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 19,
-          "columnId": "${ScreenIds().userTrade}-18",
+          "columnId": "${ScreenIds().userTrade}-19",
         }
       ]
     },
@@ -2449,6 +2466,14 @@ List<Map> getColumnNames() {
           "updatedWidth": ColumnSizes.big,
           "position": 5,
           "columnId": "${ScreenIds().bulkTrade}-4",
+        },
+        {
+          "title": BulkTradeColumns.dateTime,
+          "screenId": ScreenIds().bulkTrade,
+          "width": ColumnSizes.date,
+          "updatedWidth": ColumnSizes.date,
+          "position": 6,
+          "columnId": "${ScreenIds().bulkTrade}-5",
         },
       ]
     },

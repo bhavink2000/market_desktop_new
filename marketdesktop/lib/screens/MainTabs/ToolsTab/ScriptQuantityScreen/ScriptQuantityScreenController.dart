@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/const_string.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
@@ -10,7 +10,6 @@ import '../../../../modelClass/groupListModelClass.dart';
 import '../../../../modelClass/myUserListModelClass.dart';
 import '../../../../modelClass/scriptQuantityModelClass.dart';
 import '../../../BaseController/baseController.dart';
-
 
 class ScriptQuantityControllerBinding implements Bindings {
   @override
@@ -126,5 +125,55 @@ class ScriptQuantityController extends BaseController {
         update();
       }
     }
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrData.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case ScriptQtyColumns.symbol:
+            {
+              list.add(excelLib.TextCellValue(element.symbolName ?? ""));
+            }
+          case ScriptQtyColumns.breakUpQty:
+            {
+              list.add(excelLib.TextCellValue(element.breakQuantity.toString()));
+            }
+          case ScriptQtyColumns.maxQty:
+            {
+              list.add(excelLib.TextCellValue(element.quantityMax.toString()));
+            }
+          case ScriptQtyColumns.breakUpLot:
+            {
+              list.add(excelLib.TextCellValue(element.breakUpLot.toString()));
+            }
+          case ScriptQtyColumns.maxLot:
+            {
+              list.add(excelLib.TextCellValue(element.lotMax.toString()));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("ScriptQuantity", titleList, dataList);
+    }
+    exportExcelFile("ScriptQuantity.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }

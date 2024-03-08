@@ -22,7 +22,7 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, onCLickFilter: () {
+          filterPanel(context, isRecordDisplay: true, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),

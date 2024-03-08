@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
@@ -9,7 +6,6 @@ import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/RejectionLogScreen/rejectionLogController.dart';
 import 'package:paginable/paginable.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../constant/index.dart';

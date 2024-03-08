@@ -27,7 +27,7 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickFilter: () {
+          filterPanel(context, bottomMargin: 0, isRecordDisplay: true, totalRecord: controller.totalCount, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -316,27 +316,23 @@ class ScriptQuantityScreen extends BaseView<ScriptQuantityController> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int indexT) {
                 switch (controller.arrListTitle1[indexT].title) {
-                  case 'INDEX':
-                    {
-                      return dynamicValueBox1(index.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
-                    }
-                  case 'SYMBOL':
+                  case ScriptQtyColumns.symbol:
                     {
                       return dynamicValueBox1(scriptValue.symbolName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'BREAKUP QTY':
+                  case ScriptQtyColumns.breakUpQty:
                     {
                       return dynamicValueBox1(scriptValue.breakQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'MAX QTY':
+                  case ScriptQtyColumns.maxQty:
                     {
                       return dynamicValueBox1(scriptValue.quantityMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'BREAKUP LOT':
+                  case ScriptQtyColumns.breakUpLot:
                     {
                       return dynamicValueBox1(scriptValue.breakUpLot!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
-                  case 'MAX LOT':
+                  case ScriptQtyColumns.maxLot:
                     {
                       return dynamicValueBox1(scriptValue.lotMax!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }

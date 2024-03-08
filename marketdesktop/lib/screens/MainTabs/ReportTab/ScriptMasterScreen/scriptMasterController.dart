@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/scriptMasterPopUp/scriptMasterPopUpController.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/screenColumnData.dart';
+import '../../../../constant/utilities.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../constant/index.dart';
@@ -67,5 +68,59 @@ class ScriptMasterController extends BaseController {
       currentPage = currentPage + 1;
     }
     update();
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList = [];
+    arrTradeMargin.forEach((element) {
+      List<excelLib.TextCellValue?> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case ScriptMasterColumns.exchange:
+            {
+              list.add(excelLib.TextCellValue(element.exchangeName ?? ""));
+            }
+          case ScriptMasterColumns.script:
+            {
+              list.add(excelLib.TextCellValue(element.symbolTitle ?? ""));
+            }
+          case ScriptMasterColumns.expiryDate:
+            {
+              list.add(excelLib.TextCellValue(shortFullDateTime(element.expiryDate!)));
+            }
+          case ScriptMasterColumns.desc:
+            {
+              list.add(excelLib.TextCellValue(element.symbolName!));
+            }
+          case ScriptMasterColumns.tradeAttribute:
+            {
+              list.add(excelLib.TextCellValue(element.tradeAttribute!));
+            }
+          case ScriptMasterColumns.allowTrade:
+            {
+              list.add(excelLib.TextCellValue(element.allowTradeValue!));
+            }
+
+          default:
+            {
+              list.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    if (isFromPDF) {
+      return exportPDFFile("ScriptMaster", titleList, dataList);
+    }
+    exportExcelFile("ScriptMaster.xlsx", titleList, dataList);
+  }
+
+  onClickPDF() async {
+    var filePath = await onClickExcel(isFromPDF: true);
+    generatePdfFromExcel(filePath);
   }
 }
