@@ -986,14 +986,91 @@ class TradeListController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("Orders", titleList, dataList);
-    }
+
     exportExcelFile("Orders.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrTrade.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case PendingOrderColumns.username:
+            {
+              list.add((element.userName ?? ""));
+            }
+          case PendingOrderColumns.parentUser:
+            {
+              list.add((element.parentUserName ?? ""));
+            }
+          case PendingOrderColumns.segment:
+            {
+              list.add((element.exchangeName ?? ""));
+            }
+          case PendingOrderColumns.symbol:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case PendingOrderColumns.bs:
+            {
+              list.add((element.tradeTypeValue!.toUpperCase()));
+            }
+          case PendingOrderColumns.qty:
+            {
+              list.add((element.totalQuantity.toString()));
+            }
+          case PendingOrderColumns.lot:
+            {
+              list.add((element.quantity.toString()));
+            }
+
+          case PendingOrderColumns.price:
+            {
+              list.add((element.price!.toStringAsFixed(2)));
+            }
+
+          case PendingOrderColumns.orderDT:
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case PendingOrderColumns.type:
+            {
+              list.add((element.productTypeValue.toString()));
+            }
+          case PendingOrderColumns.cmp:
+            {
+              list.add((element.currentPriceFromSocket.toString()));
+            }
+          case PendingOrderColumns.refPrice:
+            {
+              list.add((element.referencePrice!.toStringAsFixed(2)));
+            }
+          case PendingOrderColumns.ipAddress:
+            {
+              list.add((element.ipAddress ?? ""));
+            }
+          case PendingOrderColumns.device:
+            {
+              list.add((element.orderMethod ?? ""));
+            }
+          case PendingOrderColumns.deviceId:
+            {
+              list.add((element.deviceId ?? ""));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "Orders", title: "Orders", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

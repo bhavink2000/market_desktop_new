@@ -1024,6 +1024,7 @@ class AllApiCallService {
       // String? password,
       String? phone,
       String? role,
+      String? userId,
       int? cmpOrder,
       int? manualOrder,
       int? deleteTrade,
@@ -1032,6 +1033,7 @@ class AllApiCallService {
       _dio.options.headers = getHeaders();
       final payload = {
         "name": name,
+        "userId": userId,
         "phone": phone,
         "role": role,
         "cmpOrder": cmpOrder,
@@ -1040,6 +1042,7 @@ class AllApiCallService {
         "executePendingOrder": executePendingOrder,
       };
       final data = await _dio.post(Api.editUser, data: payload);
+      print(data.data);
       return CreateUserModel.fromJson(data.data);
     } catch (e) {
       return null;

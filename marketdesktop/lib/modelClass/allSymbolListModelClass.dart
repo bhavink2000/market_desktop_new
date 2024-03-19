@@ -172,6 +172,7 @@ class GlobalSymbolData {
         "status": status,
       };
   @override
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is GlobalSymbolData) {
       return this.symbolId == other.symbolId;

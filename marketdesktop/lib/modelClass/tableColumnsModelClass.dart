@@ -59,6 +59,7 @@ class ColumnItem {
   String toString() => title!;
 
   @override
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is ColumnItem) {
       return this.screenId == other.screenId && this.title == other.title;

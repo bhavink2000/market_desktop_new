@@ -280,6 +280,7 @@ class AddMaster {
         "name": name,
         "id": id,
       };
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is AddMaster) {
       return this.name == other.name;
@@ -307,6 +308,7 @@ class Type {
         "name": name,
         "id": id,
       };
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is Type) {
       return this.id == other.id;

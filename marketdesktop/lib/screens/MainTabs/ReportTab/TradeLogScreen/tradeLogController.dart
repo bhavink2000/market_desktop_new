@@ -9,6 +9,7 @@ import '../../../../constant/screenColumnData.dart';
 import 'package:excel/excel.dart' as excelLib;
 
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 
 class TradeLogController extends BaseController {
   //*********************************************************************** */
@@ -194,14 +195,59 @@ class TradeLogController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("TradeLogs", titleList, dataList);
-    }
+
     exportExcelFile("TradeLogs.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrTrade.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case TradeLogsColumns.username:
+            {
+              list.add((element.userName ?? ""));
+            }
+          case TradeLogsColumns.exchange:
+            {
+              list.add((element.exchangeName ?? ""));
+            }
+          case TradeLogsColumns.symbol:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case TradeLogsColumns.oldUpdateType:
+            {
+              list.add((element.oldOrderTypeValue ?? ""));
+            }
+          case TradeLogsColumns.updateType:
+            {
+              list.add((element.orderTypeValue ?? ""));
+            }
+          case TradeLogsColumns.updateTime:
+            {
+              list.add((shortFullDateTime(element.updatedAt!)));
+            }
+
+          case TradeLogsColumns.modifyBy:
+            {
+              list.add((element.userUpdatedName!));
+            }
+
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "TradeLogs", title: "TradeLogs", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

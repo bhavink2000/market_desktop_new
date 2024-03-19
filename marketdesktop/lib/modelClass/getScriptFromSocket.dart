@@ -140,7 +140,7 @@ class ScriptData {
         "symbol": symbol,
         "depth": depth?.toJson(),
       };
-      
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is ScriptData) {
       return symbol == other.symbol;

@@ -141,7 +141,8 @@ class CreateUserController extends BaseController {
   //*********************************************************************** */
 
   fillUserDataForEdit() async {
-    reseData();
+    resetData();
+    await getExchangeList();
     if (selectedUserForEdit != null) {
       if (selectedUserForEdit!.role == UserRollList.master) {
         nameController.text = selectedUserForEdit!.name!;
@@ -253,12 +254,23 @@ class CreateUserController extends BaseController {
           selectedLeverage.value = arrLeverageList[selectedLeverageIndex];
         }
         update();
+      } else if (selectedUserForEdit!.role == UserRollList.admin) {
+        selectedUserType.value.roleId = selectedUserForEdit!.role;
+        isCmpOrder = selectedUserForEdit!.cmpOrder == 1;
+        isAdminManualOrder = selectedUserForEdit!.manualOrder == 1;
+        isDeleteTrade = selectedUserForEdit!.deleteTrade == 1;
+        isExecutePendingOrder = selectedUserForEdit!.executePendingOrder == 1;
+        nameController.text = selectedUserForEdit!.name!;
+        userNameController.text = selectedUserForEdit!.userName!;
+        mobileNumberController.text = selectedUserForEdit!.phone!.toString();
+
+        update();
       }
     }
     update();
   }
 
-  reseData() {
+  resetData() {
     nameController.text = "";
     userNameController.text = "";
     passwordController.text = "";
@@ -353,8 +365,7 @@ class CreateUserController extends BaseController {
         msg = AppString.wrongRetypePassword;
       } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
-      } else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) ||
-          (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
+      } else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
         msg = AppString.cutOffValid;
       } else if (creditController.text.trim().isEmpty) {
         msg = AppString.emptyCredit;
@@ -376,8 +387,7 @@ class CreateUserController extends BaseController {
     // else if (cutoffController.text.trim().isEmpty) {
     //   msg = AppString.emptyCutOff;
     // }
-    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) ||
-        (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
+    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
       msg = AppString.cutOffValid;
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
@@ -437,11 +447,12 @@ class CreateUserController extends BaseController {
       } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
       }
-    } else if (mobileNumberController.text.trim().isEmpty) {
-      msg = AppString.emptyMobileNumber;
-    } else if (mobileNumberController.text.trim().length < 9) {
-      msg = AppString.mobileNumberLength;
     }
+    //  else if (mobileNumberController.text.trim().isEmpty) {
+    //   msg = AppString.emptyMobileNumber;
+    // } else if (mobileNumberController.text.trim().length < 9) {
+    //   msg = AppString.mobileNumberLength;
+    // }
     return msg;
   }
 
@@ -918,6 +929,7 @@ class CreateUserController extends BaseController {
       isLoadingSave.value = true;
       update();
       var response = await service.editAdminCall(
+        userId: selectedUserForEdit!.userId!,
         name: nameController.text.trim(),
         userName: userNameController.text.trim(),
         phone: mobileNumberController.text.trim(),
@@ -1280,11 +1292,7 @@ class CreateUserController extends BaseController {
           isCommonScreenPopUpOpen = true;
           currentOpenedScreen = ScreenViewNames.userList;
 
-          generalContainerPopup(
-              view: UserListScreen(),
-              title: ScreenViewNames.userList,
-              isFilterAvailable: true,
-              filterClick: Get.find<UserListController>().onCLickFilter);
+          generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: Get.find<UserListController>().onCLickFilter);
 
           update();
         } else {
@@ -1534,8 +1542,7 @@ class CreateUserController extends BaseController {
           isCommonScreenPopUpOpen = true;
           currentOpenedScreen = ScreenViewNames.userList;
           var userListVC = Get.put(UserListController());
-          generalContainerPopup(
-              view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
+          generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
 
           // showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
           // Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;

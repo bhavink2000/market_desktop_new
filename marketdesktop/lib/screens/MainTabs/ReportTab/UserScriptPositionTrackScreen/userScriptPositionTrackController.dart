@@ -4,6 +4,7 @@ import 'package:marketdesktop/modelClass/positionTrackListModelClass.dart';
 
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../constant/index.dart';
@@ -106,14 +107,49 @@ class UserScriptPositionTrackController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("UserScriptPositionTracking", titleList, dataList);
-    }
+
     exportExcelFile("UserScriptPositionTracking.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrTracking.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserScriptPositionTrackingColumns.positionDate:
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case UserScriptPositionTrackingColumns.username:
+            {
+              list.add((element.userName ?? ""));
+            }
+          case UserScriptPositionTrackingColumns.symbol:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case UserScriptPositionTrackingColumns.position:
+            {
+              list.add((element.orderType!.toUpperCase()));
+            }
+          case UserScriptPositionTrackingColumns.openAPrice:
+            {
+              list.add((element.price!.toString()));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "UserScriptPositionTracking", title: "User Screen Position Tracking", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

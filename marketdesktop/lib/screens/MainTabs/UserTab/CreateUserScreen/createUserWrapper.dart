@@ -41,7 +41,8 @@ class CreateUserScreen extends BaseView<CreateUserController> {
                     GestureDetector(
                       onTap: () async {
                         controller.selectedUserForEdit = null;
-                        controller.reseData();
+                        controller.resetData();
+                        controller.getExchangeList();
                         currentOpenedScreen = ScreenViewNames.marketWatch;
                         Get.find<MainContainerController>().isCreateUserClick = false;
                         Get.find<MainContainerController>().update();

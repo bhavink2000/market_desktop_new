@@ -9,6 +9,7 @@ import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpControlle
 import 'package:number_to_indian_words/number_to_indian_words.dart';
 import '../../../constant/index.dart';
 import '../../../constant/screenColumnData.dart';
+import '../../../main.dart';
 import '../../BaseController/baseController.dart';
 import 'package:excel/excel.dart' as excelLib;
 
@@ -175,14 +176,50 @@ class CreditPopUpController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("UserCredit", titleList, dataList);
-    }
+
     exportExcelFile("UserCredit.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrCreditList.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserCreditColumns.dateTime:
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case UserCreditColumns.type:
+            {
+              list.add((element.transactionType ?? ""));
+            }
+          case UserCreditColumns.amount:
+            {
+              list.add((element.amount!.toStringAsFixed(2)));
+            }
+          case UserCreditColumns.balance:
+            {
+              list.add((element.balance.toStringAsFixed(2)));
+            }
+
+          case UserCreditColumns.comments:
+            {
+              list.add((element.comment!));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "UserCredit", title: "Credit", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

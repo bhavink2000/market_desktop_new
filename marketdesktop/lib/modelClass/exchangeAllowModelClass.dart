@@ -18,7 +18,7 @@ class ExchangeAllow {
   String? exchangeId;
   bool? isTurnoverWise;
   bool? isSymbolWise;
-  List<String>? groupId;
+  List<dynamic>? groupId;
 
   ExchangeAllow({
     this.exchangeId,
@@ -31,7 +31,7 @@ class ExchangeAllow {
         exchangeId: json["exchangeId"],
         isTurnoverWise: json["isTurnoverWise"],
         isSymbolWise: json["isSymbolWise"],
-        groupId: json["groupId"] == null ? [] : List<String>.from(json["groupId"]!.map((x) => x)),
+        groupId: json["groupId"] == null ? [] : List<dynamic>.from(json["groupId"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() {

@@ -85,7 +85,7 @@ class BrkPopUpScreen extends BaseView<BrkPopUpController> {
         controller.arrBrokerage.clear();
         controller.selectedExchange.value = ExchangeData();
         controller.arrListTitle = [
-          if (selectedUserForUserDetailPopupParentID == userData!.userId!) ListItem("", true),
+          if (selectedUserForUserDetailPopupParentID == userData!.userId! || userData!.role == UserRollList.admin) ListItem("", true),
           ListItem("EXCHANGE", true),
           ListItem("SCRIPT", true),
           if (controller.selectedCurrentTab == 0) ListItem("TURNOVER WISE BRK(RS. PER 1/CR))", true),

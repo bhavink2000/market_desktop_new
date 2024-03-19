@@ -7,8 +7,8 @@ import 'package:marketdesktop/modelClass/rejectLogLisTModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import 'package:excel/excel.dart' as excelLib;
-
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 
 class RejectionLogController extends BaseController {
   //*********************************************************************** */
@@ -126,14 +126,65 @@ class RejectionLogController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("RejectionLog", titleList, dataList);
-    }
+
     exportExcelFile("RejectionLog.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrRejectLog.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case RejectionLogColumns.date:
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case RejectionLogColumns.status:
+            {
+              list.add((element.status ?? ""));
+            }
+          case RejectionLogColumns.username:
+            {
+              list.add((element.userName ?? ""));
+            }
+          case RejectionLogColumns.symbol:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case RejectionLogColumns.type:
+            {
+              list.add((element.tradeTypeValue ?? ""));
+            }
+          case RejectionLogColumns.qty:
+            {
+              list.add((element.quantity!.toStringAsFixed(2)));
+            }
+          case RejectionLogColumns.price:
+            {
+              list.add((element.price!.toStringAsFixed(2)));
+            }
+          case RejectionLogColumns.ipAddress:
+            {
+              list.add((element.ipAddress ?? ""));
+            }
+          case RejectionLogColumns.deviceId:
+            {
+              list.add((element.deviceId ?? ""));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "RejectionLog", title: "Rejection Log", width: globalMaxWidth - 5.w, titleList: headers, dataList: dataList);
   }
 }

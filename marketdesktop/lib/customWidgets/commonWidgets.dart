@@ -307,8 +307,9 @@ Widget dynamicTitleBox1(
           },
           onPanUpdate: (details) {
             var diff = details.localPosition.dx - arrListTitle[index].start.dx;
-            if ((globalMaxWidth + diff) >= globalScreenSize.width) {
-              globalMaxWidth = globalScreenSize.width + diff;
+            var screenWidth = globalScreenSize.width > 1750 ? globalScreenSize.width : 1750;
+            if ((globalMaxWidth + diff) >= screenWidth) {
+              globalMaxWidth = screenWidth + diff;
             }
             if ((arrListTitle[index].width! + diff) >= arrListTitle[index].updatedWidth!) {
               arrListTitle[index].width = arrListTitle[index].updatedWidth! + diff;

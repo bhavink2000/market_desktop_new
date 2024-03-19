@@ -671,8 +671,19 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                     }
                   case AccountReportColumns.cmp:
                     {
-                      return dynamicValueBox1(scriptValue.totalQuantity! < 0 ? scriptValue.ask!.toStringAsFixed(2) : scriptValue.bid!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          scriptValue.currentPriceFromSocket! > scriptValue.avgPrice! ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle1);
+                      return dynamicValueBox1(
+                          scriptValue.totalQuantity! < 0 ? scriptValue.ask!.toStringAsFixed(2) : scriptValue.bid!.toStringAsFixed(2),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          userData!.role != UserRollList.user
+                              ? scriptValue.currentPriceFromSocket! > scriptValue.avgPrice!
+                                  ? AppColors().redColor
+                                  : AppColors().blueColor
+                              : scriptValue.currentPriceFromSocket! > scriptValue.avgPrice!
+                                  ? AppColors().blueColor
+                                  : AppColors().redColor,
+                          index,
+                          indexT,
+                          controller.arrListTitle1);
                     }
                   case AccountReportColumns.brk:
                     {

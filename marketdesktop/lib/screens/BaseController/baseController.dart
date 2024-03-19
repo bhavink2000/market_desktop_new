@@ -1,10 +1,13 @@
 // ignore_for_file: override_on_non_overriding_member
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_to_pdf/flutter_to_pdf.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
 import '../../../service/network/allApiCallService.dart';
 import '../../constant/color.dart';
 import '../../constant/dropdownFunctions.dart';
@@ -31,6 +34,9 @@ class BaseController extends GetxController {
   RxBool isScrollEnable = true.obs;
   bool isAllSelected = false;
   List<ColumnItem> arrListTitle1 = [];
+  WidgetsToImageController widgetToImagecontroller = WidgetsToImageController();
+  final ExportDelegate exportDelegate = ExportDelegate();
+  Uint8List? bytes;
   onCLickFilter() {
     isFilterOpen = !isFilterOpen;
     update();

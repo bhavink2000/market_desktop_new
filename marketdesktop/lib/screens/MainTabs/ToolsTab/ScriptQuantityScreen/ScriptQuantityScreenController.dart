@@ -166,14 +166,49 @@ class ScriptQuantityController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("ScriptQuantity", titleList, dataList);
-    }
+
     exportExcelFile("ScriptQuantity.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrData.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case ScriptQtyColumns.symbol:
+            {
+              list.add((element.symbolName ?? ""));
+            }
+          case ScriptQtyColumns.breakUpQty:
+            {
+              list.add((element.breakQuantity.toString()));
+            }
+          case ScriptQtyColumns.maxQty:
+            {
+              list.add((element.quantityMax.toString()));
+            }
+          case ScriptQtyColumns.breakUpLot:
+            {
+              list.add((element.breakUpLot.toString()));
+            }
+          case ScriptQtyColumns.maxLot:
+            {
+              list.add((element.lotMax.toString()));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "ScriptQuantity", title: "Script Quantity", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

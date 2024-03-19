@@ -205,14 +205,77 @@ class PositionPopUpController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("UserPosition", titleList, dataList);
-    }
+
     exportExcelFile("UserPosition.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrPositionScriptList.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+        case UserPositionColumns.exchange:
+            {
+              list.add((element.exchangeName!));
+            }
+          case UserPositionColumns.symbolName:
+            {
+              list.add((element.symbolTitle!));
+            }
+          case UserPositionColumns.totalBuyAQty:
+            {
+              list.add((element.buyTotalQuantity!.toString()));
+            }
+          case UserPositionColumns.totalBuyAPrice:
+            {
+              list.add((element.buyPrice!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.totalSellQty:
+            {
+              list.add((element.sellTotalQuantity!.toString()));
+            }
+          case UserPositionColumns.sellAPrice:
+            {
+              list.add((element.sellPrice!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.netQty:
+            {
+              list.add((element.totalQuantity!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.netLot:
+            {
+              list.add((element.quantity!.toString()));
+            }
+          case UserPositionColumns.netAPrice:
+            {
+              list.add((element.price!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.cmp:
+            {
+              list.add((element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString()));
+            }
+          case UserPositionColumns.pl:
+            {
+              list.add((element.profitLossValue!.toStringAsFixed(2)));
+            }
+          case UserPositionColumns.plPerWise:
+            {
+              list.add((getPlPer(cmp: element.totalQuantity! < 0 ? element.ask! : element.bid!, netAPrice: element.price!).toStringAsFixed(3)));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "UserPosition", title: "User Position", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

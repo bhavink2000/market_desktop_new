@@ -206,14 +206,73 @@ class UserWisePLSummaryController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("UserwisePLSummary", titleList, dataList);
-    }
+
     exportExcelFile("UserwisePLSummary.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrPlList.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserWisePLSummaryColumns.view:
+            {
+              list.add((""));
+            }
+          case UserWisePLSummaryColumns.username:
+            {
+              list.add((element.userName ?? ""));
+            }
+          case UserWisePLSummaryColumns.sharingPer:
+            {
+              list.add((element.role == UserRollList.user ? element.profitAndLossSharingDownLine!.toString() : element.profitAndLossSharing!.toString()));
+            }
+          case UserWisePLSummaryColumns.brkSharingPer:
+            {
+              list.add((element.role == UserRollList.user ? element.brkSharingDownLine!.toString() : element.brkSharing!.toString()));
+            }
+          case UserWisePLSummaryColumns.releaseClientPL:
+            {
+              list.add((element.role == UserRollList.user ? element.profitLoss!.toStringAsFixed(2) : element.childUserProfitLossTotal!.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.clientBrk:
+            {
+              list.add((element.role == UserRollList.master ? element.childUserBrokerageTotal!.toStringAsFixed(2) : element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.clientM2M:
+            {
+              list.add((element.totalProfitLossValue.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.PLWithBrk:
+            {
+              list.add((element.plWithBrk.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.PLSharePer:
+            {
+              list.add((element.plSharePer.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.brk:
+            {
+              list.add((element.parentBrokerageTotal!.toStringAsFixed(2)));
+            }
+          case UserWisePLSummaryColumns.netPL:
+            {
+              list.add((element.netPL.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "UserWisePLSummary", title: "User Wise P&L Summary", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

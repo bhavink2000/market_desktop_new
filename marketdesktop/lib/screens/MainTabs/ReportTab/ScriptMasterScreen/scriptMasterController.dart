@@ -3,6 +3,7 @@ import 'package:marketdesktop/screens/UserDetailPopups/scriptMasterPopUp/scriptM
 import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 import '../../../../modelClass/allSymbolListModelClass.dart';
 import '../../../../modelClass/exchangeListModelClass.dart';
 import '../../../../constant/index.dart';
@@ -113,14 +114,55 @@ class ScriptMasterController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("ScriptMaster", titleList, dataList);
-    }
+
     exportExcelFile("ScriptMaster.xlsx", titleList, dataList);
   }
 
+
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrTradeMargin.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case ScriptMasterColumns.exchange:
+            {
+              list.add((element.exchangeName ?? ""));
+            }
+          case ScriptMasterColumns.script:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case ScriptMasterColumns.expiryDate:
+            {
+              list.add((shortFullDateTime(element.expiryDate!)));
+            }
+          case ScriptMasterColumns.desc:
+            {
+              list.add((element.symbolName!));
+            }
+          case ScriptMasterColumns.tradeAttribute:
+            {
+              list.add((element.tradeAttribute!));
+            }
+          case ScriptMasterColumns.allowTrade:
+            {
+              list.add((element.allowTradeValue!));
+            }
+
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "ScriptMaster", title: "Script Master", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

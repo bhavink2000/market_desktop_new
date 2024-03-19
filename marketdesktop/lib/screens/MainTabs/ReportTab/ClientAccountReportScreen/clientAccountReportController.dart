@@ -340,14 +340,104 @@ class ClientAccountReportController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("AccountReport", titleList, dataList);
-    }
+
     exportExcelFile("AccountReport.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrSummaryList.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case AccountReportColumns.username:
+            {
+              list.add((element.userName ?? ""));
+            }
+          case AccountReportColumns.parentUser:
+            {
+              list.add((element.parentUserName ?? ""));
+            }
+          case AccountReportColumns.exchange:
+            {
+              list.add((element.exchangeName ?? ""));
+            }
+          case AccountReportColumns.symbol:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case AccountReportColumns.totalBuyQty:
+            {
+              list.add((element.buyTotalQuantity.toString()));
+            }
+          case AccountReportColumns.totalBuyAPrice:
+            {
+              list.add((element.buyTotalPrice!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.totalSellQty:
+            {
+              list.add((element.sellTotalQuantity.toString()));
+            }
+
+          case AccountReportColumns.totalSellAPrice:
+            {
+              list.add((element.sellTotalPrice!.toStringAsFixed(2)));
+            }
+
+          case AccountReportColumns.netQty:
+            {
+              list.add((element.totalQuantity.toString()));
+            }
+          case AccountReportColumns.netAPrice:
+            {
+              list.add((element.avgPrice!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.cmp:
+            {
+              list.add((element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2) : element.bid!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.brk:
+            {
+              list.add((element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.pAndL:
+            {
+              list.add((element.profitLoss!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.releasepl:
+            {
+              list.add((element.profitLoss!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.mtm:
+            {
+              list.add((element.profitLossValue!.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.mtmWithBrk:
+            {
+              list.add(((double.parse(element.profitLossValue!.toStringAsFixed(2)) - double.parse(element.brokerageTotal!.toStringAsFixed(2))).toStringAsFixed(2)));
+            }
+          case AccountReportColumns.total:
+            {
+              list.add((element.total.toStringAsFixed(2)));
+            }
+          case AccountReportColumns.ourPer:
+            {
+              list.add((element.ourPer.toStringAsFixed(2)));
+            }
+
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "ClientAccountReport", title: "Client Account Report", width: globalMaxWidth + 200, titleList: headers, dataList: dataList);
   }
 }

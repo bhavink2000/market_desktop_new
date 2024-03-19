@@ -332,14 +332,105 @@ class SuccessTradeListController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("Trades", titleList, dataList);
-    }
+
     exportExcelFile("Trades.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrTrade.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case TradeColumns.checkBox:
+            {
+              list.add((""));
+            }
+          case TradeColumns.sequence:
+            {
+              list.add((element.sequence.toString()));
+            }
+          case TradeColumns.username:
+            {
+              list.add((element.userName!));
+            }
+          case TradeColumns.parentUser:
+            {
+              list.add((element.parentUserName!));
+            }
+          case TradeColumns.segment:
+            {
+              list.add((element.exchangeName!));
+            }
+          case TradeColumns.symbol:
+            {
+              list.add((element.symbolTitle!));
+            }
+          case TradeColumns.bs:
+            {
+              list.add((element.tradeTypeValue!));
+            }
+          case TradeColumns.qty:
+            {
+              list.add((element.totalQuantity.toString()));
+            }
+          case TradeColumns.lot:
+            {
+              list.add((element.quantity.toString()));
+            }
+          case TradeColumns.type:
+            {
+              list.add((element.productTypeValue!));
+            }
+          case TradeColumns.tradePrice:
+            {
+              list.add((element.price!.toStringAsFixed(2)));
+            }
+          case TradeColumns.brk:
+            {
+              list.add((element.brokerageAmount!.toStringAsFixed(2)));
+            }
+          case TradeColumns.priceB:
+            {
+              list.add((getNetPrice(element.tradeType!, element.price ?? 0, (element.brokerageAmount! / element.totalQuantity!)).toStringAsFixed(2)));
+            }
+          case TradeColumns.orderDT:
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case TradeColumns.executionDT:
+            {
+              list.add((shortFullDateTime(element.executionDateTime!)));
+            }
+          case TradeColumns.refPrice:
+            {
+              list.add((element.referencePrice!.toStringAsFixed(2)));
+            }
+          case TradeColumns.ipAddress:
+            {
+              list.add((element.ipAddress!));
+            }
+          case TradeColumns.device:
+            {
+              list.add((element.orderMethod!));
+            }
+          case TradeColumns.deviceId:
+            {
+              list.add((element.deviceId!));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "Trades", title: "Trades", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

@@ -166,9 +166,9 @@ class MarketWatchController extends BaseController {
     Future.delayed(const Duration(milliseconds: 100), () async {
       Screen? size = await getCurrentScreen();
       screenSize = Size(size!.frame.width, size.frame.height);
-      maxWidth = size.frame.width > 1410 ? size.frame.width : 1410; //
+      maxWidth = size.frame.width > 1750 ? size.frame.width : 1750; //
       globalScreenSize = Size(size.frame.width, size.frame.height);
-      globalMaxWidth = size.frame.width > 1410 ? size.frame.width : 1410; //
+      globalMaxWidth = size.frame.width > 1750 ? size.frame.width : 1750; //
 
       selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
       update();

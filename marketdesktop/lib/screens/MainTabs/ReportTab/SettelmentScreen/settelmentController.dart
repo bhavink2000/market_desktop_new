@@ -5,6 +5,7 @@ import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 
 class SettlementController extends BaseController {
   //*********************************************************************** */
@@ -185,15 +186,77 @@ class SettlementController extends BaseController {
       });
       dataList2.add(list1);
     });
-    if (isFromPDF) {
-      return exportPDFFile("Settlement_profit", titleList, dataList1);
-    }
 
     exportExcelWithTwoSheetFile("Settlement.xlsx", "Profit", "Loss", titleList, dataList1, dataList2);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrProfitList.forEach((element) {
+      List<String> list1 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list1.add((element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list1.add((element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list1.add((element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list1.add((element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list1.add((""));
+            }
+        }
+      });
+      dataList.add(list1);
+    });
+
+    List<List<dynamic>> dataList1 = [];
+    arrLossList.forEach((element) {
+      List<String> list2 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list2.add((element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list2.add((element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list2.add((element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list2.add((element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list2.add((""));
+            }
+        }
+      });
+      dataList1.add(list2);
+    });
+    exportPDFWith2DataFile(fileName: "Settlement", title: "Profit", title1: "Loss", width: globalMaxWidth, titleList: headers, dataList: dataList, dataList1: dataList1);
   }
 }

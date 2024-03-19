@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_to_pdf/flutter_to_pdf.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/color.dart';
 import 'package:marketdesktop/constant/popUpFunctions.dart';
@@ -11,6 +12,7 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/PositionScreen/positionScreenController.dart';
 import 'package:paginable/paginable.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
 import '../../../../constant/index.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../constant/screenColumnData.dart';
@@ -36,7 +38,20 @@ class PositionScreen extends BaseView<PositionController> {
           filterContent(context),
           Expanded(
             flex: 8,
-            child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+            child: BouncingScrollWrapper.builder(
+              context,
+              controller.bytes != null
+                  ? ExportFrame(
+                      exportDelegate: controller.exportDelegate,
+                      frameId: '1',
+                      child: Image.memory(controller.bytes!), // the widget you want to export
+                    )
+                  : WidgetsToImage(
+                      controller: controller.widgetToImagecontroller,
+                      child: mainContent(context),
+                    ),
+              dragWithMouse: true,
+            ),
             // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
           ),
         ],

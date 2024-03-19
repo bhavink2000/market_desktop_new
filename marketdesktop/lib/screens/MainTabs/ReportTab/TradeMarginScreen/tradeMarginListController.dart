@@ -6,6 +6,7 @@ import 'package:excel/excel.dart' as excelLib;
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 import '../../../UserDetailPopups/ScriptMasterPopUp/scriptMasterPopUpController.dart';
 
 class TradeMarginController extends BaseController {
@@ -113,14 +114,54 @@ class TradeMarginController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("TradeMargin", titleList, dataList);
-    }
+
     exportExcelFile("TradeMargin.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrTradeMargin.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case TradeMarginColumns.exchange:
+            {
+              list.add((element.exchangeName ?? ""));
+            }
+          case TradeMarginColumns.script:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case TradeMarginColumns.expiryDate:
+            {
+              list.add((shortFullDateTime(element.expiryDate!)));
+            }
+          case TradeMarginColumns.marginPer:
+            {
+              list.add((element.tradeMargin.toString()));
+            }
+          case TradeMarginColumns.marginAmount:
+            {
+              list.add((element.tradeMarginAmount.toString()));
+            }
+          case TradeMarginColumns.description:
+            {
+              list.add((element.symbolName.toString()));
+            }
+
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "TradeMargin", title: "Trade Margin", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

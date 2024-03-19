@@ -172,14 +172,47 @@ class LogHistoryController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("ActivityReport", titleList, dataList);
-    }
+
     exportExcelFile("ActivityReport.xlsx", titleList, dataList);
   }
 
+
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrLog.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+            case 'USERNAME':
+            {
+              list.add((element.userName ?? ""));
+            }
+          case 'UPDATED ON':
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case 'UPDATED BY':
+            {
+              list.add((element.updatedByName ?? ""));
+            }
+
+          default:
+            {
+              if (titleObj.title!.startsWith('NEW')) {
+                list.add((getnewValue(index: arrLog.indexOf(element))));
+              } else if (titleObj.title!.startsWith('OLD')) {
+                list.add((getnewValue(index: arrLog.indexOf(element), isOld: true)));
+              }
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "LogsHistory", title: "Logs History", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

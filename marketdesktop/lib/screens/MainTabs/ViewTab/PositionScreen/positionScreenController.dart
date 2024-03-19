@@ -1390,14 +1390,89 @@ class PositionController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("Position", titleList, dataList);
-    }
+
     exportExcelFile("Position.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrPositionScriptList.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case NetPositionColumns.checkBox:
+            {
+              list.add((""));
+            }
+          case NetPositionColumns.view:
+            {
+              list.add((""));
+            }
+          case NetPositionColumns.parentUser:
+            {
+              list.add((element.parentUserName!));
+            }
+          case NetPositionColumns.exchange:
+            {
+              list.add((element.exchangeName!));
+            }
+          case NetPositionColumns.symbolName:
+            {
+              list.add((element.symbolTitle!));
+            }
+          case NetPositionColumns.totalBuyAQty:
+            {
+              list.add((element.buyTotalQuantity!.toString()));
+            }
+          case NetPositionColumns.totalBuyAPrice:
+            {
+              list.add((element.buyPrice!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.totalSellQty:
+            {
+              list.add((element.sellTotalQuantity!.toString()));
+            }
+          case NetPositionColumns.sellAPrice:
+            {
+              list.add((element.sellPrice!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.netQty:
+            {
+              list.add((element.totalQuantity!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.netLot:
+            {
+              list.add((element.quantity!.toString()));
+            }
+          case NetPositionColumns.netAPrice:
+            {
+              list.add((element.price!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.cmp:
+            {
+              list.add((element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString()));
+            }
+          case NetPositionColumns.pl:
+            {
+              list.add((element.profitLossValue!.toStringAsFixed(2)));
+            }
+          case NetPositionColumns.plPerWise:
+            {
+              list.add(((getPlPer(percentage: element.profitAndLossSharing!, pl: element.profitLossValue!) * -1).toStringAsFixed(3)));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "NetPositionList", title: "Net Position", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

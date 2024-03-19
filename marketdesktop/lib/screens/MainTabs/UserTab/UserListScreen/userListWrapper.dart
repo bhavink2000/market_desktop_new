@@ -1,6 +1,7 @@
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_to_pdf/flutter_to_pdf.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
@@ -15,6 +16,7 @@ import 'package:paginable/paginable.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
 
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
@@ -30,15 +32,34 @@ class UserListScreen extends BaseView<UserListController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.totalRecord, onCLickFilter: () {
-            controller.isFilterOpen = !controller.isFilterOpen;
-            controller.update();
-          },  onCLickExcell: controller.onClickExcel,
-            onCLickPDF: controller.onClickPDF,),
+          filterPanel(
+            context,
+            isRecordDisplay: true,
+            totalRecord: controller.totalRecord,
+            onCLickFilter: () {
+              controller.isFilterOpen = !controller.isFilterOpen;
+              controller.update();
+            },
+            onCLickExcell: controller.onClickExcel,
+            onCLickPDF: controller.onClickPDF,
+          ),
           filterContent(context),
           Expanded(
             flex: 8,
-            child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+            child: BouncingScrollWrapper.builder(
+              context,
+              controller.bytes != null
+                  ? ExportFrame(
+                      exportDelegate: controller.exportDelegate,
+                      frameId: '2',
+                      child: Image.memory(controller.bytes!), // the widget you want to export
+                    )
+                  : WidgetsToImage(
+                      controller: controller.widgetToImagecontroller,
+                      child: mainContent(context),
+                    ),
+              dragWithMouse: true,
+            ),
             // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
           ),
         ],

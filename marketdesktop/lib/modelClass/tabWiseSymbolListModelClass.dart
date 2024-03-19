@@ -207,6 +207,7 @@ class SymbolData {
         "breakQuantity": breakQuantity,
         "breakUpLot": breakUpLot,
       };
+      // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is SymbolData) {
       return this.symbol == other.symbol;

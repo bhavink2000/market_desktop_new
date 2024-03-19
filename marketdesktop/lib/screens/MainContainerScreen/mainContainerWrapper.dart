@@ -174,7 +174,7 @@ class MainContainerScreen extends BaseView<MainContainerController> {
           child: Center(
             child: MarqueeText(
               alwaysScroll: true,
-              text: TextSpan(text: (constantValues!.settingData?.banMessage ?? "") + "     "),
+              text: TextSpan(text: (constantValues!.settingData?.banMessage ?? "")),
               style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor),
               speed: 30,
             ),

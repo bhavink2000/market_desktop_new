@@ -179,6 +179,8 @@ class manualOrderController extends BaseController {
               if (response.statusCode == 200) {
                 selectExchangedropdownValue = ExchangeData().obs;
                 selectedScriptDropDownValue = GlobalSymbolData().obs;
+                lotController.text = "1";
+
                 rateBoxOneController.clear();
                 qtyController.clear();
                 if (isBuy.value) {
@@ -186,6 +188,7 @@ class manualOrderController extends BaseController {
                 } else {
                   showSuccessToast(response.meta!.message!, bgColor: AppColors().redColor);
                 }
+                update();
               } else {
                 isApicall = false;
                 showErrorToast(response.message!);
@@ -265,7 +268,7 @@ class manualOrderController extends BaseController {
                 ),
               ),
               searchMatchFn: (item, searchValue) {
-                return item.value!.name.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                return item.value!.userName.toString().toLowerCase().startsWith(searchValue.toLowerCase());
               },
             ),
             hint: Text(

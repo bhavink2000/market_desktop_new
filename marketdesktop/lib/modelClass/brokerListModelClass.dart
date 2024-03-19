@@ -17,8 +17,7 @@ class BrokerListModel {
 
   factory BrokerListModel.fromJson(Map<String, dynamic> json) => BrokerListModel(
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
-        data:
-            json["data"] == null ? [] : List<BrokerListModelData>.from(json["data"]!.map((x) => BrokerListModelData.fromJson(x))),
+        data: json["data"] == null ? [] : List<BrokerListModelData>.from(json["data"]!.map((x) => BrokerListModelData.fromJson(x))),
         statusCode: json["statusCode"],
       );
 
@@ -123,8 +122,7 @@ class BrokerListModelData {
         brkSharing: json["brkSharing"],
         brkSharingDownLine: json["brkSharingDownLine"],
         exchangeAllow: json["exchangeAllow"] == null ? [] : List<String>.from(json["exchangeAllow"]!.map((x) => x)),
-        highLowBetweenTradeLimit:
-            json["highLowBetweenTradeLimit"] == null ? [] : List<String>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
+        highLowBetweenTradeLimit: json["highLowBetweenTradeLimit"] == null ? [] : List<String>.from(json["highLowBetweenTradeLimit"]!.map((x) => x)),
         firstLogin: json["firstLogin"],
         changePasswordOnFirstLogin: json["changePasswordOnFirstLogin"],
         role: json["role"],
@@ -165,8 +163,7 @@ class BrokerListModelData {
         "brkSharing": brkSharing,
         "brkSharingDownLine": brkSharingDownLine,
         "exchangeAllow": exchangeAllow == null ? [] : List<dynamic>.from(exchangeAllow!.map((x) => x)),
-        "highLowBetweenTradeLimit":
-            highLowBetweenTradeLimit == null ? [] : List<dynamic>.from(highLowBetweenTradeLimit!.map((x) => x)),
+        "highLowBetweenTradeLimit": highLowBetweenTradeLimit == null ? [] : List<dynamic>.from(highLowBetweenTradeLimit!.map((x) => x)),
         "firstLogin": firstLogin,
         "changePasswordOnFirstLogin": changePasswordOnFirstLogin,
         "role": role,
@@ -195,6 +192,7 @@ class BrokerListModelData {
       };
   @override
   String toString() => name!;
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is BrokerListModelData) {
       return this.userId == other.userId;

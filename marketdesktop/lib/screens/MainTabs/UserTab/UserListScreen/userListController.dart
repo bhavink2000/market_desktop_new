@@ -6,8 +6,8 @@ import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import 'package:excel/excel.dart' as excelLib;
-
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 
 class UserListController extends BaseController {
   //*********************************************************************** */
@@ -243,14 +243,129 @@ class UserListController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("UserList", titleList, dataList);
-    }
+
     exportExcelFile("UserList.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrUserListData.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case 'EDIT':
+            {
+              list.add((""));
+            }
+          case '...':
+            {
+              list.add((""));
+            }
+          case 'USERNAME':
+            {
+              list.add((element.userName ?? ""));
+            }
+          case 'PARENT USER':
+            {
+              list.add((element.parentUser ?? ""));
+            }
+          case 'TYPE':
+            {
+              list.add((element.roleName ?? ""));
+            }
+          case 'NAME':
+            {
+              list.add((element.name ?? ""));
+            }
+          case 'OUR %':
+            {
+              list.add((element.ourProfitAndLossSharing.toString()));
+            }
+          case 'BRK SHARING':
+            {
+              list.add((element.ourBrkSharing.toString()));
+            }
+          case 'LEVERAGE':
+            {
+              list.add((element.leverage.toString()));
+            }
+          case 'CREDIT':
+            {
+              list.add((element.credit.toString()));
+            }
+          case 'P/L':
+            {
+              list.add((element.role == UserRollList.user ? (element.profitLoss! - element.brokerageTotal!).toStringAsFixed(2) : (element.profitLoss! + element.brokerageTotal!).toStringAsFixed(2)));
+            }
+          case 'EQUITY':
+            {
+              list.add((element.balance!.toStringAsFixed(2)));
+            }
+          case 'TOTAL MARGIN':
+            {
+              list.add((element.marginBalance!.toStringAsFixed(2)));
+            }
+          case 'USED MARGIN':
+            {
+              list.add((element.role == UserRollList.user ? (element.marginBalance! - element.tradeMarginBalance!).toStringAsFixed(2) : "0"));
+            }
+          case 'FREE MARGIN':
+            {
+              list.add((element.tradeMarginBalance!.toStringAsFixed(2)));
+            }
+          case 'BET':
+            {
+              list.add((element.bet!.toString()));
+            }
+          case 'CLOSE ONLY':
+            {
+              list.add((element.closeOnly!.toString()));
+            }
+          case 'AUTO SQROFF':
+            {
+              list.add((element.autoSquareOffValue!.toString()));
+            }
+          case 'VIEW ONLY':
+            {
+              list.add((element.viewOnly!.toString()));
+            }
+          case 'STATUS':
+            {
+              list.add((element.status!.toString()));
+            }
+          case 'CREATED DATE':
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case 'LAST LOGIN DATE/TIME':
+            {
+              list.add((shortFullDateTime(element.createdAt!)));
+            }
+          case 'DEVICE':
+            {
+              list.add((element.deviceType ?? ""));
+            }
+          case 'DEVICE ID':
+            {
+              list.add((element.deviceId ?? ""));
+            }
+          case 'IP ADDRESS':
+            {
+              list.add((element.ipAddress ?? ""));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "Userlist", title: "User list", width: globalMaxWidth > 3375 ? globalMaxWidth : 3375, titleList: headers, dataList: dataList);
   }
 }

@@ -153,7 +153,7 @@ class QuantitySettingPopUpController extends BaseController {
   onClickExcel({bool isFromPDF = false}) {
     List<excelLib.TextCellValue?> titleList = [];
     arrListTitle.forEach((element) {
-      titleList.add(excelLib.TextCellValue(element.title!));
+      titleList.add(excelLib.TextCellValue(element.title));
     });
     List<List<excelLib.TextCellValue?>> dataList = [];
     arrQuantitySetting.forEach((element) {
@@ -192,14 +192,53 @@ class QuantitySettingPopUpController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("QuantitySettings", titleList, dataList);
-    }
+
     exportExcelFile("QuantitySettings.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle.forEach((element) {
+      headers.add(element.title);
+    });
+    List<List<dynamic>> dataList = [];
+    arrQuantitySetting.forEach((element) {
+      List<String> list = [];
+      arrListTitle.forEach((titleObj) {
+        switch (titleObj.title) {
+          case UserQtySettingColumns.script:
+            {
+              list.add((element.symbolName ?? ""));
+            }
+          case UserQtySettingColumns.lotMax:
+            {
+              list.add((element.lotMax.toString()));
+            }
+          case UserQtySettingColumns.qtyMax:
+            {
+              list.add((element.quantityMax.toString()));
+            }
+          case UserQtySettingColumns.breakupQty:
+            {
+              list.add((element.breakQuantity.toString()));
+            }
+          case UserQtySettingColumns.breakupLot:
+            {
+              list.add((element.breakUpLot.toString()));
+            }
+          case UserQtySettingColumns.lastUpdated:
+            {
+              list.add((element.updatedAt != null ? shortFullDateTime(element.updatedAt!) : ""));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "QuantitySettings", title: "Quantity Settings", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

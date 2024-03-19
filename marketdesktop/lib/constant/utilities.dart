@@ -7,11 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:excel/excel.dart' as excelLib;
+import 'package:flutter_to_pdf/args/color.dart';
 import 'package:get/get.dart';
+import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 import 'package:marketdesktop/main.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'color.dart';
 import 'constantTextStyle.dart';
@@ -165,29 +166,142 @@ Future<void> exportExcelWithTwoSheetFile(
   }
 }
 
-exportPDFFile(String fileName, List<excelLib.TextCellValue?> titleList, List<List<excelLib.TextCellValue?>> dataList) async {
-  final excel = excelLib.Excel.createExcel();
-  final sheet = excel['Sheet1'];
-  var listCellHeader = getAlphabetMap();
-  sheet.appendRow(titleList);
-  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff");
-  for (var i = 0; i < titleList.length; i++) {
-    var cell = sheet.cell(excelLib.CellIndex.indexByString("${listCellHeader[i]}1"));
-    cell.cellStyle = cellStyle;
+exportPDFWith2DataFile({required String fileName, required String title, required String title1, required double width, required List<String> titleList, required List<List<dynamic>> dataList, required List<List<dynamic>> dataList1}) async {
+  try {
+    final pdf = pw.Document();
+    var data1 = dataList.length;
+    var data2 = dataList1.length;
+    var count = data1 > data2 ? data2 : data1;
+    var height = (count * 30) + 150;
+    var format = PdfPageFormat(width, height.toDouble() < 841.89 ? 841.89 : height.toDouble(), marginAll: 10);
+    final headerStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14);
+    final titleTextStyle = pw.TextStyle(
+      fontWeight: pw.FontWeight.bold,
+      color: AppColors().blueColor.toPdfColor(),
+      fontSize: 18,
+    );
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: format,
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Row(children: [
+              pw.Expanded(
+                child: pw.Column(children: [
+                  pw.Header(
+                    level: 0,
+                    child: pw.Center(
+                      child: pw.Text(title, style: titleTextStyle),
+                    ),
+                  ),
+
+                  // Add a SizedBox or Divider for spacing
+
+                  // Then add your table or content
+                  pw.TableHelper.fromTextArray(
+                    headers: titleList,
+                    data: dataList,
+                    headerStyle: headerStyle,
+                    headerDecoration: pw.BoxDecoration(
+                      color: PdfColors.grey300,
+                    ),
+                    cellHeight: 30.0,
+                    headerHeight: 40.0,
+                  ),
+                ]),
+              ),
+              pw.SizedBox(width: 20),
+              pw.Expanded(
+                  child: pw.Column(children: [
+                pw.Header(
+                  level: 0,
+                  child: pw.Center(
+                    child: pw.Text(title1, style: titleTextStyle),
+                  ),
+                ),
+                pw.TableHelper.fromTextArray(
+                  headers: titleList,
+                  data: dataList1,
+                  headerStyle: headerStyle,
+                  headerDecoration: pw.BoxDecoration(
+                    color: PdfColors.grey300,
+                  ),
+                  cellHeight: 30.0,
+                  headerHeight: 40.0,
+                ),
+              ])),
+            ]),
+
+            // You can add more widgets here for additional content
+          ];
+        },
+      ),
+    );
+
+    final path = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: fileName + ".pdf",
+    );
+
+    final File file = File(path!);
+    await file.writeAsBytes(await pdf.save());
+  } catch (e) {
+    print(e);
   }
+}
 
-  for (var element in dataList) {
-    sheet.appendRow(element);
+exportPDFFile({required String fileName, required String title, required double width, required List<String> titleList, required List<List<dynamic>> dataList}) async {
+  try {
+    final pdf = pw.Document();
+
+    var format = PdfPageFormat(width, 841.89, marginAll: 10);
+    final headerStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 14);
+    final titleTextStyle = pw.TextStyle(
+      fontWeight: pw.FontWeight.bold,
+      color: AppColors().blueColor.toPdfColor(),
+      fontSize: 18,
+    );
+    pdf.addPage(
+      pw.MultiPage(
+        pageFormat: format,
+        build: (pw.Context context) {
+          return <pw.Widget>[
+            pw.Header(
+              level: 0,
+              child: pw.Center(
+                child: pw.Text(title, style: titleTextStyle),
+              ),
+            ),
+
+            // Add a SizedBox or Divider for spacing
+
+            // Then add your table or content
+            pw.TableHelper.fromTextArray(
+              headers: titleList,
+              data: dataList,
+              headerStyle: headerStyle,
+              headerDecoration: pw.BoxDecoration(
+                color: PdfColors.grey300,
+              ),
+              cellHeight: 30.0,
+              headerHeight: 40.0,
+            ),
+            // You can add more widgets here for additional content
+          ];
+        },
+      ),
+    );
+
+    final path = await FilePicker.platform.saveFile(
+      dialogTitle: 'Please select an output file:',
+      fileName: fileName + ".pdf",
+    );
+
+    final File file = File(path!);
+    await file.writeAsBytes(await pdf.save());
+  } catch (e) {
+    print(e);
   }
-
-  var temp = await getTemporaryDirectory();
-
-  var filePath = "${temp.path}/" + fileName + ".xlsx";
-
-  final file = File(filePath);
-
-  file.writeAsBytesSync(excel.encode()!);
-  return filePath;
 }
 
 void showWarningToast(String msg, {bool? isFromTop}) {

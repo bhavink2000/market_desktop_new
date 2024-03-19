@@ -271,14 +271,80 @@ class SymbolWisePositionReportController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("SymbolWisePositionReport", titleList, dataList);
-    }
+
     exportExcelFile("SymbolWisePositionReport.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrSummaryList.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SymbolWisePositionReportColumns.exchange:
+            {
+              list.add((element.exchangeName ?? ""));
+            }
+          case SymbolWisePositionReportColumns.symbol:
+            {
+              list.add((element.symbolTitle ?? ""));
+            }
+          case SymbolWisePositionReportColumns.netQty:
+            {
+              list.add((element.totalQuantity.toString()));
+            }
+          case SymbolWisePositionReportColumns.netQtyPerWise:
+            {
+              list.add((element.totalShareQuantity!.toStringAsFixed(2)));
+            }
+          case SymbolWisePositionReportColumns.netAPrice:
+            {
+              list.add((element.totalQuantity! != 0 ? element.avgPrice!.toStringAsFixed(2) : "0.00"));
+            }
+          case SymbolWisePositionReportColumns.brk:
+            {
+              list.add((element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SymbolWisePositionReportColumns.withBrkAPrice:
+            {
+              list.add((element.totalQuantity! != 0
+                  ? element.brokerageTotal! > 0
+                      ? (element.avgPrice! + (element.brokerageTotal! / element.totalQuantity!)).toStringAsFixed(2)
+                      : element.avgPrice!.toStringAsFixed(2)
+                  : "0.00"));
+            }
+          case SymbolWisePositionReportColumns.cmp:
+            {
+              list.add((element.currentPriceFromSocket!.toStringAsFixed(2)));
+            }
+          case SymbolWisePositionReportColumns.pl:
+            {
+              list.add((element.profitLossValue!.toStringAsFixed(2)));
+            }
+
+          case SymbolWisePositionReportColumns.plPer:
+            {
+              list.add(((((element.profitLossValue! * element.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2)));
+            }
+
+          case SymbolWisePositionReportColumns.brkPer:
+            {
+              list.add((element.adminBrokerageTotal!.toStringAsFixed(2)));
+            }
+
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "SymbolWisePositionReport", title: "Symbol Wise Position Report", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

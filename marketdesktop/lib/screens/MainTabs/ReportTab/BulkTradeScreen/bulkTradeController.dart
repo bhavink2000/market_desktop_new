@@ -9,6 +9,7 @@ import '../../../../constant/screenColumnData.dart';
 import 'package:excel/excel.dart' as excelLib;
 
 import '../../../../constant/utilities.dart';
+import '../../../../main.dart';
 import '../../ViewTab/MarketWatchScreen/marketWatchController.dart';
 import '../../ViewTab/TradeScreen/successTradeListController.dart';
 import '../../ViewTab/TradeScreen/successTradeListWrapper.dart';
@@ -132,14 +133,53 @@ class BulkTradeController extends BaseController {
       });
       dataList.add(list);
     });
-    if (isFromPDF) {
-      return exportPDFFile("BulkTrade", titleList, dataList);
-    }
+
     exportExcelFile("BulkTrade.xlsx", titleList, dataList);
   }
 
   onClickPDF() async {
-    var filePath = await onClickExcel(isFromPDF: true);
-    generatePdfFromExcel(filePath);
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrBulkTrade.forEach((element) {
+      List<String> list = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+           case BulkTradeColumns.exchange:
+            {
+              list.add((element.exchangeName!));
+            }
+          case BulkTradeColumns.symbol:
+            {
+              list.add((element.symbolTitle!));
+            }
+          case BulkTradeColumns.buyTotalQty:
+            {
+              list.add((element.buyTotalQuantity.toString()));
+            }
+          case BulkTradeColumns.sellTotalQty:
+            {
+              list.add((element.sellTotalQuantity.toString()));
+            }
+          case BulkTradeColumns.totalQty:
+            {
+              list.add((element.totalQuantity.toString()));
+            }
+          case BulkTradeColumns.dateTime:
+            {
+              list.add((shortFullDateTime(element.endDate!)));
+            }
+          default:
+            {
+              list.add((""));
+            }
+        }
+      });
+      dataList.add(list);
+    });
+    exportPDFFile(fileName: "BulkTrades", title: "Bulk Trades", width: globalMaxWidth, titleList: headers, dataList: dataList);
   }
 }

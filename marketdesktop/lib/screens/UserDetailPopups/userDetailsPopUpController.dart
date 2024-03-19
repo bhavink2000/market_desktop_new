@@ -261,6 +261,33 @@ class UserDetailsPopUpController extends BaseController {
     return () {};
   }
 
+  Function givePDFClickEvent() {
+    switch (selectedMenuName) {
+      case "Position":
+        Get.find<PositionPopUpController>().onClickPDF();
+
+        break;
+      case "Trades":
+        Get.find<TradeListPopUpController>().onClickPDF();
+        break;
+
+      case "Quantity Settings":
+        Get.find<QuantitySettingPopUpController>().onClickPDF();
+        break;
+
+      case "Credit":
+        Get.find<CreditPopUpController>().onClickPDF();
+        break;
+    
+      case "Rejection Log":
+        Get.find<RejectionLogPopUpController>().onClickPDF();
+        break;
+
+      default:
+    }
+    return () {};
+  }
+
   updateUnSelectedView() {
     if (Get.isRegistered<UserDetailsPopUpController>()) {
       Get.find<UserDetailsPopUpController>().update();
