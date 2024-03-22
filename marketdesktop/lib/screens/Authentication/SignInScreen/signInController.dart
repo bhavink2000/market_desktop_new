@@ -117,7 +117,7 @@ class SignInController extends BaseController {
       if (response != null) {
         if (response.statusCode == 200) {
           isLogoutRunning = false;
-          print(response.message);
+
           update();
           if (response.statusCode == 200) {
             isAccessTokenExpired = false;

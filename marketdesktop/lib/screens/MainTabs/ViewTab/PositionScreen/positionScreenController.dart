@@ -114,6 +114,14 @@ class PositionController extends BaseController {
     });
   }
 
+  @override
+  isAllSelectedUpdate(bool change) {
+    for (var element in arrPositionScriptList) {
+      element.isSelected = change;
+    }
+    update();
+  }
+
   getUserList() async {
     var response = await service.getMyUserListCall(roleId: UserRollList.user);
     arrUserListOnlyClient = response!.data ?? [];

@@ -653,10 +653,9 @@ class PositionScreen extends BaseView<PositionController> {
                           tradeVC.selectedUser.value = UserData(userId: controller.arrPositionScriptList[index].userId!, userName: controller.arrPositionScriptList[index].userName);
                           tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId!, symbolName: controller.arrPositionScriptList[index].symbolName!, symbolTitle: controller.arrPositionScriptList[index].symbolTitle!);
                           tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId, symbolName: controller.arrPositionScriptList[index].symbolName, symbolTitle: controller.arrPositionScriptList[index].symbolTitle);
-                          // tradeVC.update();
-                          // tradeVC.getTradeList();
-                          Get.delete<ProfitAndLossController>();
-                          Get.back();
+
+                          // Get.delete<ProfitAndLossController>();
+                          // Get.back();
                           generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
                         });
                       }

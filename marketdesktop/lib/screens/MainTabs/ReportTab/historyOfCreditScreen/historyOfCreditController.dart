@@ -39,7 +39,11 @@ class HistoryOfCreditController extends BaseController {
             arrCreditList[i].balance = arrCreditList[i - 1].balance + arrCreditList[i].amount!;
           }
         } else {
-          arrCreditList[i].balance = arrCreditList[i - 1].balance - arrCreditList[i].amount!;
+          if (i == 0) {
+            arrCreditList[i].balance = arrCreditList[i].balance!;
+          } else {
+            arrCreditList[i].balance = arrCreditList[i - 1].balance - arrCreditList[i].amount!;
+          }
         }
       }
 
@@ -95,7 +99,6 @@ class HistoryOfCreditController extends BaseController {
     exportExcelFile("CreditHistory.xlsx", titleList, dataList);
   }
 
-
   onClickPDF() async {
     List<String> headers = [];
 
@@ -107,7 +110,7 @@ class HistoryOfCreditController extends BaseController {
       List<String> list = [];
       arrListTitle1.forEach((titleObj) {
         switch (titleObj.title) {
-           case CreditHistoryColumns.username:
+          case CreditHistoryColumns.username:
             {
               list.add((element.fromUserName!));
             }

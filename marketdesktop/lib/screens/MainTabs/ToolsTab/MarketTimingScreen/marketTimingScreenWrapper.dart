@@ -305,7 +305,9 @@ class MarketTimingScreen extends BaseView<MarketTimingController> {
                               : isSelectedDay || isToday
                                   ? AppColors().whiteColor
                                   : valueObj.weekOff!.contains(day.weekday)
-                                      ? Colors.green
+                                      ? controller.arrHoliday.indexWhere((element) => element.startDate!.day == day.day && element.startDate!.month == day.month && element.startDate!.year == day.year) == -1
+                                          ? Colors.green
+                                          : AppColors().redColor
                                       : AppColors().redColor,
                         ),
                       ),

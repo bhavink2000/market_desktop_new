@@ -518,7 +518,7 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
                   ),
                 ),
                 searchMatchFn: (item, searchValue) {
-                  return item.value!.name.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                  return item.value!.userName.toString().toLowerCase().startsWith(searchValue.toLowerCase());
                 },
               ),
               hint: Text(

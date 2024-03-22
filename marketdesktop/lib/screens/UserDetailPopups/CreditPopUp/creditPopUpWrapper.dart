@@ -677,4 +677,6 @@ class CreditPopUpScreen extends BaseView<CreditPopUpController> {
       ),
     );
   }
+
+
 }
