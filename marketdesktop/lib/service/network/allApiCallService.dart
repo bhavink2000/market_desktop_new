@@ -234,7 +234,7 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> tradeCall({String? symbolId, double? quantity, int? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, bool? isFromStopLoss, double? marketPrice, String? productType, double? refPrice}) async {
+  Future<TradeExecuteModel?> tradeCall({String? symbolId, double? quantity, double? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, bool? isFromStopLoss, double? marketPrice, String? productType, double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -297,7 +297,72 @@ class AllApiCallService {
     }
   }
 
-  Future<TradeExecuteModel?> manualTradeCall({String? userId, String? symbolId, double? quantity, double? totalQuantity, double? price, int? lotSize, String? orderType, String? tradeType, String? exchangeId, String? executionTime, String? manuallyTradeAddedFor, double? refPrice}) async {
+  Future<TradeExecuteModel?> manualTradeCall(
+      {String? userId,
+      String? symbolId,
+      double? quantity,
+      double? totalQuantity,
+      double? price,
+      int? lotSize,
+      String? orderType,
+      String? tradeType,
+      String? exchangeId,
+      String? executionTime,
+      String? manuallyTradeAddedFor,
+      bool? isFromStopLoss,
+      double? marketPrice,
+      String? productType,
+      double? refPrice}) async {
+    try {
+      _dio.options.headers = getHeaders();
+      final payload = {
+        "userId": userId,
+        "symbolId": symbolId,
+        "quantity": quantity,
+        "totalQuantity": totalQuantity,
+        "price": orderType == "limit" ? price : marketPrice,
+        "stopLoss": isFromStopLoss == true ? price : "0",
+        "lotSize": lotSize,
+        "orderType": orderType,
+        "tradeType": tradeType,
+        "exchangeId": exchangeId,
+        "productType": productType,
+        "ipAddress": myIpAddress,
+        "deviceId": deviceId,
+        "orderMethod": deviceName,
+        "executionDateTime": executionTime,
+        if (manuallyTradeAddedFor != null) "manuallyTradeAddedFor": manuallyTradeAddedFor,
+        "referencePrice": refPrice,
+      };
+      print(payload);
+      final data = await _dio.post(Api.manualOrderCreate, data: payload);
+      print(data.data);
+      return TradeExecuteModel.fromJson(data.data);
+    } catch (e) {
+      print(e);
+      return null;
+      // final errMsg = e.response?.data['message'];
+      // throw Exception(errMsg);
+    }
+  }
+
+  Future<TradeExecuteModel?> manualTradeFromSACall(
+      {String? userId,
+      String? symbolId,
+      double? quantity,
+      double? totalQuantity,
+      double? price,
+      int? lotSize,
+      int? isBrokerageCalculatedOrNot,
+      String? orderType,
+      String? tradeType,
+      String? exchangeId,
+      String? executionTime,
+      String? manuallyTradeAddedFor,
+      bool? isFromStopLoss,
+      double? marketPrice,
+      String? productType,
+      double? refPrice}) async {
     try {
       _dio.options.headers = getHeaders();
       final payload = {
@@ -306,9 +371,8 @@ class AllApiCallService {
         "quantity": quantity,
         "totalQuantity": totalQuantity,
         "price": price,
-        "stopLoss": 0,
         "lotSize": lotSize,
-        "orderType": "market",
+        "orderType": orderType,
         "tradeType": tradeType,
         "exchangeId": exchangeId,
         "productType": "longTerm",
@@ -316,6 +380,7 @@ class AllApiCallService {
         "deviceId": deviceId,
         "orderMethod": deviceName,
         "executionDateTime": executionTime,
+        "isBrokerageCalculatedOrNot": isBrokerageCalculatedOrNot,
         if (manuallyTradeAddedFor != null) "manuallyTradeAddedFor": manuallyTradeAddedFor,
         "referencePrice": refPrice,
       };
@@ -1583,14 +1648,14 @@ class AllApiCallService {
     }
   }
 
-  Future<CommonModel?> squareOffPositionCall({List<SymbolRequestData>? arrSymbol}) async {
+  Future<CommonModel?> squareOffPositionCall({List<SymbolRequestData>? arrSymbol, String? userId}) async {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
       var symbolData = List<dynamic>.from(arrSymbol!.map((x) => x.toJson()));
 
       final payload = {
-        "userId": userData!.userId,
+        "userId": userId,
         "symbolData": symbolData,
         "ipAddress": myIpAddress,
         "deviceId": deviceId,

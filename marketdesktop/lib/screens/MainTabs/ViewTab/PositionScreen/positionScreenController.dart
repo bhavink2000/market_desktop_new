@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,12 +20,15 @@ import '../../../../modelClass/constantModelClass.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
 import 'package:excel/excel.dart' as excelLib;
 
+import '../../../../modelClass/userRoleListModelClass.dart';
+
 class PositionController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
 
   Rx<UserData> selectedUser = UserData().obs;
+  Rx<userRoleListData> selectedRoll = userRoleListData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
   List<positionListData> arrPositionScriptList = [];
@@ -72,6 +76,8 @@ class PositionController extends BaseController {
   RxBool isValidQty = true.obs;
   bool isPagingApiCall = false;
   bool isAllSelected = false;
+  bool isClientSelected = false;
+  bool isUserSelected = false;
 
   FocusNode SubmitFocus = FocusNode();
   FocusNode CancelFocus = FocusNode();
@@ -99,7 +105,7 @@ class PositionController extends BaseController {
     isApiCallRunning = true;
 
     getPositionList("");
-    getUserList();
+
     update();
 
     lotController.addListener(() {
@@ -122,8 +128,25 @@ class PositionController extends BaseController {
     update();
   }
 
-  getUserList() async {
-    var response = await service.getMyUserListCall(roleId: UserRollList.user);
+  @override
+  bool isHiddenTitle(String title) {
+    if (userData!.role == UserRollList.user) {
+      return false;
+    } else {
+      if (title == "") {
+        if (isClientSelected && isUserSelected) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    }
+  }
+
+  getMyUserList() async {
+    var response = await service.getMyUserListCall(roleId: selectedRoll.value.roleId!);
     arrUserListOnlyClient = response!.data ?? [];
     if (arrUserListOnlyClient.isNotEmpty) {
       // selectedUser.value = arrUserListOnlyClient.first;
@@ -135,7 +158,7 @@ class PositionController extends BaseController {
     for (var element in arrSymbol!) {
       arr.add(element.symbolId!);
     }
-    var response = await service.rollOverTradeCall(symbolId: arr, userId: userData!.userId!);
+    var response = await service.rollOverTradeCall(symbolId: arr, userId: userData!.role == UserRollList.user ? userData!.userId! : selectedUser.value.userId);
     if (response?.statusCode == 200) {
       showSuccessToast(response!.meta!.message ?? "");
       arrPositionScriptList.clear();
@@ -208,7 +231,7 @@ class PositionController extends BaseController {
   }
 
   squareOffPosition(List<SymbolRequestData>? arrSymbol) async {
-    var response = await service.squareOffPositionCall(arrSymbol: arrSymbol);
+    var response = await service.squareOffPositionCall(arrSymbol: arrSymbol, userId: userData!.role == UserRollList.user ? userData!.userId! : selectedUser.value.userId);
     if (response?.statusCode == 200) {
       showSuccessToast(response!.meta!.message ?? "");
       arrPositionScriptList.clear();
@@ -328,14 +351,16 @@ class PositionController extends BaseController {
   String validateForm() {
     var msg = "";
     if (selectedOrderType.value.id != "limit") {
-      var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrPositionScriptList[selectedScriptIndex].symbolName);
-      if (ltpObj == null) {
-        return "INVALID SERVER TIME";
-      } else {
-        var difference = DateTime.now().difference(ltpObj.dateTime!);
-        var differenceInSeconds = difference.inSeconds;
-        if (differenceInSeconds >= 40) {
+      if (arrPositionScriptList[selectedScriptIndex].tradeSecond != 0) {
+        var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrPositionScriptList[selectedScriptIndex].symbolName);
+        if (ltpObj == null) {
           return "INVALID SERVER TIME";
+        } else {
+          var difference = DateTime.now().difference(ltpObj.dateTime!);
+          var differenceInSeconds = difference.inSeconds;
+          if (differenceInSeconds >= arrPositionScriptList[selectedScriptIndex].tradeSecond!) {
+            return "INVALID SERVER TIME";
+          }
         }
       }
     }
@@ -396,7 +421,7 @@ class PositionController extends BaseController {
       var response = await service.tradeCall(
         symbolId: arrPositionScriptList[selectedScriptIndex].symbolId,
         quantity: double.parse(lotController.text),
-        totalQuantity: int.parse(qtyController.text),
+        totalQuantity: double.parse(qtyController.text),
         price: double.parse(priceController.text),
         isFromStopLoss: selectedOrderType.value.id == "stopLoss",
         marketPrice: selectedOrderType.value.id == "stopLoss"
@@ -1249,40 +1274,78 @@ class PositionController extends BaseController {
     });
   }
 
-  Widget userListDropDown(Rx<UserData> selectedUser) {
+  Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
     return Obx(() {
-      return Container(
-          width: 210,
-          height: 40,
+      return SizedBox(
+          width: width ?? 250,
           // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors().lightOnlyText, width: 1),
-            color: AppColors().whiteColor,
-          ),
-          child: DropdownButtonHideUnderline(
-            child: ButtonTheme(
-              alignedDropdown: true,
-              child: DropdownButtonFormField<UserData>(
-                isExpanded: false,
-                menuMaxHeight: 130,
-                alignment: Alignment.bottomCenter,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(left: 15),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+          height: 30,
+          child: Center(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButtonFormField2<UserData>(
+                isExpanded: true,
+                decoration: commonFocusBorder,
+                iconStyleData: IconStyleData(
+                  icon: Image.asset(
+                    AppImages.arrowDown,
+                    height: 20,
+                    width: 20,
+                    color: AppColors().fontColor,
+                  ),
+                ),
+                dropdownSearchData: DropdownSearchData(
+                  searchController: userEditingController,
+                  searchBarWidgetHeight: 50,
+                  searchBarWidget: SizedBox(
+                    height: 30,
+                    // padding: EdgeInsets.only(top: 2.w, right: 2.w, left: 2.w),
+                    child: CustomTextField(
+                      type: '',
+                      keyBoardType: TextInputType.text,
+                      isEnabled: true,
+                      isOptional: false,
+                      inValidMsg: "",
+                      placeHolderMsg: "Search",
+                      emptyFieldMsg: "",
+                      controller: userEditingController,
+                      focus: userEditingFocus,
+                      isSecure: false,
+                      borderColor: AppColors().grayLightLine,
+                      keyboardButtonType: TextInputAction.done,
+                      maxLength: 64,
+                      isShowPrefix: false,
+                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                      suffixIcon: Container(
+                        child: GestureDetector(
+                          onTap: () {
+                            userEditingController.clear();
+                          },
+                          child: Image.asset(
+                            AppImages.crossIcon,
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  searchMatchFn: (item, searchValue) {
+                    return item.value!.userName.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                  },
                 ),
                 hint: Text(
                   'Select User',
                   style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: CustomFonts.family1Medium,
+                    fontSize: 10,
+                    fontFamily: CustomFonts.family2Regular,
                     color: AppColors().darkText,
                   ),
                 ),
                 items: arrUserListOnlyClient
-                    .map((UserData item) => DropdownMenuItem<UserData>(
+                    .map((UserData item) => DropdownItem<UserData>(
                           value: item,
-                          child: Text(item.userName ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                          height: 30,
+                          child: Text(item.userName ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -1291,29 +1354,20 @@ class PositionController extends BaseController {
                             value: item,
                             child: Text(
                               item.userName ?? "",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: CustomFonts.family1Medium,
-                                color: AppColors().darkText,
-                              ),
+                              style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
                 },
                 value: selectedUser.value.userId == null ? null : selectedUser.value,
-
                 onChanged: (UserData? value) {
                   selectedUser.value = value!;
                 },
-                // buttonStyleData: ButtonStyleData(
-                //   padding: EdgeInsets.symmetric(horizontal: 0),
-                //   height: 40,
-
-                // ),
-                // dropdownStyleData: DropdownStyleData(maxHeight: 150),
-                // menuItemStyleData: const MenuItemStyleData(
-                //   height: 40,
-                // ),
+                buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.symmetric(horizontal: 0),
+                  height: 30,
+                ),
+                dropdownStyleData: const DropdownStyleData(maxHeight: 250),
               ),
             ),
           ));

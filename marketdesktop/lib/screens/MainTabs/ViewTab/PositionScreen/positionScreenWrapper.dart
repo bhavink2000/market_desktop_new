@@ -18,7 +18,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../main.dart';
 import '../../../../modelClass/squareOffPositionRequestModelClass.dart';
-import '../ProfitAndLossScreen/profitAndLossController.dart';
+import '../../../../modelClass/userRoleListModelClass.dart';
 import '../TradeScreen/successTradeListController.dart';
 import '../TradeScreen/successTradeListWrapper.dart';
 
@@ -136,6 +136,40 @@ class PositionScreen extends BaseView<PositionController> {
                             children: [
                               Spacer(),
                               Container(
+                                child: Text("Roll Type:",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Regular,
+                                      color: AppColors().fontColor,
+                                    )),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              userTypeDropDown(controller.selectedRoll, width: 150, onChange: () {
+                                controller.selectedUser.value = UserData();
+                                controller.arrUserListOnlyClient.clear();
+
+                                controller.getMyUserList();
+                              }),
+                              SizedBox(
+                                width: 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (userData!.role != UserRollList.user)
+                        SizedBox(
+                          height: 10,
+                        ),
+                      if (userData!.role != UserRollList.user)
+                        Container(
+                          height: 35,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Spacer(),
+                              Container(
                                 child: Text("Username:",
                                     style: TextStyle(
                                       fontSize: 12,
@@ -146,7 +180,7 @@ class PositionScreen extends BaseView<PositionController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              controller.userListDropDown(controller.selectedUser, width: 150),
                               SizedBox(
                                 width: 30,
                               ),
@@ -227,6 +261,8 @@ class PositionScreen extends BaseView<PositionController> {
                               onPress: () {
                                 controller.arrPositionScriptList.clear();
                                 controller.currentPage = 1;
+                                controller.isUserSelected = controller.selectedUser.value.userId != null;
+                                controller.isClientSelected = controller.selectedRoll.value.roleId == UserRollList.user;
                                 controller.getPositionList("", isFromfilter: true);
                               },
                               focusKey: controller.applyFocus,
@@ -254,9 +290,14 @@ class PositionScreen extends BaseView<PositionController> {
                               onPress: () {
                                 controller.selectedExchange.value = ExchangeData();
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
+                                controller.isClientSelected = false;
+                                controller.isUserSelected = false;
+
+                                controller.selectedRoll.value = userRoleListData();
                                 controller.selectedUser.value = UserData();
                                 controller.arrPositionScriptList.clear();
                                 controller.currentPage = 1;
+                                controller.update();
                                 controller.getPositionList("", isFromfilter: true, isFromClear: true);
                               },
                               focusKey: controller.clearFocus,
@@ -378,7 +419,7 @@ class PositionScreen extends BaseView<PositionController> {
           SizedBox(
             width: 5,
           ),
-          if (userData!.role == UserRollList.user)
+          if (!controller.isHiddenTitle(""))
             Container(
               margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
               width: 180,
@@ -423,7 +464,7 @@ class PositionScreen extends BaseView<PositionController> {
                 isLoading: controller.isApiCallRunning,
               ),
             ),
-          if (userData!.role == UserRollList.user)
+          if (!controller.isHiddenTitle(""))
             Container(
               margin: EdgeInsets.only(left: 5, right: 20, bottom: 5),
               width: 180,
@@ -597,6 +638,9 @@ class PositionScreen extends BaseView<PositionController> {
                   switch (controller.arrListTitle1[indexT].title) {
                     case NetPositionColumns.checkBox:
                       {
+                        if (controller.isHiddenTitle("")) {
+                          return SizedBox();
+                        }
                         return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isImage: true, strImage: controller.arrPositionScriptList[index].isSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
                             onClickImage: () {
                           controller.arrPositionScriptList[index].isSelected = !controller.arrPositionScriptList[index].isSelected;

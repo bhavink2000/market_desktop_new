@@ -39,7 +39,7 @@ class manualOrderController extends BaseController {
   FocusNode userSearchFocus = FocusNode();
   TextEditingController scriptSearchController = TextEditingController();
   FocusNode scriptSearchFocus = FocusNode();
-
+  RxInt isBrokerageCalculated = 0.obs;
   Rx<GlobalSymbolData> selectedScriptDropDownValue = GlobalSymbolData().obs;
   Rx<Type> selectedManualType = Type().obs;
   Rx<ExchangeData> selectExchangedropdownValue = ExchangeData().obs;
@@ -79,7 +79,7 @@ class manualOrderController extends BaseController {
       // if (isQuantityUpdate == false) {
       if (!qtyFocus.hasFocus) {
         if (selectedScriptDropDownValue.value.symbolId != null || selectedScriptDropDownValue.value.symbolId != "") {
-          var temp = num.parse(lotController.text) * selectedScriptDropDownValue.value.ls!;
+          var temp = num.parse(lotController.text) * selectedScriptDropDownValue.value.lotSize!;
           qtyController.text = temp.toString();
         }
 
@@ -123,6 +123,8 @@ class manualOrderController extends BaseController {
       msg = AppString.inValidQty;
     } else if (lotController.text.trim().isEmpty) {
       msg = AppString.inValidLot;
+    } else if (isBrokerageCalculated.value == 0) {
+      msg = AppString.isBrokerageCalculatedOrNotMsg;
     } else if (selectedManualType.value.id == null) {
       msg = AppString.emptyTradeDisplayFor;
     }
@@ -156,7 +158,7 @@ class manualOrderController extends BaseController {
             }
             var qty = double.parse(qtyController.text) / selectedScriptDropDownValue.value.lotSize!;
             update();
-            var response = await service.manualTradeCall(
+            var response = await service.manualTradeFromSACall(
                 executionTime: serverFormatDateTime(fromDate.value!),
                 symbolId: selectedScriptDropDownValue.value.symbolId,
                 totalQuantity: double.parse(qtyController.text),
@@ -164,6 +166,7 @@ class manualOrderController extends BaseController {
                 price: double.parse(rateBoxOneController.text),
                 lotSize: selectedScriptDropDownValue.value.lotSize!.toInt(),
                 orderType: "market",
+                isBrokerageCalculatedOrNot: isBrokerageCalculated.value,
                 tradeType: isBuy.value ? "buy" : "sell",
                 exchangeId: selectExchangedropdownValue.value.exchangeId,
                 userId: selectedUser.value.userId!,

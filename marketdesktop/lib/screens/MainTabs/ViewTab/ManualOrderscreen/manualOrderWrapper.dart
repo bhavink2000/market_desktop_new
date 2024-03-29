@@ -38,7 +38,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
               child: Column(
                 children: [
                   userDetailsView(),
-                  // buySellRadioView(),
+
                   exchangeDetailView(),
                   scriptDetailView(),
                   rateDetailsView(),
@@ -51,6 +51,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     height: 15,
                   ),
                   timePickerView(),
+                  brokerageCalculatedRadioView(),
                   typeDetailView(),
                   Row(
                     children: [
@@ -68,22 +69,25 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
     );
   }
 
-  Widget buySellRadioView() {
+  Widget brokerageCalculatedRadioView() {
     return Column(
       children: [
+        SizedBox(
+          height: 20,
+        ),
         Row(
           children: [
             SizedBox(
               width: 20,
             ),
-            Text("Order Type : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+            Text("Is Brokerage Calculated Or Not : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
             Spacer(),
             GestureDetector(
               onTap: () {
-                if (controller.isBuy.value == true) {
-                  controller.isBuy.value = false;
+                if (controller.isBrokerageCalculated.value == 1) {
+                  controller.isBrokerageCalculated.value = 0;
                 } else {
-                  controller.isBuy.value = true;
+                  controller.isBrokerageCalculated.value = 1;
                 }
                 controller.update();
               },
@@ -92,7 +96,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   children: [
                     Container(
                       child: Image.asset(
-                        controller.isBuy.value == true ? AppImages.checkBoxSelectedRound : AppImages.checkBoxRound,
+                        controller.isBrokerageCalculated.value == 1 ? AppImages.checkBoxSelectedRound : AppImages.checkBoxRound,
                         height: 20,
                         width: 20,
                       ),
@@ -100,7 +104,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     SizedBox(
                       width: 5,
                     ),
-                    Text("Buy", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                    Text("Yes", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                   ],
                 ),
               ),
@@ -110,10 +114,10 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
             ),
             GestureDetector(
               onTap: () {
-                if (controller.isBuy.value == false) {
-                  controller.isBuy.value = true;
+                if (controller.isBrokerageCalculated.value == 2) {
+                  controller.isBrokerageCalculated.value = 0;
                 } else {
-                  controller.isBuy.value = false;
+                  controller.isBrokerageCalculated.value = 2;
                 }
 
                 controller.update();
@@ -123,7 +127,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   children: [
                     Container(
                       child: Image.asset(
-                        controller.isBuy.value == false ? AppImages.checkBoxSelectedRound : AppImages.checkBoxRound,
+                        controller.isBrokerageCalculated.value == 2 ? AppImages.checkBoxSelectedRound : AppImages.checkBoxRound,
                         height: 20,
                         width: 20,
                       ),
@@ -131,7 +135,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     SizedBox(
                       width: 5,
                     ),
-                    Text("Sell", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                    Text("No", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                   ],
                 ),
               ),
@@ -392,7 +396,7 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         // // });
 
                         controller.selectedScriptDropDownValue.value = value!;
-                        var temp = num.parse(controller.lotController.text) * controller.selectedScriptDropDownValue.value.ls!;
+                        var temp = num.parse(controller.lotController.text) * controller.selectedScriptDropDownValue.value.lotSize!;
                         controller.qtyController.text = temp.toString();
                       },
                       buttonStyleData: const ButtonStyleData(
@@ -580,14 +584,14 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   onChange: () {
                     if (controller.qtyController.text.isNotEmpty) {
                       if (controller.selectedScriptDropDownValue.value.oddLotTrade == 1) {
-                        var temp = (num.parse(controller.qtyController.text) / controller.selectedScriptDropDownValue.value.ls!);
+                        var temp = (num.parse(controller.qtyController.text) / controller.selectedScriptDropDownValue.value.lotSize!);
                         controller.lotController.text = temp.toStringAsFixed(2);
                         controller.isValidQty.value = true;
                       } else {
-                        var temp = (num.parse(controller.qtyController.text) / controller.selectedScriptDropDownValue.value.ls!);
+                        var temp = (num.parse(controller.qtyController.text) / controller.selectedScriptDropDownValue.value.lotSize!);
 
                         print(temp);
-                        if ((num.parse(controller.qtyController.text) % controller.selectedScriptDropDownValue.value.ls!) == 0) {
+                        if ((num.parse(controller.qtyController.text) % controller.selectedScriptDropDownValue.value.lotSize!) == 0) {
                           controller.lotController.text = temp.toStringAsFixed(0);
                           controller.isValidQty.value = true;
                         } else {

@@ -356,7 +356,7 @@ class MainContainerController extends BaseController {
     }
 
     if (event.isKeyPressed(LogicalKeyboardKey.f1) || event.isKeyPressed(LogicalKeyboardKey.numpadAdd)) {
-      if (userData!.role == UserRollList.admin || userData!.role == UserRollList.superAdmin) {
+      if (userData!.role == UserRollList.superAdmin) {
         return;
       }
       if (marketVC.selectedScriptIndex != -1) {
@@ -383,7 +383,7 @@ class MainContainerController extends BaseController {
         }
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.f2) || event.isKeyPressed(LogicalKeyboardKey.numpadSubtract)) {
-      if (userData!.role == UserRollList.admin || userData!.role == UserRollList.superAdmin) {
+      if (userData!.role == UserRollList.superAdmin) {
         return;
       }
       if (marketVC.selectedScriptIndex != -1) {
@@ -576,6 +576,7 @@ class MainContainerController extends BaseController {
           marketVC.typedString = marketVC.typedString + event.logicalKey.keyLabel;
           print(marketVC.typedString);
           var index = marketVC.arrSymbol.indexWhere((element) => element.symbolTitle!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
+          print(index);
           if (index != -1) {
             var scriptValue = marketVC.arrScript[index];
             marketVC.selectedScriptIndex = index;

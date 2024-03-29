@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class AppString {
-  static const String appName = "BAZAAR 2.0";
+  static const String appName = "RBEXCH";
   static const String emptyUserType = "Please Select User Type.";
   static const String emptyServer = "Please Enter Server Name.";
   static const String invalidServer = "Please enter valid server name.";
@@ -29,6 +29,7 @@ class AppString {
   static const String generalError = "Something Went Wrong.";
   static const String emptyName = "Please Enter Name.";
   static const String emptyRemark = "Please Enter Remark.";
+  static const String isBrokerageCalculatedOrNotMsg = "Is Brokerage Calculated Or Not required";
   static const String emptyProfitLossSharing = "Please Enter Profit and Loss Sharing .";
   static const String rangeProfitLossSharing = "Profit and Loss Should Be Between 0 to 100 %.";
   static const String emptyBrokerageSharing = "Please Enter Brokerage Sharing.";

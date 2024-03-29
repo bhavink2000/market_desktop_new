@@ -40,7 +40,7 @@ class HistoryOfCreditController extends BaseController {
           }
         } else {
           if (i == 0) {
-            arrCreditList[i].balance = arrCreditList[i].balance!;
+            arrCreditList[i].balance = arrCreditList[i].balance;
           } else {
             arrCreditList[i].balance = arrCreditList[i - 1].balance - arrCreditList[i].amount!;
           }

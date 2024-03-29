@@ -69,6 +69,7 @@ class AccountSummaryNewListData {
   DateTime? updatedAt;
   double? currentPriceFromSocket = 0.0;
   double? profitLossValue = 0.0;
+  double plPerValue = 0.0;
   num? profitAndLossSharing = 0.0;
   num? adminBrokerageTotal;
   num? totalShareQuantity = 0.0;

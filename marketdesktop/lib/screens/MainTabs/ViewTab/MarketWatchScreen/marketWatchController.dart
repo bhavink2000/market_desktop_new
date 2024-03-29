@@ -157,8 +157,8 @@ class MarketWatchController extends BaseController {
     if (userData!.role == UserRollList.superAdmin) {
       arrOrderType.removeWhere((element) => element.id == "stopLoss");
     } else if (userData!.role == UserRollList.master) {
-      arrOrderType.removeWhere((element) => element.id == "stopLoss");
-      arrOrderType.removeWhere((element) => element.id == "limit");
+      // arrOrderType.removeWhere((element) => element.id == "stopLoss");
+      // arrOrderType.removeWhere((element) => element.id == "limit");
     } else if (userData!.role == UserRollList.user) {
       arrOrderType.add(Type(name: "Intraday", id: "123"));
     }
@@ -941,15 +941,17 @@ class MarketWatchController extends BaseController {
   String validateForm() {
     var msg = "";
     if (selectedOrderType.value.id != "limit") {
-      var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == selectedScript.value!.symbol);
+      if (selectedSymbol!.tradeSecond != 0) {
+        var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == selectedScript.value!.symbol);
 
-      if (ltpObj == null) {
-        return "INVALID SERVER TIME";
-      } else {
-        var difference = DateTime.now().difference(ltpObj.dateTime!);
-        var differenceInSeconds = difference.inSeconds;
-        if (differenceInSeconds >= 40) {
+        if (ltpObj == null) {
           return "INVALID SERVER TIME";
+        } else {
+          var difference = DateTime.now().difference(ltpObj.dateTime!);
+          var differenceInSeconds = difference.inSeconds;
+          if (differenceInSeconds >= selectedSymbol!.tradeSecond!) {
+            return "INVALID SERVER TIME";
+          }
         }
       }
     }
@@ -1117,7 +1119,7 @@ class MarketWatchController extends BaseController {
       var response = await service.tradeCall(
         symbolId: selectedSymbol!.symbolId,
         quantity: double.parse(lotController.text),
-        totalQuantity: int.parse(qtyController.text),
+        totalQuantity: double.parse(qtyController.text),
         price: double.parse(priceController.text),
         isFromStopLoss: selectedOrderType.value.id == "stopLoss",
         marketPrice: selectedOrderType.value.id == "stopLoss"
@@ -1197,11 +1199,22 @@ class MarketWatchController extends BaseController {
         totalQuantity: double.parse(qtyController.text),
         price: double.parse(priceController.text),
         lotSize: selectedScript.value!.ls!.toInt(),
-        orderType: "market",
-        tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: selectedSymbol!.exchangeId,
         executionTime: serverFormatDateTime(DateTime.now()),
         userId: selectedUser.value.userId!,
+        isFromStopLoss: selectedOrderType.value.id == "stopLoss",
+        marketPrice: selectedOrderType.value.id == "stopLoss"
+            ? isFromBuy
+                ? selectedScript.value!.ask!.toDouble()
+                : selectedScript.value!.bid!.toDouble()
+            : selectedOrderType.value.id == "limit"
+                ? getLimitPrice(double.parse(priceController.text), isFromBuy)
+                : isFromBuy
+                    ? selectedScript.value!.ask!.toDouble()
+                    : selectedScript.value!.bid!.toDouble(),
+        orderType: selectedOrderType.value.id == "123" || (selectedOrderType.value.id == "limit" && isFromLimitCheck(double.parse(priceController.text), isFromBuy) == false) ? "market" : selectedOrderType.value.id,
+        tradeType: isFromBuy ? "buy" : "sell",
+        productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm",
         refPrice: isFromBuy ? selectedScript.value!.ask!.toDouble() : selectedScript.value!.bid!.toDouble(),
       );
 
@@ -2453,7 +2466,7 @@ class MarketWatchController extends BaseController {
   Widget orderTypeListDropDown({bool isFromAdmin = false}) {
     return Obx(() {
       return IgnorePointer(
-        ignoring: userData!.role == UserRollList.superAdmin ? false : isFromAdmin,
+        ignoring: false, //userData!.role == UserRollList.superAdmin ? false : isFromAdmin,
         child: Container(
             width: 210,
             height: 30,

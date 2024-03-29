@@ -523,7 +523,7 @@ class SettlementScreen extends BaseView<SettlementController> {
                     }
                   case SettlementColumns.brk:
                     {
-                      return dynamicValueBox1(value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                      return dynamicValueBox1(value.brokerageTotal! < 0 ? (value.brokerageTotal! * -1).toStringAsFixed(2) : value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
                   case SettlementColumns.total:
                     {

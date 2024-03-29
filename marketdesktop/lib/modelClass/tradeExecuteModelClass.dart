@@ -44,9 +44,9 @@ class tradeExecuteData {
   String? symbolId;
   String? symbolName;
   num? price;
-  int? quantity;
-  int? lotSize;
-  int? totalQuantity;
+  num? quantity;
+  num? lotSize;
+  num? totalQuantity;
   num? stopLoss;
   num? total;
   String? orderType;

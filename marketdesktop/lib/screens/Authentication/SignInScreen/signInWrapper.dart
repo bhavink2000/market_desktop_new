@@ -71,6 +71,7 @@ class SignInScreen extends BaseView<SignInController> {
                       Center(
                         child: Container(
                           margin: EdgeInsets.symmetric(horizontal: 75),
+                          height: 100,
                           child: Image.asset(
                             AppImages.appLoginLogo,
                           ),

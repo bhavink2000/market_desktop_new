@@ -763,7 +763,7 @@ List<Map> getColumnNames() {
       "screenId": ScreenIds().netPosition,
       "title": ScreenTitles().netPosition,
       "columns": [
-        if (userData!.role == UserRollList.user)
+        if (userData!.role != UserRollList.superAdmin)
           {
             "title": NetPositionColumns.checkBox,
             "screenId": ScreenIds().netPosition,

@@ -73,6 +73,7 @@ class SymbolData {
   num? lotMax;
   num? breakQuantity;
   num? breakUpLot;
+  num? tradeSecond;
 
   SymbolData({
     this.userTabSymbolId,
@@ -115,6 +116,7 @@ class SymbolData {
     this.lotMax,
     this.breakQuantity,
     this.breakUpLot,
+    this.tradeSecond,
   });
 
   factory SymbolData.fromJson(Map<String, dynamic> json) => SymbolData(
@@ -163,6 +165,7 @@ class SymbolData {
         lotMax: json["lotMax"],
         breakQuantity: json["breakQuantity"],
         breakUpLot: json["breakUpLot"],
+        tradeSecond: json["tradeSecond"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -206,8 +209,9 @@ class SymbolData {
         "lotMax": lotMax,
         "breakQuantity": breakQuantity,
         "breakUpLot": breakUpLot,
+        "tradeSecond": tradeSecond,
       };
-      // ignore: non_nullable_equals_parameter
+  // ignore: non_nullable_equals_parameter
   bool operator ==(dynamic other) {
     if (other is SymbolData) {
       return this.symbol == other.symbol;

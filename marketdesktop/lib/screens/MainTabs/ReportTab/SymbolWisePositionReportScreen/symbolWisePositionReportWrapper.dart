@@ -560,7 +560,7 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
 
                   case SymbolWisePositionReportColumns.plPer:
                     {
-                      return dynamicValueBox1((((scriptValue.profitLossValue! * scriptValue.profitAndLossSharing!) / 100) * -1).toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                      return dynamicValueBox1(scriptValue.plPerValue.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                     }
 
                   case SymbolWisePositionReportColumns.brkPer:
