@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class AppString {
-  static const String appName = "RBEXCH";
+  static const String appName = "BAZAAR 2.0";
   static const String emptyUserType = "Please Select User Type.";
   static const String emptyServer = "Please Enter Server Name.";
   static const String invalidServer = "Please enter valid server name.";

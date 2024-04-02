@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -38,11 +39,16 @@ class SocketService {
       //   'ws://16.171.242.99:7722/data',
       //   headers: {"Authorization": "Bearer ${GetStorage().read(LocalStorageKeys.userToken)}"},
       // );
+      // channel = IOWebSocketChannel.connect(
+      //   'ws://16.16.188.77:7722/data',
+      //   headers: {"Authorization": "Bearer ${GetStorage().read(LocalStorageKeys.userToken)}"},
+      // );
       channel = IOWebSocketChannel.connect(
-        'ws://16.16.188.77:7722/data',
+        'ws://socket-2110916353.eu-north-1.elb.amazonaws.com:7722/data',
         headers: {"Authorization": "Bearer ${GetStorage().read(LocalStorageKeys.userToken)}"},
       );
 
+      print({"Authorization": "Bearer ${GetStorage().read(LocalStorageKeys.userToken)}"});
       await channel?.ready;
       isMarketSocketConnected.value = true;
       // Future.delayed(Duration(seconds: 2), () {
@@ -52,6 +58,7 @@ class SocketService {
       channel?.stream.listen(
         (event) {
           // print(event);
+          // log(event.toString());
           bool isHomeVcAvailable = Get.isRegistered<MarketWatchController>();
           bool isPositionAvailable = Get.isRegistered<PositionController>();
           bool isPositionPopUpAvailable = Get.isRegistered<PositionPopUpController>();

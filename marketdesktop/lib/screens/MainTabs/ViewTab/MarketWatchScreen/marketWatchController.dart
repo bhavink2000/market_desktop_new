@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/service/database/dbService.dart';
@@ -1328,10 +1329,10 @@ class MarketWatchController extends BaseController {
           arrSymbolNames.insert(0, element.symbolName!);
         }
       }
-      var txt = {"symbols": arrTemp};
+      var txt = {"symbols": arrSymbolNames};
 
       update();
-      if (arrTemp.isNotEmpty) {
+      if (arrSymbolNames.isNotEmpty) {
         socket.connectScript(jsonEncode(txt));
       }
     }
@@ -1374,7 +1375,11 @@ class MarketWatchController extends BaseController {
 
           selectedScript.value!.copyObject(socketData.data!);
         }
+        // log("*******************");
+        // log(obj!.symbol!.toString());
+        // log("*******************");
         if (obj != null) {
+          log(obj.symbol!);
           var index = arrScript.indexOf(obj);
           var preIndex = arrPreScript.indexWhere((element) => element.symbol == obj.symbol);
           arrPreScript.removeAt(preIndex);

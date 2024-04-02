@@ -1,7 +1,7 @@
 class AppImages {
-  static const String appLoginLogo = 'resources/assets/images/logo_5.png';
-  static const String appLogo = 'resources/assets/images/logo_5.png';
-  static const String logoMain = 'resources/assets/images/icon_5.png';
+  static const String appLoginLogo = 'resources/assets/images/logo_6.png';
+  static const String appLogo = 'resources/assets/images/logo_6.png';
+  static const String logoMain = 'resources/assets/images/icon_6.png';
   //New
 
   static const String backIcon = 'resources/assets/images/back.png';

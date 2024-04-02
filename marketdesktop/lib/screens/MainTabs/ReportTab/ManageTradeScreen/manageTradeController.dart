@@ -85,8 +85,8 @@ class ManageTradeController extends BaseController {
               }
             }
 
-            if (arrTemp.isNotEmpty) {
-              var txt = {"symbols": arrTemp};
+            if (arrSymbolNames.isNotEmpty) {
+              var txt = {"symbols": arrSymbolNames};
               socket.connectScript(jsonEncode(txt));
             }
           }
@@ -148,8 +148,8 @@ class ManageTradeController extends BaseController {
           }
         }
 
-        if (arrTemp.isNotEmpty) {
-          var txt = {"symbols": arrTemp};
+        if (arrSymbolNames.isNotEmpty) {
+          var txt = {"symbols": arrSymbolNames};
           socket.connectScript(jsonEncode(txt));
         }
       }

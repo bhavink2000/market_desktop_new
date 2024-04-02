@@ -48,7 +48,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                       //     controller.getSymbolListTabWise();
                       //     if (isMarketSocketConnected.value == false) {
                       //       await socket.connectSocket();
-                      //       if (arrSymbolNames.isNotEmpty) {
+                      //       if if (arrSymbolNames.isNotEmpty) {
                       //         var txt = {"symbols": arrSymbolNames};
                       //         socket.connectScript(jsonEncode(txt));
                       //       }
@@ -58,7 +58,7 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                       //     //   isMarketSocketConnected.value = false;
                       //     // } else {
                       //     //   await socket.connectSocket();
-                      //     //   if (arrSymbolNames.isNotEmpty) {
+                      //     //   if if (arrSymbolNames.isNotEmpty) {
                       //     //     var txt = {"symbols": arrSymbolNames};
                       //     //     socket.connectScript(jsonEncode(txt));
                       //     //   }

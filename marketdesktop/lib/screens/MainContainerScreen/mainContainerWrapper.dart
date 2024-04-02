@@ -176,7 +176,7 @@ class MainContainerScreen extends BaseView<MainContainerController> {
               alwaysScroll: true,
               text: TextSpan(text: (constantValues!.settingData?.banMessage ?? "")),
               style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().redColor),
-              speed: 30,
+              speed: constantValues!.settingData!.banMessage!.length < 80 ? 5 : 30,
             ),
           ),
         ),

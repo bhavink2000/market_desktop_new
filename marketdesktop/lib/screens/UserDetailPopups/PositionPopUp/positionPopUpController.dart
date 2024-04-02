@@ -82,8 +82,8 @@ class PositionPopUpController extends BaseController {
       }
     }
 
-    if (arrTemp.isNotEmpty) {
-      var txt = {"symbols": arrTemp};
+    if (arrSymbolNames.isNotEmpty) {
+      var txt = {"symbols": arrSymbolNames};
       socket.connectScript(jsonEncode(txt));
     }
   }
@@ -220,7 +220,7 @@ class PositionPopUpController extends BaseController {
       List<String> list = [];
       arrListTitle1.forEach((titleObj) {
         switch (titleObj.title) {
-        case UserPositionColumns.exchange:
+          case UserPositionColumns.exchange:
             {
               list.add((element.exchangeName!));
             }

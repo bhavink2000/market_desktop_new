@@ -92,7 +92,7 @@ class CreditPopUpController extends BaseController {
     //   arrTemp.insert(0, element.symbolName);
     // }
 
-    // if (arrTemp.isNotEmpty) {
+    // if (arrSymbolNames.isNotEmpty) {
     //   var txt = {"symbols": arrTemp};
     //   socket.connectScript(jsonEncode(txt));
     // }
