@@ -67,6 +67,7 @@ class RejectLogData {
   String? deviceId;
   String? orderMethod;
   String? status;
+  String? comment;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -107,6 +108,7 @@ class RejectLogData {
     this.status,
     this.createdAt,
     this.updatedAt,
+    this.comment,
   });
 
   factory RejectLogData.fromJson(Map<String, dynamic> json) => RejectLogData(
@@ -144,6 +146,7 @@ class RejectLogData {
         deviceId: json["deviceId"],
         orderMethod: json["orderMethod"],
         status: json["status"],
+        comment: json["comment"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
       );
@@ -185,6 +188,7 @@ class RejectLogData {
         "status": status,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "comment": comment,
       };
 }
 

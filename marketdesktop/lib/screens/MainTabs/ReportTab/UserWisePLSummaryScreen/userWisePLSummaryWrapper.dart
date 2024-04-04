@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/main.dart';
@@ -235,19 +236,20 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                             }),
                       ),
               ),
-              Container(
-                height: 30,
-                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                child: Center(
-                    child: Row(
-                  children: [
-                    totalContent(value: "Total", textColor: AppColors().darkText, width: 43.w),
-                    totalContent(value: controller.totalPlSharePer.toStringAsFixed(2), textColor: AppColors().darkText, width: 130),
-                    totalContent(value: "", textColor: AppColors().darkText, width: 120),
-                    totalContent(value: controller.totalNetPl.toStringAsFixed(2), textColor: AppColors().darkText, width: 140),
-                  ],
-                )),
-              ),
+              Obx(() {
+                return Container(
+                  height: 30,
+                  decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                  child: Center(
+                      child: Row(
+                    children: [
+                      totalContent(value: "Total", textColor: AppColors().darkText, width: 43.w),
+                      totalContent(value: "P/L Share % : " + controller.totalPlSharePer.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
+                      totalContent(value: "Net P/L : " + controller.totalNetPl.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
+                    ],
+                  )),
+                );
+              }),
               Container(
                 height: 2.h,
                 color: AppColors().headerBgColor,

@@ -83,6 +83,7 @@ class PositionController extends BaseController {
   FocusNode CancelFocus = FocusNode();
 
   List<LtpUpdateModel> arrLtpUpdate = [];
+  List<userRoleListData> arrUserTypeListPosition = [];
 
   @override
   void onInit() async {
@@ -103,7 +104,7 @@ class PositionController extends BaseController {
     arrOrderType.removeAt(0);
     selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
     isApiCallRunning = true;
-
+    callForRoleList();
     getPositionList("");
 
     update();
@@ -145,8 +146,17 @@ class PositionController extends BaseController {
     }
   }
 
+  callForRoleList() async {
+    var response = await service.userRoleListCallForPosition();
+    if (response != null) {
+      if (response.statusCode == 200) {
+        arrUserTypeListPosition = response.data!;
+      }
+    }
+  }
+
   getMyUserList() async {
-    var response = await service.getMyUserListCall(roleId: selectedRoll.value.roleId!);
+    var response = await service.getMyUserListCall(roleId: selectedRoll.value.roleId!, filterType: "0");
     arrUserListOnlyClient = response!.data ?? [];
     if (arrUserListOnlyClient.isNotEmpty) {
       // selectedUser.value = arrUserListOnlyClient.first;
@@ -1368,6 +1378,71 @@ class PositionController extends BaseController {
                   height: 30,
                 ),
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+              ),
+            ),
+          ));
+    });
+  }
+
+  Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? width, double? height, Function? onChange, FocusNode? focus}) {
+    dropdownUserTypeKey = GlobalKey();
+
+    return Obx(() {
+      return Container(
+          width: width ?? 250,
+          height: height ?? 30,
+          child: Center(
+            child: DropdownButtonHideUnderline(
+              child: DropdownButtonFormField2<userRoleListData>(
+                isExpanded: true,
+                decoration: commonFocusBorder,
+                iconStyleData: IconStyleData(
+                  icon: Image.asset(
+                    AppImages.arrowDown,
+                    height: 20,
+                    width: 20,
+                    color: AppColors().fontColor,
+                  ),
+                ),
+                dropdownStyleData: const DropdownStyleData(maxHeight: 150),
+                hint: Text(
+                  '',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontFamily: CustomFonts.family1Medium,
+                    color: AppColors().darkText,
+                  ),
+                ),
+                items: arrUserTypeListPosition
+                    .map((userRoleListData item) => DropdownItem<userRoleListData>(
+                          value: item,
+                          height: 30,
+                          child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        ))
+                    .toList(),
+                selectedItemBuilder: (context) {
+                  return arrUserTypeListPosition
+                      .map((userRoleListData item) => DropdownMenuItem<userRoleListData>(
+                            value: item,
+                            child: Text(
+                              item.name ?? "",
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Regular,
+                                color: AppColors().darkText,
+                              ),
+                            ),
+                          ))
+                      .toList();
+                },
+                value: selectUserdropdownValue.value.roleId != null ? selectUserdropdownValue.value : null,
+                onChanged: (userRoleListData? value) {
+                  selectUserdropdownValue.value = value!;
+                  if (onChange != null) {
+                    onChange();
+                  }
+                },
+                buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 40),
               ),
             ),
           ));

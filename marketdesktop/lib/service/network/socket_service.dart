@@ -17,6 +17,7 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListCont
 import 'package:marketdesktop/screens/UserDetailPopups/OpenPositionPopUpScreen/openPositionPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/PositionPopUp/positionPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/TradeListPopUp/tradeListPopUpController.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/userWisePLSummaryPopUp/userWisePLSummaryPopUpController.dart';
 import '../../constant/const_string.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -75,7 +76,13 @@ class SocketService {
           bool isOpenPositionPopUpAvailable = Get.isRegistered<OpenPositionPopUpController>();
           bool isAccountSummaryNewAvailable = Get.isRegistered<ClientAccountReportController>();
           bool isSymbolWisePositionAvailable = Get.isRegistered<SymbolWisePositionReportController>();
+          bool isUserWisePLSummaryPopUpControllerAvailable = Get.isRegistered<UserWisePLSummaryPopUpController>();
 
+          if (isUserWisePLSummaryPopUpControllerAvailable) {
+            var homeVC = Get.find<UserWisePLSummaryPopUpController>();
+
+            homeVC.listenUserWiseProfitLossScriptFromSocket(GetScriptFromSocket.fromJson(jsonDecode(event)));
+          }
           if (isAccountSummaryNewAvailable) {
             var homeVC = Get.find<ClientAccountReportController>();
 

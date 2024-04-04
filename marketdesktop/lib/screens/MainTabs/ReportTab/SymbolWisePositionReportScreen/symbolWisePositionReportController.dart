@@ -32,7 +32,10 @@ class SymbolWisePositionReportController extends BaseController {
   double visibleWidth = 0.0;
   RxDouble plTotal = 0.0.obs;
   RxDouble plPerTotal = 0.0.obs;
+  RxDouble brkPerTotal = 0.0.obs;
   RxDouble brkTotal = 0.0.obs;
+  RxDouble netQtyPerTotal = 0.0.obs;
+
   Rx<Type> selectedValidity = Type().obs;
   final FocusNode focusNode = FocusNode();
   final FocusNode popUpfocusNode = FocusNode();
@@ -113,13 +116,17 @@ class SymbolWisePositionReportController extends BaseController {
     }
     plTotal = 0.0.obs;
     plPerTotal = 0.0.obs;
+    brkPerTotal = 0.0.obs;
     brkTotal = 0.0.obs;
+    netQtyPerTotal = 0.0.obs;
     arrSummaryList.forEach((element) {
       plTotal.value = plTotal.value + element.profitLossValue!;
 
       var temp = ((element.profitLossValue! * element.profitAndLossSharing!) / 100);
       plPerTotal.value = (plPerTotal.value + temp) * -1;
-      brkTotal.value = brkTotal.value + element.adminBrokerageTotal!;
+      brkPerTotal.value = brkPerTotal.value + element.adminBrokerageTotal!;
+      netQtyPerTotal.value = netQtyPerTotal.value + element.totalShareQuantity!;
+      brkTotal.value = brkTotal.value + element.brokerageTotal!;
     });
     isApiCallRunning = false;
     update();
@@ -198,13 +205,17 @@ class SymbolWisePositionReportController extends BaseController {
       }
       plTotal = 0.0.obs;
       plPerTotal = 0.0.obs;
+      brkPerTotal = 0.0.obs;
       brkTotal = 0.0.obs;
+      netQtyPerTotal = 0.0.obs;
       arrSummaryList.forEach((element) {
         plTotal.value = plTotal.value + element.profitLossValue!;
 
         var temp = ((element.profitLossValue! * element.profitAndLossSharing!) / 100);
         plPerTotal.value = (plPerTotal.value + temp) * -1;
-        brkTotal.value = brkTotal.value + element.adminBrokerageTotal!;
+        brkPerTotal.value = brkPerTotal.value + element.adminBrokerageTotal!;
+        netQtyPerTotal.value = netQtyPerTotal.value + element.totalShareQuantity!;
+        brkTotal.value = brkTotal.value + element.brokerageTotal!;
       });
       update();
     }

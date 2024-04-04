@@ -136,6 +136,7 @@ class RejectionLogColumns {
   static const type = "TYPE";
   static const qty = "QUANTITY";
   static const price = "PRICE";
+  static const comment = "COMMENT";
   static const ipAddress = "IP ADDRESS";
   static const deviceId = "DEVICE ID";
 }
@@ -370,6 +371,8 @@ class UserRejectionLogColumns {
   static const type = "TYPE";
   static const qty = "QUANTITY";
   static const price = "PRICE";
+
+  static const comment = "COMMENT";
   static const ipAddress = "IP ADDRESS";
   static const deviceId = "DEVICE ID";
 }
@@ -941,7 +944,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().rejectionLog}-6",
         },
         {
-          "title": RejectionLogColumns.ipAddress,
+          "title": RejectionLogColumns.comment,
           "screenId": ScreenIds().rejectionLog,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -949,12 +952,20 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().rejectionLog}-7",
         },
         {
-          "title": RejectionLogColumns.deviceId,
+          "title": RejectionLogColumns.ipAddress,
           "screenId": ScreenIds().rejectionLog,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 8,
           "columnId": "${ScreenIds().rejectionLog}-8",
+        },
+        {
+          "title": RejectionLogColumns.deviceId,
+          "screenId": ScreenIds().rejectionLog,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 9,
+          "columnId": "${ScreenIds().rejectionLog}-9",
         }
       ]
     },
@@ -2406,7 +2417,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userRejectionLog}-6",
         },
         {
-          "title": UserRejectionLogColumns.ipAddress,
+          "title": UserRejectionLogColumns.comment,
           "screenId": ScreenIds().userRejectionLog,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2414,12 +2425,20 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userRejectionLog}-7",
         },
         {
-          "title": UserRejectionLogColumns.deviceId,
+          "title": UserRejectionLogColumns.ipAddress,
           "screenId": ScreenIds().userRejectionLog,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 9,
           "columnId": "${ScreenIds().userRejectionLog}-8",
+        },
+        {
+          "title": UserRejectionLogColumns.deviceId,
+          "screenId": ScreenIds().userRejectionLog,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 10,
+          "columnId": "${ScreenIds().userRejectionLog}-9",
         },
       ]
     },

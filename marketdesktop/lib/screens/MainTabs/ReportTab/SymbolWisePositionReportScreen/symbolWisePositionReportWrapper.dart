@@ -433,10 +433,14 @@ class SymbolWisePositionReportScreen extends BaseView<SymbolWisePositionReportCo
                   child: Center(
                       child: Row(
                     children: [
-                      totalContent(value: "Total :", textColor: AppColors().darkText, width: 1300),
-                      totalContent(value: controller.plTotal.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
-                      totalContent(value: controller.plPerTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
-                      totalContent(value: controller.brkTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                      totalContent(value: "Total :", textColor: AppColors().darkText, width: 380),
+                      totalContent(value: "Net Qty % Wise : " + controller.netQtyPerTotal.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
+                      totalContent(value: "", textColor: AppColors().darkText, width: 90),
+                      totalContent(value: "Brokerage : " + controller.brkTotal.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 150),
+                      totalContent(value: "", textColor: AppColors().darkText, width: 370),
+                      totalContent(value: "P/L : " + controller.plTotal.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 150),
+                      totalContent(value: "P/L (%) :" + controller.plPerTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 150),
+                      totalContent(value: "Brokerage % : " + controller.brkPerTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 170),
                     ],
                   )),
                 );

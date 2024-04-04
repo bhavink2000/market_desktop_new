@@ -568,6 +568,10 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                       {
                         return dynamicValueBox1(historyValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
                       }
+                    case RejectionLogColumns.comment:
+                      {
+                        return dynamicValueBox1(historyValue.comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                      }
                     case RejectionLogColumns.ipAddress:
                       {
                         return dynamicValueBox1(

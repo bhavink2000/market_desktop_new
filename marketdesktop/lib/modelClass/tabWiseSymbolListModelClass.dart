@@ -33,6 +33,7 @@ class TabWiseSymbolListModel {
 }
 
 class SymbolData {
+  String? id;
   String? userTabSymbolId;
   String? userTabId;
   String? userId;
@@ -76,6 +77,7 @@ class SymbolData {
   num? tradeSecond;
 
   SymbolData({
+    this.id,
     this.userTabSymbolId,
     this.userTabId,
     this.userId,
@@ -120,6 +122,7 @@ class SymbolData {
   });
 
   factory SymbolData.fromJson(Map<String, dynamic> json) => SymbolData(
+        id: json["_id"],
         userTabSymbolId: json["userTabSymbolId"],
         userTabId: json["userTabId"],
         userId: json["userId"],
@@ -169,6 +172,7 @@ class SymbolData {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "userTabSymbolId": userTabSymbolId,
         "userTabId": userTabId,
         "userId": userId,

@@ -973,6 +973,19 @@ class AllApiCallService {
     }
   }
 
+  Future<UserRoleListModel?> userRoleListCallForPosition() async {
+    try {
+      _dio.options.headers = getHeaders();
+
+      final data = await _dio.post(Api.userRoleListForPosition, data: null);
+      //print(data.data);
+      //print('========================================');
+      return UserRoleListModel.fromJson(data.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<BrokerListModel?> brokerListCall() async {
     try {
       _dio.options.headers = getHeaders();

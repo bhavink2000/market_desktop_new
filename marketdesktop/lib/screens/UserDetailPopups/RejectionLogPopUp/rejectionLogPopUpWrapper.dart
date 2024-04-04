@@ -499,6 +499,12 @@ class RejectionLogPopUpScreen extends BaseView<RejectionLogPopUpController> {
                         child: dynamicValueBox1(logValue.price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
                       );
                     }
+                     case UserRejectionLogColumns.comment:
+                    {
+                      return IgnorePointer(
+                        child: dynamicValueBox1(logValue.comment ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                      );
+                    }
                   case UserRejectionLogColumns.ipAddress:
                     {
                       return IgnorePointer(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:get/get.dart';
 
@@ -29,8 +30,8 @@ class UserWisePLSummaryController extends BaseController {
   String selectedUserId = "";
   FocusNode applyFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
-  double totalPlSharePer = 0.0;
-  double totalNetPl = 0.0;
+  RxDouble totalPlSharePer = 0.0.obs;
+  RxDouble totalNetPl = 0.0.obs;
 
   @override
   void onInit() async {
@@ -51,23 +52,47 @@ class UserWisePLSummaryController extends BaseController {
     var response = await service.userWiseProfitLossListCall(1, text, selectedUser.value.userId ?? "");
     arrPlList = response!.data ?? [];
     for (var element in arrPlList) {
+      for (var i = 0; i < element.childUserDataPosition!.length; i++) {
+        if (element.arrSymbol != null) {
+          var symbolObj = element.arrSymbol!.firstWhere((obj) => element.childUserDataPosition![i].symbolId == obj.id);
+
+          element.childUserDataPosition![i].profitLossValue = element.childUserDataPosition![i].totalQuantity! < 0
+              ? (double.parse(symbolObj.ask.toString()) - element.childUserDataPosition![i].price!) * element.childUserDataPosition![i].totalQuantity!
+              : (double.parse(symbolObj.bid.toString()) - double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2))) * element.childUserDataPosition![i].totalQuantity!;
+          log(element.childUserDataPosition![i].profitLossValue.toString());
+        }
+      }
+
       var pl = element.role == UserRollList.user ? element.profitLoss! : element.childUserProfitLossTotal!;
+
+      element.totalProfitLossValue = 0.0;
+      for (var value in element.childUserDataPosition!) {
+        element.totalProfitLossValue += value.profitLossValue ?? 0.0;
+      }
+      var brkTotal = 0.0;
+      if (element.role == UserRollList.master) {
+        brkTotal = double.parse(element.childUserBrokerageTotal!.toString());
+      } else {
+        brkTotal = double.parse(element.brokerageTotal!.toString());
+      }
+
+      element.plWithBrk = element.totalProfitLossValue + pl - brkTotal;
+
       var m2m = element.totalProfitLossValue;
       var sharingPer = element.role == UserRollList.user ? element.profitAndLossSharingDownLine! : element.profitAndLossSharing!;
       var total = pl + m2m;
       var finalValue = total * sharingPer / 100;
 
       finalValue = finalValue * -1;
-      totalPlSharePer = totalPlSharePer + finalValue;
+      totalPlSharePer.value = totalPlSharePer.value + finalValue;
 
-      var sharingPLPer = element.role == UserRollList.user ? element.profitAndLossSharingDownLine! : element.profitAndLossSharing!;
-      var totalPL = pl + m2m;
-      var finalValuePL = totalPL * sharingPLPer / 100;
+      element.plSharePer = finalValue;
 
-      finalValuePL = finalValuePL * -1;
+      finalValue = finalValue + element.parentBrokerageTotal!;
+      element.netPL = finalValue;
 
-      finalValuePL = finalValuePL + element.parentBrokerageTotal!;
-      totalNetPl = totalNetPl + finalValuePL;
+      finalValue = finalValue + element.parentBrokerageTotal!;
+      totalNetPl.value = totalNetPl.value + finalValue;
     }
     isApiCallRunning = false;
     isResetCall = false;
@@ -104,6 +129,19 @@ class UserWisePLSummaryController extends BaseController {
                 : (double.parse(socketData.data!.bid.toString()) - double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2))) * userObj.childUserDataPosition![i].totalQuantity!;
 
             var pl = userObj.role == UserRollList.user ? userObj.profitLoss! : userObj.childUserProfitLossTotal!;
+            userObj.totalProfitLossValue = 0.0;
+            for (var element in userObj.childUserDataPosition!) {
+              userObj.totalProfitLossValue += element.profitLossValue ?? 0.0;
+            }
+            var brkTotal = 0.0;
+            if (userObj.role == UserRollList.master) {
+              brkTotal = double.parse(userObj.childUserBrokerageTotal!.toString());
+            } else {
+              brkTotal = double.parse(userObj.brokerageTotal!.toString());
+            }
+
+            userObj.plWithBrk = userObj.totalProfitLossValue + pl - brkTotal;
+
             var m2m = userObj.totalProfitLossValue;
             var sharingPer = userObj.role == UserRollList.user ? userObj.profitAndLossSharingDownLine! : userObj.profitAndLossSharing!;
             var total = pl + m2m;
@@ -114,30 +152,18 @@ class UserWisePLSummaryController extends BaseController {
 
             var sharingPLPer = userObj.role == UserRollList.user ? userObj.profitAndLossSharingDownLine! : userObj.profitAndLossSharing!;
             var totalPL = pl + m2m;
-            var finalValuePL = totalPL * sharingPLPer / 100;
+            var finalValuePL = (totalPL * sharingPLPer) / 100;
+            finalValuePL = finalValuePL * -1;
             finalValuePL = finalValuePL + userObj.parentBrokerageTotal!;
-            userObj.netPL = finalValuePL * -1;
-            // finalValuePL = finalValuePL * -1;
+            userObj.netPL = finalValuePL;
           }
         }
-        userObj.totalProfitLossValue = 0.0;
-        for (var element in userObj.childUserDataPosition!) {
-          userObj.totalProfitLossValue += element.profitLossValue ?? 0.0;
-        }
-        var brkTotal = 0.0;
-        if (userObj.role == UserRollList.master) {
-          brkTotal = double.parse(userObj.childUserBrokerageTotal!.toString());
-        } else {
-          brkTotal = double.parse(userObj.brokerageTotal!.toString());
-        }
-        var pl = userObj.role == UserRollList.user ? userObj.profitLoss! : userObj.childUserProfitLossTotal!;
-        userObj.plWithBrk = userObj.totalProfitLossValue + pl - brkTotal;
       });
-      totalNetPl = 0.0;
-      totalPlSharePer = 0.0;
+      totalNetPl.value = 0.0;
+      totalPlSharePer.value = 0.0;
       for (var element in arrPlList) {
-        totalPlSharePer = totalPlSharePer + element.plSharePer;
-        totalNetPl = totalNetPl + element.netPL;
+        totalPlSharePer.value = totalPlSharePer.value + element.plSharePer;
+        totalNetPl.value = totalNetPl.value + element.netPL;
       }
       update();
     }

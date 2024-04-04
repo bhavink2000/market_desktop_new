@@ -284,6 +284,7 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                                 controller.currentPage = 1;
                                 controller.arrTracking.clear();
                                 controller.isFilterApiCallRunning = true;
+                                controller.isPagingApiCall = false;
                                 controller.trackList();
                               },
                               bgColor: AppColors().blueColor,

@@ -146,7 +146,7 @@ class PositionScreen extends BaseView<PositionController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userTypeDropDown(controller.selectedRoll, width: 150, onChange: () {
+                              controller.userTypeDropDown(controller.selectedRoll, width: 150, onChange: () {
                                 controller.selectedUser.value = UserData();
                                 controller.arrUserListOnlyClient.clear();
 

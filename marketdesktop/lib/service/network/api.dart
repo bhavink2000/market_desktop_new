@@ -19,6 +19,7 @@ abstract class Api {
   static const getExchangeListUserWise = 'exchange/user-wise-list';
   static const getExchangeList = 'exchange/list';
   static const userRoleList = 'role/list';
+  static const userRoleListForPosition = 'role/admin-list';
   static const brokerList = 'user/list-broker';
   static const groupList = 'group/list';
   static const createUser = 'user/create';

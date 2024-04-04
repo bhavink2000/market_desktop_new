@@ -5,7 +5,9 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
+import 'package:marketdesktop/modelClass/tabWiseSymbolListModelClass.dart';
 
 UserWiseProfitLossSummaryModel userWiseProfitLossSummaryModelFromJson(String str) => UserWiseProfitLossSummaryModel.fromJson(json.decode(str));
 
@@ -57,6 +59,7 @@ class UserWiseProfitLossData {
   double plWithBrk = 0;
   double plSharePer = 0.0;
 
+  List<SymbolData>? arrSymbol;
   double netPL = 0;
 
   UserWiseProfitLossData({
@@ -77,6 +80,7 @@ class UserWiseProfitLossData {
     this.brkSharingDownLine,
     this.createdAt,
     this.childUserDataPosition,
+    this.arrSymbol,
   });
 
   factory UserWiseProfitLossData.fromJson(Map<String, dynamic> json) => UserWiseProfitLossData(
@@ -97,6 +101,7 @@ class UserWiseProfitLossData {
         brkSharingDownLine: json["brkSharingDownLine"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
         childUserDataPosition: json["childUserDataPosition"] == null ? [] : List<ChildUserDataPosition>.from(json["childUserDataPosition"]!.map((x) => ChildUserDataPosition.fromJson(x))),
+        arrSymbol: json["symbolData"] == null ? [] : List<SymbolData>.from(json["symbolData"]!.map((x) => SymbolData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -117,6 +122,7 @@ class UserWiseProfitLossData {
         "brkSharingDownLine": brkSharingDownLine,
         "createdAt": createdAt?.toIso8601String(),
         "childUserDataPosition": childUserDataPosition == null ? [] : List<dynamic>.from(childUserDataPosition!.map((x) => x.toJson())),
+        "symbolData": arrSymbol == null ? [] : List<dynamic>.from(arrSymbol!.map((x) => x.toJson())),
       };
 }
 

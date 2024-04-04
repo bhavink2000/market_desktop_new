@@ -522,8 +522,9 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                       totalContent(value: "Total :", textColor: AppColors().darkText, width: 1600),
 
                       // totalContent(value: controller.outPerGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
-                      totalContent(value: controller.grandTotal.value.toStringAsFixed(2), textColor: controller.grandTotal.value > 0 ? AppColors().blueColor : AppColors().redColor, width: 110),
-                      // totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+
+                      totalContent(value: "Total : " + controller.grandTotal.value.toStringAsFixed(2), textColor: controller.grandTotal.value > 0 ? AppColors().blueColor : AppColors().redColor, width: 150),
+                      totalContent(value: "Our % : " + controller.outPerGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 150),
                     ],
                   )),
                 );

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
@@ -240,6 +241,20 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
                       }),
                 ),
               ),
+              Obx(() {
+                return Container(
+                  height: 30,
+                  decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                  child: Center(
+                      child: Row(
+                    children: [
+                      totalContent(value: "Total", textColor: AppColors().darkText, width: 43.w),
+                      totalContent(value: "P/L Share % : " + controller.totalPlSharePer.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
+                      totalContent(value: "Net P/L : " + controller.totalNetPl.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
+                    ],
+                  )),
+                );
+              }),
               Container(
                 height: 2.h,
                 color: AppColors().headerBgColor,
@@ -248,6 +263,20 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
           ),
         ),
       ),
+    );
+  }
+
+  Widget totalContent({String? value, Color? textColor, double? width}) {
+    return Container(
+      width: width ?? 6.w,
+      padding: EdgeInsets.only(left: 5),
+      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+      child: Text(value ?? "",
+          style: TextStyle(
+            fontSize: 12,
+            fontFamily: CustomFonts.family1Medium,
+            color: textColor ?? AppColors().redColor,
+          )),
     );
   }
 

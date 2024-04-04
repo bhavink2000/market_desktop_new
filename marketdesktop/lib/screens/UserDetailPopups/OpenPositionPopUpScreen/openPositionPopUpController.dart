@@ -83,28 +83,31 @@ class OpenPositionPopUpController extends BaseController {
 
   listenPositionScriptFromSocket(GetScriptFromSocket socketData) {
     if (socketData.status == true) {
-      var obj = arrPositionScriptList.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);
+      // var obj = arrPositionScriptList.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);
+      var arrObj = arrPositionScriptList.where((element) => socketData.data!.symbol == element.symbolName);
+      if (arrObj.length > 0) {
+        for (var i = 0; i < arrObj.length; i++) {
+          var indexOfScript = arrPositionScriptList.indexWhere((element) => element.tradeId == arrObj.toList()[i].tradeId);
+          if (indexOfScript != -1) {
+            arrPositionScriptList[indexOfScript].scriptDataFromSocket = socketData.data!.obs;
+            arrPositionScriptList[indexOfScript].bid = socketData.data!.bid;
+            arrPositionScriptList[indexOfScript].ask = socketData.data!.ask;
+            arrPositionScriptList[indexOfScript].ltp = socketData.data!.ltp;
+            if (indexOfScript == 0) {}
 
-      if (obj != null) {
-        var indexOfScript = arrPositionScriptList.indexWhere((element) => element.symbolName == socketData.data?.symbol);
-        if (indexOfScript != -1) {
-          arrPositionScriptList[indexOfScript].scriptDataFromSocket = socketData.data!.obs;
-          arrPositionScriptList[indexOfScript].bid = socketData.data!.bid;
-          arrPositionScriptList[indexOfScript].ask = socketData.data!.ask;
-          arrPositionScriptList[indexOfScript].ltp = socketData.data!.ltp;
-          if (indexOfScript == 0) {}
+            if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
+              arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
+                  ? (double.parse(arrPositionScriptList[indexOfScript].bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
+                  : (arrPositionScriptList[indexOfScript].ask! - double.parse(arrPositionScriptList[indexOfScript].price.toString())) * arrPositionScriptList[indexOfScript].totalQuantity!;
+            }
+          }
+          totalPL = 0.0;
 
-          if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
-            arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
-                ? (double.parse(arrPositionScriptList[indexOfScript].bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
-                : (arrPositionScriptList[indexOfScript].ask! - double.parse(arrPositionScriptList[indexOfScript].price.toString())) * arrPositionScriptList[indexOfScript].totalQuantity!;
+          for (var element in arrPositionScriptList) {
+            totalPL = totalPL + element.profitLossValue!;
           }
         }
-        totalPL = 0.0;
 
-        for (var element in arrPositionScriptList) {
-          totalPL = totalPL + element.profitLossValue!;
-        }
         // totalPL = totalPL + userData!.profitLoss!.toDouble();
         // var mainVc = Get.find<MainContainerController>();
         // mainVc.pl = totalPL.obs;
