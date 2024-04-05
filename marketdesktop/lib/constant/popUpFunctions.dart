@@ -37,6 +37,8 @@ import 'package:marketdesktop/screens/UserDetailPopups/ProfitAndLossUserWiseSumm
 import 'package:marketdesktop/screens/UserDetailPopups/ProfitAndLossUserWiseSummaryPopUp/profitAndLossUserWiseSummaryPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/QuantitySettingPopUp/quantitySettingPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/RejectionLogPopUp/rejectionLogPopUpController.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/SettlementPopUp/settlementPopUpController.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/SettlementPopUp/settlementPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/ShareDetailPopUp/shareDetailPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/ShareDetailPopUp/shareDetailPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/SuperAdminTradePopUp/superAdminTradePopUpController.dart';
@@ -279,6 +281,36 @@ showProfitAndLossUserWiseSummaryPopUp() {
               height: 60.h,
               decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: ProfitAndLossUserWiseSummaryPopUpScreen(),
+            ),
+          ));
+}
+
+showSettlemetPopUp(String userId, String username) {
+  Get.put(SettlementPopUpController());
+
+  Get.find<SettlementPopUpController>().selectedUserId = userId;
+  Get.find<SettlementPopUpController>().getSettelementList();
+
+  showDialog<String>(
+      context: Get.context!,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: Container(
+              width: 85.w,
+              height: 60.h,
+              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              child: SettlementPopUpScreen(),
             ),
           ));
 }

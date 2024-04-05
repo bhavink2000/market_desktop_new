@@ -76,6 +76,7 @@ var userToken;
 bool isKeyBoardListenerActive = false;
 bool isUserDetailPopUpOpen = false;
 bool isUserViewPopUpOpen = false;
+bool isSettlementPopUpOpen = false;
 var serverName = "";
 var deviceName = "";
 var deviceId = "";

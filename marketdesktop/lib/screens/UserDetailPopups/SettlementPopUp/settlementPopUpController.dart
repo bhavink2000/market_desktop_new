@@ -1,7 +1,10 @@
 import 'package:get/get.dart';
+import 'package:marketdesktop/constant/screenColumnData.dart';
+import 'package:marketdesktop/constant/utilities.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
-
+import 'package:excel/excel.dart' as excelLib;
 import '../../../constant/index.dart';
 
 enum SettlementType { without, within }
@@ -10,41 +13,256 @@ class SettlementPopUpController extends BaseController {
   //*********************************************************************** */
   // Variable Declaration
   //*********************************************************************** */
-
   RxString fromDate = "Start Date".obs;
   RxString endDate = "End Date".obs;
-  SettlementType? selectedSettlementType = SettlementType.without;
   List<Profit> arrProfitList = [];
   List<Profit> arrLossList = [];
   String selectedUserId = "";
+
   Rx<UserData> selectedUser = UserData().obs;
   SettelementData? totalValues;
-  bool isApiCallFromApple = true;
+  bool isApiCallFromSearch = false;
+  bool isApiCallFromReset = false;
+  bool isApiCallFirstTime = false;
   TextEditingController searchController = TextEditingController();
   FocusNode searchFocus = FocusNode();
+  FocusNode viewFocus = FocusNode();
+  FocusNode clearFocus = FocusNode();
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-    getSettelementList();
+    getColumnListFromDB(ScreenIds().settlement, arrListTitle1);
+    fromDate.value = shortDateForBackend(findFirstDateOfTheWeek(DateTime.now()));
+    endDate.value = shortDateForBackend(findLastDateOfTheWeek(DateTime.now()));
   }
 
-  getSettelementList() async {
-    var response = await service.settelementListCall(1, searchController.text.trim(), selectedUser.value.userId ?? "");
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    return dateTime.add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
+  }
+
+  getSettelementList({int isFrom = 0}) async {
+    if (isFrom == 0) {
+      isApiCallFirstTime = true;
+    } else if (isFrom == 1) {
+      isApiCallFromSearch = true;
+    } else {
+      isApiCallFromReset = true;
+    }
+
+    arrProfitList.clear();
+    arrLossList.clear();
+
+    update();
+    var response = await service.settelementListCall(1, fromDate.value != "Start Date" ? fromDate.value : "", endDate.value != "End Date" ? endDate.value : "", userId: selectedUserId);
+    if (isFrom == 0) {
+      isApiCallFirstTime = false;
+    } else if (isFrom == 1) {
+      isApiCallFromSearch = false;
+    } else {
+      isApiCallFromReset = false;
+    }
     arrProfitList = response!.data?.profit ?? [];
     arrLossList = response.data?.loss ?? [];
     totalValues = response.data!;
     for (var element in arrProfitList) {
       totalValues!.plProfitGrandTotal = totalValues!.plProfitGrandTotal + element.profitLoss!;
       totalValues!.brkProfitGrandTotal = totalValues!.brkProfitGrandTotal + element.brokerageTotal!;
+      totalValues!.profitGrandTotal = totalValues!.profitGrandTotal + element.total!;
     }
-    totalValues!.profitGrandTotal = totalValues!.plProfitGrandTotal - totalValues!.brkProfitGrandTotal;
+
+    // var temp3 = totalValues!.plProfitGrandTotal;
+    // var temp4 = totalValues!.brkProfitGrandTotal;
+    // if (totalValues!.plProfitGrandTotal < 0) {
+    //   temp3 = totalValues!.plProfitGrandTotal * -1;
+    // }
+    // if (totalValues!.brkProfitGrandTotal < 0) {
+    //   temp3 = totalValues!.brkProfitGrandTotal * -1;
+    // }
+    // totalValues!.profitGrandTotal = temp3 + temp4;
+    // if (totalValues!.plStatus == 1) {
+    //   totalValues!.profitGrandTotal = totalValues!.profitGrandTotal + totalValues!.myPLTotal!;
+    // }
+
     for (var element in arrLossList) {
       totalValues!.plLossGrandTotal = totalValues!.plLossGrandTotal + element.profitLoss!;
       totalValues!.brkLossGrandTotal = totalValues!.brkLossGrandTotal + element.brokerageTotal!;
+      totalValues!.LossGrandTotal = totalValues!.LossGrandTotal + element.total!;
     }
-    totalValues!.LossGrandTotal = totalValues!.plLossGrandTotal - totalValues!.brkLossGrandTotal;
+    // var temp1 = totalValues!.plLossGrandTotal;
+    // var temp2 = totalValues!.brkLossGrandTotal;
+    // if (totalValues!.plLossGrandTotal < 0) {
+    //   temp1 = totalValues!.plLossGrandTotal * -1;
+    // }
+    // if (totalValues!.LossGrandTotal < 0) {
+    //   temp2 = totalValues!.brkLossGrandTotal * -1;
+    // }
+    // totalValues!.LossGrandTotal = temp1 + temp2;
+    // if (totalValues!.plStatus == 0) {
+    //   totalValues!.LossGrandTotal = totalValues!.LossGrandTotal + totalValues!.myPLTotal!;
+    // }
+
     update();
+  }
+
+  String getRoll(String rollName) {
+    var roll = "";
+    if (rollName == UserRollList.admin) {
+      roll = "A";
+    } else if (rollName == UserRollList.superAdmin) {
+      roll = "S";
+    } else if (rollName == UserRollList.master) {
+      roll = "M";
+    } else if (rollName == UserRollList.user) {
+      roll = "C";
+    } else {
+      roll = "B";
+    }
+
+    return roll;
+  }
+
+  onClickExcel({bool isFromPDF = false}) {
+    List<excelLib.TextCellValue?> titleList = [];
+    arrListTitle1.forEach((element) {
+      titleList.add(excelLib.TextCellValue(element.title!));
+    });
+    List<List<excelLib.TextCellValue?>> dataList1 = [];
+    List<List<excelLib.TextCellValue?>> dataList2 = [];
+    arrProfitList.forEach((element) {
+      List<excelLib.TextCellValue?> list1 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list1.add(excelLib.TextCellValue(element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list1.add(excelLib.TextCellValue(element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list1.add(excelLib.TextCellValue(element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list1.add(excelLib.TextCellValue(element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list1.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList1.add(list1);
+    });
+    arrLossList.forEach((element) {
+      List<excelLib.TextCellValue?> list1 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list1.add(excelLib.TextCellValue(element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list1.add(excelLib.TextCellValue(element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list1.add(excelLib.TextCellValue(element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list1.add(excelLib.TextCellValue(element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list1.add(excelLib.TextCellValue(""));
+            }
+        }
+      });
+      dataList2.add(list1);
+    });
+
+    exportExcelWithTwoSheetFile("Settlement.xlsx", "Profit", "Loss", titleList, dataList1, dataList2);
+  }
+
+  onClickPDF() async {
+    List<String> headers = [];
+
+    arrListTitle1.forEach((element) {
+      headers.add(element.title!);
+    });
+    List<List<dynamic>> dataList = [];
+    arrProfitList.forEach((element) {
+      List<String> list1 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list1.add((element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list1.add((element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list1.add((element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list1.add((element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list1.add((""));
+            }
+        }
+      });
+      dataList.add(list1);
+    });
+
+    List<List<dynamic>> dataList1 = [];
+    arrLossList.forEach((element) {
+      List<String> list2 = [];
+      arrListTitle1.forEach((titleObj) {
+        switch (titleObj.title) {
+          case SettlementColumns.username:
+            {
+              list2.add((element.displayName ?? ""));
+            }
+
+          case SettlementColumns.pl:
+            {
+              list2.add((element.profitLoss!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.brk:
+            {
+              list2.add((element.brokerageTotal!.toStringAsFixed(2)));
+            }
+          case SettlementColumns.total:
+            {
+              list2.add((element.total!.toStringAsFixed(2)));
+            }
+          default:
+            {
+              list2.add((""));
+            }
+        }
+      });
+      dataList1.add(list2);
+    });
+    exportPDFWith2DataFile(fileName: "Settlement", title: "Profit", title1: "Loss", width: globalMaxWidth, titleList: headers, dataList: dataList, dataList1: dataList1);
   }
 }

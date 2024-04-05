@@ -1610,16 +1610,11 @@ class AllApiCallService {
     }
   }
 
-  Future<SettlementListModel?> settelementListCall(int page, String startDate, String endDate) async {
+  Future<SettlementListModel?> settelementListCall(int page, String startDate, String endDate, {String? userId}) async {
     try {
       _dio.options.headers = getHeaders();
       //print(_dio.options.headers);
-      final payload = {
-        "page": page,
-        "limit": pageLimit,
-        "startDate": startDate,
-        "endDate": endDate,
-      };
+      final payload = {"page": page, "limit": pageLimit, "startDate": startDate, "endDate": endDate, "userId": userId};
       final data = await _dio.post(Api.settelmentList, data: payload);
       //print(data.data);
       return SettlementListModel.fromJson(data.data);

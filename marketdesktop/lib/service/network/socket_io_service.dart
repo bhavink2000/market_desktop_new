@@ -42,8 +42,9 @@ class SocketIOService {
       socketForTrade.connect();
       socketForTrade.onConnect((_) {
         log('connected to websocket');
-        socketForTrade.emit('unsubscribe', userData!.userName);
-        socketForTrade.emit('subscribe', userData!.userName);
+        socketForTrade.emit('unsubscribe', userData!.role == UserRollList.admin ? userData!.parentUser : userData!.userName!);
+
+        socketForTrade.emit('subscribe', userData!.role == UserRollList.admin ? userData!.parentUser : userData!.userName!);
       });
 
       socketForTrade.on("trade", (data) {

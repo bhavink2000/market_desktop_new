@@ -42,6 +42,7 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/ProfitAndLossScreen/profi
 import 'package:marketdesktop/screens/MainTabs/ViewTab/RejectionLogScreen/rejectionLogController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/SettlementPopUp/settlementPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/SuperAdminTradePopUp/superAdminTradePopUpController.dart';
 import 'package:window_size/window_size.dart';
 import '../../constant/index.dart';
@@ -265,6 +266,10 @@ class MainContainerController extends BaseController {
       } else if (isUserViewPopUpOpen) {
         Get.back();
         isUserViewPopUpOpen = false;
+      } else if (isSettlementPopUpOpen) {
+        Get.back();
+        await Get.delete<SettlementPopUpController>();
+        isSettlementPopUpOpen = false;
       } else {
         Get.back();
         isCommonScreenPopUpOpen = false;

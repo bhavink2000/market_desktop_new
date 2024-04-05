@@ -54,7 +54,11 @@ class UserDetailsPopUpScreen extends BaseView<UserDetailsPopUpController> {
                         "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal?.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance?.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
                         style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                     const Spacer(),
-                    Text("Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
+                    Text(
+                        controller.selectedUserData!.role == UserRollList.user
+                            ? "Total P/L : ${(controller.selectedUserData!.profitLoss! - controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}"
+                            : "Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}",
+                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1SemiBold, color: AppColors().darkText)),
                     const SizedBox(
                       width: 10,
                     ),

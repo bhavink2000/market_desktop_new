@@ -10,6 +10,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
 import '../../../../customWidgets/appButton.dart';
+import '../../../../main.dart';
 
 class SettlementScreen extends BaseView<SettlementController> {
   const SettlementScreen({Key? key}) : super(key: key);
@@ -501,14 +502,10 @@ class SettlementScreen extends BaseView<SettlementController> {
                 switch (controller.arrListTitle1[indexT].title) {
                   case SettlementColumns.username:
                     {
-                      return dynamicValueBox1(
-                        value.displayName!,
-                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                        AppColors().darkText,
-                        index,
-                        indexT,
-                        controller.arrListTitle1,
-                      );
+                      return dynamicValueBox1(value.displayName!, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, isUnderlined: value.userId != "", controller.arrListTitle1, onClickValue: () {
+                        isSettlementPopUpOpen = true;
+                        showSettlemetPopUp(value.userId!, value.displayName!);
+                      });
                     }
                   case SettlementColumns.pl:
                     {

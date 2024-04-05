@@ -1,12 +1,17 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appScrollBar.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/settelementListModelClass.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../constant/index.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/SettlementPopUp/settlementPopUpController.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import '../../../constant/screenColumnData.dart';
 import '../../../constant/utilities.dart';
 import '../../../customWidgets/appButton.dart';
+import '../../MainContainerScreen/mainContainerController.dart';
 
 class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
   const SettlementPopUpScreen({Key? key}) : super(key: key);
@@ -22,17 +27,30 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
           onTap: () {
             // controller.focusNode.requestFocus();
           },
-          child: Row(
+          child: Column(
             children: [
-              filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
-                controller.isFilterOpen = !controller.isFilterOpen;
-                controller.update();
-              }),
-              filterContent(context),
+              headerViewContent(
+                  title: "Settlement",
+                  isFilterAvailable: false,
+                  isFromMarket: false,
+                  closeClick: () {
+                    Get.find<MainContainerController>().onKeyHite();
+                  }),
               Expanded(
-                flex: 8,
-                child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
-                // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+                child: Row(
+                  children: [
+                    filterPanel(context, bottomMargin: 0, isRecordDisplay: false, onCLickFilter: () {
+                      controller.isFilterOpen = !controller.isFilterOpen;
+                      controller.update();
+                    }),
+                    filterContent(context),
+                    Expanded(
+                      flex: 8,
+                      child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+                      // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -40,498 +58,418 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
   }
 
   Widget filterContent(BuildContext context) {
-    return AnimatedContainer(
-      // margin: EdgeInsets.only(bottom: 2.h),
-      decoration: BoxDecoration(
-          border: Border(
-        bottom: BorderSide(color: AppColors().whiteColor, width: 1),
-      )),
-      width: controller.isFilterOpen ? 380 : 0,
-      duration: const Duration(milliseconds: 100),
-      child: Offstage(
-        offstage: !controller.isFilterOpen,
-        child: Column(
-          children: [
-            const SizedBox(
-              width: 35,
-            ),
-            Container(
-              height: 35,
-              color: AppColors().headerBgColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(),
-                  Text("Filter",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontFamily: CustomFonts.family1SemiBold,
-                        color: AppColors().darkText,
-                      )),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      controller.isFilterOpen = false;
-                      controller.update();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(9),
-                      width: 30,
-                      height: 30,
-                      color: Colors.transparent,
-                      child: Image.asset(
-                        AppImages.closeIcon,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-                child: Container(
-              color: AppColors().slideGrayBG,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Spacer(),
-                        Text("From:",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1Regular,
-                              color: AppColors().fontColor,
-                            )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                              controller.fromDate.value = shortDateForBackend(selectedDate);
-                            });
-                          },
-                          child: Obx(() {
-                            return Container(
-                              height: 4.h,
-                              width: 250,
-                              decoration: BoxDecoration(
-                                  color: AppColors().whiteColor,
-                                  border: Border.all(
-                                    color: AppColors().lightOnlyText,
-                                    width: 1.5,
-                                  ),
-                                  borderRadius: BorderRadius.circular(3)),
-                              // color: AppColors().whiteColor,
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    controller.fromDate.value,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: CustomFonts.family1Medium,
-                                      color: AppColors().darkText,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Image.asset(
-                                    AppImages.calendarIcon,
-                                    width: 25,
-                                    height: 25,
-                                    color: AppColors().fontColor,
-                                  )
-                                ],
-                              ),
-                            );
-                          }),
-                        ),
-                        const SizedBox(
-                          width: 30,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    height: 4.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // SizedBox(
-                        //   width: 30,
-                        // ),
-                        const Spacer(),
-
-                        Text("To:",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1Regular,
-                              color: AppColors().fontColor,
-                            )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            // selectToDate(controller.endDate);
-                            showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                              controller.endDate.value = shortDateForBackend(selectedDate);
-                            });
-                          },
-                          child: Obx(() {
-                            return Container(
-                              height: 4.h,
-                              width: 250,
-                              decoration: BoxDecoration(
-                                  color: AppColors().whiteColor,
-                                  border: Border.all(
-                                    color: AppColors().lightOnlyText,
-                                    width: 1.5,
-                                  ),
-                                  borderRadius: BorderRadius.circular(3)),
-                              // color: AppColors().whiteColor,
-                              padding: const EdgeInsets.only(right: 10),
-                              child: Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  Text(
-                                    controller.endDate.value,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: CustomFonts.family1Medium,
-                                      color: AppColors().darkText,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Image.asset(
-                                    AppImages.calendarIcon,
-                                    width: 25,
-                                    height: 25,
-                                    color: AppColors().fontColor,
-                                  )
-                                ],
-                              ),
-                            );
-                          }),
-                        ),
-                        const SizedBox(
-                          width: 30,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Row(
+    return FocusTraversalGroup(
+      policy: WidgetOrderTraversalPolicy(),
+      child: Visibility(
+        visible: controller.isFilterOpen,
+        child: AnimatedContainer(
+          // margin: EdgeInsets.only(bottom: 2.h),
+          decoration: BoxDecoration(
+              border: Border(
+            bottom: BorderSide(color: AppColors().whiteColor, width: 1),
+          )),
+          width: controller.isFilterOpen ? 270 : 0,
+          duration: Duration(milliseconds: 100),
+          child: Offstage(
+            offstage: !controller.isFilterOpen,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 35,
+                ),
+                Container(
+                  height: 35,
+                  color: AppColors().headerBgColor,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Spacer(),
-                      Text("Opening ?:",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: CustomFonts.family1Regular,
-                            color: AppColors().fontColor,
-                          )),
-                      const SizedBox(
-                        width: 10,
+                      Spacer(),
+                      Container(
+                        child: Text("Filter",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: CustomFonts.family1SemiBold,
+                              color: AppColors().darkText,
+                            )),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          controller.isFilterOpen = false;
+                          controller.update();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(9),
+                          width: 30,
+                          height: 30,
+                          color: Colors.transparent,
+                          child: Image.asset(
+                            AppImages.closeIcon,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                       SizedBox(
-                        width: 280,
-                        // height: 50,
+                        width: 10,
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                    child: Container(
+                  color: AppColors().slideGrayBG,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 35,
                         child: Row(
-                          children: <Widget>[
-                            SizedBox(
-                              width: 100,
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: const Text(
-                                  'Without',
-                                ),
-                                horizontalTitleGap: 0,
-                                dense: true,
-                                visualDensity: const VisualDensity(
-                                  vertical: -3,
-                                ),
-                                titleTextStyle: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: CustomFonts.family1Regular,
-                                  color: AppColors().fontColor,
-                                ),
-                                leading: Radio<SettlementType>(
-                                  value: SettlementType.without,
-                                  activeColor: AppColors().darkText,
-                                  groupValue: controller.selectedSettlementType!,
-                                  onChanged: (SettlementType? value) {
-                                    controller.selectedSettlementType = value;
-                                    controller.update();
-                                  },
-                                ),
-                              ),
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Container(
+                              child: Text("From:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().fontColor,
+                                  )),
                             ),
                             SizedBox(
-                              width: 100,
-                              child: ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: const Text(
-                                  'With',
-                                ),
-                                horizontalTitleGap: 0,
-                                dense: true,
-                                visualDensity: const VisualDensity(vertical: -3),
-                                titleTextStyle: TextStyle(
-                                  fontSize: 12,
-                                  fontFamily: CustomFonts.family1Regular,
-                                  color: AppColors().fontColor,
-                                ),
-                                leading: Radio<SettlementType>(
-                                  value: SettlementType.within,
-                                  activeColor: AppColors().darkText,
-                                  groupValue: controller.selectedSettlementType!,
-                                  onChanged: (SettlementType? value) {
-                                    controller.selectedSettlementType = value;
-                                    controller.update();
-                                  },
-                                ),
-                              ),
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                  controller.fromDate.value = shortDateForBackend(selectedDate);
+                                });
+                              },
+                              child: Obx(() {
+                                return Container(
+                                  height: 35,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                      color: AppColors().whiteColor,
+                                      border: Border.all(
+                                        color: AppColors().lightOnlyText,
+                                        width: 1.5,
+                                      ),
+                                      borderRadius: BorderRadius.circular(3)),
+                                  // color: AppColors().whiteColor,
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        controller.fromDate.value,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontFamily: CustomFonts.family1Medium,
+                                          color: AppColors().darkText,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Image.asset(
+                                        AppImages.calendarIcon,
+                                        width: 25,
+                                        height: 25,
+                                        color: AppColors().fontColor,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ),
+                            SizedBox(
+                              width: 30,
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        width: 70,
-                      ),
                       SizedBox(
-                        width: 6.w,
-                        height: 3.h,
-                        child: CustomButton(
-                          isEnabled: true,
-                          shimmerColor: AppColors().whiteColor,
-                          title: "View",
-                          textSize: 14,
-                          onPress: () {},
-                          bgColor: AppColors().blueColor,
-                          isFilled: true,
-                          textColor: AppColors().whiteColor,
-                          isTextCenter: true,
-                          isLoading: false,
+                        height: 10,
+                      ),
+                      Container(
+                        height: 35,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // SizedBox(
+                            //   width: 30,
+                            // ),
+                            Spacer(),
+
+                            Container(
+                              child: Text("To:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().fontColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                // selectToDate(controller.endDate);
+                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                  controller.endDate.value = shortDateForBackend(selectedDate);
+                                });
+                              },
+                              child: Obx(() {
+                                return Container(
+                                  height: 35,
+                                  width: 150,
+                                  decoration: BoxDecoration(
+                                      color: AppColors().whiteColor,
+                                      border: Border.all(
+                                        color: AppColors().lightOnlyText,
+                                        width: 1.5,
+                                      ),
+                                      borderRadius: BorderRadius.circular(3)),
+                                  // color: AppColors().whiteColor,
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        controller.endDate.value,
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontFamily: CustomFonts.family1Medium,
+                                          color: AppColors().darkText,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Image.asset(
+                                        AppImages.calendarIcon,
+                                        width: 25,
+                                        height: 25,
+                                        color: AppColors().fontColor,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
+                            ),
+                            SizedBox(
+                              width: 30,
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
-                        width: 1.w,
+                        height: 10,
                       ),
-                      SizedBox(
-                        width: 6.w,
-                        height: 3.h,
-                        child: CustomButton(
-                          isEnabled: true,
-                          shimmerColor: AppColors().whiteColor,
-                          title: "Clear",
-                          textSize: 14,
-                          prefixWidth: 0,
-                          onPress: () {
-                            controller.fromDate.value = "";
-                            controller.endDate.value = "";
-                          },
-                          bgColor: AppColors().whiteColor,
-                          isFilled: true,
-                          borderColor: AppColors().blueColor,
-                          textColor: AppColors().blueColor,
-                          isTextCenter: true,
-                          isLoading: false,
-                        ),
-                      ),
-                      // SizedBox(width: 5.w,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 80,
+                            height: 35,
+                            child: CustomButton(
+                              isEnabled: true,
+                              shimmerColor: AppColors().whiteColor,
+                              title: "View",
+                              textSize: 14,
+                              onPress: () {
+                                controller.getSettelementList(isFrom: 1);
+                              },
+                              focusKey: controller.viewFocus,
+                              borderColor: Colors.transparent,
+                              focusShadowColor: AppColors().blueColor,
+                              bgColor: AppColors().blueColor,
+                              isFilled: true,
+                              textColor: AppColors().whiteColor,
+                              isTextCenter: true,
+                              isLoading: controller.isApiCallFromSearch,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 1.w,
+                          ),
+                          SizedBox(
+                            width: 80,
+                            height: 35,
+                            child: CustomButton(
+                              isEnabled: true,
+                              shimmerColor: AppColors().blueColor,
+                              title: "Clear",
+                              textSize: 14,
+                              prefixWidth: 0,
+                              onPress: () {
+                                controller.fromDate.value = shortDateForBackend(controller.findFirstDateOfTheWeek(DateTime.now()));
+                                controller.endDate.value = shortDateForBackend(controller.findLastDateOfTheWeek(DateTime.now()));
+                                controller.getSettelementList();
+                                controller.getSettelementList(isFrom: 2);
+                              },
+                              bgColor: AppColors().whiteColor,
+                              isFilled: true,
+                              focusKey: controller.clearFocus,
+                              borderColor: Colors.transparent,
+                              focusShadowColor: AppColors().blueColor,
+                              textColor: AppColors().blueColor,
+                              isTextCenter: true,
+                              isLoading: controller.isApiCallFromReset,
+                            ),
+                          ),
+                          // SizedBox(width: 5.w,),
+                        ],
+                      )
                     ],
-                  )
-                ],
-              ),
-            ))
-          ],
+                  ),
+                ))
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget mainContent(BuildContext context) {
-    return CustomScrollBar(
-      bgColor: AppColors().blueColor,
-      child: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 100),
-          width: controller.isFilterOpen ? 920 : 1300,
-          // margin: EdgeInsets.only(right: 1.w),
-          color: Colors.white,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(1),
-                  decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 3.h,
-                        decoration: BoxDecoration(
-                            color: AppColors().whiteColor,
-                            border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                        child: Center(
-                          child: Text("Profit",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: CustomFonts.family1Medium,
-                                color: AppColors().greenColor,
-                              )),
-                        ),
-                      ),
-                      Container(
-                        height: 3.h,
-                        color: AppColors().whiteColor,
-                        child: listTitleContent(),
-                      ),
-                      Expanded(
-                        child: CustomScrollBar(
-                          bgColor: AppColors().blueColor,
-                          child: ListView.builder(
-                              physics: const ClampingScrollPhysics(),
-                              clipBehavior: Clip.hardEdge,
-                              itemCount: controller.arrProfitList.length,
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return profitLossContent(context, index, controller.arrProfitList[index]);
-                              }),
-                        ),
-                      ),
-                      Container(
-                        height: 3.h,
-                        decoration: BoxDecoration(
-                            color: AppColors().whiteColor,
-                            border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                        child: Center(
-                            child: Row(
-                          children: [
-                            totalContent(value: "Net Profit", textColor: AppColors().darkText, width: 110),
-                            totalContent(
-                                value: controller.totalValues!.plProfitGrandTotal.toStringAsFixed(2),
-                                textColor: AppColors().darkText,
-                                width: 110),
-                            totalContent(
-                                value: controller.totalValues!.brkProfitGrandTotal.toStringAsFixed(2),
-                                textColor: AppColors().darkText,
-                                width: 110),
-                            totalContent(
-                                value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2),
-                                textColor: AppColors().darkText,
-                                width: 110),
-                          ],
-                        )),
-                      ),
-                    ],
+    return SingleChildScrollView(
+      physics: ClampingScrollPhysics(),
+      scrollDirection: Axis.horizontal,
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 100),
+        // width: 70.2.w,
+        // margin: EdgeInsets.only(right: 1.w),
+        color: Colors.white,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: controller.isFilterOpen ? 35.w : 43.5.w,
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              child: Column(
+                children: [
+                  Container(
+                    height: 3.h,
+                    decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                    child: Center(
+                      child: Text("Profit",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: CustomFonts.family1Medium,
+                            color: AppColors().greenColor,
+                          )),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                width: 3,
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(1),
-                  decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 3.h,
-                        decoration: BoxDecoration(
-                            color: AppColors().whiteColor,
-                            border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                        child: Center(
-                          child: Text("Loss",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontFamily: CustomFonts.family1Medium,
-                                color: AppColors().redColor,
-                              )),
-                        ),
-                      ),
-                      Container(
-                        height: 3.h,
-                        color: AppColors().whiteColor,
-                        child: Row(
-                          children: [
-                            // Container(
-                            //   width: 30,
-                            // ),
-                            listTitleContent(),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                            physics: const ClampingScrollPhysics(),
-                            clipBehavior: Clip.hardEdge,
-                            itemCount: controller.arrLossList.length,
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return profitLossContent(context, index, controller.arrLossList[index]);
-                            }),
-                      ),
-                      Container(
-                        height: 3.h,
-                        decoration: BoxDecoration(
-                            color: AppColors().whiteColor,
-                            border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                        child: Center(
-                            child: Row(
-                          children: [
-                            totalContent(value: "Net Loss", textColor: AppColors().darkText, width: 110),
-                            totalContent(
-                                value: controller.totalValues!.plLossGrandTotal.toStringAsFixed(2),
-                                textColor: AppColors().darkText,
-                                width: 110),
-                            totalContent(
-                                value: controller.totalValues!.brkLossGrandTotal.toStringAsFixed(2),
-                                textColor: AppColors().darkText,
-                                width: 110),
-                            totalContent(
-                                value: controller.totalValues!.LossGrandTotal.toStringAsFixed(2),
-                                textColor: AppColors().darkText,
-                                width: 110),
-                          ],
-                        )),
-                      ),
-                    ],
+                  Container(
+                    height: 3.h,
+                    color: AppColors().whiteColor,
+                    child: listTitleContent(controller),
                   ),
-                ),
+                  Expanded(
+                    child: controller.isApiCallFirstTime == false && controller.isApiCallFromReset == false && controller.isApiCallFromSearch == false && controller.arrProfitList.isEmpty
+                        ? dataNotFoundView("Profit history not found")
+                        : CustomScrollBar(
+                            bgColor: AppColors().blueColor,
+                            child: ListView.builder(
+                                physics: const ClampingScrollPhysics(),
+                                clipBehavior: Clip.hardEdge,
+                                itemCount: controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? 50 : controller.arrProfitList.length,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return profitLossContent(context, index, controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? Profit() : controller.arrProfitList[index]);
+                                }),
+                          ),
+                  ),
+                  if (controller.isApiCallFirstTime == false)
+                    Container(
+                      height: 3.h,
+                      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                      child: Center(
+                          child: Row(
+                        children: [
+                          totalContent(value: "Net Profit ${controller.totalValues!.plStatus == 1 ? ": " + controller.totalValues!.myPLTotal!.toStringAsFixed(2) : ""}", textColor: AppColors().darkText, width: 230),
+                          totalContent(value: controller.totalValues!.plProfitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                          totalContent(value: controller.totalValues!.brkProfitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                          totalContent(value: controller.totalValues!.profitGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                        ],
+                      )),
+                    ),
+                ],
               ),
-            ],
-          ),
+            ),
+            SizedBox(
+              width: 3,
+            ),
+            Container(
+              width: controller.isFilterOpen ? 35.w : 43.5.w,
+              padding: EdgeInsets.all(1),
+              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              child: Column(
+                children: [
+                  Container(
+                    height: 3.h,
+                    decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(bottom: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                    child: Center(
+                      child: Text("Loss",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: CustomFonts.family1Medium,
+                            color: AppColors().redColor,
+                          )),
+                    ),
+                  ),
+                  Container(
+                    height: 3.h,
+                    color: AppColors().whiteColor,
+                    child: Row(
+                      children: [
+                        // Container(
+                        //   width: 30,
+                        // ),
+                        listTitleContent(controller),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: controller.isApiCallFirstTime == false && controller.isApiCallFromReset == false && controller.isApiCallFromSearch == false && controller.arrLossList.isEmpty
+                        ? dataNotFoundView("Loss history not found")
+                        : CustomScrollBar(
+                            bgColor: AppColors().blueColor,
+                            child: ListView.builder(
+                                physics: const ClampingScrollPhysics(),
+                                clipBehavior: Clip.hardEdge,
+                                itemCount: controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? 50 : controller.arrLossList.length,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return profitLossContent(context, index, controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch ? Profit() : controller.arrLossList[index]);
+                                }),
+                          ),
+                  ),
+                  if (controller.isApiCallFirstTime == false)
+                    Container(
+                      height: 3.h,
+                      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                      child: Center(
+                          child: Row(
+                        children: [
+                          totalContent(value: "Net Loss ${controller.totalValues!.plStatus == 0 ? ": " + controller.totalValues!.myPLTotal!.toStringAsFixed(2) : ""}", textColor: AppColors().darkText, width: 300),
+                          totalContent(value: controller.totalValues!.plLossGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                          totalContent(value: controller.totalValues!.brkLossGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                          totalContent(value: controller.totalValues!.LossGrandTotal.toStringAsFixed(2), textColor: AppColors().darkText, width: 110),
+                        ],
+                      )),
+                    ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -540,13 +478,8 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
   Widget totalContent({String? value, Color? textColor, double? width}) {
     return Container(
       width: width ?? 6.w,
-      padding: const EdgeInsets.only(left: 5),
-      decoration: BoxDecoration(
-          color: AppColors().whiteColor,
-          border: Border(
-              top: BorderSide(color: AppColors().lightOnlyText, width: 1),
-              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
-              right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+      padding: EdgeInsets.only(left: 5),
+      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
       child: Text(value ?? "",
           style: TextStyle(
             fontSize: 12,
@@ -557,42 +490,74 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
   }
 
   Widget profitLossContent(BuildContext context, int index, Profit value) {
-    // var scriptValue = controller.arrUserOderList[index];
-    return GestureDetector(
-      onTap: () {
-        // controller.selectedScriptIndex = index;
-        controller.update();
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          valueBox(
-              value.userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index,
-              isUnderlined: true, onClickValue: () {
-            showUserDetailsPopUp(userId: value.userId!, userName: value.userName!);
-          }),
-          valueBox(value.profitLoss!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText, index),
-          valueBox(value.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText, index),
-          valueBox((value.profitLoss! - value.brokerageTotal!).toStringAsFixed(2), 45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
-        ],
-      ),
-    );
-  }
+    if (controller.isApiCallFirstTime || controller.isApiCallFromReset || controller.isApiCallFromSearch) {
+      return Container(
+        margin: EdgeInsets.only(bottom: 3.h),
+        child: Shimmer.fromColors(
+            child: Container(
+              height: 3.h,
+              color: Colors.white,
+            ),
+            baseColor: AppColors().whiteColor,
+            highlightColor: AppColors().grayBg),
+      );
+    } else {
+      return Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: controller.arrListTitle1.length,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int indexT) {
+                switch (controller.arrListTitle1[indexT].title) {
+                  case SettlementColumns.username:
+                    {
+                      return dynamicValueBox1(value.displayName!, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, isUnderlined: value.userId != "", controller.arrListTitle1, onClickValue: () {
+                        isSettlementPopUpOpen = true;
+                        showSettlemetPopUp(value.userId!, value.displayName!);
+                      });
+                    }
+                  case SettlementColumns.pl:
+                    {
+                      return dynamicValueBox1(
+                        value.profitLoss!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
+                    }
+                  case SettlementColumns.brk:
+                    {
+                      return dynamicValueBox1(value.brokerageTotal! < 0 ? (value.brokerageTotal! * -1).toStringAsFixed(2) : value.brokerageTotal!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                    }
+                  case SettlementColumns.total:
+                    {
+                      return dynamicValueBox1(
+                        value.total!.toStringAsFixed(2),
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle1,
+                      );
+                    }
 
-  Widget listTitleContent() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // titleBox("", 0),
-
-        titleBox("Username"),
-        titleBox("P/L"),
-        titleBox("Brk"),
-        titleBox("Total"),
-      ],
-    );
+                  default:
+                    {
+                      return const SizedBox();
+                    }
+                }
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 }
