@@ -248,8 +248,9 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
                   child: Center(
                       child: Row(
                     children: [
-                      totalContent(value: "Total", textColor: AppColors().darkText, width: 43.w),
-                      totalContent(value: "P/L Share % : " + controller.totalPlSharePer.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
+                      totalContent(value: "Total", textColor: AppColors().darkText, width: 850),
+                      totalContent(value: "P/L With Brk : " + controller.totalPlWithBrk.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
+                      totalContent(value: "", textColor: AppColors().darkText, width: 145),
                       totalContent(value: "Net P/L : " + controller.totalNetPl.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
                     ],
                   )),
@@ -296,10 +297,24 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
               switch (controller.arrListTitle[indexT].title) {
                 case 'VIEW':
                   {
+                    if (plObj.role! == UserRollList.user) {
+                      return dynamicValueBox(
+                        "",
+                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        AppColors().darkText,
+                        index,
+                        indexT,
+                        controller.arrListTitle,
+                        isImage: false,
+                        strImage: AppImages.viewIcon,
+                        isSmall: true,
+                      );
+                    }
                     return controller.arrListTitle[indexT].isSelected
                         ? dynamicValueBox("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isImage: true, strImage: AppImages.viewIcon, isSmall: true, onClickImage: () {
                             isUserViewPopUpOpen = true;
-                            showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!);
+                            Get.back();
+                            showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!, roll: plObj.role!);
                           })
                         : const SizedBox();
                   }
@@ -358,7 +373,9 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
                   }
                 case 'CLIENT BRK':
                   {
-                    return controller.arrListTitle[indexT].isSelected ? valueBox(plObj.childUserBrokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: false) : const SizedBox();
+                    return controller.arrListTitle[indexT].isSelected
+                        ? valueBox(plObj.role == UserRollList.master ? plObj.childUserBrokerageTotal!.toStringAsFixed(2) : plObj.brokerageTotal!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: false)
+                        : const SizedBox();
                   }
                 case 'CLIENT M2M':
                   {
@@ -476,11 +493,17 @@ class UserWisePLSummaryPopUpScreen extends BaseView<UserWisePLSummaryPopUpContro
             switch (controller.arrListTitle[index].title) {
               case 'VIEW':
                 {
-                  return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("VIEW", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
-                      : SizedBox(
-                          key: Key('$index'),
-                        );
+                  if (controller.selectedUserRoll == UserRollList.user) {
+                    return SizedBox(
+                      key: Key('$index'),
+                    );
+                  } else {
+                    return controller.arrListTitle[index].isSelected
+                        ? dynamicTitleBox("VIEW", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmall: true)
+                        : SizedBox(
+                            key: Key('$index'),
+                          );
+                  }
                 }
               case 'USERNAME':
                 {

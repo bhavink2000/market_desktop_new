@@ -46,11 +46,11 @@ class PositionPopUpController extends BaseController {
     getColumnListFromDB(ScreenIds().userPosition, arrListTitle1);
   }
 
-  num getPlPer({num? cmp, num? netAPrice}) {
-    var temp1 = cmp! - netAPrice!;
-    var temp2 = temp1 / netAPrice;
-    var temp3 = temp2 * 100;
-    return temp3;
+  num getPlPer({num? percentage, num? pl}) {
+    var temp1 = pl! * percentage!;
+    var temp2 = temp1 / 100;
+
+    return temp2;
   }
 
   getPositionList(String text, {bool isFromfilter = false, bool isFromClear = false}) async {
@@ -81,10 +81,32 @@ class PositionPopUpController extends BaseController {
         arrSymbolNames.insert(0, element.symbolName!);
       }
     }
+    for (var indexOfScript = 0; indexOfScript < arrPositionScriptList.length; indexOfScript++) {
+      arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
+          ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
+          : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
+      totalPL = 0.0;
 
-    if (arrSymbolNames.isNotEmpty) {
-      var txt = {"symbols": arrSymbolNames};
-      socket.connectScript(jsonEncode(txt));
+      if (userData!.role == UserRollList.user) {
+        for (var element in arrPositionScriptList) {
+          totalPL = totalPL + element.profitLossValue!;
+        }
+      } else {
+        for (var i = 0; i < arrPositionScriptList.length; i++) {
+          var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
+          total = total * -1;
+          totalPL = totalPL + total;
+        }
+      }
+
+      totalPosition.value = 0.0;
+      for (var element in arrPositionScriptList) {
+        totalPosition.value += element.profitLossValue ?? 0.0;
+      }
+      if (arrSymbolNames.isNotEmpty) {
+        var txt = {"symbols": arrSymbolNames};
+        socket.connectScript(jsonEncode(txt));
+      }
     }
   }
 
@@ -103,8 +125,8 @@ class PositionPopUpController extends BaseController {
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
             arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].tradeTypeValue!.toUpperCase() == "BUY"
-                ? (double.parse(socketData.data!.bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].quantity!
-                : (arrPositionScriptList[indexOfScript].price! - double.parse(socketData.data!.ask.toString())) * arrPositionScriptList[indexOfScript].quantity!;
+                ? (double.parse(socketData.data!.bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
+                : (arrPositionScriptList[indexOfScript].price! - double.parse(socketData.data!.ask.toString())) * arrPositionScriptList[indexOfScript].totalQuantity!;
           }
         }
         totalPL = 0.0;
@@ -195,7 +217,7 @@ class PositionPopUpController extends BaseController {
             }
           case UserPositionColumns.plPerWise:
             {
-              list.add(excelLib.TextCellValue(getPlPer(cmp: element.totalQuantity! < 0 ? element.ask! : element.bid!, netAPrice: element.price!).toStringAsFixed(3)));
+              list.add(excelLib.TextCellValue(getPlPer(percentage: element.profitAndLossSharing!, pl: element.profitLossValue!).toStringAsFixed(2)));
             }
           default:
             {
@@ -266,7 +288,7 @@ class PositionPopUpController extends BaseController {
             }
           case UserPositionColumns.plPerWise:
             {
-              list.add((getPlPer(cmp: element.totalQuantity! < 0 ? element.ask! : element.bid!, netAPrice: element.price!).toStringAsFixed(3)));
+              list.add(getPlPer(percentage: element.profitAndLossSharing!, pl: element.profitLossValue!).toStringAsFixed(2));
             }
           default:
             {

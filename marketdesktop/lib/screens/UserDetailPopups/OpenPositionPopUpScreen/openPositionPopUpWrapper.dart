@@ -39,9 +39,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               filterContent(context),
               Expanded(
                 flex: 8,
-                child: BouncingScrollWrapper.builder(
-                    context, mainContent(context),
-                    dragWithMouse: true),
+                child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
                 // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
               ),
             ],
@@ -160,8 +158,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                         SizedBox(
                           width: 10,
                         ),
-                        exchangeTypeDropDown(controller.selectedExchange,
-                            width: 250),
+                        exchangeTypeDropDown(controller.selectedExchange, width: 250),
                         SizedBox(
                           width: 30,
                         ),
@@ -188,8 +185,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                         SizedBox(
                           width: 10,
                         ),
-                        allScriptListDropDown(
-                            controller.selectedScriptFromFilter),
+                        allScriptListDropDown(controller.selectedScriptFromFilter),
                         SizedBox(
                           width: 30,
                         ),
@@ -237,8 +233,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                           prefixWidth: 0,
                           onPress: () {
                             controller.selectedExchange.value = ExchangeData();
-                            controller.selectedScriptFromFilter.value =
-                                GlobalSymbolData();
+                            controller.selectedScriptFromFilter.value = GlobalSymbolData();
                             controller.selectedUser.value = UserData();
                             controller.getPositionList("");
                           },
@@ -300,39 +295,39 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       }),
                 ),
               ),
-              if (controller.selectedUserData != null)
-                Container(
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: AppColors().whiteColor,
-                      border: Border(
-                        top: BorderSide(
-                            color: AppColors().lightOnlyText, width: 1),
-                      )),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                          "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal!.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance!.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1SemiBold,
-                              color: AppColors().darkText)),
-                      Spacer(),
-                      Text(
-                          "Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: CustomFonts.family1SemiBold,
-                              color: AppColors().darkText)),
-                      SizedBox(
-                        width: 200,
-                      ),
-                    ],
-                  ),
-                )
+              // if (controller.selectedUserData != null)
+              //   Container(
+              //     height: 30,
+              //     decoration: BoxDecoration(
+              //         color: AppColors().whiteColor,
+              //         border: Border(
+              //           top: BorderSide(
+              //               color: AppColors().lightOnlyText, width: 1),
+              //         )),
+              //     child: Row(
+              //       children: [
+              //         SizedBox(
+              //           width: 10,
+              //         ),
+              //         Text(
+              //             "PL : ${controller.selectedUserData?.profitLoss!.toStringAsFixed(2)}  | BK : ${controller.selectedUserData?.brokerageTotal!.toStringAsFixed(2)} | BAL :  ${controller.selectedUserData?.balance!.toStringAsFixed(2)} | CRD : ${controller.selectedUserData?.credit!.toStringAsFixed(2)}",
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontFamily: CustomFonts.family1SemiBold,
+              //                 color: AppColors().darkText)),
+              //         Spacer(),
+              //         Text(
+              //             "Total P/L : ${(controller.selectedUserData!.profitLoss! + controller.selectedUserData!.brokerageTotal!).toStringAsFixed(2)}",
+              //             style: TextStyle(
+              //                 fontSize: 12,
+              //                 fontFamily: CustomFonts.family1SemiBold,
+              //                 color: AppColors().darkText)),
+              //         SizedBox(
+              //           width: 200,
+              //         ),
+              //       ],
+              //     ),
+              //   )
             ],
           ),
         ),
@@ -347,82 +342,32 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          valueBox(
-              controller.arrPositionScriptList[index].userName ?? "",
-              45,
-              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              AppColors().darkText,
-              index,
-              isUnderlined: true, onClickValue: () {
+          valueBox(controller.arrPositionScriptList[index].userName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isUnderlined: true, onClickValue: () {
             showUserDetailsPopUp(
               userId: controller.arrPositionScriptList[index].userId!,
               userName: controller.arrPositionScriptList[index].userName!,
             );
           }),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].parentUserName ?? "",
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText,
-                index),
+            child: valueBox(controller.arrPositionScriptList[index].parentUserName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
           ),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].exchangeName ?? "",
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText,
-                index),
+            child: valueBox(controller.arrPositionScriptList[index].exchangeName ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index),
           ),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].symbolTitle ?? "",
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText,
-                index,
-                isLarge: true),
+            child: valueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isLarge: true),
           ),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].buyTotalQuantity
-                    .toString(),
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().blueColor,
-                index,
-                isBig: true),
+            child: valueBox(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, isBig: true),
           ),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].buyPrice!
-                    .toStringAsFixed(2),
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText,
-                index,
-                isBig: true),
+            child: valueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].sellTotalQuantity!
-                    .toString(),
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().redColor,
-                index,
-                isBig: true),
+            child: valueBox(controller.arrPositionScriptList[index].sellTotalQuantity!.toString(), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().redColor, index, isBig: true),
           ),
           IgnorePointer(
-            child: valueBox(
-                controller.arrPositionScriptList[index].sellPrice!
-                    .toStringAsFixed(2),
-                45,
-                index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                AppColors().darkText,
-                index,
-                isBig: true),
+            child: valueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), 45, index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, isBig: true),
           ),
           IgnorePointer(
             child: valueBox(
@@ -453,13 +398,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
           ),
           IgnorePointer(
             child: valueBox(
-              controller.arrPositionScriptList[index].totalQuantity! < 0
-                  ? controller.arrPositionScriptList[index].ask!
-                      .toStringAsFixed(2)
-                      .toString()
-                  : controller.arrPositionScriptList[index].bid!
-                      .toStringAsFixed(2)
-                      .toString(),
+              controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
               45,
               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
               AppColors().darkText,
@@ -468,40 +407,19 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
           ),
           IgnorePointer(
             child: valueBox(
-              double.parse(controller
-                      .arrPositionScriptList[index].profitLossValue!
-                      .toStringAsFixed(2))
-                  .toString(),
+              double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(),
               60,
               index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-              controller.getPriceColor(
-                  controller.arrPositionScriptList[index].profitLossValue!),
+              controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!),
               index,
             ),
           ),
           IgnorePointer(
             child: valueBox(
-                controller
-                    .getPlPer(
-                        cmp: controller.arrPositionScriptList[index]
-                                    .totalQuantity! <
-                                0
-                            ? controller.arrPositionScriptList[index].ask!
-                            : controller.arrPositionScriptList[index].bid!,
-                        netAPrice:
-                            controller.arrPositionScriptList[index].price!)
-                    .toStringAsFixed(3),
+                controller.getPlPer(cmp: controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask! : controller.arrPositionScriptList[index].bid!, netAPrice: controller.arrPositionScriptList[index].price!).toStringAsFixed(3),
                 45,
                 index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                controller.getPlPer(
-                            cmp: controller.arrPositionScriptList[index]
-                                        .totalQuantity! <
-                                    0
-                                ? controller.arrPositionScriptList[index].ask!
-                                : controller.arrPositionScriptList[index].bid!,
-                            netAPrice: controller
-                                .arrPositionScriptList[index].price!) >
-                        0
+                controller.getPlPer(cmp: controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask! : controller.arrPositionScriptList[index].bid!, netAPrice: controller.arrPositionScriptList[index].price!) > 0
                     ? AppColors().blueColor
                     : AppColors().redColor,
                 index),
@@ -547,34 +465,12 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                   switch (controller.arrListTitle[indexT].title) {
                     case 'USERNAME':
                       {
-                        return controller.arrListTitle[indexT].isSelected
-                            ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    historyValue.userName ?? "",
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle,
-                                    isBig: true))
-                            : const SizedBox();
+                        return controller.arrListTitle[indexT].isSelected ? IgnorePointer(child: dynamicValueBox(historyValue.userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)) : const SizedBox();
                       }
                     case 'PARENT USER':
                       {
                         return controller.arrListTitle[indexT].isSelected
-                            ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    historyValue.parentUserName ?? "",
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle,
-                                    isBig: true))
+                            ? IgnorePointer(child: dynamicValueBox(historyValue.parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true))
                             : const SizedBox();
                       }
                     case 'EXCHANGE':
@@ -583,9 +479,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                             ? IgnorePointer(
                                 child: dynamicValueBox(
                                   historyValue.exchangeName ?? "",
-                                  index % 2 == 0
-                                      ? Colors.transparent
-                                      : AppColors().grayBg,
+                                  index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                                   AppColors().darkText,
                                   index,
                                   indexT,
@@ -597,36 +491,14 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                     case 'SYMBOL NAME':
                       {
                         return controller.arrListTitle[indexT].isSelected
-                            ? dynamicValueBox(
-                                controller.arrPositionScriptList[index]
-                                        .symbolTitle ??
-                                    "",
-                                index % 2 == 0
-                                    ? Colors.transparent
-                                    : AppColors().grayBg,
-                                AppColors().darkText,
-                                index,
-                                indexT,
-                                controller.arrListTitle,
-                                isBig: true)
+                            ? dynamicValueBox(controller.arrPositionScriptList[index].symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isBig: true)
                             : const SizedBox();
                       }
                     case 'TOTAL BUY A QTY':
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller.arrPositionScriptList[index]
-                                        .buyTotalQuantity
-                                        .toString(),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().blueColor,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle,
-                                    isSmallLarge: true),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle, isSmallLarge: true),
                               )
                             : const SizedBox();
                       }
@@ -634,18 +506,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller
-                                        .arrPositionScriptList[index].buyPrice!
-                                        .toStringAsFixed(2),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle,
-                                    isSmallLarge: true),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true),
                               )
                             : const SizedBox();
                       }
@@ -653,18 +514,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller
-                                        .arrPositionScriptList[index].buyPrice!
-                                        .toStringAsFixed(2),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle,
-                                    isSmallLarge: true),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle, isSmallLarge: true),
                               )
                             : const SizedBox();
                       }
@@ -672,18 +522,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller.arrPositionScriptList[index]
-                                        .sellTotalQuantity!
-                                        .toString(),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().redColor,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle,
-                                    isSmallLarge: true),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellTotalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().redColor, index, indexT, controller.arrListTitle, isSmallLarge: true),
                               )
                             : const SizedBox();
                       }
@@ -691,17 +530,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller
-                                        .arrPositionScriptList[index].sellPrice!
-                                        .toStringAsFixed(2),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
                               )
                             : const SizedBox();
                       }
@@ -709,17 +538,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller.arrPositionScriptList[index]
-                                        .totalQuantity!
-                                        .toString(),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
                               )
                             : const SizedBox();
                       }
@@ -727,17 +546,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller
-                                        .arrPositionScriptList[index].quantity!
-                                        .toString(),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
                               )
                             : const SizedBox();
                       }
@@ -745,17 +554,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    controller
-                                        .arrPositionScriptList[index].price!
-                                        .toStringAsFixed(2),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    AppColors().darkText,
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle),
+                                child: dynamicValueBox(controller.arrPositionScriptList[index].price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle),
                               )
                             : const SizedBox();
                       }
@@ -764,32 +563,9 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
                                 child: dynamicValueBox(
-                                    controller.arrPositionScriptList[index]
-                                                .totalQuantity! <
-                                            0
-                                        ? controller
-                                            .arrPositionScriptList[index].ask!
-                                            .toStringAsFixed(2)
-                                            .toString()
-                                        : controller
-                                            .arrPositionScriptList[index].bid!
-                                            .toStringAsFixed(2)
-                                            .toString(),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    controller
-                                                .arrPositionScriptList[index]
-                                                .scriptDataFromSocket
-                                                .value
-                                                .close! <
-                                            controller
-                                                .arrPositionScriptList[index]
-                                                .scriptDataFromSocket
-                                                .value
-                                                .ltp!
-                                        ? AppColors().blueColor
-                                        : AppColors().redColor,
+                                    controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
+                                    index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                    controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
                                     index,
                                     indexT,
                                     controller.arrListTitle),
@@ -800,21 +576,8 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                       {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
-                                child: dynamicValueBox(
-                                    double.parse(controller
-                                            .arrPositionScriptList[index]
-                                            .profitLossValue!
-                                            .toStringAsFixed(2))
-                                        .toString(),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    controller.getPriceColor(controller
-                                        .arrPositionScriptList[index]
-                                        .profitLossValue!),
-                                    index,
-                                    indexT,
-                                    controller.arrListTitle),
+                                child: dynamicValueBox(double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!),
+                                    index, indexT, controller.arrListTitle),
                               )
                             : const SizedBox();
                       }
@@ -823,40 +586,9 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
                         return controller.arrListTitle[indexT].isSelected
                             ? IgnorePointer(
                                 child: dynamicValueBox(
-                                    controller
-                                        .getPlPer(
-                                            cmp: controller
-                                                        .arrPositionScriptList[
-                                                            index]
-                                                        .totalQuantity! <
-                                                    0
-                                                ? controller
-                                                    .arrPositionScriptList[
-                                                        index]
-                                                    .ask!
-                                                : controller
-                                                    .arrPositionScriptList[
-                                                        index]
-                                                    .bid!,
-                                            netAPrice: controller
-                                                .arrPositionScriptList[index]
-                                                .price!)
-                                        .toStringAsFixed(3),
-                                    index % 2 == 0
-                                        ? Colors.transparent
-                                        : AppColors().grayBg,
-                                    controller.getPlPer(
-                                                cmp: controller
-                                                            .arrPositionScriptList[
-                                                                index]
-                                                            .totalQuantity! <
-                                                        0
-                                                    ? controller
-                                                        .arrPositionScriptList[index]
-                                                        .ask!
-                                                    : controller.arrPositionScriptList[index].bid!,
-                                                netAPrice: controller.arrPositionScriptList[index].price!) >
-                                            0
+                                    controller.getPlPer(cmp: controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask! : controller.arrPositionScriptList[index].bid!, netAPrice: controller.arrPositionScriptList[index].price!).toStringAsFixed(3),
+                                    index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                                    controller.getPlPer(cmp: controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask! : controller.arrPositionScriptList[index].bid!, netAPrice: controller.arrPositionScriptList[index].price!) > 0
                                         ? AppColors().blueColor
                                         : AppColors().redColor,
                                     index,
@@ -894,9 +626,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'USERNAME':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("USERNAME", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          isBig: true, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("USERNAME", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -904,9 +634,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'PARENT USER':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("PARENT USER", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          isBig: true, updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("PARENT USER", index, controller.arrListTitle, controller.isScrollEnable, isBig: true, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -914,9 +642,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'EXCHANGE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("EXCHANGE", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("EXCHANGE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -924,9 +650,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'SYMBOL NAME':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SYMBOL NAME", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView, isBig: true)
+                      ? dynamicTitleBox("SYMBOL NAME", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isBig: true)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -934,10 +658,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'TOTAL BUY A QTY':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL BUY A QTY", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView,
-                          isSmallLarge: true)
+                      ? dynamicTitleBox("TOTAL BUY A QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView, isSmallLarge: true)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -946,10 +667,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'TOTAL BUY A PRICE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL BUY A PRICE", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          isSmallLarge: true,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("TOTAL BUY A PRICE", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -957,10 +675,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'BUY A PRICE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL BUY A PRICE", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          isSmallLarge: true,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("TOTAL BUY A PRICE", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -968,10 +683,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'TOTAL SELL QTY':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("TOTAL SELL QTY", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          isSmallLarge: true,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("TOTAL SELL QTY", index, controller.arrListTitle, controller.isScrollEnable, isSmallLarge: true, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -979,9 +691,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'SELL A PRICE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("SELL A PRICE", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("SELL A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -989,9 +699,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'NET QTY':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET QTY", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("NET QTY", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -999,9 +707,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'NET LOT':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET LOT", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("NET LOT", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -1009,9 +715,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'NET A PRICE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("NET A PRICE", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("NET A PRICE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -1020,9 +724,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'CMP':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("CMP", index, controller.arrListTitle,
-                          controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("CMP", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -1031,9 +733,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'P/L':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L", index, controller.arrListTitle,
-                          controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("P/L", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -1041,9 +741,7 @@ class OpenPositionPopUpScreen extends BaseView<OpenPositionPopUpController> {
               case 'P/L % WISE':
                 {
                   return controller.arrListTitle[index].isSelected
-                      ? dynamicTitleBox("P/L % WISE", index,
-                          controller.arrListTitle, controller.isScrollEnable,
-                          updateCallback: controller.refreshView)
+                      ? dynamicTitleBox("P/L % WISE", index, controller.arrListTitle, controller.isScrollEnable, updateCallback: controller.refreshView)
                       : SizedBox(
                           key: Key('$index'),
                         );

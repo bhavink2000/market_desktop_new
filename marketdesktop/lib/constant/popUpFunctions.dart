@@ -202,12 +202,13 @@ showSuperAdminTradePopUp() {
           ));
 }
 
-showUserWisePLSummaryPopUp({String userId = "", String userName = ""}) {
+showUserWisePLSummaryPopUp({String userId = "", String userName = "", String roll = ""}) {
   Get.put(UserWisePLSummaryPopUpController());
 
   Get.find<UserWisePLSummaryPopUpController>().selectedUserId = userId;
   Get.find<UserWisePLSummaryPopUpController>().selectedUserName = userName;
-
+  Get.find<UserWisePLSummaryPopUpController>().selectedUserRoll = roll;
+  Get.find<UserWisePLSummaryPopUpController>().setupTitles();
   Get.find<UserWisePLSummaryPopUpController>().getProfitLossList("");
   showDialog<String>(
       context: Get.context!,

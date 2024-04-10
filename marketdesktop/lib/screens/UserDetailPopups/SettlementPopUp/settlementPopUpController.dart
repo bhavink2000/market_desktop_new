@@ -28,6 +28,10 @@ class SettlementPopUpController extends BaseController {
   FocusNode searchFocus = FocusNode();
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  FocusNode submitFocus = FocusNode();
+  DateTime thisWeekStartDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
+  Rx<DateTime> fromDateValue = DateTime.now().obs;
+  RxString selectStatusdropdownValue = "".obs;
 
   @override
   void onInit() async {
@@ -57,7 +61,17 @@ class SettlementPopUpController extends BaseController {
 
     arrProfitList.clear();
     arrLossList.clear();
-
+    if (selectStatusdropdownValue.toString().isNotEmpty) {
+      if (selectStatusdropdownValue.toString() != 'Custom Period') {
+        String thisWeekDateRange = "$selectStatusdropdownValue";
+        List<String> dateParts = thisWeekDateRange.split(" to ");
+        fromDate = dateParts[0].trim().split('Week').last.obs;
+        endDate = dateParts[1].obs;
+      } else {
+        // fromDate = '';
+        // toDate = '';
+      }
+    }
     update();
     var response = await service.settelementListCall(1, fromDate.value != "Start Date" ? fromDate.value : "", endDate.value != "End Date" ? endDate.value : "", userId: selectedUserId);
     if (isFrom == 0) {

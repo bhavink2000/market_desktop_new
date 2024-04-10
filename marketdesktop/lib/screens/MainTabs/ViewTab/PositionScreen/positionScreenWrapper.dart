@@ -781,7 +781,7 @@ class PositionScreen extends BaseView<PositionController> {
                     case NetPositionColumns.plPerWise:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1((controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) * -1).toStringAsFixed(3), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          child: dynamicValueBox1(double.parse(controller.arrPositionScriptList[index].plPerTotal.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                               controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) > 0 ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle1),
                         );
                       }

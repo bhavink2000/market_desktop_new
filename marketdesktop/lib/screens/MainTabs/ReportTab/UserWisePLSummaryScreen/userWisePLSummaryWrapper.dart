@@ -8,6 +8,7 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
@@ -243,8 +244,9 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                   child: Center(
                       child: Row(
                     children: [
-                      totalContent(value: "Total", textColor: AppColors().darkText, width: 43.w),
-                      totalContent(value: "P/L Share % : " + controller.totalPlSharePer.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
+                      totalContent(value: "Total", textColor: AppColors().darkText, width: 715),
+                      totalContent(value: "P/L With Brk : " + controller.totalPlWithBrk.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
+                      totalContent(value: "", textColor: AppColors().darkText, width: 145),
                       totalContent(value: "Net P/L : " + controller.totalNetPl.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
                     ],
                   )),
@@ -276,7 +278,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
   }
 
   Widget profitAndLossContent(BuildContext context, int index) {
-    if (controller.isApiCallRunning) {
+    if (controller.isApiCallRunning || controller.isResetCall) {
       return Container(
         margin: EdgeInsets.only(bottom: 3.h),
         child: Shimmer.fromColors(
@@ -303,9 +305,15 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                 switch (controller.arrListTitle1[indexT].title) {
                   case UserWisePLSummaryColumns.view:
                     {
+                      if (plObj.role! == UserRollList.user) {
+                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isImage: false, strImage: AppImages.viewIcon, onClickImage: () {
+                          isUserViewPopUpOpen = true;
+                          showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!, roll: plObj.role!);
+                        });
+                      }
                       return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isImage: true, strImage: AppImages.viewIcon, onClickImage: () {
                         isUserViewPopUpOpen = true;
-                        showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!);
+                        showUserWisePLSummaryPopUp(userId: plObj.userId!, userName: plObj.userName!, roll: plObj.role!);
                       });
                     }
                   case UserWisePLSummaryColumns.username:

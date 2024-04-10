@@ -36,6 +36,7 @@ class PositionModel {
 }
 
 class positionListData {
+  List<AllPositionData>? AllPositionDataObj;
   String? tradeId;
   String? userId;
   String? parentId;
@@ -81,9 +82,11 @@ class positionListData {
   bool isSelected;
   String? parentUserName;
   num? profitAndLossSharing;
+  double plPerTotal = 0;
   num? tradeSecond;
 
   positionListData({
+    this.AllPositionDataObj,
     this.tradeId,
     this.userId,
     this.parentId,
@@ -130,6 +133,7 @@ class positionListData {
   });
 
   factory positionListData.fromJson(Map<String, dynamic> json) => positionListData(
+        AllPositionDataObj: json["positionData"] == null ? [] : List<AllPositionData>.from(json["positionData"]!.map((x) => AllPositionData.fromJson(x))),
         tradeId: json["tradeId"],
         userId: json["userId"],
         parentId: json["parentId"],
@@ -175,6 +179,7 @@ class positionListData {
       );
 
   Map<String, dynamic> toJson() => {
+        "positionData": AllPositionDataObj == null ? [] : List<dynamic>.from(AllPositionDataObj!.map((x) => x.toJson())),
         "tradeId": tradeId,
         "userId": userId,
         "parentId": parentId,
@@ -217,6 +222,174 @@ class positionListData {
         "parentUserName": parentUserName,
         "profitAndLossSharing": profitAndLossSharing,
         "tradeSecond": tradeSecond,
+      };
+}
+
+class AllPositionData {
+  String? id;
+  String? userId;
+  String? symbolId;
+  String? symbolName;
+  num? buyQuantity;
+  num? buyPrice;
+  num? buyLotSize;
+  num? buyTotalQuantity;
+  num? buyTotal;
+  num? buyStopLoss;
+  num? sellQuantity;
+  num? sellPrice;
+  num? sellLotSize;
+  num? sellTotalQuantity;
+  num? sellTotal;
+  num? sellStopLoss;
+  num? quantity;
+  num? price;
+  num? lotSize;
+  num? totalQuantity;
+  num? totalSlQuantity;
+  num? slQuantity;
+  num? totalLimitQuantity;
+  num? limitQuantity;
+  num? total;
+  num? stopLoss;
+  String? productType;
+  String? tradeType;
+  num? tradeMargin;
+  num? tradeMarginPrice;
+  num? tradeMarginTotal;
+  num? profitLoss;
+  num? brokerageTotal;
+  bool? isRunCarryForward;
+  String? exchangeId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  num? v;
+  num? profitAndLossSharing;
+  double? profitLossValue = 0;
+  AllPositionData({
+    this.id,
+    this.userId,
+    this.symbolId,
+    this.symbolName,
+    this.buyQuantity,
+    this.buyPrice,
+    this.buyLotSize,
+    this.buyTotalQuantity,
+    this.buyTotal,
+    this.buyStopLoss,
+    this.sellQuantity,
+    this.sellPrice,
+    this.sellLotSize,
+    this.sellTotalQuantity,
+    this.sellTotal,
+    this.sellStopLoss,
+    this.quantity,
+    this.price,
+    this.lotSize,
+    this.totalQuantity,
+    this.totalSlQuantity,
+    this.slQuantity,
+    this.totalLimitQuantity,
+    this.limitQuantity,
+    this.total,
+    this.stopLoss,
+    this.productType,
+    this.tradeType,
+    this.tradeMargin,
+    this.tradeMarginPrice,
+    this.tradeMarginTotal,
+    this.profitLoss,
+    this.brokerageTotal,
+    this.isRunCarryForward,
+    this.exchangeId,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+    this.profitAndLossSharing,
+  });
+
+  factory AllPositionData.fromJson(Map<String, dynamic> json) => AllPositionData(
+        id: json["_id"],
+        userId: json["userId"],
+        symbolId: json["symbolId"],
+        symbolName: json["symbolName"],
+        buyQuantity: json["buyQuantity"],
+        buyPrice: json["buyPrice"],
+        buyLotSize: json["buyLotSize"],
+        buyTotalQuantity: json["buyTotalQuantity"],
+        buyTotal: json["buyTotal"],
+        buyStopLoss: json["buyStopLoss"],
+        sellQuantity: json["sellQuantity"],
+        sellPrice: json["sellPrice"],
+        sellLotSize: json["sellLotSize"],
+        sellTotalQuantity: json["sellTotalQuantity"],
+        sellTotal: json["sellTotal"],
+        sellStopLoss: json["sellStopLoss"],
+        quantity: json["quantity"],
+        price: json["price"],
+        lotSize: json["lotSize"],
+        totalQuantity: json["totalQuantity"],
+        totalSlQuantity: json["totalSLQuantity"],
+        slQuantity: json["slQuantity"],
+        totalLimitQuantity: json["totalLimitQuantity"],
+        limitQuantity: json["limitQuantity"],
+        total: json["total"],
+        stopLoss: json["stopLoss"],
+        productType: json["productType"],
+        tradeType: json["tradeType"],
+        tradeMargin: json["tradeMargin"],
+        tradeMarginPrice: json["tradeMarginPrice"]?.toDouble(),
+        tradeMarginTotal: json["tradeMarginTotal"],
+        profitLoss: json["profitLoss"],
+        brokerageTotal: json["brokerageTotal"],
+        isRunCarryForward: json["isRunCarryForward"],
+        exchangeId: json["exchangeId"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+        profitAndLossSharing: json["profitAndLossSharing"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "userId": userId,
+        "symbolId": symbolId,
+        "symbolName": symbolName,
+        "buyQuantity": buyQuantity,
+        "buyPrice": buyPrice,
+        "buyLotSize": buyLotSize,
+        "buyTotalQuantity": buyTotalQuantity,
+        "buyTotal": buyTotal,
+        "buyStopLoss": buyStopLoss,
+        "sellQuantity": sellQuantity,
+        "sellPrice": sellPrice,
+        "sellLotSize": sellLotSize,
+        "sellTotalQuantity": sellTotalQuantity,
+        "sellTotal": sellTotal,
+        "sellStopLoss": sellStopLoss,
+        "quantity": quantity,
+        "price": price,
+        "lotSize": lotSize,
+        "totalQuantity": totalQuantity,
+        "totalSLQuantity": totalSlQuantity,
+        "slQuantity": slQuantity,
+        "totalLimitQuantity": totalLimitQuantity,
+        "limitQuantity": limitQuantity,
+        "total": total,
+        "stopLoss": stopLoss,
+        "productType": productType,
+        "tradeType": tradeType,
+        "tradeMargin": tradeMargin,
+        "tradeMarginPrice": tradeMarginPrice,
+        "tradeMarginTotal": tradeMarginTotal,
+        "profitLoss": profitLoss,
+        "brokerageTotal": brokerageTotal,
+        "isRunCarryForward": isRunCarryForward,
+        "exchangeId": exchangeId,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+        "profitAndLossSharing": profitAndLossSharing,
       };
 }
 

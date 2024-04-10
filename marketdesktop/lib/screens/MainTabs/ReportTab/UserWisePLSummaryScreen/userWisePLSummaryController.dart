@@ -31,6 +31,7 @@ class UserWisePLSummaryController extends BaseController {
   FocusNode applyFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
   RxDouble totalPlSharePer = 0.0.obs;
+  RxDouble totalPlWithBrk = 0.0.obs;
   RxDouble totalNetPl = 0.0.obs;
 
   @override
@@ -51,6 +52,7 @@ class UserWisePLSummaryController extends BaseController {
     update();
     var response = await service.userWiseProfitLossListCall(1, text, selectedUser.value.userId ?? "");
     arrPlList = response!.data ?? [];
+    totalPlWithBrk.value = 0.0;
     for (var element in arrPlList) {
       for (var i = 0; i < element.childUserDataPosition!.length; i++) {
         if (element.arrSymbol != null) {
@@ -77,7 +79,7 @@ class UserWisePLSummaryController extends BaseController {
       }
 
       element.plWithBrk = element.totalProfitLossValue + pl - brkTotal;
-
+      totalPlWithBrk.value = totalPlWithBrk.value + element.plWithBrk;
       var m2m = element.totalProfitLossValue;
       var sharingPer = element.role == UserRollList.user ? element.profitAndLossSharingDownLine! : element.profitAndLossSharing!;
       var total = pl + m2m;
@@ -161,9 +163,11 @@ class UserWisePLSummaryController extends BaseController {
       });
       totalNetPl.value = 0.0;
       totalPlSharePer.value = 0.0;
+      totalPlWithBrk.value = 0.0;
       for (var element in arrPlList) {
         totalPlSharePer.value = totalPlSharePer.value + element.plSharePer;
         totalNetPl.value = totalNetPl.value + element.netPL;
+        totalPlWithBrk.value = totalPlWithBrk.value + element.plWithBrk;
       }
       update();
     }

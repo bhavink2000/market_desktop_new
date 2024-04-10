@@ -31,8 +31,12 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
             children: [
               headerViewContent(
                   title: "Settlement",
-                  isFilterAvailable: false,
+                  isFilterAvailable: true,
                   isFromMarket: false,
+                  filterClick: () {
+                    controller.isFilterOpen = !controller.isFilterOpen;
+                    controller.update();
+                  },
                   closeClick: () {
                     Get.find<MainContainerController>().onKeyHite();
                   }),
@@ -57,13 +61,14 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
         ));
   }
 
+
   Widget filterContent(BuildContext context) {
     return FocusTraversalGroup(
       policy: WidgetOrderTraversalPolicy(),
       child: Visibility(
         visible: controller.isFilterOpen,
         child: AnimatedContainer(
-          // margin: EdgeInsets.only(bottom: 2.h),
+          margin: EdgeInsets.only(bottom: 2.h),
           decoration: BoxDecoration(
               border: Border(
             bottom: BorderSide(color: AppColors().whiteColor, width: 1),
@@ -79,7 +84,6 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
                 ),
                 Container(
                   height: 35,
-                  color: AppColors().headerBgColor,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -130,7 +134,7 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
                           children: [
                             Spacer(),
                             Container(
-                              child: Text("From:",
+                              child: Text("Time:",
                                   style: TextStyle(
                                     fontSize: 12,
                                     fontFamily: CustomFonts.family1Regular,
@@ -140,132 +144,167 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
                             SizedBox(
                               width: 10,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.fromDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.fromDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
+                            timePeriodSelectionDropDown(controller.selectStatusdropdownValue, width: 150, onChange: () {
+                              controller.update();
+                            }),
                             SizedBox(
                               width: 30,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // SizedBox(
-                            //   width: 30,
-                            // ),
-                            Spacer(),
+                      if (controller.selectStatusdropdownValue == "Custom Period")
+                        SizedBox(
+                          height: 10,
+                        ),
+                      if (controller.selectStatusdropdownValue == "Custom Period")
+                        Container(
+                          height: 35,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Spacer(),
+                              Container(
+                                child: Text("From:",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Regular,
+                                      color: AppColors().fontColor,
+                                    )),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // selectFromDate(controller.fromDate);
+                                  showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                                    controller.fromDateValue.value = selectedDate;
+                                    controller.fromDate.value = shortDateForBackend(selectedDate);
+                                  }, maxDate: userData!.role != UserRollList.superAdmin ? controller.thisWeekStartDate : DateTime.now());
+                                },
+                                child: Obx(() {
+                                  return Container(
+                                    height: 35,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: AppColors().whiteColor,
+                                        border: Border.all(
+                                          color: AppColors().lightOnlyText,
+                                          width: 1.5,
+                                        ),
+                                        borderRadius: BorderRadius.circular(3)),
+                                    // color: AppColors().whiteColor,
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          controller.fromDate.value,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: CustomFonts.family1Medium,
+                                            color: AppColors().darkText,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Image.asset(
+                                          AppImages.calendarIcon,
+                                          width: 25,
+                                          height: 25,
+                                          color: AppColors().fontColor,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                            ],
+                          ),
+                        ),
+                      if (controller.selectStatusdropdownValue == "Custom Period")
+                        SizedBox(
+                          height: 10,
+                        ),
+                      if (controller.selectStatusdropdownValue == "Custom Period")
+                        Container(
+                          height: 35,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // SizedBox(
+                              //   width: 30,
+                              // ),
+                              Spacer(),
 
-                            Container(
-                              child: Text("To:",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
-                                    color: AppColors().fontColor,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // selectToDate(controller.endDate);
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.endDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.endDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
+                              Container(
+                                child: Text("To:",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Regular,
+                                      color: AppColors().fontColor,
+                                    )),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // selectToDate(controller.endDate);
+                                  showCalenderPopUp(controller.fromDateValue.value, (DateTime selectedDate) {
+                                    controller.endDate.value = shortDateForBackend(selectedDate);
+                                  }, maxDate: userData!.role != UserRollList.superAdmin ? controller.thisWeekStartDate : DateTime.now());
+                                },
+                                child: Obx(() {
+                                  return Container(
+                                    height: 35,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: AppColors().whiteColor,
+                                        border: Border.all(
+                                          color: AppColors().lightOnlyText,
+                                          width: 1.5,
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                          ],
+                                        borderRadius: BorderRadius.circular(3)),
+                                    // color: AppColors().whiteColor,
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          controller.endDate.value,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            fontFamily: CustomFonts.family1Medium,
+                                            color: AppColors().darkText,
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        Image.asset(
+                                          AppImages.calendarIcon,
+                                          width: 25,
+                                          height: 25,
+                                          color: AppColors().fontColor,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -278,12 +317,12 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
                             child: CustomButton(
                               isEnabled: true,
                               shimmerColor: AppColors().whiteColor,
-                              title: "View",
+                              title: "Submit",
                               textSize: 14,
                               onPress: () {
                                 controller.getSettelementList(isFrom: 1);
                               },
-                              focusKey: controller.viewFocus,
+                              focusKey: controller.submitFocus,
                               borderColor: Colors.transparent,
                               focusShadowColor: AppColors().blueColor,
                               bgColor: AppColors().blueColor,
@@ -301,15 +340,16 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
                             height: 35,
                             child: CustomButton(
                               isEnabled: true,
-                              shimmerColor: AppColors().blueColor,
+                              shimmerColor: AppColors().whiteColor,
                               title: "Clear",
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
                                 controller.fromDate.value = shortDateForBackend(controller.findFirstDateOfTheWeek(DateTime.now()));
                                 controller.endDate.value = shortDateForBackend(controller.findLastDateOfTheWeek(DateTime.now()));
-                                controller.getSettelementList();
+
                                 controller.getSettelementList(isFrom: 2);
+                                controller.update();
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,
@@ -318,7 +358,7 @@ class SettlementPopUpScreen extends BaseView<SettlementPopUpController> {
                               focusShadowColor: AppColors().blueColor,
                               textColor: AppColors().blueColor,
                               isTextCenter: true,
-                              isLoading: controller.isApiCallFromReset,
+                              isLoading: false,
                             ),
                           ),
                           // SizedBox(width: 5.w,),

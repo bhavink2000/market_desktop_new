@@ -20,11 +20,13 @@ class UserWisePLSummaryPopUpController extends BaseController {
   RxString endDate = "End Date".obs;
   RxDouble totalPlSharePer = 0.0.obs;
   RxDouble totalNetPl = 0.0.obs;
+  RxDouble totalPlWithBrk = 0.0.obs;
   Rx<UserData> selectedUser = UserData().obs;
   Rx<ExchangeData> selectedExchange = ExchangeData().obs;
   Rx<GlobalSymbolData> selectedScriptFromFilter = GlobalSymbolData().obs;
   List<UserWiseProfitLossData> arrPlList = [];
   String selectedUserId = "";
+  String selectedUserRoll = "";
   String selectedUserName = "";
   List<ListItem> arrListTitle = [
     ListItem("VIEW", true),
@@ -43,10 +45,27 @@ class UserWisePLSummaryPopUpController extends BaseController {
     update();
   }
 
+  setupTitles() {
+    arrListTitle = [
+      if (selectedUserRoll != UserRollList.user) ListItem("VIEW", true),
+      ListItem("USERNAME", true),
+      ListItem("SHARING %", true),
+      ListItem("BRK SHARING %", true),
+      ListItem("RELEASE CLIENT P/L", true),
+      ListItem("CLIENT BRK", true),
+      ListItem("CLIENT M2M", true),
+      ListItem("P/L WITH BRK", true),
+      ListItem("P/L SHARE %", true),
+      ListItem("BRK", true),
+      ListItem("NET P/L", true),
+    ];
+    update();
+  }
+
   getProfitLossList(String text) async {
     var response = await service.userWiseProfitLossListCall(1, text, selectedUserId);
     arrPlList = response!.data ?? [];
-
+    totalPlWithBrk.value = 0.0;
     for (var element in arrPlList) {
       for (var i = 0; i < element.childUserDataPosition!.length; i++) {
         if (element.arrSymbol != null) {
@@ -72,7 +91,7 @@ class UserWisePLSummaryPopUpController extends BaseController {
       }
 
       element.plWithBrk = element.totalProfitLossValue + pl - brkTotal;
-
+      totalPlWithBrk.value = totalPlWithBrk.value + element.plWithBrk;
       var m2m = element.totalProfitLossValue;
       var sharingPer = element.role == UserRollList.user ? element.profitAndLossSharingDownLine! : element.profitAndLossSharing!;
       var total = pl + m2m;
@@ -155,9 +174,11 @@ class UserWisePLSummaryPopUpController extends BaseController {
       });
       totalNetPl.value = 0.0;
       totalPlSharePer.value = 0.0;
+      totalPlWithBrk.value = 0.0;
       for (var element in arrPlList) {
         totalPlSharePer.value = totalPlSharePer.value + element.plSharePer;
         totalNetPl.value = totalNetPl.value + element.netPL;
+        totalPlWithBrk.value = totalPlWithBrk.value + element.plWithBrk;
       }
       update();
     }

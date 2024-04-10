@@ -201,6 +201,18 @@ class PositionController extends BaseController {
     if (totalPage >= currentPage) {
       currentPage = currentPage + 1;
     }
+    arrPositionScriptList.forEach((mainObj) {
+      for (var i = 0; i < mainObj.AllPositionDataObj!.length; i++) {
+        mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].totalQuantity! < 0
+            ? (double.parse(mainObj.ask!.toStringAsFixed(2)) - mainObj.AllPositionDataObj![i].price!) * mainObj.AllPositionDataObj![i].totalQuantity!
+            : (double.parse(mainObj.bid!.toStringAsFixed(2)) - double.parse(mainObj.AllPositionDataObj![i].price!.toStringAsFixed(2))) * mainObj.AllPositionDataObj![i].totalQuantity!;
+
+        mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].profitLossValue! * -1;
+
+        mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].profitLossValue! * mainObj.AllPositionDataObj![i].profitAndLossSharing! / 100;
+        mainObj.plPerTotal = mainObj.plPerTotal + mainObj.AllPositionDataObj![i].profitLossValue!;
+      }
+    });
     for (var indexOfScript = 0; indexOfScript < arrPositionScriptList.length; indexOfScript++) {
       arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
           ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
@@ -213,9 +225,7 @@ class PositionController extends BaseController {
         }
       } else {
         for (var i = 0; i < arrPositionScriptList.length; i++) {
-          var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
-          total = total * -1;
-          totalPL = totalPL + total;
+          totalPL = totalPL + arrPositionScriptList[i].plPerTotal;
         }
       }
 
@@ -305,6 +315,8 @@ class PositionController extends BaseController {
         }
       }
       if (obj != null) {
+        print(obj.symbolName);
+        if (obj.symbolName == "") {}
         var indexOfScript = arrPositionScriptList.indexWhere((element) => element.symbolName == socketData.data?.symbol);
         if (indexOfScript != -1) {
           arrPositionScriptList[indexOfScript].scriptDataFromSocket = socketData.data!.obs;
@@ -312,6 +324,19 @@ class PositionController extends BaseController {
           arrPositionScriptList[indexOfScript].ask = socketData.data!.ask;
           arrPositionScriptList[indexOfScript].ltp = socketData.data!.ltp;
           if (indexOfScript == 0) {}
+
+          arrPositionScriptList[indexOfScript].plPerTotal = 0.0;
+          for (var i = 0; i < arrPositionScriptList[indexOfScript].AllPositionDataObj!.length; i++) {
+            arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity! < 0
+                ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].AllPositionDataObj![i].price!) * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity!
+                : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].AllPositionDataObj![i].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity!;
+
+            arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue! * -1;
+
+            arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue! * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitAndLossSharing! / 100;
+
+            arrPositionScriptList[indexOfScript].plPerTotal = arrPositionScriptList[indexOfScript].plPerTotal + arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue!;
+          }
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
             arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
@@ -327,9 +352,9 @@ class PositionController extends BaseController {
           }
         } else {
           for (var i = 0; i < arrPositionScriptList.length; i++) {
-            var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
-            total = total * -1;
-            totalPL = totalPL + total;
+            // var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
+            // total = total * -1;
+            totalPL = totalPL + arrPositionScriptList[i].plPerTotal;
           }
         }
         // totalPL = totalPL + userData!.profitLoss!.toDouble();

@@ -25,6 +25,10 @@ class SettlementController extends BaseController {
   FocusNode searchFocus = FocusNode();
   FocusNode viewFocus = FocusNode();
   FocusNode clearFocus = FocusNode();
+  FocusNode submitFocus = FocusNode();
+  DateTime thisWeekStartDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday));
+  Rx<DateTime> fromDateValue = DateTime.now().obs;
+  RxString selectStatusdropdownValue = "".obs;
 
   @override
   void onInit() async {
@@ -52,6 +56,17 @@ class SettlementController extends BaseController {
     } else {
       isApiCallFromReset = true;
     }
+    if (selectStatusdropdownValue.toString().isNotEmpty) {
+      if (selectStatusdropdownValue.toString() != 'Custom Period') {
+        String thisWeekDateRange = "$selectStatusdropdownValue";
+        List<String> dateParts = thisWeekDateRange.split(" to ");
+        fromDate = dateParts[0].trim().split('Week').last.obs;
+        endDate = dateParts[1].obs;
+      } else {
+        // fromDate = '';
+        // toDate = '';
+      }
+    }
     update();
     var response = await service.settelementListCall(1, fromDate.value != "Start Date" ? fromDate.value : "", endDate.value != "End Date" ? endDate.value : "");
     if (isFrom == 0) {
@@ -70,55 +85,13 @@ class SettlementController extends BaseController {
       totalValues!.profitGrandTotal = totalValues!.profitGrandTotal + element.total!;
     }
 
-    // var temp3 = totalValues!.plProfitGrandTotal;
-    // var temp4 = totalValues!.brkProfitGrandTotal;
-    // if (totalValues!.plProfitGrandTotal < 0) {
-    //   temp3 = totalValues!.plProfitGrandTotal * -1;
-    // }
-    // if (totalValues!.brkProfitGrandTotal < 0) {
-    //   temp3 = totalValues!.brkProfitGrandTotal * -1;
-    // }
-    // totalValues!.profitGrandTotal = temp3 + temp4;
-    // if (totalValues!.plStatus == 1) {
-    //   totalValues!.profitGrandTotal = totalValues!.profitGrandTotal + totalValues!.myPLTotal!;
-    // }
-
     for (var element in arrLossList) {
       totalValues!.plLossGrandTotal = totalValues!.plLossGrandTotal + element.profitLoss!;
       totalValues!.brkLossGrandTotal = totalValues!.brkLossGrandTotal + element.brokerageTotal!;
       totalValues!.LossGrandTotal = totalValues!.LossGrandTotal + element.total!;
     }
-    // var temp1 = totalValues!.plLossGrandTotal;
-    // var temp2 = totalValues!.brkLossGrandTotal;
-    // if (totalValues!.plLossGrandTotal < 0) {
-    //   temp1 = totalValues!.plLossGrandTotal * -1;
-    // }
-    // if (totalValues!.LossGrandTotal < 0) {
-    //   temp2 = totalValues!.brkLossGrandTotal * -1;
-    // }
-    // totalValues!.LossGrandTotal = temp1 + temp2;
-    // if (totalValues!.plStatus == 0) {
-    //   totalValues!.LossGrandTotal = totalValues!.LossGrandTotal + totalValues!.myPLTotal!;
-    // }
 
     update();
-  }
-
-  String getRoll(String rollName) {
-    var roll = "";
-    if (rollName == UserRollList.admin) {
-      roll = "A";
-    } else if (rollName == UserRollList.superAdmin) {
-      roll = "S";
-    } else if (rollName == UserRollList.master) {
-      roll = "M";
-    } else if (rollName == UserRollList.user) {
-      roll = "C";
-    } else {
-      roll = "B";
-    }
-
-    return roll;
   }
 
   onClickExcel({bool isFromPDF = false}) {
