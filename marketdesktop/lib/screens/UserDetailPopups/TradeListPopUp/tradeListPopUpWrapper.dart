@@ -598,7 +598,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                     case UserTradeColumns.lot:
                       {
                         return dynamicValueBox1(
-                          controller.arrTrade[index].totalQuantity.toString(),
+                          controller.arrTrade[index].lotSize.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,
@@ -621,6 +621,17 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].tradeTypeValue.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
+                      }
+                    case UserTradeColumns.pl:
+                      {
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].profitLoss.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,

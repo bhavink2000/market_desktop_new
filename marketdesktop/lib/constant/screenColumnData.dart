@@ -45,7 +45,7 @@ class ScreenTitles {
   var settlement = "Settlement";
   var creditHistory = "Credit History";
   var activityReport = "Activity Report";
-  var userWisePLSummary = "Userwise P&L Summary";
+  var userWisePLSummary = "Profit & Loss";
   var userScriptPositionTracking = "User Script Psition Tracking";
   var symbolWisePositionReport = "Symbol Wise Position Report";
   var scriptMaster = "Script Master";
@@ -124,7 +124,7 @@ class NetPositionColumns {
   static const netLot = "NET LOT";
   static const netAPrice = "NET A PRICE";
   static const cmp = "CMP";
-  static const pl = "P/L";
+  static const pl = "M2M";
   static const plPerWise = "P/L % WISE";
 }
 
@@ -246,13 +246,13 @@ class UserWisePLSummaryColumns {
   static const username = "USERNAME";
   static const sharingPer = "SHARING %";
   static const brkSharingPer = "BRK SHARING %";
-  static const releaseClientPL = "RELEASE CLIENT P/L";
-  static const clientBrk = "CLIENT BRK";
-  static const clientM2M = "CLIENT M2M";
-  static const PLWithBrk = "P/L WITH BRK";
+  static const releaseClientPL = "RELEASE P/L";
+  static const clientBrk = "BRK";
+  static const clientM2M = "M2M";
+  static const PLWithBrk = "NET P/L";
   static const PLSharePer = "P/L SHARE %";
   static const brk = "BRK";
-  static const netPL = "NET P/L";
+  static const netPL = "OUR";
 }
 
 class UserScriptPositionTrackingColumns {
@@ -312,7 +312,7 @@ class UserPositionColumns {
   static const netLot = "NET LOT";
   static const netAPrice = "NET A PRICE";
   static const cmp = "CMP";
-  static const pl = "P/L";
+  static const pl = "M2M";
   static const plPerWise = "P/L % WISE";
 }
 
@@ -327,6 +327,7 @@ class UserTradeColumns {
   static const lot = "LOT";
   static const type = "TRADE TYPE";
   static const totalQty = "TOTAL QTY";
+  static const pl = "P/L";
   static const validity = "VALIDITY";
   static const tradePrice = "TRADE PRICE";
   static const brk = "BROKERAGE";
@@ -872,15 +873,15 @@ List<Map> getColumnNames() {
           "position": 13,
           "columnId": "${ScreenIds().netPosition}-13",
         },
-        if (userData!.role != UserRollList.user)
-          {
-            "title": NetPositionColumns.plPerWise,
-            "screenId": ScreenIds().netPosition,
-            "width": ColumnSizes.normal,
-            "updatedWidth": ColumnSizes.normal,
-            "position": 14,
-            "columnId": "${ScreenIds().netPosition}-14",
-          }
+        // if (userData!.role != UserRollList.user)
+        //   {
+        //     "title": NetPositionColumns.plPerWise,
+        //     "screenId": ScreenIds().netPosition,
+        //     "width": ColumnSizes.normal,
+        //     "updatedWidth": ColumnSizes.normal,
+        //     "position": 14,
+        //     "columnId": "${ScreenIds().netPosition}-14",
+        //   }
       ]
     },
     {
@@ -1147,46 +1148,46 @@ List<Map> getColumnNames() {
           "position": 15,
           "columnId": "${ScreenIds().userList}-14",
         },
-        {
-          "title": UserListColumns.bet,
-          "screenId": ScreenIds().userList,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 16,
-          "columnId": "${ScreenIds().userList}-15",
-        },
-        {
-          "title": UserListColumns.closeOnly,
-          "screenId": ScreenIds().userList,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 17,
-          "columnId": "${ScreenIds().userList}-16",
-        },
-        {
-          "title": UserListColumns.autoSqroff,
-          "screenId": ScreenIds().userList,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 18,
-          "columnId": "${ScreenIds().userList}-17",
-        },
-        {
-          "title": UserListColumns.viewOnly,
-          "screenId": ScreenIds().userList,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 19,
-          "columnId": "${ScreenIds().userList}-18",
-        },
-        {
-          "title": UserListColumns.status,
-          "screenId": ScreenIds().userList,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 20,
-          "columnId": "${ScreenIds().userList}-19",
-        },
+        // {
+        //   "title": UserListColumns.bet,
+        //   "screenId": ScreenIds().userList,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 16,
+        //   "columnId": "${ScreenIds().userList}-15",
+        // },
+        // {
+        //   "title": UserListColumns.closeOnly,
+        //   "screenId": ScreenIds().userList,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 17,
+        //   "columnId": "${ScreenIds().userList}-16",
+        // },
+        // {
+        //   "title": UserListColumns.autoSqroff,
+        //   "screenId": ScreenIds().userList,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 18,
+        //   "columnId": "${ScreenIds().userList}-17",
+        // },
+        // {
+        //   "title": UserListColumns.viewOnly,
+        //   "screenId": ScreenIds().userList,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 19,
+        //   "columnId": "${ScreenIds().userList}-18",
+        // },
+        // {
+        //   "title": UserListColumns.status,
+        //   "screenId": ScreenIds().userList,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 20,
+        //   "columnId": "${ScreenIds().userList}-19",
+        // },
         {
           "title": UserListColumns.createdDate,
           "screenId": ScreenIds().userList,
@@ -1621,8 +1622,8 @@ List<Map> getColumnNames() {
         {
           "title": UserWisePLSummaryColumns.releaseClientPL,
           "screenId": ScreenIds().userWisePLSummary,
-          "width": ColumnSizes.big,
-          "updatedWidth": ColumnSizes.big,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 4,
           "columnId": "${ScreenIds().userWisePLSummary}-3",
         },
@@ -1650,22 +1651,22 @@ List<Map> getColumnNames() {
           "position": 7,
           "columnId": "${ScreenIds().userWisePLSummary}-6",
         },
-        {
-          "title": UserWisePLSummaryColumns.PLSharePer,
-          "screenId": ScreenIds().userWisePLSummary,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 8,
-          "columnId": "${ScreenIds().userWisePLSummary}-7",
-        },
-        {
-          "title": UserWisePLSummaryColumns.brk,
-          "screenId": ScreenIds().userWisePLSummary,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
-          "position": 9,
-          "columnId": "${ScreenIds().userWisePLSummary}-8",
-        },
+        // {
+        //   "title": UserWisePLSummaryColumns.PLSharePer,
+        //   "screenId": ScreenIds().userWisePLSummary,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 8,
+        //   "columnId": "${ScreenIds().userWisePLSummary}-7",
+        // },
+        // {
+        //   "title": UserWisePLSummaryColumns.brk,
+        //   "screenId": ScreenIds().userWisePLSummary,
+        //   "width": ColumnSizes.normal,
+        //   "updatedWidth": ColumnSizes.normal,
+        //   "position": 9,
+        //   "columnId": "${ScreenIds().userWisePLSummary}-8",
+        // },
         {
           "title": UserWisePLSummaryColumns.netPL,
           "screenId": ScreenIds().userWisePLSummary,
@@ -2038,15 +2039,15 @@ List<Map> getColumnNames() {
           "position": 11,
           "columnId": "${ScreenIds().userPosition}-10",
         },
-        if (userData!.role != UserRollList.user)
-          {
-            "title": NetPositionColumns.plPerWise,
-            "screenId": ScreenIds().userPosition,
-            "width": ColumnSizes.normal,
-            "updatedWidth": ColumnSizes.normal,
-            "position": 12,
-            "columnId": "${ScreenIds().userPosition}-11",
-          }
+        // if (userData!.role != UserRollList.user)
+        //   {
+        //     "title": NetPositionColumns.plPerWise,
+        //     "screenId": ScreenIds().userPosition,
+        //     "width": ColumnSizes.normal,
+        //     "updatedWidth": ColumnSizes.normal,
+        //     "position": 12,
+        //     "columnId": "${ScreenIds().userPosition}-11",
+        //   }
       ]
     },
     {
@@ -2137,7 +2138,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-9",
         },
         {
-          "title": UserTradeColumns.validity,
+          "title": UserTradeColumns.pl,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2145,7 +2146,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-10",
         },
         {
-          "title": UserTradeColumns.tradePrice,
+          "title": UserTradeColumns.validity,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2153,7 +2154,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-11",
         },
         {
-          "title": UserTradeColumns.brk,
+          "title": UserTradeColumns.tradePrice,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2161,7 +2162,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-12",
         },
         {
-          "title": UserTradeColumns.netPrice,
+          "title": UserTradeColumns.brk,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2169,15 +2170,15 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-13",
         },
         {
-          "title": UserTradeColumns.orderDT,
+          "title": UserTradeColumns.netPrice,
           "screenId": ScreenIds().userTrade,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 14,
           "columnId": "${ScreenIds().userTrade}-14",
         },
         {
-          "title": UserTradeColumns.executionDT,
+          "title": UserTradeColumns.orderDT,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
@@ -2185,15 +2186,15 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-15",
         },
         {
-          "title": UserTradeColumns.refPrice,
+          "title": UserTradeColumns.executionDT,
           "screenId": ScreenIds().userTrade,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
+          "width": ColumnSizes.date,
+          "updatedWidth": ColumnSizes.date,
           "position": 16,
           "columnId": "${ScreenIds().userTrade}-16",
         },
         {
-          "title": UserTradeColumns.ipAddress,
+          "title": UserTradeColumns.refPrice,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2201,7 +2202,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-17",
         },
         {
-          "title": UserTradeColumns.device,
+          "title": UserTradeColumns.ipAddress,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -2209,12 +2210,20 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().userTrade}-18",
         },
         {
-          "title": UserTradeColumns.deviceId,
+          "title": UserTradeColumns.device,
           "screenId": ScreenIds().userTrade,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 19,
           "columnId": "${ScreenIds().userTrade}-19",
+        },
+        {
+          "title": UserTradeColumns.deviceId,
+          "screenId": ScreenIds().userTrade,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 20,
+          "columnId": "${ScreenIds().userTrade}-20",
         }
       ]
     },

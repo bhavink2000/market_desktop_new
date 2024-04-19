@@ -86,7 +86,7 @@ class ScreenViewNames {
   static const String scriptQty = "Script Quantity";
   static const String pAndlSummary = "Scriptwise P&L Summary";
   static const String userLogsNew = "User Logs New";
-  static const String userwisePAndLSummary = "Userwise P&L Summary";
+  static const String userwisePAndLSummary = "Profit & Loss";
   static const String userScriptPositionTracking = "User Script Position Tracking";
   static const String symbolWisePositionReport = "Symbol Wise Position Report";
   static const String messages = "Messages";

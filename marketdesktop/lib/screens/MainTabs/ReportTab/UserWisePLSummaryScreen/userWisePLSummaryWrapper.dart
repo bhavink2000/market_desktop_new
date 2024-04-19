@@ -244,10 +244,9 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                   child: Center(
                       child: Row(
                     children: [
-                      totalContent(value: "Total", textColor: AppColors().darkText, width: 715),
-                      totalContent(value: "P/L With Brk : " + controller.totalPlWithBrk.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 200),
-                      totalContent(value: "", textColor: AppColors().darkText, width: 145),
-                      totalContent(value: "Net P/L : " + controller.totalNetPl.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
+                      totalContent(value: "Total", textColor: AppColors().darkText, width: 620),
+                      totalContent(value: "Net P/L : " + controller.totalPlWithBrk.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 170),
+                      totalContent(value: "Our : " + controller.totalNetPl.value.toStringAsFixed(2), textColor: AppColors().darkText, width: 180),
                     ],
                   )),
                 );
@@ -349,11 +348,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       return dynamicValueBox1(
                         plObj.role == UserRollList.user ? plObj.profitLoss!.toStringAsFixed(2) : plObj.childUserProfitLossTotal!.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                        plObj.totalProfitLossValue < 0
-                            ? AppColors().redColor
-                            : plObj.totalProfitLossValue > 0
-                                ? AppColors().greenColor
-                                : AppColors().darkText,
+                        AppColors().darkText,
                         index,
                         indexT,
                         controller.arrListTitle1,
@@ -368,11 +363,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       return dynamicValueBox1(
                         plObj.totalProfitLossValue.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                        plObj.totalProfitLossValue > 0
-                            ? AppColors().greenColor
-                            : plObj.totalProfitLossValue < 0
-                                ? AppColors().redColor
-                                : AppColors().darkText,
+                        AppColors().darkText,
                         index,
                         indexT,
                         controller.arrListTitle1,
@@ -383,11 +374,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       return dynamicValueBox1(
                         plObj.plWithBrk.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                        plObj.plWithBrk > 0
-                            ? AppColors().greenColor
-                            : plObj.plWithBrk < 0
-                                ? AppColors().redColor
-                                : AppColors().darkText,
+                        AppColors().darkText,
                         index,
                         indexT,
                         controller.arrListTitle1,
@@ -398,7 +385,7 @@ class UserWisePLSummaryScreen extends BaseView<UserWisePLSummaryController> {
                       return dynamicValueBox1(
                         plObj.plSharePer.toStringAsFixed(2),
                         index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                        plObj.plSharePer < 0 ? AppColors().redColor : AppColors().darkText,
+                        AppColors().darkText,
                         index,
                         indexT,
                         controller.arrListTitle1,

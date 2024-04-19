@@ -32,14 +32,14 @@ class UserWisePLSummaryPopUpController extends BaseController {
     ListItem("VIEW", true),
     ListItem("USERNAME", true),
     ListItem("SHARING %", true),
-    ListItem("BRK SHARING %", true),
-    ListItem("RELEASE CLIENT P/L", true),
-    ListItem("CLIENT BRK", true),
-    ListItem("CLIENT M2M", true),
-    ListItem("P/L WITH BRK", true),
-    ListItem("P/L SHARE %", true),
+    // ListItem("BRK SHARING %", true),
+    ListItem("RELEASE P/L", true),
     ListItem("BRK", true),
+    ListItem("M2M", true),
     ListItem("NET P/L", true),
+    // ListItem("P/L SHARE %", true),
+    // ListItem("BRK", true),
+    ListItem("OUR", true),
   ];
   refreshView() {
     update();
@@ -50,14 +50,15 @@ class UserWisePLSummaryPopUpController extends BaseController {
       if (selectedUserRoll != UserRollList.user) ListItem("VIEW", true),
       ListItem("USERNAME", true),
       ListItem("SHARING %", true),
-      ListItem("BRK SHARING %", true),
-      ListItem("RELEASE CLIENT P/L", true),
-      ListItem("CLIENT BRK", true),
-      ListItem("CLIENT M2M", true),
-      ListItem("P/L WITH BRK", true),
-      ListItem("P/L SHARE %", true),
+
+      // ListItem("BRK SHARING %", true),
+      ListItem("RELEASE P/L", true),
       ListItem("BRK", true),
+      ListItem("M2M", true),
       ListItem("NET P/L", true),
+      // ListItem("P/L SHARE %", true),
+      // ListItem("BRK", true),
+      ListItem("OUR", true),
     ];
     update();
   }
@@ -71,9 +72,13 @@ class UserWisePLSummaryPopUpController extends BaseController {
         if (element.arrSymbol != null) {
           var symbolObj = element.arrSymbol!.firstWhere((obj) => element.childUserDataPosition![i].symbolId == obj.id);
 
-          element.childUserDataPosition![i].profitLossValue = element.childUserDataPosition![i].totalQuantity! < 0
-              ? (double.parse(symbolObj.ask.toString()) - element.childUserDataPosition![i].price!) * element.childUserDataPosition![i].totalQuantity!
-              : (double.parse(symbolObj.bid.toString()) - double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2))) * element.childUserDataPosition![i].totalQuantity!;
+          if (element.childUserDataPosition![i].tradeType!.toLowerCase() == "sell" && element.childUserDataPosition![i].totalQuantity! > 0) {
+            element.childUserDataPosition![i].profitLossValue = (double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2)) - double.parse(symbolObj.ask.toString())) * element.childUserDataPosition![i].totalQuantity!;
+          } else {
+            element.childUserDataPosition![i].profitLossValue = element.childUserDataPosition![i].totalQuantity! < 0
+                ? (double.parse(symbolObj.ask.toString()) - element.childUserDataPosition![i].price!) * element.childUserDataPosition![i].totalQuantity!
+                : (double.parse(symbolObj.bid.toString()) - double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2))) * element.childUserDataPosition![i].totalQuantity!;
+          }
         }
       }
 
@@ -137,9 +142,14 @@ class UserWisePLSummaryPopUpController extends BaseController {
             //     ? (double.parse(socketData.data!.bid.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].quantity!
             //     : (userObj.childUserDataPosition![i].price! - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].quantity!;
 
-            userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].totalQuantity! < 0
-                ? (double.parse(socketData.data!.ask.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].totalQuantity!
-                : (double.parse(socketData.data!.bid.toString()) - double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2))) * userObj.childUserDataPosition![i].totalQuantity!;
+            if (userObj.childUserDataPosition![i].tradeType!.toLowerCase() == "sell" && userObj.childUserDataPosition![i].totalQuantity! > 0) {
+              userObj.childUserDataPosition![i].profitLossValue = (double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2)) - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].totalQuantity!;
+              ;
+            } else {
+              userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].totalQuantity! < 0
+                  ? (double.parse(socketData.data!.ask.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].totalQuantity!
+                  : (double.parse(socketData.data!.bid.toString()) - double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2))) * userObj.childUserDataPosition![i].totalQuantity!;
+            }
 
             var pl = userObj.role == UserRollList.user ? userObj.profitLoss! : userObj.childUserProfitLossTotal!;
             userObj.totalProfitLossValue = 0.0;

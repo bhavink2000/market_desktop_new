@@ -15,6 +15,8 @@ import 'package:marketdesktop/screens/MainTabs/ToolsTab/ShortcutScreen/shortcutC
 import 'package:marketdesktop/screens/MainTabs/ToolsTab/ShortcutScreen/shortcutWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/LeverageUpdateScreen/leverageUpdateWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userAccessUpdatePopUpScreen/userAccessUpdatePopUpController.dart';
+import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userAccessUpdatePopUpScreen/userAccessUpdatePopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/ScriptDetailPopUp/scriptDetailPopupWrapper.dart';
@@ -53,7 +55,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../screens/UserDetailPopups/userDetailsPopUpWrapper.dart';
 import 'color.dart';
 
-showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""}) async {
+showUserDetailsPopUp({String userId = "", String userName = "", String roll = "", int selectedCurrentTab = 0, String selectedMenuName = "Position"}) async {
   bool isAvailable = Get.isRegistered<UserDetailsPopUpController>();
   if (isAvailable) {
     Get.back();
@@ -61,8 +63,14 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
     await Get.delete<UserDetailsPopUpController>();
 
     Get.put(UserDetailsPopUpController());
+    Get.find<UserDetailsPopUpController>().selectedCurrentTab = selectedCurrentTab;
+    Get.find<UserDetailsPopUpController>().selectedMenuName = selectedMenuName;
+    Get.find<UserDetailsPopUpController>().update();
   } else {
     Get.put(UserDetailsPopUpController());
+    Get.find<UserDetailsPopUpController>().selectedCurrentTab = selectedCurrentTab;
+    Get.find<UserDetailsPopUpController>().selectedMenuName = selectedMenuName;
+    Get.find<UserDetailsPopUpController>().update();
   }
 
   isUserDetailPopUpOpen = true;
@@ -341,6 +349,36 @@ showLeverageUpdatePopUp({UserData? selectedUser}) {
                 height: 210,
                 color: Colors.transparent,
                 child: LeverageUpdateScreen(),
+              ),
+            ),
+          ));
+}
+
+showUserAccessUpdatePopUp({UserData? selectedUser}) {
+  var cpVC = Get.put(UserAccessUpdatePopUpController());
+  cpVC.selectedUser = selectedUser!.obs;
+  showDialog<String>(
+      context: Get.context!,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: 400,
+                height: 240,
+                color: Colors.transparent,
+                child: UserAccessUpdatePopUpScreen(),
               ),
             ),
           ));

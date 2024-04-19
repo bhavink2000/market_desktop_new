@@ -56,7 +56,13 @@ class LeverageUpdateController extends BaseController {
         Get.back();
         await Get.delete<LeverageUpdateController>();
         isUpdateLeveragePopUpOpen = false;
-        Get.find<UserListController>().getUserList(isFromClear: true);
+        // Get.find<UserListController>().getUserList(isFromClear: true);
+        var index = Get.find<UserListController>().arrUserListData.indexWhere((element) => element.userId == selectedUser.userId);
+
+        if (index != -1) {
+          Get.find<UserListController>().arrUserListData[index] = selectedUser;
+          Get.find<UserListController>().update();
+        }
         showSuccessToast(response.meta?.message ?? "");
         update();
       } else {

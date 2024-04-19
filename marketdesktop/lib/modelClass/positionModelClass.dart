@@ -36,7 +36,7 @@ class PositionModel {
 }
 
 class positionListData {
-  List<AllPositionData>? AllPositionDataObj;
+  // List<AllPositionData>? AllPositionDataObj;
   String? tradeId;
   String? userId;
   String? parentId;
@@ -86,7 +86,7 @@ class positionListData {
   num? tradeSecond;
 
   positionListData({
-    this.AllPositionDataObj,
+    // this.AllPositionDataObj,
     this.tradeId,
     this.userId,
     this.parentId,
@@ -133,7 +133,7 @@ class positionListData {
   });
 
   factory positionListData.fromJson(Map<String, dynamic> json) => positionListData(
-        AllPositionDataObj: json["positionData"] == null ? [] : List<AllPositionData>.from(json["positionData"]!.map((x) => AllPositionData.fromJson(x))),
+        // AllPositionDataObj: json["positionData"] == null ? [] : List<AllPositionData>.from(json["positionData"]!.map((x) => AllPositionData.fromJson(x))),
         tradeId: json["tradeId"],
         userId: json["userId"],
         parentId: json["parentId"],
@@ -179,7 +179,7 @@ class positionListData {
       );
 
   Map<String, dynamic> toJson() => {
-        "positionData": AllPositionDataObj == null ? [] : List<dynamic>.from(AllPositionDataObj!.map((x) => x.toJson())),
+        // "positionData": AllPositionDataObj == null ? [] : List<dynamic>.from(AllPositionDataObj!.map((x) => x.toJson())),
         "tradeId": tradeId,
         "userId": userId,
         "parentId": parentId,

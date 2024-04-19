@@ -124,9 +124,9 @@ class PositionPopUpController extends BaseController {
           if (indexOfScript == 0) {}
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
-            arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].tradeTypeValue!.toUpperCase() == "BUY"
+            arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
                 ? (double.parse(socketData.data!.bid.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
-                : (arrPositionScriptList[indexOfScript].price! - double.parse(socketData.data!.ask.toString())) * arrPositionScriptList[indexOfScript].totalQuantity!;
+                : (double.parse(socketData.data!.ask.toString()) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!;
           }
         }
         totalPL = 0.0;

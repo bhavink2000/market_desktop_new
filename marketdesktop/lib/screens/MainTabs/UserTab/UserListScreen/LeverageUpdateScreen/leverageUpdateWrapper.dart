@@ -69,6 +69,7 @@ class LeverageUpdateScreen extends BaseView<LeverageUpdateController> {
             style: TextStyle(color: AppColors().darkText),
             onChanged: (AddMaster? value) {
               // This is called when the user selects an item.
+              controller.selectedUser.leverage = value!.name;
               selectedLeverage.value = value!;
               // focus.nextFocus();
             },

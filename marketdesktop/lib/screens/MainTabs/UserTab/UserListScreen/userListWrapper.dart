@@ -508,6 +508,9 @@ class UserListScreen extends BaseView<UserListController> {
                             if (value == "2") {
                               showLeverageUpdatePopUp(selectedUser: controller.arrUserListData[index]);
                             }
+                            if (value == "4") {
+                              showUserAccessUpdatePopUp(selectedUser: controller.arrUserListData[index]);
+                            }
                           },
                           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                             PopupMenuItem<String>(
@@ -521,6 +524,10 @@ class UserListScreen extends BaseView<UserListController> {
                             PopupMenuItem<String>(
                               value: '3',
                               child: Text(controller.arrUserListData[index].role == UserRollList.user ? '% MARGIN SQUER' : "Account limit"),
+                            ),
+                            PopupMenuItem<String>(
+                              value: '4',
+                              child: Text("Action"),
                             ),
                           ],
                           child: IgnorePointer(
@@ -594,25 +601,15 @@ class UserListScreen extends BaseView<UserListController> {
                       }
                     case 'LEVERAGE':
                       {
-                        return dynamicValueBox1(
-                          controller.arrUserListData[index].leverage!.toString(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          AppColors().blueColor,
-                          index,
-                          indexT,
-                          controller.arrListTitle1,
-                        );
+                        return dynamicValueBox1(controller.arrUserListData[index].leverage!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle1, onClickValue: () {
+                          showLeverageUpdatePopUp(selectedUser: controller.arrUserListData[index]);
+                        }, isUnderlined: true);
                       }
                     case 'CREDIT':
                       {
-                        return dynamicValueBox1(
-                          controller.arrUserListData[index].credit.toString(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          AppColors().darkText,
-                          index,
-                          indexT,
-                          controller.arrListTitle1,
-                        );
+                        return dynamicValueBox1(controller.arrUserListData[index].credit.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
+                          showUserDetailsPopUp(userId: controller.arrUserListData[index].userId!, userName: controller.arrUserListData[index].userName!, roll: controller.arrUserListData[index].role!, selectedCurrentTab: 5, selectedMenuName: "Credit");
+                        });
                       }
                     case 'P/L':
                       {

@@ -540,7 +540,7 @@ class CreateUserController extends BaseController {
             ExchangeAllow arrexchangeAllow = ExchangeAllow(
               exchangeId: arrExchange[i].exchangeId,
               isTurnoverWise: arrExchange[i].isTurnOverSelected ?? false,
-              isSymbolWise: arrExchange[i].isHighLowTradeSelected ?? false,
+              isSymbolWise: arrExchange[i].isSymbolSelected ?? false,
               groupId: arrExchange[i].selectedItemsID,
             );
             arrSelectedExchangeListforClient.add(arrexchangeAllow);

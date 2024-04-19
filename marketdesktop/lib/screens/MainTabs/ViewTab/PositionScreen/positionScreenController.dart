@@ -201,32 +201,35 @@ class PositionController extends BaseController {
     if (totalPage >= currentPage) {
       currentPage = currentPage + 1;
     }
-    arrPositionScriptList.forEach((mainObj) {
-      for (var i = 0; i < mainObj.AllPositionDataObj!.length; i++) {
-        mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].totalQuantity! < 0
-            ? (double.parse(mainObj.ask!.toStringAsFixed(2)) - mainObj.AllPositionDataObj![i].price!) * mainObj.AllPositionDataObj![i].totalQuantity!
-            : (double.parse(mainObj.bid!.toStringAsFixed(2)) - double.parse(mainObj.AllPositionDataObj![i].price!.toStringAsFixed(2))) * mainObj.AllPositionDataObj![i].totalQuantity!;
+    // arrPositionScriptList.forEach((mainObj) {
+    //   for (var i = 0; i < mainObj.AllPositionDataObj!.length; i++) {
+    //     mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].totalQuantity! < 0
+    //         ? (double.parse(mainObj.ask!.toStringAsFixed(2)) - mainObj.AllPositionDataObj![i].price!) * mainObj.AllPositionDataObj![i].totalQuantity!
+    //         : (double.parse(mainObj.bid!.toStringAsFixed(2)) - double.parse(mainObj.AllPositionDataObj![i].price!.toStringAsFixed(2))) * mainObj.AllPositionDataObj![i].totalQuantity!;
 
-        mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].profitLossValue! * -1;
+    //     mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].profitLossValue! * -1;
 
-        mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].profitLossValue! * mainObj.AllPositionDataObj![i].profitAndLossSharing! / 100;
-        mainObj.plPerTotal = mainObj.plPerTotal + mainObj.AllPositionDataObj![i].profitLossValue!;
-      }
-    });
+    //     mainObj.AllPositionDataObj![i].profitLossValue = mainObj.AllPositionDataObj![i].profitLossValue! * mainObj.AllPositionDataObj![i].profitAndLossSharing! / 100;
+    //     mainObj.plPerTotal = mainObj.plPerTotal + mainObj.AllPositionDataObj![i].profitLossValue!;
+    //   }
+    // });
     for (var indexOfScript = 0; indexOfScript < arrPositionScriptList.length; indexOfScript++) {
       arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
           ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
           : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
       totalPL = 0.0;
 
-      if (userData!.role == UserRollList.user) {
-        for (var element in arrPositionScriptList) {
-          totalPL = totalPL + element.profitLossValue!;
-        }
-      } else {
-        for (var i = 0; i < arrPositionScriptList.length; i++) {
-          totalPL = totalPL + arrPositionScriptList[i].plPerTotal;
-        }
+      // if (userData!.role == UserRollList.user) {
+      //   for (var element in arrPositionScriptList) {
+      //     totalPL = totalPL + element.profitLossValue!;
+      //   }
+      // } else {
+      //   for (var i = 0; i < arrPositionScriptList.length; i++) {
+      //     totalPL = totalPL + arrPositionScriptList[i].plPerTotal;
+      //   }
+      // }
+      for (var element in arrPositionScriptList) {
+        totalPL = totalPL + element.profitLossValue!;
       }
 
       totalPosition.value = 0.0;
@@ -326,17 +329,17 @@ class PositionController extends BaseController {
           if (indexOfScript == 0) {}
 
           arrPositionScriptList[indexOfScript].plPerTotal = 0.0;
-          for (var i = 0; i < arrPositionScriptList[indexOfScript].AllPositionDataObj!.length; i++) {
-            arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity! < 0
-                ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].AllPositionDataObj![i].price!) * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity!
-                : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].AllPositionDataObj![i].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity!;
+          // for (var i = 0; i < arrPositionScriptList[indexOfScript].AllPositionDataObj!.length; i++) {
+          //   arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity! < 0
+          //       ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].AllPositionDataObj![i].price!) * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity!
+          //       : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].AllPositionDataObj![i].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].totalQuantity!;
 
-            arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue! * -1;
+          //   arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue! * -1;
 
-            arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue! * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitAndLossSharing! / 100;
+          //   arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue = arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue! * arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitAndLossSharing! / 100;
 
-            arrPositionScriptList[indexOfScript].plPerTotal = arrPositionScriptList[indexOfScript].plPerTotal + arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue!;
-          }
+          //   arrPositionScriptList[indexOfScript].plPerTotal = arrPositionScriptList[indexOfScript].plPerTotal + arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue!;
+          // }
 
           if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
             arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
@@ -346,16 +349,19 @@ class PositionController extends BaseController {
         }
         totalPL = 0.0;
 
-        if (userData!.role == UserRollList.user) {
-          for (var element in arrPositionScriptList) {
-            totalPL = totalPL + element.profitLossValue!;
-          }
-        } else {
-          for (var i = 0; i < arrPositionScriptList.length; i++) {
-            // var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
-            // total = total * -1;
-            totalPL = totalPL + arrPositionScriptList[i].plPerTotal;
-          }
+        // if (userData!.role == UserRollList.user) {
+        //   for (var element in arrPositionScriptList) {
+        //     totalPL = totalPL + element.profitLossValue!;
+        //   }
+        // } else {
+        //   for (var i = 0; i < arrPositionScriptList.length; i++) {
+        //     // var total = getPlPer(percentage: arrPositionScriptList[i].profitAndLossSharing!, pl: arrPositionScriptList[i].profitLossValue!);
+        //     // total = total * -1;
+        //     totalPL = totalPL + arrPositionScriptList[i].plPerTotal;
+        //   }
+        // }
+        for (var element in arrPositionScriptList) {
+          totalPL = totalPL + element.profitLossValue!;
         }
         // totalPL = totalPL + userData!.profitLoss!.toDouble();
         // var mainVc = Get.find<MainContainerController>();

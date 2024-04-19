@@ -39,6 +39,7 @@ class CreditPopUpController extends BaseController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    isFilterOpen = true;
     getColumnListFromDB(ScreenIds().userCredit, arrListTitle1);
     amountController.addListener(() {
       update();

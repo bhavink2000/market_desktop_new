@@ -581,7 +581,7 @@ class MainContainerController extends BaseController {
         if (!event.isAltPressed && !event.isControlPressed && !event.isMetaPressed && !event.isShiftPressed && event.logicalKey.keyLabel.length == 1) {
           marketVC.typedString = marketVC.typedString + event.logicalKey.keyLabel;
           print(marketVC.typedString);
-          var index = marketVC.arrSymbol.indexWhere((element) => element.symbolTitle!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
+          var index = marketVC.arrScript.indexWhere((element) => element.symbol!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
           print(index);
           if (index != -1) {
             var scriptValue = marketVC.arrScript[index];
@@ -590,9 +590,10 @@ class MainContainerController extends BaseController {
             marketVC.selectedScript.value!.copyObject(scriptValue);
             marketVC.selectedScriptForF5.value!.copyObject(scriptValue);
             marketVC.selectedScriptForF5.value!.lut = DateTime.now();
-            var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[index].symbol == element.symbolName);
+            var indexOfSymbol = marketVC.arrScript.indexWhere((element) => marketVC.arrScript[index].symbol == element.symbol);
             if (indexOfSymbol != -1) {
               marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
+              marketVC.update();
             }
 
             marketVC.update();

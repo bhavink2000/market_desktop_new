@@ -58,10 +58,13 @@ class UserWisePLSummaryController extends BaseController {
         if (element.arrSymbol != null) {
           var symbolObj = element.arrSymbol!.firstWhere((obj) => element.childUserDataPosition![i].symbolId == obj.id);
 
-          element.childUserDataPosition![i].profitLossValue = element.childUserDataPosition![i].totalQuantity! < 0
-              ? (double.parse(symbolObj.ask.toString()) - element.childUserDataPosition![i].price!) * element.childUserDataPosition![i].totalQuantity!
-              : (double.parse(symbolObj.bid.toString()) - double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2))) * element.childUserDataPosition![i].totalQuantity!;
-          log(element.childUserDataPosition![i].profitLossValue.toString());
+          if (element.childUserDataPosition![i].tradeType!.toLowerCase() == "sell" && element.childUserDataPosition![i].totalQuantity! > 0) {
+            element.childUserDataPosition![i].profitLossValue = (double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2)) - double.parse(symbolObj.ask.toString())) * element.childUserDataPosition![i].totalQuantity!;
+          } else {
+            element.childUserDataPosition![i].profitLossValue = element.childUserDataPosition![i].totalQuantity! < 0
+                ? (double.parse(symbolObj.ask.toString()) - element.childUserDataPosition![i].price!) * element.childUserDataPosition![i].totalQuantity!
+                : (double.parse(symbolObj.bid.toString()) - double.parse(element.childUserDataPosition![i].price!.toStringAsFixed(2))) * element.childUserDataPosition![i].totalQuantity!;
+          }
         }
       }
 
@@ -126,12 +129,18 @@ class UserWisePLSummaryController extends BaseController {
             //     ? (double.parse(socketData.data!.bid.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].quantity!
             //     : (userObj.childUserDataPosition![i].price! - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].quantity!;
 
-            userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].totalQuantity! < 0
-                ? (double.parse(socketData.data!.ask.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].totalQuantity!
-                : (double.parse(socketData.data!.bid.toString()) - double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2))) * userObj.childUserDataPosition![i].totalQuantity!;
+            if (userObj.childUserDataPosition![i].tradeType!.toLowerCase() == "sell" && userObj.childUserDataPosition![i].totalQuantity! > 0) {
+              userObj.childUserDataPosition![i].profitLossValue = (double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2)) - double.parse(socketData.data!.ask.toString())) * userObj.childUserDataPosition![i].totalQuantity!;
+              ;
+            } else {
+              userObj.childUserDataPosition![i].profitLossValue = userObj.childUserDataPosition![i].totalQuantity! < 0
+                  ? (double.parse(socketData.data!.ask.toString()) - userObj.childUserDataPosition![i].price!) * userObj.childUserDataPosition![i].totalQuantity!
+                  : (double.parse(socketData.data!.bid.toString()) - double.parse(userObj.childUserDataPosition![i].price!.toStringAsFixed(2))) * userObj.childUserDataPosition![i].totalQuantity!;
+            }
 
             var pl = userObj.role == UserRollList.user ? userObj.profitLoss! : userObj.childUserProfitLossTotal!;
             userObj.totalProfitLossValue = 0.0;
+
             for (var element in userObj.childUserDataPosition!) {
               userObj.totalProfitLossValue += element.profitLossValue ?? 0.0;
             }
