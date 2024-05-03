@@ -85,7 +85,7 @@ exportExcelFile(String fileName, List<excelLib.TextCellValue?> titleList, List<L
   final sheet = excel['Sheet1'];
   var listCellHeader = getAlphabetMap();
   sheet.appendRow(titleList);
-  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff");
+  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: excelLib.ExcelColor.fromHexString("#2173FD"), fontColorHex: excelLib.ExcelColor.fromHexString("ffffff"));
   for (var i = 0; i < titleList.length; i++) {
     sheet.setColumnAutoFit(i);
     var cell = sheet.cell(excelLib.CellIndex.indexByString("${listCellHeader[i]}1"));
@@ -129,7 +129,7 @@ Future<void> exportExcelWithTwoSheetFile(
 
   sheet2.merge(excelLib.CellIndex.indexByString("A1"), excelLib.CellIndex.indexByString("D1"), customValue: excelLib.TextCellValue("Loss"));
 
-  excelLib.CellStyle cellStyleHeader = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff", horizontalAlign: excelLib.HorizontalAlign.Center, fontSize: 16);
+  excelLib.CellStyle cellStyleHeader = excelLib.CellStyle(bold: true, backgroundColorHex: excelLib.ExcelColor.fromHexString("#2173FD"), fontColorHex: excelLib.ExcelColor.fromHexString("ffffff"), horizontalAlign: excelLib.HorizontalAlign.Center, fontSize: 16);
   var cell1 = sheet1.cell(excelLib.CellIndex.indexByString("A1"));
   var cell2 = sheet2.cell(excelLib.CellIndex.indexByString("A1"));
   cell1.cellStyle = cellStyleHeader;
@@ -137,7 +137,7 @@ Future<void> exportExcelWithTwoSheetFile(
 
   sheet1.appendRow(titleList);
   sheet2.appendRow(titleList);
-  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: "#2173FD", fontColorHex: "ffffff");
+  excelLib.CellStyle cellStyle = excelLib.CellStyle(bold: true, backgroundColorHex: excelLib.ExcelColor.fromHexString("#2173FD"), fontColorHex: excelLib.ExcelColor.fromHexString("ffffff"));
   for (var i = 0; i < titleList.length; i++) {
     sheet2.setColumnAutoFit(i);
     sheet1.setColumnAutoFit(i);

@@ -155,7 +155,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                   showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
                                     controller.fromDateValue.value = selectedDate;
                                     controller.fromDate.value = shortDateForBackend(selectedDate);
-                                  }, maxDate: userData!.role != UserRollList.superAdmin ? controller.thisWeekStartDate : DateTime.now());
+                                  }, maxDate:  DateTime.now());
                                 },
                                 child: Obx(() {
                                   return Container(
@@ -233,7 +233,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                   // selectToDate(controller.endDate);
                                   showCalenderPopUp(controller.fromDateValue.value, (DateTime selectedDate) {
                                     controller.endDate.value = shortDateForBackend(selectedDate);
-                                  }, maxDate: userData!.role != UserRollList.superAdmin ? controller.thisWeekStartDate : DateTime.now());
+                                  }, maxDate: DateTime.now());
                                 },
                                 child: Obx(() {
                                   return Container(

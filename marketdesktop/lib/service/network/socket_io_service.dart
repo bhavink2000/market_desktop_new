@@ -6,11 +6,13 @@ import 'package:marketdesktop/constant/const_string.dart';
 import 'package:marketdesktop/constant/index.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/main.dart';
+import 'package:marketdesktop/modelClass/ipTradeAlertModelClass.dart';
 import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import 'package:marketdesktop/modelClass/superAdminTradePopUpModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/PositionScreen/positionScreenController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/IPTradeAlertPopUp/ipTradeAlertController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/SuperAdminTradePopUp/superAdminTradePopUpController.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:socket_io_client/socket_io_client.dart';
@@ -64,6 +66,15 @@ class SocketIOService {
               if (isPositionAvailable) {
                 Get.find<PositionController>().update();
               }
+            }
+          }
+          if (data["ipTradeStatus"] == 1) {
+            if (userData!.role == UserRollList.superAdmin || userData!.role == UserRollList.admin) {
+              var obj = IpTradeAlertModel.fromJson(data["ipTradeData"]);
+              showIPTradeAlertPopUp();
+              isSuperAdminPopUpOpen = true;
+              Get.find<IPTradeAlertPopUpController>().values = obj;
+              Get.find<IPTradeAlertPopUpController>().update();
             }
           }
           if (data["alertTradeStatus"] == 1) {

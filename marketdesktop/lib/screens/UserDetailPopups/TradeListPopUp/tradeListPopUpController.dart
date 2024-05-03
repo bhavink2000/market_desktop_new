@@ -220,6 +220,10 @@ class TradeListPopUpController extends BaseController {
             {
               list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
             }
+          case UserTradeColumns.pl:
+            {
+              list.add(excelLib.TextCellValue(element.profitLoss.toString()));
+            }
           case UserTradeColumns.validity:
             {
               list.add(excelLib.TextCellValue(element.productTypeValue.toString()));
@@ -323,6 +327,10 @@ class TradeListPopUpController extends BaseController {
           case UserTradeColumns.totalQty:
             {
               list.add((element.totalQuantity.toString()));
+            }
+          case UserTradeColumns.pl:
+            {
+              list.add((element.profitLoss.toString()));
             }
           case UserTradeColumns.validity:
             {

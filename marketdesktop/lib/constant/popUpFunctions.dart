@@ -30,6 +30,8 @@ import 'package:marketdesktop/screens/UserDetailPopups/FilterPopup/filterPopUpWr
 import 'package:marketdesktop/screens/UserDetailPopups/GroupSettingPopUp/groupSettingPopUpController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnController.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/MarketColumnPopUp/marketColumnWrapper.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/IPTradeAlertPopUp/ipTradeAlertController.dart';
+import 'package:marketdesktop/screens/UserDetailPopups/IPTradeAlertPopUp/ipTradeAlertWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/OpenPositionPopUpScreen/openPositionPopUpController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/OpenPositionPopUpScreen/openPositionPopUpWrapper.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/PositionPopUp/positionPopUpController.dart';
@@ -210,6 +212,38 @@ showSuperAdminTradePopUp() {
           ));
 }
 
+showIPTradeAlertPopUp() {
+  Get.put(IPTradeAlertPopUpController());
+
+  showDialog<String>(
+      context: Get.context!,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: Container(
+              width: 25.w,
+              height: 500,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColors().lightOnlyText,
+                    width: 1,
+                  ),
+                  color: AppColors().whiteColor),
+              child: IPTradeAlertPopUpScreen(),
+            ),
+          ));
+}
+
 showUserWisePLSummaryPopUp({String userId = "", String userName = "", String roll = ""}) {
   Get.put(UserWisePLSummaryPopUpController());
 
@@ -376,7 +410,7 @@ showUserAccessUpdatePopUp({UserData? selectedUser}) {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                 width: 400,
-                height: 240,
+                height: 300,
                 color: Colors.transparent,
                 child: UserAccessUpdatePopUpScreen(),
               ),

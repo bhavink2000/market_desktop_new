@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -185,9 +186,11 @@ class MyMenuBar extends StatelessWidget {
               isMarketSocketConnected.value = false;
               CancelToken().cancel();
               isShowToastAfterLogout = true;
+              if (kIsWeb == false) {
+                await windowManager.setFullScreen(false);
+                setWindowMinSize(const Size(400, 490));
+              }
 
-              await windowManager.setFullScreen(false);
-              setWindowMinSize(const Size(400, 490));
               Future.delayed(Duration(seconds: 2), () {
                 isShowToastAfterLogout = false;
               });

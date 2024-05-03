@@ -40,7 +40,7 @@ class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpControll
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 100,
+                      width: 150,
                       child: Text("BET : ", textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                     ),
                     Transform.scale(
@@ -76,7 +76,7 @@ class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpControll
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 100,
+                      width: 150,
                       child: Text("CLOSE ONLY : ", textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                     ),
                     Transform.scale(
@@ -112,7 +112,7 @@ class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpControll
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 100,
+                      width: 150,
                       child: Text("AUTO SQROFF : ", textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                     ),
                     Transform.scale(
@@ -148,7 +148,7 @@ class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpControll
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 100,
+                      width: 150,
                       child: Text("VIEW ONLY : ", textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                     ),
                     Transform.scale(
@@ -184,7 +184,7 @@ class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpControll
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 100,
+                      width: 150,
                       child: Text("STATUS : ", textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
                     ),
                     Transform.scale(
@@ -208,6 +208,44 @@ class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpControll
                 ),
               );
             }),
+            if (controller.selectedUser.value.role == UserRollList.user)
+              SizedBox(
+                height: 10,
+              ),
+            if (controller.selectedUser.value.role == UserRollList.user)
+              Obx(() {
+                return Container(
+                  height: 3.h,
+
+                  // padding: EdgeInsets.symmetric(horizontal: 80),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 150,
+                        child: Text("Position Cut 15 Days : ", textAlign: TextAlign.start, style: TextStyle(fontSize: 13, overflow: TextOverflow.ellipsis, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                      ),
+                      Transform.scale(
+                        scale: 0.7,
+                        child: Switch(
+                          value: controller.selectedUser.value.fifteenDays!,
+                          activeColor: AppColors().blueColor,
+                          onChanged: (bool value) async {
+                            final payload = {
+                              "userId": controller.selectedUser.value.userId,
+                              "fifteenDays": value,
+                              "logStatus": "fifteenDays",
+                            };
+                            controller.selectedUser.value.fifteenDays = value;
+                            controller.update();
+                            controller.updateUserStatus(payload);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
           ],
         )));
   }

@@ -16,6 +16,9 @@ import 'package:marketdesktop/modelClass/groupListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import 'package:marketdesktop/service/network/allApiCallService.dart';
+import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
+import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
+import 'package:scrollable_clean_calendar/utils/enums.dart';
 import '../constant/index.dart';
 
 List<UserData> arrUserList = [];
@@ -1713,6 +1716,7 @@ showCalenderPopUp(DateTime fromDate, Function onDateSelection, {DateTime? maxDat
               width: 450,
               height: 450,
               decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+
               child: CalendarCarousel<Event>(
                 onDayPressed: (DateTime date, List<Event> events) {
                   onDateSelection(date);

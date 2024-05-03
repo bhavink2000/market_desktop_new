@@ -57,6 +57,7 @@ class UserData {
   String? parentUser;
   bool? bet;
   bool? closeOnly;
+  bool? fifteenDays;
   bool? marginSquareOff;
   bool? freshStopLoss;
   int? cmpOrder;
@@ -106,6 +107,7 @@ class UserData {
     this.tradeMarginBalance,
     this.marginBalance,
     this.remark,
+    this.fifteenDays,
     this.profitAndLossSharing,
     this.profitAndLossSharingDownLine,
     this.brkSharing,
@@ -168,6 +170,7 @@ class UserData {
       credit: json["credit"],
       initialCredit: json["initialCredit"],
       balance: json["balance"],
+      fifteenDays: json["fifteenDays"],
       tradeMarginBalance: json["tradeMarginBalance"],
       marginBalance: json["marginBalance"],
       remark: json["remark"],
@@ -235,6 +238,7 @@ class UserData {
         "tradeMarginBalance": tradeMarginBalance,
         "marginBalance": marginBalance,
         "remark": remark,
+        "fifteenDays": fifteenDays,
         "profitAndLossSharing": profitAndLossSharing,
         "profitAndLossSharingDownLine": profitAndLossSharingDownLine,
         "brkSharing": brkSharing,

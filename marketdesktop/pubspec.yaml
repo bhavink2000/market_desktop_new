@@ -44,7 +44,7 @@ dependencies:
   intl: ^0.18.1
   dio: ^5.2.1+1
   web_socket_channel: ^2.4.0
-  dropdown_button2: ^3.0.0-beta.10
+  dropdown_button2: 3.0.0-beta.10
   flutter_pdfview: ^1.2.7
   dropdown_search: ^5.0.6
   window_manager: ^0.3.5
@@ -76,6 +76,7 @@ dependencies:
   pdf: ^3.10.8
   widgets_to_image: ^0.0.2
   flutter_to_pdf: ^0.1.1
+  scrollable_clean_calendar: ^1.5.0
 
   window_size:
     git:
