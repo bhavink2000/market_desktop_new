@@ -267,7 +267,9 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -427,6 +429,7 @@ class ClientAccountReportScreen extends BaseView<ClientAccountReportController> 
                               onPress: () async {
                                 controller.selectedExchange.value = ExchangeData();
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
+                                controller.searchUserController?.clear();
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";

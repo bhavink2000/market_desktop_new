@@ -37,6 +37,7 @@ class BaseController extends GetxController {
   WidgetsToImageController widgetToImagecontroller = WidgetsToImageController();
   final ExportDelegate exportDelegate = ExportDelegate();
   Uint8List? bytes;
+  TextEditingController? searchUserController;
   onCLickFilter() {
     isFilterOpen = !isFilterOpen;
     update();

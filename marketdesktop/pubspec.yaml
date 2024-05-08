@@ -76,7 +76,6 @@ dependencies:
   pdf: ^3.10.8
   widgets_to_image: ^0.0.2
   flutter_to_pdf: ^0.1.1
-  scrollable_clean_calendar: ^1.5.0
 
   window_size:
     git:

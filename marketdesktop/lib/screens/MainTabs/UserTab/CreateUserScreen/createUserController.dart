@@ -1067,7 +1067,7 @@ class CreateUserController extends BaseController {
         if (response.statusCode == 200) {
           Get.back();
           showSuccessToast(response.meta?.message ?? "");
-          Get.find<MarketWatchController>().getUserList();
+          Get.find<MarketWatchController>().getUserList("");
           getUserList();
           showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
           Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;

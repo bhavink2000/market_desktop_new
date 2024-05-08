@@ -388,7 +388,7 @@ class TradeListPopUpScreen extends BaseView<TradeListPopUpController> {
                               title: "View",
                               textSize: 14,
                               onPress: () {
-                                controller.getTradeList();
+                                controller.getTradeList(isFromFilter: true);
                               },
                               focusKey: controller.viewFocus,
                               borderColor: Colors.transparent,

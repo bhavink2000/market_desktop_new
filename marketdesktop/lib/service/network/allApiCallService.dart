@@ -694,7 +694,27 @@ class AllApiCallService {
       return null;
     }
   }
-
+ Future<UserListModel?> getMyUserListByKeywordCall({String? text, String? filterType, String? roleId, String? userId, String? status, int? page}) async {
+    try {
+      _dio.options.headers = getHeaders();
+      final payload = {
+        "page": page,
+        "limit": 20,
+        "search": text,
+        "filterType": filterType,
+        "roleId": roleId,
+        "status": status,
+        "userId": userId,
+      };
+      final data = await _dio.post(Api.UserSearchList, data: payload);
+      print("=======================");
+      print(data.data);
+      return UserListModel.fromJson(data.data);
+    } catch (e) {
+      print('catch e->$e');
+      return null;
+    }
+  }
   Future<UserListModel?> getMyUserListCall({String? text, String? filterType, String? roleId, String? userId, String? status, int? page}) async {
     try {
       _dio.options.headers = getHeaders();

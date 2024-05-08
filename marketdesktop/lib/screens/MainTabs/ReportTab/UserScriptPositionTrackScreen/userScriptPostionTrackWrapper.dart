@@ -202,7 +202,9 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 150),
+                            userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                              controller.searchUserController = c;
+                            }),
                             SizedBox(
                               width: 30,
                             ),
@@ -314,6 +316,7 @@ class UserScriptPositionTrackScreen extends BaseView<UserScriptPositionTrackCont
                                 controller.arrTracking.clear();
                                 controller.isClearApiCallRunning = true;
                                 controller.selectedExchange.value = ExchangeData();
+                                controller.searchUserController?.clear();
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";

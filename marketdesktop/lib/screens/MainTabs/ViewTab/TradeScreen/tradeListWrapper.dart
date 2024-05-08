@@ -281,7 +281,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -426,6 +428,7 @@ class TradeListScreen extends BaseView<TradeListController> {
                                 controller.endDate.value = "";
                                 controller.arrTrade.clear();
                                 controller.pageNumber = 1;
+                                controller.searchUserController?.clear();
                                 controller.isApiCallRunning = true;
                                 controller.update();
                                 controller.getTradeList(isFromClear: true);

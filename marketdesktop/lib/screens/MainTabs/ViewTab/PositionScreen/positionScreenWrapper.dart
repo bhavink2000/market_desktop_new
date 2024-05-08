@@ -150,7 +150,7 @@ class PositionScreen extends BaseView<PositionController> {
                                 controller.selectedUser.value = UserData();
                                 controller.arrUserListOnlyClient.clear();
 
-                                controller.getMyUserList();
+                                // controller.getMyUserList();
                               }),
                               SizedBox(
                                 width: 30,
@@ -180,7 +180,9 @@ class PositionScreen extends BaseView<PositionController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              controller.userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, rollType: controller.selectedRoll.value.roleId, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -292,7 +294,7 @@ class PositionScreen extends BaseView<PositionController> {
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
                                 controller.isClientSelected = false;
                                 controller.isUserSelected = false;
-
+                                controller.searchUserController?.clear();
                                 controller.selectedRoll.value = userRoleListData();
                                 controller.selectedUser.value = UserData();
                                 controller.arrPositionScriptList.clear();

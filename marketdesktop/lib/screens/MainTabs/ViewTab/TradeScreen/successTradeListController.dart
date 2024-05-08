@@ -43,6 +43,7 @@ class SuccessTradeListController extends BaseController {
   bool isPagingApiCall = false;
   int totalCount = 0;
   FocusNode deleteTradeFocus = FocusNode();
+  
 
   @override
   void onInit() async {

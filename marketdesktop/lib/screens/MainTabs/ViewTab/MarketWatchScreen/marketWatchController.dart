@@ -173,7 +173,7 @@ class MarketWatchController extends BaseController {
 
       selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
       update();
-      getUserList();
+      // getUserList();
       getExchangeList();
       getScriptList();
       getUserTabList();
@@ -200,11 +200,17 @@ class MarketWatchController extends BaseController {
     // focusNode.requestFocus();
   }
 
-  getUserList() async {
-    var response = await service.getMyUserListCall(roleId: UserRollList.user);
-    arrUserListOnlyClient = response!.data ?? [];
-    if (arrUserListOnlyClient.isNotEmpty) {
-      selectedUser.value = arrUserListOnlyClient.first;
+  getUserList(String keyWord) async {
+    var response = await service.getMyUserListByKeywordCall(text: keyWord, roleId: UserRollList.user);
+    if (response != null) {
+      if (response.statusCode == 200) {
+        arrUserListOnlyClient = response.data ?? [];
+        return arrUserListOnlyClient;
+      } else {
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 
@@ -1356,7 +1362,7 @@ class MarketWatchController extends BaseController {
                                           padding: const EdgeInsets.symmetric(vertical: 5),
                                           child: IgnorePointer(
                                             ignoring: userData!.role == UserRollList.user,
-                                            child: userListDropDown(selectedUser),
+                                            child: userListView(selectedUser),
                                           ),
                                         ),
                                       ],
@@ -2389,6 +2395,109 @@ class MarketWatchController extends BaseController {
             ),
           ));
     });
+  }
+
+  Widget userListView(Rx<UserData> selectedUser, {double? width, int isFromBS = 0}) {
+    return Container(
+        // height: 40.h,
+        width: 210,
+        height: 37,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors().bgColor, boxShadow: [
+          BoxShadow(
+            color: AppColors().fontColor.withOpacity(0.2),
+            offset: Offset.zero,
+            spreadRadius: 2,
+            blurRadius: 7,
+          ),
+        ]),
+        child: Container(
+          width: 200,
+          // height: 4.h,
+          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+          decoration: BoxDecoration(border: Border.all(color: Colors.transparent, width: 1), borderRadius: BorderRadius.circular(3)),
+          child: Autocomplete<UserData>(
+            displayStringForOption: (UserData option) => option.userName!,
+            fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
+              return CustomTextField(
+                type: 'Search User',
+                keyBoardType: TextInputType.text,
+                isEnabled: true,
+                isOptional: false,
+                inValidMsg: "",
+                placeHolderMsg: "Search User",
+                emptyFieldMsg: "",
+                // fontStyle: TextStyle(
+                //   fontSize: 10,
+                //   fontFamily: CustomFonts.family1Medium,
+                //   color: AppColors().darkText,
+                // ),
+                controller: searchEditingController,
+                focus: searchFocus,
+                // focusBorderColor: AppColors().blueColor,
+                isSecure: false,
+                borderColor: Colors.transparent,
+                keyboardButtonType: TextInputAction.search,
+                maxLength: 64,
+                focusBorderColor: Colors.transparent,
+                isShowPrefix: false,
+                isShowSufix: false,
+                onTap: () {
+                  searchFocus.requestFocus();
+                },
+              );
+            },
+            optionsViewBuilder: (context, onSelected, options) => Align(
+              alignment: Alignment.topLeft,
+              child: Material(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
+                ),
+                child: Container(
+                  height: 70,
+                  width: 200, // <-- Right here !
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: options.length,
+                    shrinkWrap: false,
+                    itemBuilder: (BuildContext context, int index) {
+                      final String option = arrUserListOnlyClient.elementAt(index).userName!;
+                      return InkWell(
+                        onTap: () => onSelected(arrUserListOnlyClient.elementAt(index)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            option,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().darkText,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+            optionsMaxHeight: 150,
+            optionsBuilder: (TextEditingValue textEditingValue) async {
+              if (textEditingValue.text == '') {
+                return const Iterable<UserData>.empty();
+              }
+              if (textEditingValue.text.length > 2) {
+                return await getUserList(textEditingValue.text);
+              } else {
+                return const Iterable<UserData>.empty();
+              }
+            },
+            onSelected: (UserData selection) {
+              debugPrint('You just selected $selection');
+              selectedUser.value = selection;
+              // controller.addSymbolToTab(selection.symbolId!);
+            },
+          ),
+        ));
   }
 
   Widget allScriptListDropDownForF5() {

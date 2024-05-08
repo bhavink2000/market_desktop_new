@@ -124,7 +124,9 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                             SizedBox(
                               width: 10,
                             ),
-                            userListDropDown(controller.selectedUser, width: 150),
+                            userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                              controller.searchUserController = c;
+                            }),
                             SizedBox(
                               width: 30,
                             ),
@@ -176,6 +178,7 @@ class ProfitAndLossSummaryScreen extends BaseView<ProfitAndLossSummaryController
                               onPress: () {
                                 controller.selectedUser.value = UserData();
                                 controller.profitLossList(isFromClear: true);
+                                controller.searchUserController?.clear();
                               },
                               bgColor: AppColors().whiteColor,
                               isFilled: true,

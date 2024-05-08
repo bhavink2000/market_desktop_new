@@ -277,7 +277,9 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -440,6 +442,7 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                               onPress: () {
                                 controller.selectedExchange.value = ExchangeData();
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
+                                controller.searchUserController?.clear();
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";
                                 controller.selectedTradeStatus = Type().obs;
@@ -673,6 +676,17 @@ class SuccessTradeListScreen extends BaseView<SuccessTradeListController> {
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].productTypeValue.toString(),
+                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          AppColors().darkText,
+                          index,
+                          indexT,
+                          controller.arrListTitle1,
+                        );
+                      }
+                    case UserTradeColumns.pl:
+                      {
+                        return dynamicValueBox1(
+                          controller.arrTrade[index].profitLoss.toString(),
                           index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
                           AppColors().darkText,
                           index,

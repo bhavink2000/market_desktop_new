@@ -120,7 +120,9 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -340,6 +342,7 @@ class LogHistoryScreen extends BaseView<LogHistoryController> {
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
+                                controller.searchUserController?.clear();
                                 controller.selectedLogType.value = Type();
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";

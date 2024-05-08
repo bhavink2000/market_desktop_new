@@ -16,9 +16,6 @@ import 'package:marketdesktop/modelClass/groupListModelClass.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import 'package:marketdesktop/service/network/allApiCallService.dart';
-import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
-import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
-import 'package:scrollable_clean_calendar/utils/enums.dart';
 import '../constant/index.dart';
 
 List<UserData> arrUserList = [];
@@ -465,7 +462,108 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
   });
 }
 
-Widget userListDropDown(Rx<UserData> selectedUser, {double? width}) {
+Widget userListDropDown(Rx<UserData> selectedUser, {double? width, String? rollType, Function? userController}) {
+  return Container(
+      // height: 40.h,
+      width: width ?? 250,
+      // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      height: 40,
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.transparent),
+      child: Container(
+        width: 200,
+        // height: 4.h,
+
+        decoration: BoxDecoration(border: Border.all(color: Colors.transparent, width: 1), borderRadius: BorderRadius.circular(0)),
+        child: Autocomplete<UserData>(
+          displayStringForOption: (UserData option) => option.userName!,
+          fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
+            if (userController != null) {
+              userController(searchEditingController);
+            }
+
+            return CustomTextField(
+              type: 'Search User',
+              keyBoardType: TextInputType.text,
+              isEnabled: true,
+              isOptional: false,
+              inValidMsg: "",
+              placeHolderMsg: "Search User",
+              emptyFieldMsg: "",
+              fontStyle: TextStyle(
+                fontSize: 10,
+                fontFamily: CustomFonts.family1Medium,
+                color: AppColors().darkText,
+              ),
+              controller: searchEditingController,
+              focus: searchFocus,
+              // focusBorderColor: AppColors().blueColor,
+              isSecure: false,
+              borderColor: AppColors().fontTextColor,
+              keyboardButtonType: TextInputAction.search,
+              maxLength: 64,
+              focusBorderColor: AppColors().blueColor,
+              isShowPrefix: false,
+              isShowSufix: false,
+              onTap: () {
+                searchFocus.requestFocus();
+              },
+            );
+          },
+          optionsViewBuilder: (context, onSelected, options) => Align(
+            alignment: Alignment.topLeft,
+            child: Material(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
+              ),
+              child: Container(
+                height: 150,
+                width: (width ?? 250) - 3, // <-- Right here !
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: options.length,
+                  shrinkWrap: false,
+                  itemBuilder: (BuildContext context, int index) {
+                    final String option = arrUserList.elementAt(index).userName!;
+                    return InkWell(
+                      onTap: () => onSelected(arrUserList.elementAt(index)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          option,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: CustomFonts.family1Medium,
+                            color: AppColors().darkText,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          optionsMaxHeight: 150,
+          optionsBuilder: (TextEditingValue textEditingValue) async {
+            if (textEditingValue.text == '') {
+              return const Iterable<UserData>.empty();
+            }
+            if (textEditingValue.text.length > 2) {
+              return await getUserListByKeyWord(textEditingValue.text, rollType: rollType);
+            } else {
+              return const Iterable<UserData>.empty();
+            }
+          },
+          onSelected: (UserData selection) {
+            debugPrint('You just selected $selection');
+            selectedUser.value = selection;
+            // controller.addSymbolToTab(selection.symbolId!);
+          },
+        ),
+      ));
+}
+
+Widget userListDropDownFinal(Rx<UserData> selectedUser, {double? width}) {
   return Obx(() {
     return SizedBox(
         width: width ?? 250,
@@ -1818,6 +1916,20 @@ getUserList() async {
         userId: "",
         userName: "ALL",
       ));
+}
+
+getUserListByKeyWord(String keyWord, {String? rollType}) async {
+  var response = await service.getMyUserListByKeywordCall(text: keyWord, roleId: rollType ?? "");
+  if (response != null) {
+    if (response.statusCode == 200) {
+      arrUserList = response.data ?? [];
+      return arrUserList;
+    } else {
+      return [];
+    }
+  } else {
+    return [];
+  }
 }
 
 callForBrokerList() async {

@@ -275,7 +275,9 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -412,6 +414,7 @@ class RejectionLogScreen extends BaseView<RejectionLogController> {
                               onPress: () {
                                 controller.selectedExchange.value = ExchangeData();
                                 controller.selectedScriptFromFilter.value = GlobalSymbolData();
+                                controller.searchUserController?.clear();
                                 controller.selectedTradeStatus.value = "";
                                 controller.selectedUser.value = UserData();
                                 controller.fromDate.value = "";

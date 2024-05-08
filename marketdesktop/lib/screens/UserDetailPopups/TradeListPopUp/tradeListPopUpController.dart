@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
@@ -33,7 +35,7 @@ class TradeListPopUpController extends BaseController {
   FocusNode clearFocus = FocusNode();
   bool isApiCallRunning = false;
   bool isResetCall = false;
-
+  bool isPagingApiCall = false;
   @override
   void onInit() async {
     // TODO: implement onInit
@@ -43,25 +45,90 @@ class TradeListPopUpController extends BaseController {
     update();
   }
 
-  getTradeList({bool isFromClear = false}) async {
-    arrTrade.clear();
-    pageNumber = 1;
-    update();
+  // getTradeList({bool isFromClear = false}) async {
+  //   // arrTrade.clear();
+  //   // pageNumber = 1;
+  //   update();
+  //   isLocalDataLoading = true;
+  //   String strFromDate = "";
+  //   String strToDate = "";
+  //   if (fromDate.value != "Start Date") {
+  //     strFromDate = fromDate.value;
+  //   }
+  //   if (endDate.value != "End Date") {
+  //     strToDate = endDate.value;
+  //   }
+  //   if (isFromClear) {
+  //     isResetCall = true;
+  //   } else {
+  //     isApiCallRunning = true;
+  //   }
+  //   if (isPagingApiCall) {
+  //     return;
+  //   }
+  //   isPagingApiCall = true;
+  //   update();
+  //   var response = await service.getMyTradeListCall(
+  //     status: "executed",
+  //     page: pageNumber,
+  //     text: "",
+  //     userId: selectedUserId,
+  //     tradeStatus: selectedTradeStatus.value.id ?? "",
+  //     symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+  //     exchangeId: selectedExchange.value.exchangeId ?? "",
+  //     startDate: strFromDate,
+  //     endDate: strToDate,
+  //   );
+  //   isLocalDataLoading = false;
+  //   if (response != null) {
+  //     if (response.statusCode == 200) {
+  //       // var arrTemp = [];
+  //       response.data?.forEach((v) {
+  //         arrTrade.add(v);
+  //       });
+
+  //       isResetCall = false;
+  //       isApiCallRunning = false;
+  //       totalPage = response.meta?.totalPage ?? 0;
+  //       totalSuccessRecord = response.meta?.totalCount ?? 0;
+  //       if (totalPage >= pageNumber) {
+  //         pageNumber = pageNumber + 1;
+  //       }
+  //       update();
+  //       // for (var element in response.data!) {
+  //       //   arrTemp.insert(0, element.symbolName);
+  //       // }
+
+  //       // if (arrSymbolNames.isNotEmpty) {
+  //       //   var txt = {"symbols": arrTemp};
+  //       //   socket.connectScript(jsonEncode(txt));
+  //       // }
+  //     }
+  //   }
+  // }
+  getTradeList({bool isFromClear = false, bool isFromFilter = false}) async {
     isLocalDataLoading = true;
+    if (isFromClear) {
+      pageNumber = 1;
+      isResetCall = true;
+    }
+    if (isFromFilter) {
+      pageNumber = 1;
+      isApiCallRunning = true;
+    }
+    if (isPagingApiCall) {
+      return;
+    }
+    isPagingApiCall = true;
     String strFromDate = "";
     String strToDate = "";
+    update();
     if (fromDate.value != "Start Date") {
       strFromDate = fromDate.value;
     }
     if (endDate.value != "End Date") {
       strToDate = endDate.value;
     }
-    if (isFromClear) {
-      isResetCall = true;
-    } else {
-      isApiCallRunning = true;
-    }
-    update();
     var response = await service.getMyTradeListCall(
       status: "executed",
       page: pageNumber,
@@ -73,30 +140,39 @@ class TradeListPopUpController extends BaseController {
       startDate: strFromDate,
       endDate: strToDate,
     );
-    isLocalDataLoading = false;
+
     if (response != null) {
       if (response.statusCode == 200) {
-        // var arrTemp = [];
-        response.data?.forEach((v) {
-          arrTrade.add(v);
-        });
-
-        isResetCall = false;
-        isApiCallRunning = false;
-        totalPage = response.meta?.totalPage ?? 0;
-        totalSuccessRecord = response.meta?.totalCount ?? 0;
+        totalPage = response.meta!.totalPage!;
         if (totalPage >= pageNumber) {
           pageNumber = pageNumber + 1;
         }
-        update();
-        // for (var element in response.data!) {
-        //   arrTemp.insert(0, element.symbolName);
-        // }
+        // totalCount = response.meta!.totalCount!;
+        var arrTemp = [];
+        if (isFromClear || isFromFilter) {
+          arrTrade.clear();
+        }
 
-        // if (arrSymbolNames.isNotEmpty) {
-        //   var txt = {"symbols": arrTemp};
-        //   socket.connectScript(jsonEncode(txt));
-        // }
+        response.data?.forEach((v) {
+          arrTrade.add(v);
+        });
+        update();
+        totalPage = response.meta?.totalPage ?? 0;
+        totalSuccessRecord = response.meta?.totalCount ?? 0;
+        for (var element in response.data!) {
+          if (!arrSymbolNames.contains(element.symbolName)) {
+            arrTemp.insert(0, element.symbolName);
+            arrSymbolNames.insert(0, element.symbolName!);
+          }
+        }
+        isLocalDataLoading = false;
+        isApiCallRunning = false;
+        isResetCall = false;
+        isPagingApiCall = false;
+        if (arrSymbolNames.isNotEmpty) {
+          var txt = {"symbols": arrSymbolNames};
+          socket.connectScript(jsonEncode(txt));
+        }
       }
     }
   }

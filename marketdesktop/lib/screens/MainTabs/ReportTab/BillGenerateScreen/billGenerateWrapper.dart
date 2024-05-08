@@ -155,7 +155,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                   showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
                                     controller.fromDateValue.value = selectedDate;
                                     controller.fromDate.value = shortDateForBackend(selectedDate);
-                                  }, maxDate:  DateTime.now());
+                                  }, maxDate: DateTime.now());
                                 },
                                 child: Obx(() {
                                   return Container(
@@ -301,7 +301,9 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150),
+                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                                controller.searchUserController = c;
+                              }),
                               SizedBox(
                                 width: 30,
                               ),
@@ -381,7 +383,7 @@ class BillGenerateScreen extends BaseView<BillGenerateController> {
                                 if (userData!.role != UserRollList.user) {
                                   controller.selectedUser.value = UserData();
                                 }
-
+                                controller.searchUserController?.clear();
                                 controller.fromDate.value = "";
                                 controller.endDate.value = "";
                                 controller.selectStatusdropdownValue = "".obs;

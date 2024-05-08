@@ -99,6 +99,7 @@ class TradeColumns {
   static const qty = "QTY";
   static const lot = "LOT";
   static const type = "TYPE";
+  static const pl = "P/L";
   static const tradePrice = "TRADE PRICE";
   static const brk = "BROKERAGE";
   static const priceB = "PRICE(B)";
@@ -690,7 +691,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-9",
         },
         {
-          "title": TradeColumns.tradePrice,
+          "title": TradeColumns.pl,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -698,7 +699,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-10",
         },
         {
-          "title": TradeColumns.brk,
+          "title": TradeColumns.tradePrice,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -706,7 +707,7 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-11",
         },
         {
-          "title": TradeColumns.priceB,
+          "title": TradeColumns.brk,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -714,15 +715,15 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-12",
         },
         {
-          "title": TradeColumns.orderDT,
+          "title": TradeColumns.priceB,
           "screenId": ScreenIds().trades,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 13,
           "columnId": "${ScreenIds().trades}-13",
         },
         {
-          "title": TradeColumns.executionDT,
+          "title": TradeColumns.orderDT,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.date,
           "updatedWidth": ColumnSizes.date,
@@ -730,23 +731,23 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-14",
         },
         {
-          "title": TradeColumns.refPrice,
+          "title": TradeColumns.executionDT,
           "screenId": ScreenIds().trades,
-          "width": 160.0,
-          "updatedWidth": 160.0,
+          "width": ColumnSizes.date,
+          "updatedWidth": ColumnSizes.date,
           "position": 15,
           "columnId": "${ScreenIds().trades}-15",
         },
         {
-          "title": TradeColumns.ipAddress,
+          "title": TradeColumns.refPrice,
           "screenId": ScreenIds().trades,
-          "width": ColumnSizes.normal,
-          "updatedWidth": ColumnSizes.normal,
+          "width": 160.0,
+          "updatedWidth": 160.0,
           "position": 16,
           "columnId": "${ScreenIds().trades}-16",
         },
         {
-          "title": TradeColumns.device,
+          "title": TradeColumns.ipAddress,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
@@ -754,12 +755,20 @@ List<Map> getColumnNames() {
           "columnId": "${ScreenIds().trades}-17",
         },
         {
-          "title": TradeColumns.deviceId,
+          "title": TradeColumns.device,
           "screenId": ScreenIds().trades,
           "width": ColumnSizes.normal,
           "updatedWidth": ColumnSizes.normal,
           "position": 18,
           "columnId": "${ScreenIds().trades}-18",
+        },
+        {
+          "title": TradeColumns.deviceId,
+          "screenId": ScreenIds().trades,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
+          "position": 19,
+          "columnId": "${ScreenIds().trades}-19",
         }
       ]
     },
