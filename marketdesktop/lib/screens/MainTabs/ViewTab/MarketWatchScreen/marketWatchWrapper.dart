@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appTextField.dart';
 import 'package:marketdesktop/customWidgets/contextMenueBuilder.dart';
@@ -35,53 +36,28 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                   height: 45,
                   child: Row(
                     children: [
-                      Focus(focusNode: controller.tempFocus.value, child: Container()),
-                      controller.exchangeTypeDropDown(controller.selectedExchange),
+                      Focus(
+                          focusNode: controller.tempFocus.value,
+                          child: Container()),
+                      controller
+                          .exchangeTypeDropDown(controller.selectedExchange),
                       controller.allScriptListDropDown(),
-                      if (controller.selectedExchange.value.isCallPut) controller.expiryTypeDropDown(),
-                      if (controller.selectedExchange.value.isCallPut) controller.callPutTypeDropDown(),
-                      if (controller.selectedExchange.value.isCallPut) controller.strikePriceTypeDropDown(),
+                      if (controller.selectedExchange.value.isCallPut)
+                        controller.expiryTypeDropDown(),
+                      if (controller.selectedExchange.value.isCallPut)
+                        controller.callPutTypeDropDown(),
+                      if (controller.selectedExchange.value.isCallPut)
+                        controller.strikePriceTypeDropDown(),
                       searchBox(),
                       const Spacer(),
-                      // GestureDetector(
-                      //   onTap: () async {
-                      //     controller.getSymbolListTabWise();
-                      //     if (isMarketSocketConnected.value == false) {
-                      //       await socket.connectSocket();
-                      //       if if (arrSymbolNames.isNotEmpty) {
-                      //         var txt = {"symbols": arrSymbolNames};
-                      //         socket.connectScript(jsonEncode(txt));
-                      //       }
-                      //     }
-                      //     // if (isMarketSocketConnected.value) {
-                      //     //   socket.channel?.sink.close(status.normalClosure);
-                      //     //   isMarketSocketConnected.value = false;
-                      //     // } else {
-                      //     //   await socket.connectSocket();
-                      //     //   if if (arrSymbolNames.isNotEmpty) {
-                      //     //     var txt = {"symbols": arrSymbolNames};
-                      //     //     socket.connectScript(jsonEncode(txt));
-                      //     //   }
-                      //     // }
-                      //     // controller.update();
-                      //   },
-                      //   child: controller.isSymbolListApiCall
-                      //       ? Container(
-                      //           width: 45,
-                      //           height: 50,
-                      //           padding: const EdgeInsets.all(14),
-                      //           child: CircularProgressIndicator(
-                      //             color: AppColors().blueColor,
-                      //             strokeWidth: 2,
-                      //           ),
-                      //         )
-                      //       : Container(
-                      //           width: 50,
-                      //           height: 50,
-                      //           padding: const EdgeInsets.all(10),
-                      //           child: Icon(Icons.refresh, color: AppColors().blueColor),
-                      //         ),
-                      // )
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child:
+                            controller.searchuserView(controller.selectedUser),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      )
                     ],
                   ),
                 ),
@@ -113,38 +89,45 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                     key: Key('$index'),
                                     color: Colors.black,
                                     child: ContextMenuRegion(
-                                      contextMenuBuilder: (BuildContext context, Offset offset) {
+                                      contextMenuBuilder: (BuildContext context,
+                                          Offset offset) {
                                         // The custom context menu will look like the default context menu
                                         // on the current platform with a single 'Print' button.
-                                        return AdaptiveTextSelectionToolbar.buttonItems(
+                                        return AdaptiveTextSelectionToolbar
+                                            .buttonItems(
                                           anchors: TextSelectionToolbarAnchors(
                                             primaryAnchor: offset,
                                           ),
                                           buttonItems: <ContextMenuButtonItem>[
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
+                                                ContextMenuController
+                                                    .removeAny();
                                               },
                                               label: 'View Chart',
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
+                                                ContextMenuController
+                                                    .removeAny();
                                                 showMarketColumnPopUp();
                                               },
                                               label: 'Arrange Script',
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
+                                                ContextMenuController
+                                                    .removeAny();
                                                 showFontChangePopup();
                                               },
                                               label: 'Set Script Font',
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                controller.arrListTitleMarket.forEach((element) {
+                                                ContextMenuController
+                                                    .removeAny();
+                                                controller.arrListTitleMarket
+                                                    .forEach((element) {
                                                   element.small = 60;
                                                   element.normal = 102;
                                                   element.big = 120;
@@ -154,11 +137,19 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                                   element.smallUpdated = 60;
                                                   element.normalUpdated = 102;
                                                   element.bigUpdated = 120;
-                                                  element.smallLargeUpdated = 155;
+                                                  element.smallLargeUpdated =
+                                                      155;
                                                   element.largeUpdated = 210;
-                                                  element.extraLargeUpdated = 500;
+                                                  element.extraLargeUpdated =
+                                                      500;
                                                   element.start = null;
-                                                  controller.maxWidth = controller.screenSize.width > 1410 ? controller.screenSize.width : 1410;
+                                                  controller.maxWidth =
+                                                      controller.screenSize
+                                                                  .width >
+                                                              1410
+                                                          ? controller
+                                                              .screenSize.width
+                                                          : 1410;
                                                 });
                                                 controller.update();
                                               },
@@ -166,10 +157,17 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                controller.selectedScriptIndex = index;
-                                                controller.selectedScript.value = controller.arrScript[controller.selectedScriptIndex];
-                                                controller.isScripDetailOpen = true;
+                                                ContextMenuController
+                                                    .removeAny();
+                                                controller.selectedScriptIndex =
+                                                    index;
+                                                controller.selectedScript
+                                                    .value = controller
+                                                        .arrScript[
+                                                    controller
+                                                        .selectedScriptIndex];
+                                                controller.isScripDetailOpen =
+                                                    true;
 
                                                 showScriptInfoPopup();
 
@@ -186,20 +184,32 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                             // ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                controller.isGridActive = !controller.isGridActive;
+                                                ContextMenuController
+                                                    .removeAny();
+                                                controller.isGridActive =
+                                                    !controller.isGridActive;
                                                 controller.update();
                                               },
                                               label: 'Grid',
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                if (controller.selectedScriptIndex != -1) {
-                                                  controller.selectedIndexforCut = controller.selectedScriptIndex;
-                                                  controller.selectedIndexforUndo = controller.selectedScriptIndex;
+                                                ContextMenuController
+                                                    .removeAny();
+                                                if (controller
+                                                        .selectedScriptIndex !=
+                                                    -1) {
+                                                  controller
+                                                          .selectedIndexforCut =
+                                                      controller
+                                                          .selectedScriptIndex;
+                                                  controller
+                                                          .selectedIndexforUndo =
+                                                      controller
+                                                          .selectedScriptIndex;
                                                 } else {
-                                                  showWarningToast("Please selected script for cut");
+                                                  showWarningToast(
+                                                      "Please selected script for cut");
                                                 }
                                               },
                                               label: 'Cut    (Ctrl + x)',
@@ -207,19 +217,38 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
 
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                if (controller.selectedIndexforCut != -1) {
-                                                  final ScriptData item = controller.arrScript.removeAt(controller.selectedIndexforCut);
+                                                ContextMenuController
+                                                    .removeAny();
+                                                if (controller
+                                                        .selectedIndexforCut !=
+                                                    -1) {
+                                                  final ScriptData item = controller
+                                                      .arrScript
+                                                      .removeAt(controller
+                                                          .selectedIndexforCut);
 
-                                                  controller.arrScript.insert(controller.selectedScriptIndex, item);
+                                                  controller.arrScript.insert(
+                                                      controller
+                                                          .selectedScriptIndex,
+                                                      item);
 
-                                                  final ScriptData preItem = controller.arrPreScript.removeAt(controller.selectedIndexforCut);
+                                                  final ScriptData preItem =
+                                                      controller.arrPreScript
+                                                          .removeAt(controller
+                                                              .selectedIndexforCut);
 
-                                                  controller.arrPreScript.insert(controller.selectedScriptIndex, preItem);
+                                                  controller.arrPreScript.insert(
+                                                      controller
+                                                          .selectedScriptIndex,
+                                                      preItem);
 
-                                                  controller.selectedIndexforCut = -1;
+                                                  controller
+                                                      .selectedIndexforCut = -1;
 
-                                                  controller.selectedIndexforPaste = controller.selectedScriptIndex;
+                                                  controller
+                                                          .selectedIndexforPaste =
+                                                      controller
+                                                          .selectedScriptIndex;
 
                                                   controller.storeScripsInDB();
                                                 }
@@ -228,18 +257,36 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                             ),
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                if (controller.selectedIndexforUndo != -1) {
-                                                  final ScriptData item = controller.arrScript.removeAt(controller.selectedIndexforPaste);
+                                                ContextMenuController
+                                                    .removeAny();
+                                                if (controller
+                                                        .selectedIndexforUndo !=
+                                                    -1) {
+                                                  final ScriptData item = controller
+                                                      .arrScript
+                                                      .removeAt(controller
+                                                          .selectedIndexforPaste);
 
-                                                  controller.arrScript.insert(controller.selectedIndexforUndo, item);
+                                                  controller.arrScript.insert(
+                                                      controller
+                                                          .selectedIndexforUndo,
+                                                      item);
 
-                                                  final ScriptData preItem = controller.arrPreScript.removeAt(controller.selectedIndexforPaste);
+                                                  final ScriptData preItem =
+                                                      controller.arrPreScript
+                                                          .removeAt(controller
+                                                              .selectedIndexforPaste);
 
-                                                  controller.arrPreScript.insert(controller.selectedIndexforUndo, preItem);
-                                                  controller.selectedIndexforCut = -1;
-                                                  controller.selectedIndexforPaste = -1;
-                                                  controller.selectedIndexforUndo = -1;
+                                                  controller.arrPreScript.insert(
+                                                      controller
+                                                          .selectedIndexforUndo,
+                                                      preItem);
+                                                  controller
+                                                      .selectedIndexforCut = -1;
+                                                  controller
+                                                      .selectedIndexforPaste = -1;
+                                                  controller
+                                                      .selectedIndexforUndo = -1;
 
                                                   controller.storeScripsInDB();
                                                 }
@@ -249,22 +296,46 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
 
                                             ContextMenuButtonItem(
                                               onPressed: () {
-                                                ContextMenuController.removeAny();
-                                                if (controller.arrScript[index].symbol == "") {
-                                                  controller.arrScript.removeAt(index);
-                                                  controller.arrPreScript.removeAt(index);
+                                                ContextMenuController
+                                                    .removeAny();
+                                                if (controller.arrScript[index]
+                                                        .symbol ==
+                                                    "") {
+                                                  controller.arrScript
+                                                      .removeAt(index);
+                                                  controller.arrPreScript
+                                                      .removeAt(index);
                                                   controller.storeScripsInDB();
-                                                  if (controller.selectedScriptIndex == index) {
-                                                    if (controller.arrScript.isNotEmpty) {
-                                                      controller.selectedScriptIndex = controller.selectedScriptIndex - 1;
+                                                  if (controller
+                                                          .selectedScriptIndex ==
+                                                      index) {
+                                                    if (controller
+                                                        .arrScript.isNotEmpty) {
+                                                      controller
+                                                              .selectedScriptIndex =
+                                                          controller
+                                                                  .selectedScriptIndex -
+                                                              1;
                                                     } else {
-                                                      controller.selectedScriptIndex = -1;
+                                                      controller
+                                                          .selectedScriptIndex = -1;
                                                     }
                                                   }
                                                 } else {
-                                                  var temp = controller.arrSymbol.firstWhereOrNull((element) => controller.arrScript[index].symbol == element.symbolName);
+                                                  var temp = controller
+                                                      .arrSymbol
+                                                      .firstWhereOrNull(
+                                                          (element) =>
+                                                              controller
+                                                                  .arrScript[
+                                                                      index]
+                                                                  .symbol ==
+                                                              element
+                                                                  .symbolName);
 
-                                                  controller.deleteSymbolFromTab(temp!.userTabSymbolId!);
+                                                  controller
+                                                      .deleteSymbolFromTab(temp!
+                                                          .userTabSymbolId!);
                                                 }
                                               },
                                               label: 'Delete',
@@ -277,7 +348,10 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                           Container(
                                             height: 30,
                                             color: Colors.transparent,
-                                            child: ReorderableDragStartListener(index: index, child: scriptContent(context, index)),
+                                            child: ReorderableDragStartListener(
+                                                index: index,
+                                                child: scriptContent(
+                                                    context, index)),
                                           ),
                                         ],
                                       ),
@@ -291,17 +365,22 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                                   }
                                   if (controller.selectedScriptIndex != -1) {
                                     controller.selectedScriptIndex = -1;
-                                    controller.selectedScript.value = ScriptData();
+                                    controller.selectedScript.value =
+                                        ScriptData();
                                     // controller.selectedScript.value = controller.arrScript[controller.selectedScriptIndex];
                                     controller.update();
                                   }
-                                  final ScriptData item = controller.arrScript.removeAt(oldIndex);
+                                  final ScriptData item =
+                                      controller.arrScript.removeAt(oldIndex);
 
                                   controller.arrScript.insert(newIndex, item);
 
-                                  final ScriptData preItem = controller.arrPreScript.removeAt(oldIndex);
+                                  final ScriptData preItem = controller
+                                      .arrPreScript
+                                      .removeAt(oldIndex);
 
-                                  controller.arrPreScript.insert(newIndex, preItem);
+                                  controller.arrPreScript
+                                      .insert(newIndex, preItem);
                                   controller.update();
                                   controller.storeScripsInDB();
                                 },
@@ -365,13 +444,16 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
         controller.isScripDetailOpen = false;
         controller.update();
         controller.arrCurrentWatchListOrder.clear();
-        controller.arrCurrentWatchListOrder.addAll(await controller.dbSerivice.readScripts((index + 1).toString()));
+        controller.arrCurrentWatchListOrder.addAll(
+            await controller.dbSerivice.readScripts((index + 1).toString()));
         controller.getSymbolListTabWise();
       },
       child: Container(
         width: 170,
         margin: const EdgeInsets.all(3),
-        color: controller.selectedPortfolio == index ? AppColors().grayBg : Colors.transparent,
+        color: controller.selectedPortfolio == index
+            ? AppColors().grayBg
+            : Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -385,7 +467,9 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                     style: TextStyle(
                       fontSize: 12,
                       fontFamily: CustomFonts.family1Medium,
-                      color: controller.selectedPortfolio == index ? AppColors().fontColor : AppColors().fontColor,
+                      color: controller.selectedPortfolio == index
+                          ? AppColors().fontColor
+                          : AppColors().fontColor,
                     )),
               ),
             ),
@@ -408,7 +492,8 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
         controller.selectedScript.value!.copyObject(scriptValue);
         controller.selectedScriptForF5.value!.copyObject(scriptValue);
         controller.selectedScriptForF5.value!.lut = DateTime.now();
-        var indexOfSymbol = controller.arrSymbol.indexWhere((element) => controller.arrScript[index].symbol == element.symbolName);
+        var indexOfSymbol = controller.arrSymbol.indexWhere((element) =>
+            controller.arrScript[index].symbol == element.symbolName);
         if (indexOfSymbol != -1) {
           controller.selectedSymbol = controller.arrSymbol[indexOfSymbol];
         }
@@ -418,14 +503,20 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
       child: controller.arrScript[index].symbol!.isNotEmpty
           ? Container(
               decoration: BoxDecoration(
-                  color: controller.arrScript[index].low! < controller.arrPreScript[index].low!
+                  color: controller.arrScript[index].low! <
+                          controller.arrPreScript[index].low!
                       ? AppColors().pinkColor
-                      : controller.arrScript[index].high! > controller.arrPreScript[index].high!
+                      : controller.arrScript[index].high! >
+                              controller.arrPreScript[index].high!
                           ? AppColors().skyBlueColor
                           : controller.selectedIndexforCut == index
                               ? AppColors().lightOnlyText
                               : Colors.transparent,
-                  border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().whiteColor : Colors.transparent)),
+                  border: Border.all(
+                      width: 1,
+                      color: controller.selectedScriptIndex == index
+                          ? AppColors().whiteColor
+                          : Colors.transparent)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -441,33 +532,59 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                         switch (controller.arrListTitleMarket[indexT].title) {
                           case 'EXCHANGE':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected ? ScriptBox(indexT, isLeftAlign: true, title: scriptValue.exchange.toString(), index: index, textColor: AppColors().whiteColor) : const SizedBox();
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      isLeftAlign: true,
+                                      title: scriptValue.exchange.toString(),
+                                      index: index,
+                                      textColor: AppColors().whiteColor)
+                                  : const SizedBox();
                             }
                           case 'SYMBOL':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
-                                  ? ScriptBox(indexT, isLeftAlign: true, title: scriptValue.name ?? "", bgColor: controller.arrScript[index].ch! < 0 ? AppColors().redColor : AppColors().blueColor, index: index, isBig: true, textColor: AppColors().whiteColor)
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      isLeftAlign: true,
+                                      title: scriptValue.name ?? "",
+                                      bgColor:
+                                          controller.arrScript[index].ch! < 0
+                                              ? AppColors().redColor
+                                              : AppColors().blueColor,
+                                      index: index,
+                                      isBig: true,
+                                      textColor: AppColors().whiteColor)
                                   : const SizedBox();
                             }
                           case 'EXPIRY':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(
                                       indexT,
                                       index: index,
-                                      title: scriptValue.expiry == null ? "No Expiry" : shortDate(scriptValue.expiry!),
+                                      title: scriptValue.expiry == null
+                                          ? "No Expiry"
+                                          : shortDate(scriptValue.expiry!),
                                       textColor: AppColors().whiteColor,
                                     )
                                   : const SizedBox();
                             }
                           case 'BUY QTY':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.tbq.toString(),
-                                      bgColor: controller.arrScript[index].tbq! < controller.arrPreScript[index].tbq!
+                                      bgColor: controller
+                                                  .arrScript[index].tbq! <
+                                              controller
+                                                  .arrPreScript[index].tbq!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].tbq! != controller.arrPreScript[index].tbq!
+                                          : controller.arrScript[index].tbq! !=
+                                                  controller
+                                                      .arrPreScript[index].tbq!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -476,12 +593,18 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'BUY PRICE':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.bid.toString(),
-                                      bgColor: controller.arrScript[index].ask! < controller.arrPreScript[index].ask!
+                                      bgColor: controller
+                                                  .arrScript[index].ask! <
+                                              controller
+                                                  .arrPreScript[index].ask!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].ask! != controller.arrPreScript[index].ask!
+                                          : controller.arrScript[index].ask! !=
+                                                  controller
+                                                      .arrPreScript[index].ask!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -490,12 +613,18 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'SELL PRICE':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.ask.toString(),
-                                      bgColor: controller.arrScript[index].bid! < controller.arrPreScript[index].bid!
+                                      bgColor: controller
+                                                  .arrScript[index].bid! <
+                                              controller
+                                                  .arrPreScript[index].bid!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].bid! != controller.arrPreScript[index].bid!
+                                          : controller.arrScript[index].bid! !=
+                                                  controller
+                                                      .arrPreScript[index].bid!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -504,12 +633,18 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'SELL QTY':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.tsq.toString(),
-                                      bgColor: controller.arrScript[index].tsq! < controller.arrPreScript[index].tsq!
+                                      bgColor: controller
+                                                  .arrScript[index].tsq! <
+                                              controller
+                                                  .arrPreScript[index].tsq!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].tsq! != controller.arrPreScript[index].tsq!
+                                          : controller.arrScript[index].tsq! !=
+                                                  controller
+                                                      .arrPreScript[index].tsq!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -518,12 +653,18 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'LTP':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.ltp.toString(),
-                                      bgColor: controller.arrScript[index].ltp! < controller.arrPreScript[index].ltp!
+                                      bgColor: controller
+                                                  .arrScript[index].ltp! <
+                                              controller
+                                                  .arrPreScript[index].ltp!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].ltp! != controller.arrPreScript[index].ltp!
+                                          : controller.arrScript[index].ltp! !=
+                                                  controller
+                                                      .arrPreScript[index].ltp!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -532,13 +673,17 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'NET CHANGE':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.ch.toString(),
                                       isBig: true,
-                                      bgColor: controller.arrScript[index].ch! < controller.arrPreScript[index].ch!
+                                      bgColor: controller.arrScript[index].ch! <
+                                              controller.arrPreScript[index].ch!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].ch! != controller.arrPreScript[index].ch!
+                                          : controller.arrScript[index].ch! !=
+                                                  controller
+                                                      .arrPreScript[index].ch!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -547,13 +692,19 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'NET CHANGE %':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
                                   ? ScriptBox(indexT,
                                       title: scriptValue.chp.toString(),
                                       isBig: true,
-                                      bgColor: controller.arrScript[index].chp! < controller.arrPreScript[index].chp!
+                                      bgColor: controller
+                                                  .arrScript[index].chp! <
+                                              controller
+                                                  .arrPreScript[index].chp!
                                           ? AppColors().redColor
-                                          : controller.arrScript[index].chp! != controller.arrPreScript[index].chp!
+                                          : controller.arrScript[index].chp! !=
+                                                  controller
+                                                      .arrPreScript[index].chp!
                                               ? AppColors().blueColor
                                               : Colors.transparent,
                                       index: index,
@@ -562,29 +713,71 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                             }
                           case 'OPEN':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.open.toString(), index: index, textColor: AppColors().whiteColor) : const SizedBox();
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      title: scriptValue.open.toString(),
+                                      index: index,
+                                      textColor: AppColors().whiteColor)
+                                  : const SizedBox();
                             }
                           case 'HIGH':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.high.toString(), index: index, textColor: AppColors().whiteColor) : const SizedBox();
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      title: scriptValue.high.toString(),
+                                      index: index,
+                                      textColor: AppColors().whiteColor)
+                                  : const SizedBox();
                             }
                           case 'LOW':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.low.toString(), index: index, textColor: AppColors().whiteColor) : const SizedBox();
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      title: scriptValue.low.toString(),
+                                      index: index,
+                                      textColor: AppColors().whiteColor)
+                                  : const SizedBox();
                             }
                           case 'CLOSE':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.close.toString(), index: index, textColor: AppColors().whiteColor) : const SizedBox();
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      title: scriptValue.close.toString(),
+                                      index: index,
+                                      textColor: AppColors().whiteColor)
+                                  : const SizedBox();
                             }
                           case 'STRIKE PRICE':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected
-                                  ? ScriptBox(indexT, title: scriptValue.strikePrice != 0 ? scriptValue.instrumentType! + " - " + scriptValue.strikePrice.toString() : "--", index: index, textColor: AppColors().whiteColor, isSmallLarge: true)
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      title: scriptValue.strikePrice != 0
+                                          ? scriptValue.instrumentType! +
+                                              " - " +
+                                              scriptValue.strikePrice.toString()
+                                          : "--",
+                                      index: index,
+                                      textColor: AppColors().whiteColor,
+                                      isSmallLarge: true)
                                   : const SizedBox();
                             }
                           case 'LUT':
                             {
-                              return controller.arrListTitleMarket[indexT].isSelected ? ScriptBox(indexT, title: scriptValue.lut != null ? shortFullDateTime(scriptValue.lut!) : "", index: index, textColor: AppColors().whiteColor, isSmallLarge: true) : const SizedBox();
+                              return controller
+                                      .arrListTitleMarket[indexT].isSelected
+                                  ? ScriptBox(indexT,
+                                      title: scriptValue.lut != null
+                                          ? shortFullDateTime(scriptValue.lut!)
+                                          : "",
+                                      index: index,
+                                      textColor: AppColors().whiteColor,
+                                      isSmallLarge: true)
+                                  : const SizedBox();
                             }
                           default:
                             {
@@ -599,7 +792,13 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
           : Container(
               height: 30,
               width: 96.5.w,
-              decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().whiteColor : Colors.transparent)),
+              decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(
+                      width: 1,
+                      color: controller.selectedScriptIndex == index
+                          ? AppColors().whiteColor
+                          : Colors.transparent)),
             ),
     );
   }
@@ -630,7 +829,8 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
               case 'SYMBOL':
                 {
                   return controller.arrListTitleMarket[index].isSelected
-                      ? titleBox("SYMBOL", index, isBig: true, hasFilterIcon: true)
+                      ? titleBox("SYMBOL", index,
+                          isBig: true, hasFilterIcon: true)
                       : SizedBox(
                           key: Key('$index'),
                         );
@@ -788,8 +988,25 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
   }) {
     return isImage == false
         ? Container(
-            width: setWidthDynamic(titleIndex, isBig: isBig, isSmall: isSmall, isLarge: isLarge, isExtraLarge: isExtraLarge, isSmallLarge: isSmallLarge) + 2,
-            decoration: BoxDecoration(color: bgColor, border: controller.isGridActive ? Border(bottom: BorderSide(color: isFromBlank ? Colors.transparent : AppColors().darkText, width: 2)) : const Border(bottom: BorderSide(color: Colors.transparent, width: 2))),
+            width: setWidthDynamic(titleIndex,
+                    isBig: isBig,
+                    isSmall: isSmall,
+                    isLarge: isLarge,
+                    isExtraLarge: isExtraLarge,
+                    isSmallLarge: isSmallLarge) +
+                2,
+            decoration: BoxDecoration(
+                color: bgColor,
+                border: controller.isGridActive
+                    ? Border(
+                        bottom: BorderSide(
+                            color: isFromBlank
+                                ? Colors.transparent
+                                : AppColors().darkText,
+                            width: 2))
+                    : const Border(
+                        bottom:
+                            BorderSide(color: Colors.transparent, width: 2))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -797,17 +1014,31 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                   width: 10,
                 ),
                 Container(
-                  width: setWidthDynamic(titleIndex, isBig: isBig, isSmall: isSmall, isLarge: isLarge, isExtraLarge: isExtraLarge, isSmallLarge: isSmallLarge) - 20,
+                  width: setWidthDynamic(titleIndex,
+                          isBig: isBig,
+                          isSmall: isSmall,
+                          isLarge: isLarge,
+                          isExtraLarge: isExtraLarge,
+                          isSmallLarge: isSmallLarge) -
+                      20,
                   child: Text(title,
                       textAlign: isLeftAlign ? TextAlign.start : TextAlign.end,
-                      style: TextStyle(fontSize: controller.selectedFontSize, fontFamily: controller.selectedFontFamily, overflow: TextOverflow.ellipsis, color: textColor != null ? textColor : AppColors().darkText, decoration: TextDecoration.none)),
+                      style: TextStyle(
+                          fontSize: controller.selectedFontSize,
+                          fontFamily: controller.selectedFontFamily,
+                          overflow: TextOverflow.ellipsis,
+                          color: textColor != null
+                              ? textColor
+                              : AppColors().darkText,
+                          decoration: TextDecoration.none)),
                 ),
                 const Spacer(),
                 if (controller.isGridActive)
                   Container(
                     height: 3.h,
                     width: 2,
-                    color: isFromBlank ? Colors.transparent : AppColors().darkText,
+                    color:
+                        isFromBlank ? Colors.transparent : AppColors().darkText,
                   )
               ],
             ),
@@ -821,7 +1052,9 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                     height: 25,
                   )
                 : Image.asset(
-                    controller.arrScript[index!].ch! < 0 ? AppImages.marketUpIcon : AppImages.marketDownIcon,
+                    controller.arrScript[index!].ch! < 0
+                        ? AppImages.marketUpIcon
+                        : AppImages.marketDownIcon,
                     width: 20,
                     height: 20,
                   ),
@@ -879,20 +1112,29 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
               ? GestureDetector(
                   onTap: () {
                     if (controller.arrListTitleMarket[index].isSortingActive) {
-                      controller.sortScript(controller.arrListTitleMarket[index].title);
+                      controller.sortScript(
+                          controller.arrListTitleMarket[index].title);
                     } else {
                       controller.arrListTitleMarket.forEach((element) {
                         element.isSortingActive = false;
                         element.sortType = 0;
                       });
 
-                      controller.arrListTitleMarket[index].isSortingActive = true;
+                      controller.arrListTitleMarket[index].isSortingActive =
+                          true;
                     }
                     controller.update();
                   },
                   child: Container(
-                    color: controller.arrListTitleMarket[index].isSortingActive ? AppColors().blueColor.withOpacity(0.1) : AppColors().backgroundColor,
-                    width: setWidthDynamic(index, isBig: isBig, isSmall: isSmall, isLarge: isLarge, isExtraLarge: isExtraLarge, isSmallLarge: isSmallLarge),
+                    color: controller.arrListTitleMarket[index].isSortingActive
+                        ? AppColors().blueColor.withOpacity(0.1)
+                        : AppColors().backgroundColor,
+                    width: setWidthDynamic(index,
+                        isBig: isBig,
+                        isSmall: isSmall,
+                        isLarge: isLarge,
+                        isExtraLarge: isExtraLarge,
+                        isSmallLarge: isSmallLarge),
                     height: 3.h,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -901,14 +1143,23 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                         const SizedBox(
                           width: 10,
                         ),
-                        Text(title, style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1SemiBold, color: AppColors().fontColor)),
+                        Text(title,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: CustomFonts.family1SemiBold,
+                                color: AppColors().fontColor)),
                         const Spacer(),
-                        if (controller.arrListTitleMarket[index].isSortingActive)
+                        if (controller
+                            .arrListTitleMarket[index].isSortingActive)
                           Container(
                             height: 20,
                             width: 20,
                             padding: const EdgeInsets.all(0),
-                            child: controller.arrListTitleMarket[index].sortType < 1 ? const Icon(Icons.arrow_drop_down) : const Icon(Icons.arrow_drop_up),
+                            child:
+                                controller.arrListTitleMarket[index].sortType <
+                                        1
+                                    ? const Icon(Icons.arrow_drop_down)
+                                    : const Icon(Icons.arrow_drop_up),
                           ),
                       ],
                     ),
@@ -937,47 +1188,64 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
           cursor: SystemMouseCursors.resizeColumn,
           child: GestureDetector(
             onPanStart: (details) {
-              controller.arrListTitleMarket[index].start = details.localPosition;
+              controller.arrListTitleMarket[index].start =
+                  details.localPosition;
             },
             onPanEnd: (details) {
               controller.arrListTitleMarket[index].start = null;
               if (isBig) {
-                controller.arrListTitleMarket[index].big = controller.arrListTitleMarket[index].bigUpdated;
+                controller.arrListTitleMarket[index].big =
+                    controller.arrListTitleMarket[index].bigUpdated;
               } else if (isSmall) {
-                controller.arrListTitleMarket[index].small = controller.arrListTitleMarket[index].smallUpdated;
+                controller.arrListTitleMarket[index].small =
+                    controller.arrListTitleMarket[index].smallUpdated;
               } else if (isLarge) {
-                controller.arrListTitleMarket[index].large = controller.arrListTitleMarket[index].largeUpdated;
+                controller.arrListTitleMarket[index].large =
+                    controller.arrListTitleMarket[index].largeUpdated;
               } else if (isExtraLarge) {
-                controller.arrListTitleMarket[index].extraLarge = controller.arrListTitleMarket[index].extraLargeUpdated;
+                controller.arrListTitleMarket[index].extraLarge =
+                    controller.arrListTitleMarket[index].extraLargeUpdated;
               } else {
-                controller.arrListTitleMarket[index].normal = controller.arrListTitleMarket[index].normalUpdated;
+                controller.arrListTitleMarket[index].normal =
+                    controller.arrListTitleMarket[index].normalUpdated;
               }
             },
             onPanUpdate: (details) {
-              var diff = details.localPosition.dx - controller.arrListTitleMarket[index].start!.dx;
+              var diff = details.localPosition.dx -
+                  controller.arrListTitleMarket[index].start!.dx;
               if ((controller.maxWidth + diff) >= controller.screenSize.width) {
                 controller.maxWidth = controller.screenSize.width + diff;
               }
 
               if (isBig) {
-                if ((controller.arrListTitleMarket[index].big + diff) >= controller.arrListTitleMarket[index].bigOriginal) {
-                  controller.arrListTitleMarket[index].bigUpdated = controller.arrListTitleMarket[index].big + diff;
+                if ((controller.arrListTitleMarket[index].big + diff) >=
+                    controller.arrListTitleMarket[index].bigOriginal) {
+                  controller.arrListTitleMarket[index].bigUpdated =
+                      controller.arrListTitleMarket[index].big + diff;
                 }
               } else if (isSmall) {
-                if ((controller.arrListTitleMarket[index].small + diff) >= controller.arrListTitleMarket[index].smallOriginal) {
-                  controller.arrListTitleMarket[index].smallUpdated = controller.arrListTitleMarket[index].small + diff;
+                if ((controller.arrListTitleMarket[index].small + diff) >=
+                    controller.arrListTitleMarket[index].smallOriginal) {
+                  controller.arrListTitleMarket[index].smallUpdated =
+                      controller.arrListTitleMarket[index].small + diff;
                 }
               } else if (isLarge) {
-                if ((controller.arrListTitleMarket[index].large + diff) >= controller.arrListTitleMarket[index].largeOriginal) {
-                  controller.arrListTitleMarket[index].largeUpdated = controller.arrListTitleMarket[index].large + diff;
+                if ((controller.arrListTitleMarket[index].large + diff) >=
+                    controller.arrListTitleMarket[index].largeOriginal) {
+                  controller.arrListTitleMarket[index].largeUpdated =
+                      controller.arrListTitleMarket[index].large + diff;
                 }
               } else if (isExtraLarge) {
-                if ((controller.arrListTitleMarket[index].extraLarge + diff) >= controller.arrListTitleMarket[index].extraLargeOriginal) {
-                  controller.arrListTitleMarket[index].extraLargeUpdated = controller.arrListTitleMarket[index].extraLarge + diff;
+                if ((controller.arrListTitleMarket[index].extraLarge + diff) >=
+                    controller.arrListTitleMarket[index].extraLargeOriginal) {
+                  controller.arrListTitleMarket[index].extraLargeUpdated =
+                      controller.arrListTitleMarket[index].extraLarge + diff;
                 }
               } else {
-                if ((controller.arrListTitleMarket[index].normal + diff) >= controller.arrListTitleMarket[index].normalOriginal) {
-                  controller.arrListTitleMarket[index].normalUpdated = controller.arrListTitleMarket[index].normal + diff;
+                if ((controller.arrListTitleMarket[index].normal + diff) >=
+                    controller.arrListTitleMarket[index].normalOriginal) {
+                  controller.arrListTitleMarket[index].normalUpdated =
+                      controller.arrListTitleMarket[index].normal + diff;
                 }
               }
               controller.update();
@@ -998,10 +1266,16 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
       width: 200,
       // height: 4.h,
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6.5),
-      decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), borderRadius: BorderRadius.circular(3)),
+      decoration: BoxDecoration(
+          border: Border.all(color: AppColors().lightOnlyText, width: 1),
+          borderRadius: BorderRadius.circular(3)),
       child: Autocomplete<GlobalSymbolData>(
-        displayStringForOption: (GlobalSymbolData option) => option.symbolTitle!,
-        fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
+        displayStringForOption: (GlobalSymbolData option) =>
+            option.symbolTitle!,
+        fieldViewBuilder: (BuildContext context,
+            TextEditingController searchEditingController,
+            FocusNode searchFocus,
+            VoidCallback onFieldSubmitted) {
           return CustomTextField(
             type: 'Search',
             keyBoardType: TextInputType.text,
@@ -1059,9 +1333,12 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                 itemCount: options.length,
                 shrinkWrap: false,
                 itemBuilder: (BuildContext context, int index) {
-                  final String option = controller.arrSearchedScript.elementAt(index).symbolTitle!;
+                  final String option = controller.arrSearchedScript
+                      .elementAt(index)
+                      .symbolTitle!;
                   return InkWell(
-                    onTap: () => onSelected(controller.arrSearchedScript.elementAt(index)),
+                    onTap: () => onSelected(
+                        controller.arrSearchedScript.elementAt(index)),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
