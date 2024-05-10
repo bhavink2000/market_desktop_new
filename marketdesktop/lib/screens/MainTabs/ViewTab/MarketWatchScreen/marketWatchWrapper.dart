@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marketdesktop/customWidgets/appTextField.dart';
 import 'package:marketdesktop/customWidgets/contextMenueBuilder.dart';
+import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/utilities.dart';
@@ -50,11 +51,12 @@ class MarketWatchScreen extends BaseView<MarketWatchController> {
                         controller.strikePriceTypeDropDown(),
                       searchBox(),
                       const Spacer(),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child:
-                            controller.searchuserView(controller.selectedUser),
-                      ),
+                      if (userData!.role != UserRollList.user)
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: controller
+                              .searchuserView(controller.selectedUser),
+                        ),
                       SizedBox(
                         width: 5,
                       )

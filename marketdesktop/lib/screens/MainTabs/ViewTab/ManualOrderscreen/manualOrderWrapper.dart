@@ -28,7 +28,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       body: Container(
         height: 100.h,
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           color: AppColors().bgColor,
         ),
         child: Center(
@@ -41,12 +42,13 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
 
                   exchangeDetailView(),
                   scriptDetailView(),
+                  QuantityDetailsView(),
                   rateDetailsView(),
                   // typeDetailView(),
                   // orderTypeDetailView(),
 
                   LotDetailsView(),
-                  QuantityDetailsView(),
+
                   SizedBox(
                     height: 15,
                   ),
@@ -80,7 +82,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
             SizedBox(
               width: 20,
             ),
-            Text("Is Brokerage Calculated Or Not : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+            Text("Is Brokerage Calculated Or Not : ",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: CustomFonts.family1Medium,
+                    color: AppColors().darkText)),
             Spacer(),
             GestureDetector(
               onTap: () {
@@ -96,7 +102,9 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   children: [
                     Container(
                       child: Image.asset(
-                        controller.isBrokerageCalculated.value == 1 ? AppImages.checkBoxSelectedRound : AppImages.checkBoxRound,
+                        controller.isBrokerageCalculated.value == 1
+                            ? AppImages.checkBoxSelectedRound
+                            : AppImages.checkBoxRound,
                         height: 20,
                         width: 20,
                       ),
@@ -104,7 +112,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     SizedBox(
                       width: 5,
                     ),
-                    Text("Yes", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                    Text("Yes",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: CustomFonts.family1Medium,
+                            color: AppColors().darkText)),
                   ],
                 ),
               ),
@@ -127,7 +139,9 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   children: [
                     Container(
                       child: Image.asset(
-                        controller.isBrokerageCalculated.value == 2 ? AppImages.checkBoxSelectedRound : AppImages.checkBoxRound,
+                        controller.isBrokerageCalculated.value == 2
+                            ? AppImages.checkBoxSelectedRound
+                            : AppImages.checkBoxRound,
                         height: 20,
                         width: 20,
                       ),
@@ -135,7 +149,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                     SizedBox(
                       width: 5,
                     ),
-                    Text("No", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+                    Text("No",
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: CustomFonts.family1Medium,
+                            color: AppColors().darkText)),
                   ],
                 ),
               ),
@@ -156,12 +174,17 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 2.h),
       child: Row(
         children: [
-          Text("User : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("User : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           Container(
             height: 5.6.h,
             width: 20.w,
-            child: controller.userListDropDown(controller.selectedUser),
+            child: userListDropDown(controller.selectedUser,
+                width: 30.w, dropDownWidth: 20.w),
           ),
         ],
       ),
@@ -175,7 +198,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       padding: EdgeInsets.symmetric(horizontal: 1.w),
       child: Row(
         children: [
-          Text("Exchange : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("Exchange : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           Container(
             height: 5.6.h,
@@ -237,7 +264,10 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         ),
                       ),
                       searchMatchFn: (item, searchValue) {
-                        return item.value!.name.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                        return item.value!.name
+                            .toString()
+                            .toLowerCase()
+                            .startsWith(searchValue.toLowerCase());
                       },
                     ),
                     hint: Text(
@@ -252,24 +282,38 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         .map((ExchangeData item) => DropdownItem<ExchangeData>(
                               value: item,
                               height: 30,
-                              child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                              child: Text(item.name ?? "",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Medium,
+                                      color: AppColors().grayColor)),
                             ))
                         .toList(),
                     selectedItemBuilder: (context) {
                       return controller.arrExchangeForManualOrder
-                          .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                          .map((ExchangeData item) =>
+                              DropdownMenuItem<ExchangeData>(
                                 value: item,
                                 child: Text(
                                   item.name ?? "",
-                                  style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Medium,
+                                      color: AppColors().darkText,
+                                      overflow: TextOverflow.ellipsis),
                                 ),
                               ))
                           .toList();
                     },
-                    value: controller.selectExchangedropdownValue.value.exchangeId == null ? null : controller.selectExchangedropdownValue.value,
+                    value: controller
+                                .selectExchangedropdownValue.value.exchangeId ==
+                            null
+                        ? null
+                        : controller.selectExchangedropdownValue.value,
                     onChanged: (ExchangeData? value) {
                       controller.selectExchangedropdownValue.value = value!;
-                      controller.selectedScriptDropDownValue.value = GlobalSymbolData();
+                      controller.selectedScriptDropDownValue.value =
+                          GlobalSymbolData();
                       controller.arrMainScript.clear();
                       controller.update();
                       controller.getScriptList();
@@ -295,10 +339,14 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       // height: 10.h,
       width: 30.w,
 
-      padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 2.h),
+      padding: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
       child: Row(
         children: [
-          Text("Script : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("Script : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           Container(
             height: 5.6.h,
@@ -362,33 +410,56 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                           ),
                         ),
                         searchMatchFn: (item, searchValue) {
-                          return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                          return item.value!.symbolTitle
+                              .toString()
+                              .toLowerCase()
+                              .startsWith(searchValue.toLowerCase());
                         },
                       ),
-                      dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+                      dropdownStyleData:
+                          const DropdownStyleData(maxHeight: 250),
                       hint: Text(
                         '',
-                        style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontFamily: CustomFonts.family1Medium,
+                            color: AppColors().darkText,
+                            overflow: TextOverflow.ellipsis),
                       ),
                       items: controller.arrMainScript
-                          .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
+                          .map((GlobalSymbolData item) =>
+                              DropdownItem<GlobalSymbolData>(
                                 value: item,
                                 height: 30,
-                                child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                                child: Text(item.symbolTitle ?? "",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: CustomFonts.family1Medium,
+                                        color: AppColors().darkText,
+                                        overflow: TextOverflow.ellipsis)),
                               ))
                           .toList(),
                       selectedItemBuilder: (context) {
                         return controller.arrMainScript
-                            .map((GlobalSymbolData item) => DropdownMenuItem<String>(
+                            .map((GlobalSymbolData item) =>
+                                DropdownMenuItem<String>(
                                   value: item.symbolTitle,
                                   child: Text(
                                     item.symbolTitle ?? "",
-                                    style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontFamily: CustomFonts.family1Medium,
+                                        color: AppColors().darkText,
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                 ))
                             .toList();
                       },
-                      value: controller.selectedScriptDropDownValue.value.exchangeId != null ? controller.selectedScriptDropDownValue.value : null,
+                      value: controller.selectedScriptDropDownValue.value
+                                  .exchangeId !=
+                              null
+                          ? controller.selectedScriptDropDownValue.value
+                          : null,
                       onChanged: (GlobalSymbolData? value) {
                         // // setState(() {
                         // controller.selectedScriptFromAll = value;
@@ -396,8 +467,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                         // // });
 
                         controller.selectedScriptDropDownValue.value = value!;
-                        var temp = num.parse(controller.lotController.text) * controller.selectedScriptDropDownValue.value.lotSize!;
+                        var temp = num.parse(controller.lotController.text) *
+                            controller
+                                .selectedScriptDropDownValue.value.lotSize!;
                         controller.qtyController.text = temp.toString();
+                        controller.scriptSearchController.clear();
                       },
                       buttonStyleData: const ButtonStyleData(
                         padding: EdgeInsets.symmetric(horizontal: 0),
@@ -422,7 +496,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 2.h),
       child: Row(
         children: [
-          Text("Trade display for : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("Trade display for : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           Container(
             height: 5.6.h,
@@ -445,17 +523,27 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
 
                         // alignment: Alignment.topCenter,
                         decoration: commonFocusBorder,
-                        dropdownStyleData: const DropdownStyleData(maxHeight: 250),
+                        dropdownStyleData:
+                            const DropdownStyleData(maxHeight: 250),
                         hint: Text(
                           'Select Trade display for',
-                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().lightText, overflow: TextOverflow.ellipsis),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().lightText,
+                              overflow: TextOverflow.ellipsis),
                         ),
 
                         items: constantValues!.manuallyTradeAddedFor!
                             .map((Type item) => DropdownItem<Type>(
                                   value: item,
                                   height: 30,
-                                  child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                                  child: Text(item.name ?? "",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: CustomFonts.family1Medium,
+                                          color: AppColors().darkText,
+                                          overflow: TextOverflow.ellipsis)),
                                 ))
                             .toList(),
                         selectedItemBuilder: (context) {
@@ -473,7 +561,9 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                                   ))
                               .toList();
                         },
-                        value: controller.selectedManualType.value.name != null ? controller.selectedManualType.value : null,
+                        value: controller.selectedManualType.value.name != null
+                            ? controller.selectedManualType.value
+                            : null,
                         onChanged: (Type? value) {
                           // setState(() {
                           controller.selectedManualType.value = value!;
@@ -504,10 +594,14 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
   Widget rateDetailsView() {
     return Container(
       width: 30.w,
-      padding: EdgeInsets.symmetric(horizontal: 1.w),
+      padding: EdgeInsets.only(top: 2.h, left: 1.w, right: 1.w),
       child: Row(
         children: [
-          Text("Rate : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("Rate : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           SizedBox(
             height: 5.6.h,
@@ -515,7 +609,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
             child: CustomTextField(
               type: 'User Name',
               regex: "[0-9.]",
-              keyBoardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+              keyBoardType: const TextInputType.numberWithOptions(
+                  signed: false, decimal: false),
               isEnabled: true,
               isOptional: false,
               borderColor: AppColors().lightOnlyText,
@@ -544,7 +639,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       padding: EdgeInsets.symmetric(horizontal: 1.w),
       child: Row(
         children: [
-          Text("Qty : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("Qty : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -555,7 +654,9 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
-                    color: controller.isValidQty.value ? AppColors().darkText : AppColors().redColor,
+                    color: controller.isValidQty.value
+                        ? AppColors().darkText
+                        : AppColors().redColor,
                     fontFamily: CustomFonts.family1Regular,
                   ),
                 );
@@ -569,7 +670,8 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   regex: "[0-9]",
                   type: '',
                   focusBorderColor: AppColors().blueColor,
-                  keyBoardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                  keyBoardType: const TextInputType.numberWithOptions(
+                      signed: true, decimal: false),
                   isEnabled: true,
                   isOptional: false,
                   isNoNeededCapital: true,
@@ -583,16 +685,26 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                   keyboardButtonType: TextInputAction.next,
                   onChange: () {
                     if (controller.qtyController.text.isNotEmpty) {
-                      if (controller.selectedScriptDropDownValue.value.oddLotTrade == 1) {
-                        var temp = (num.parse(controller.qtyController.text) / controller.selectedScriptDropDownValue.value.lotSize!);
+                      if (controller
+                              .selectedScriptDropDownValue.value.oddLotTrade ==
+                          1) {
+                        var temp = (num.parse(controller.qtyController.text) /
+                            controller
+                                .selectedScriptDropDownValue.value.lotSize!);
                         controller.lotController.text = temp.toStringAsFixed(2);
                         controller.isValidQty.value = true;
                       } else {
-                        var temp = (num.parse(controller.qtyController.text) / controller.selectedScriptDropDownValue.value.lotSize!);
+                        var temp = (num.parse(controller.qtyController.text) /
+                            controller
+                                .selectedScriptDropDownValue.value.lotSize!);
 
                         print(temp);
-                        if ((num.parse(controller.qtyController.text) % controller.selectedScriptDropDownValue.value.lotSize!) == 0) {
-                          controller.lotController.text = temp.toStringAsFixed(0);
+                        if ((num.parse(controller.qtyController.text) %
+                                controller.selectedScriptDropDownValue.value
+                                    .lotSize!) ==
+                            0) {
+                          controller.lotController.text =
+                              temp.toStringAsFixed(0);
                           controller.isValidQty.value = true;
                         } else {
                           controller.isValidQty.value = false;
@@ -616,100 +728,6 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
         ],
       ),
     );
-    // Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     Padding(
-    //       padding: const EdgeInsets.only(left: 10),
-    //       child: Text(
-    //         "Lot",
-    //         textAlign: TextAlign.center,
-    //         style: TextStyle(
-    //           fontSize: 12,
-    //           color: AppColors().darkText,
-    //           fontFamily: CustomFonts.family1Regular,
-    //         ),
-    //       ),
-    //     ),
-    //     Container(
-    //       width: 14.w,
-    //       height: 5.6.h,
-    //       margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-    //       child: NumberInputWithIncrementDecrementOwn(
-    //         incIconSize: 18,
-    //         decIconSize: 18,
-    //         validator: (value) {
-    //           return null;
-    //         },
-    //         onDecrement: (newValue) {
-    //           controller.isValidQty = true.obs;
-    //           controller.update();
-    //         },
-    //         onIncrement: (newValue) {
-    //           controller.isValidQty = true.obs;
-    //           controller.update();
-    //         },
-    //         onChanged: (newValue) {},
-    //         autovalidateMode: AutovalidateMode.disabled,
-    //         fractionDigits: 2,
-    //         textAlign: TextAlign.left,
-
-    //         initialValue: 1,
-    //         incDecFactor: 1,
-    //         isInt: true,
-    //         style: TextStyle(
-    //           fontSize: 12,
-    //           fontFamily: CustomFonts.family1Regular,
-    //           color: AppColors().darkText,
-    //         ),
-    //         numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
-
-    //         widgetContainerDecoration: BoxDecoration(
-    //           borderRadius: BorderRadius.circular(0),
-    //           color: AppColors().whiteColor,
-    //         ),
-    //         controller: controller.lotController,
-    //         min: 1,
-    //         // max: 1000000000000,
-    //       ),
-    //     )
-    //   ],
-    // ),
-    // return Container(
-    //   // height: 10.h,
-    //   width: 30.w,
-    //   padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 2.h),
-    //   child: Row(
-    //     children: [
-    //       Text("Qty : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
-    //       Spacer(),
-    //       Container(
-    //         height: 5.6.h,
-    //         width: 20.w,
-    //         child: CustomTextField(
-    //           type: 'Quantity',
-    //           regex: "[0-9]",
-    //           keyBoardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
-    //           isEnabled: true,
-    //           isOptional: false,
-    //           inValidMsg: AppString.emptyServer,
-    //           placeHolderMsg: "",
-    //           labelMsg: "",
-    //           emptyFieldMsg: AppString.emptyServer,
-    //           controller: controller.quantityController,
-    //           focus: controller.quantityFocus,
-    //           isSecure: false,
-    //           keyboardButtonType: TextInputAction.done,
-    //           maxLength: 10,
-    //           isShowPrefix: false,
-    //           isShowSufix: false,
-    //           suffixIcon: null,
-    //           prefixIcon: null,
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 
   Widget LotDetailsView() {
@@ -718,7 +736,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
       padding: EdgeInsets.symmetric(horizontal: 1.w),
       child: Row(
         children: [
-          Text("Lot : ", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+          Text("Lot : ",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: CustomFonts.family1Medium,
+                  color: AppColors().darkText)),
           Spacer(),
           Container(
             width: 20.w,
@@ -757,7 +779,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
                 contentPadding: EdgeInsets.only(bottom: 8, left: 20),
               ),
 
-              widgetContainerDecoration: BoxDecoration(borderRadius: BorderRadius.circular(0), color: AppColors().whiteColor, border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              widgetContainerDecoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(0),
+                  color: AppColors().whiteColor,
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               controller: controller.lotController,
               min: 1,
               // max: 1000000000000,
@@ -812,7 +838,11 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            child: Text("Execution Time :", style: TextStyle(fontSize: 16, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
+            child: Text("Execution Time :",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: CustomFonts.family1Medium,
+                    color: AppColors().darkText)),
           ),
           Spacer(),
           GestureDetector(
@@ -860,12 +890,21 @@ class ManualOrderScreen extends BaseView<manualOrderController> {
   }
 
   showTimeSelectionPopUp(String selectedDate) async {
-    final TimeOfDay? picked = await showTimePicker(context: Get.context!, barrierDismissible: false, initialEntryMode: TimePickerEntryMode.inputOnly, initialTime: TimeOfDay.now());
+    final TimeOfDay? picked = await showTimePicker(
+        context: Get.context!,
+        barrierDismissible: false,
+        initialEntryMode: TimePickerEntryMode.inputOnly,
+        initialTime: TimeOfDay.now());
 
     if (picked != null) {
       // Format the DateTime to display only the date portion
-      selectedDate = selectedDate + " " + picked.hour.toString() + ":" + picked.minute.toString();
-      controller.fromDate.value = DateFormat('yyyy-MM-dd HH:mm').parse(selectedDate);
+      selectedDate = selectedDate +
+          " " +
+          picked.hour.toString() +
+          ":" +
+          picked.minute.toString();
+      controller.fromDate.value =
+          DateFormat('yyyy-MM-dd HH:mm').parse(selectedDate);
       print(picked.format(Get.context!));
       // controller.fromDate = formattedDate;
       controller.update();

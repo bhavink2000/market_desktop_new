@@ -178,6 +178,10 @@ class MarketWatchController extends BaseController {
       getExchangeList();
       getScriptList();
       getUserTabList();
+      Future.delayed(Duration(seconds: 2), () {
+        showRulesPopup();
+      });
+
       lotController.addListener(() {
         // if (isQuantityUpdate == false) {
         if (!qtyFocus.hasFocus) {
@@ -729,28 +733,35 @@ class MarketWatchController extends BaseController {
   }
 
   void upScrollToIndex(int index) {
+    print("called");
     if (index >= 0 && index < arrScript.length) {
       final double itemHeight = 30.0; // Replace with your item height
       final double listViewHeight = listScroll.position.viewportDimension;
       final double scrollTo = index * itemHeight;
 
       final double currentScrollOffset = listScroll.offset;
-
-      if (scrollTo < currentScrollOffset && currentScrollOffset != 0) {
-        if (currentScrollOffset - scrollTo < listViewHeight) {
-          listScroll.animateTo(
-            scrollTo,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        } else {
-          listScroll.animateTo(
-            currentScrollOffset - listViewHeight,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        }
-      }
+      print(scrollTo);
+      print(currentScrollOffset);
+      listScroll.animateTo(
+        scrollTo,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      // if (scrollTo < currentScrollOffset && currentScrollOffset != 0) {
+      //   if (currentScrollOffset - scrollTo < listViewHeight) {
+      //     listScroll.animateTo(
+      //       scrollTo,
+      //       duration: const Duration(milliseconds: 300),
+      //       curve: Curves.easeInOut,
+      //     );
+      //   } else {
+      //     listScroll.animateTo(
+      //       currentScrollOffset - listViewHeight,
+      //       duration: const Duration(milliseconds: 300),
+      //       curve: Curves.easeInOut,
+      //     );
+      //   }
+      // }
     }
   }
 
@@ -2603,7 +2614,9 @@ class MarketWatchController extends BaseController {
                 isEnabled: true,
                 isOptional: false,
                 inValidMsg: "",
-                placeHolderMsg: "Search User",
+                placeHolderMsg: userData!.role == UserRollList.user
+                    ? userData!.userName!
+                    : "Search User",
                 emptyFieldMsg: "",
                 // fontStyle: TextStyle(
                 //   fontSize: 10,

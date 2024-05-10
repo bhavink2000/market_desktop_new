@@ -59,7 +59,10 @@ import '../MainTabs/ViewTab/ManualOrderscreen/manualOrderController.dart';
 import '../MainTabs/ViewTab/ManualOrderscreen/manualOrderWrapper.dart';
 
 class MenuEntry {
-  const MenuEntry({required this.label, this.shortcut, this.onPressed, this.menuChildren}) : assert(menuChildren == null || onPressed == null, 'onPressed is ignored if menuChildren are provided');
+  const MenuEntry(
+      {required this.label, this.shortcut, this.onPressed, this.menuChildren})
+      : assert(menuChildren == null || onPressed == null,
+            'onPressed is ignored if menuChildren are provided');
   final String label;
 
   final MenuSerializableShortcut? shortcut;
@@ -71,7 +74,10 @@ class MenuEntry {
       if (selection.menuChildren != null) {
         return SubmenuButton(
           menuChildren: MenuEntry.build(selection.menuChildren!),
-          style: selection.label != "File" ? null : ButtonStyle(minimumSize: MaterialStateProperty.all(Size(40, 48))),
+          style: selection.label != "File"
+              ? null
+              : ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(Size(40, 48))),
           child: Text(
             selection.label,
             style: TextStyle(
@@ -85,7 +91,10 @@ class MenuEntry {
       }
       return MenuItemButton(
           shortcut: selection.shortcut,
-          style: selection.label == "Dashboard" ? null : ButtonStyle(minimumSize: MaterialStateProperty.all(Size(200, 35))),
+          style: selection.label == "Dashboard"
+              ? null
+              : ButtonStyle(
+                  minimumSize: MaterialStateProperty.all(Size(200, 35))),
           onPressed: selection.onPressed,
           child: Text(
             selection.label,
@@ -101,14 +110,17 @@ class MenuEntry {
     return selections.map<Widget>(buildSelection).toList();
   }
 
-  static Map<MenuSerializableShortcut, Intent> shortcuts(List<MenuEntry> selections) {
-    final Map<MenuSerializableShortcut, Intent> result = <MenuSerializableShortcut, Intent>{};
+  static Map<MenuSerializableShortcut, Intent> shortcuts(
+      List<MenuEntry> selections) {
+    final Map<MenuSerializableShortcut, Intent> result =
+        <MenuSerializableShortcut, Intent>{};
     for (final MenuEntry selection in selections) {
       if (selection.menuChildren != null) {
         result.addAll(MenuEntry.shortcuts(selection.menuChildren!));
       } else {
         if (selection.shortcut != null && selection.onPressed != null) {
-          result[selection.shortcut!] = VoidCallbackIntent(selection.onPressed!);
+          result[selection.shortcut!] =
+              VoidCallbackIntent(selection.onPressed!);
         }
       }
     }
@@ -127,7 +139,9 @@ class MyMenuBar extends StatelessWidget {
         Expanded(
           child: Obx(() {
             return MenuBar(
-              style: MenuStyle(shadowColor: MaterialStatePropertyAll<Color>(Colors.transparent)),
+              style: MenuStyle(
+                  shadowColor:
+                      MaterialStatePropertyAll<Color>(Colors.transparent)),
               children: MenuEntry.build(_getMenus(context)),
             );
           }),
@@ -221,7 +235,13 @@ class MyMenuBar extends StatelessWidget {
 
                 currentOpenedScreen = ScreenViewNames.orders;
                 var tradeVC = Get.put(TradeListController());
-                generalContainerPopup(view: TradeListScreen(), title: ScreenViewNames.orders, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter, excelClick: tradeVC.onClickExcel, pdfClick: tradeVC.onClickPDF);
+                generalContainerPopup(
+                    view: TradeListScreen(),
+                    title: ScreenViewNames.orders,
+                    isFilterAvailable: true,
+                    filterClick: tradeVC.onCLickFilter,
+                    excelClick: tradeVC.onClickExcel,
+                    pdfClick: tradeVC.onClickPDF);
               });
             },
           ),
@@ -243,7 +263,13 @@ class MyMenuBar extends StatelessWidget {
                 currentOpenedScreen = ScreenViewNames.trades;
 
                 var tradeVC = Get.put(SuccessTradeListController());
-                generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter, excelClick: tradeVC.onClickExcel, pdfClick: tradeVC.onClickPDF);
+                generalContainerPopup(
+                    view: SuccessTradeListScreen(),
+                    title: ScreenViewNames.trades,
+                    isFilterAvailable: true,
+                    filterClick: tradeVC.onCLickFilter,
+                    excelClick: tradeVC.onClickExcel,
+                    pdfClick: tradeVC.onClickPDF);
               });
             },
           ),
@@ -264,7 +290,13 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.positions;
                 var positionVc = Get.put(PositionController());
-                generalContainerPopup(view: PositionScreen(), title: ScreenViewNames.positions, isFilterAvailable: true, filterClick: positionVc.onCLickFilter, excelClick: positionVc.onClickExcel, pdfClick: positionVc.onClickPDF);
+                generalContainerPopup(
+                    view: PositionScreen(),
+                    title: ScreenViewNames.positions,
+                    isFilterAvailable: true,
+                    filterClick: positionVc.onCLickFilter,
+                    excelClick: positionVc.onClickExcel,
+                    pdfClick: positionVc.onClickPDF);
               });
             },
           ),
@@ -290,7 +322,13 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.rejectionLog;
               var rejectionVC = Get.put(RejectionLogController());
-              generalContainerPopup(view: RejectionLogScreen(), title: ScreenViewNames.rejectionLog, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter, excelClick: rejectionVC.onClickExcel, pdfClick: rejectionVC.onClickPDF);
+              generalContainerPopup(
+                  view: RejectionLogScreen(),
+                  title: ScreenViewNames.rejectionLog,
+                  isFilterAvailable: true,
+                  filterClick: rejectionVC.onCLickFilter,
+                  excelClick: rejectionVC.onClickExcel,
+                  pdfClick: rejectionVC.onClickPDF);
             },
           ),
           MenuEntry(
@@ -302,10 +340,14 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.loginHistory;
               Get.put(LoginHistoryController());
-              generalContainerPopup(view: LoginHistoryScreen(), title: ScreenViewNames.loginHistory);
+              generalContainerPopup(
+                  view: LoginHistoryScreen(),
+                  title: ScreenViewNames.loginHistory);
             },
           ),
-          if (userData!.role == UserRollList.superAdmin || (userData!.role == UserRollList.admin && userData!.manualOrder == 1))
+          if (userData!.role == UserRollList.superAdmin ||
+              (userData!.role == UserRollList.admin &&
+                  userData!.manualOrder == 1))
             MenuEntry(
               label: ScreenViewNames.manualOrder,
               onPressed: () {
@@ -315,12 +357,15 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.manualOrder;
                 Get.put(manualOrderController());
-                generalContainerPopup(view: ManualOrderScreen(), title: ScreenViewNames.manualOrder);
+                generalContainerPopup(
+                    view: ManualOrderScreen(),
+                    title: ScreenViewNames.manualOrder);
               },
             ),
         ],
       ),
-      if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+      if (userData?.role != UserRollList.user &&
+          userData?.role != UserRollList.broker)
         MenuEntry(
           label: 'Users',
           menuChildren: <MenuEntry>[
@@ -350,7 +395,13 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userList;
                 var userListVC = Get.put(UserListController());
-                generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter, excelClick: userListVC.onClickExcel, pdfClick: userListVC.onClickPDF);
+                generalContainerPopup(
+                    view: UserListScreen(),
+                    title: ScreenViewNames.userList,
+                    isFilterAvailable: true,
+                    filterClick: userListVC.onCLickFilter,
+                    excelClick: userListVC.onClickExcel,
+                    pdfClick: userListVC.onClickPDF);
               },
             ),
             // MenuEntry(
@@ -398,7 +449,13 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.bulkTrade;
                 var rejectionVC = Get.put(BulkTradeController());
-                generalContainerPopup(view: BulkTradeScreen(), title: ScreenViewNames.bulkTrade, isFilterAvailable: true, filterClick: rejectionVC.onCLickFilter, excelClick: rejectionVC.onClickExcel, pdfClick: rejectionVC.onClickPDF);
+                generalContainerPopup(
+                    view: BulkTradeScreen(),
+                    title: ScreenViewNames.bulkTrade,
+                    isFilterAvailable: true,
+                    filterClick: rejectionVC.onCLickFilter,
+                    excelClick: rejectionVC.onClickExcel,
+                    pdfClick: rejectionVC.onClickPDF);
               },
             ),
           MenuEntry(
@@ -410,7 +467,13 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeLogs;
               var tradeLogVC = Get.put(TradeLogController());
-              generalContainerPopup(view: TradeLogScreen(), title: ScreenViewNames.tradeLogs, isFilterAvailable: true, filterClick: tradeLogVC.onCLickFilter, excelClick: tradeLogVC.onClickExcel, pdfClick: tradeLogVC.onClickPDF);
+              generalContainerPopup(
+                  view: TradeLogScreen(),
+                  title: ScreenViewNames.tradeLogs,
+                  isFilterAvailable: true,
+                  filterClick: tradeLogVC.onCLickFilter,
+                  excelClick: tradeLogVC.onClickExcel,
+                  pdfClick: tradeLogVC.onClickPDF);
             },
           ),
           // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -435,7 +498,13 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.clientAccountReport;
               var clientAccountVC = Get.put(ClientAccountReportController());
-              generalContainerPopup(view: ClientAccountReportScreen(), title: ScreenViewNames.clientAccountReport, isFilterAvailable: true, filterClick: clientAccountVC.onCLickFilter, excelClick: clientAccountVC.onClickExcel, pdfClick: clientAccountVC.onClickPDF);
+              generalContainerPopup(
+                  view: ClientAccountReportScreen(),
+                  title: ScreenViewNames.clientAccountReport,
+                  isFilterAvailable: true,
+                  filterClick: clientAccountVC.onCLickFilter,
+                  excelClick: clientAccountVC.onClickExcel,
+                  pdfClick: clientAccountVC.onClickPDF);
             },
           ),
           MenuEntry(
@@ -447,10 +516,17 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.tradeMargin;
               var marginVC = Get.put(TradeMarginController());
-              generalContainerPopup(view: TradeMarginScreen(), title: ScreenViewNames.tradeMargin, isFilterAvailable: true, filterClick: marginVC.onCLickFilter, excelClick: marginVC.onClickExcel, pdfClick: marginVC.onClickPDF);
+              generalContainerPopup(
+                  view: TradeMarginScreen(),
+                  title: ScreenViewNames.tradeMargin,
+                  isFilterAvailable: true,
+                  filterClick: marginVC.onCLickFilter,
+                  excelClick: marginVC.onClickExcel,
+                  pdfClick: marginVC.onClickPDF);
             },
           ),
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          if (userData?.role != UserRollList.user &&
+              userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.settelment,
               onPressed: () {
@@ -460,7 +536,13 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.settelment;
                 var settlementVC = Get.put(SettlementController());
-                generalContainerPopup(view: SettlementScreen(), title: ScreenViewNames.settelment, isFilterAvailable: true, filterClick: settlementVC.onCLickFilter, excelClick: settlementVC.onClickExcel, pdfClick: settlementVC.onClickPDF);
+                generalContainerPopup(
+                    view: SettlementScreen(),
+                    title: ScreenViewNames.settelment,
+                    isFilterAvailable: true,
+                    filterClick: settlementVC.onCLickFilter,
+                    excelClick: settlementVC.onClickExcel,
+                    pdfClick: settlementVC.onClickPDF);
               },
             ),
           MenuEntry(
@@ -473,7 +555,14 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.creditHistory;
               var accountSummaryVC = Get.put(HistoryOfCreditController());
-              generalContainerPopup(view: HistoryOfCreditScreen(), title: ScreenViewNames.creditHistory, isFilterAvailable: true, filterClick: accountSummaryVC.onCLickFilter, excelClick: accountSummaryVC.onClickExcel, pdfClick: accountSummaryVC.onClickPDF, isFilterIconHide: true);
+              generalContainerPopup(
+                  view: HistoryOfCreditScreen(),
+                  title: ScreenViewNames.creditHistory,
+                  isFilterAvailable: true,
+                  filterClick: accountSummaryVC.onCLickFilter,
+                  excelClick: accountSummaryVC.onClickExcel,
+                  pdfClick: accountSummaryVC.onClickPDF,
+                  isFilterIconHide: true);
             },
           ),
           MenuEntry(
@@ -485,7 +574,11 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.billGenerate;
               var billVc = Get.put(BillGenerateController());
-              generalContainerPopup(view: BillGenerateScreen(), title: ScreenViewNames.billGenerate, isFilterAvailable: true, filterClick: billVc.onCLickFilter);
+              generalContainerPopup(
+                  view: BillGenerateScreen(),
+                  title: ScreenViewNames.billGenerate,
+                  isFilterAvailable: true,
+                  filterClick: billVc.onCLickFilter);
             },
           ),
 
@@ -512,7 +605,13 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.logsHistory;
               var logsVc = Get.put(LogHistoryController());
-              generalContainerPopup(view: LogHistoryScreen(), title: ScreenViewNames.logsHistory, isFilterAvailable: true, filterClick: logsVc.onCLickFilter, excelClick: logsVc.onClickExcel, pdfClick: logsVc.onClickPDF);
+              generalContainerPopup(
+                  view: LogHistoryScreen(),
+                  title: ScreenViewNames.logsHistory,
+                  isFilterAvailable: true,
+                  filterClick: logsVc.onCLickFilter,
+                  excelClick: logsVc.onClickExcel,
+                  pdfClick: logsVc.onClickPDF);
             },
           ),
           // if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
@@ -530,7 +629,8 @@ class MyMenuBar extends StatelessWidget {
           //     },
           //   ),
 
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          if (userData?.role != UserRollList.user &&
+              userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.userwisePAndLSummary,
               onPressed: () {
@@ -540,10 +640,17 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.userwisePAndLSummary;
                 var userWiseVC = Get.put(UserWisePLSummaryController());
-                generalContainerPopup(view: UserWisePLSummaryScreen(), title: ScreenViewNames.userwisePAndLSummary, isFilterAvailable: true, filterClick: userWiseVC.onCLickFilter, excelClick: userWiseVC.onClickExcel, pdfClick: userWiseVC.onClickPDF);
+                generalContainerPopup(
+                    view: UserWisePLSummaryScreen(),
+                    title: ScreenViewNames.userwisePAndLSummary,
+                    isFilterAvailable: true,
+                    filterClick: userWiseVC.onCLickFilter,
+                    excelClick: userWiseVC.onClickExcel,
+                    pdfClick: userWiseVC.onClickPDF);
               },
             ),
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          if (userData?.role != UserRollList.user &&
+              userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.userScriptPositionTracking,
               onPressed: () {
@@ -551,12 +658,20 @@ class MyMenuBar extends StatelessWidget {
                   return;
                 }
                 isCommonScreenPopUpOpen = true;
-                currentOpenedScreen = ScreenViewNames.userScriptPositionTracking;
+                currentOpenedScreen =
+                    ScreenViewNames.userScriptPositionTracking;
                 var trackingVC = Get.put(UserScriptPositionTrackController());
-                generalContainerPopup(view: UserScriptPositionTrackScreen(), title: ScreenViewNames.userScriptPositionTracking, isFilterAvailable: true, filterClick: trackingVC.onCLickFilter, excelClick: trackingVC.onClickExcel, pdfClick: trackingVC.onClickPDF);
+                generalContainerPopup(
+                    view: UserScriptPositionTrackScreen(),
+                    title: ScreenViewNames.userScriptPositionTracking,
+                    isFilterAvailable: true,
+                    filterClick: trackingVC.onCLickFilter,
+                    excelClick: trackingVC.onClickExcel,
+                    pdfClick: trackingVC.onClickPDF);
               },
             ),
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          if (userData?.role != UserRollList.user &&
+              userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.symbolWisePositionReport,
               onPressed: () {
@@ -565,8 +680,15 @@ class MyMenuBar extends StatelessWidget {
                 }
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.symbolWisePositionReport;
-                var symbolWiseVC = Get.put(SymbolWisePositionReportController());
-                generalContainerPopup(view: SymbolWisePositionReportScreen(), title: ScreenViewNames.symbolWisePositionReport, isFilterAvailable: true, filterClick: symbolWiseVC.onCLickFilter, excelClick: symbolWiseVC.onClickExcel, pdfClick: symbolWiseVC.onClickPDF);
+                var symbolWiseVC =
+                    Get.put(SymbolWisePositionReportController());
+                generalContainerPopup(
+                    view: SymbolWisePositionReportScreen(),
+                    title: ScreenViewNames.symbolWisePositionReport,
+                    isFilterAvailable: true,
+                    filterClick: symbolWiseVC.onCLickFilter,
+                    excelClick: symbolWiseVC.onClickExcel,
+                    pdfClick: symbolWiseVC.onClickPDF);
               },
             ),
         ],
@@ -623,7 +745,8 @@ class MyMenuBar extends StatelessWidget {
               showMarketTimingPopup();
             },
           ),
-          if (userData?.role != UserRollList.user && userData?.role != UserRollList.broker)
+          if (userData?.role != UserRollList.user &&
+              userData?.role != UserRollList.broker)
             MenuEntry(
               label: ScreenViewNames.scriptMaster,
               onPressed: () {
@@ -634,7 +757,13 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.scriptMaster;
                 var masterVC = Get.put(ScriptMasterController());
-                generalContainerPopup(view: ScriptMasterScreen(), title: ScreenViewNames.scriptMaster, isFilterAvailable: true, filterClick: masterVC.onCLickFilter, excelClick: masterVC.onClickExcel, pdfClick: masterVC.onClickPDF);
+                generalContainerPopup(
+                    view: ScriptMasterScreen(),
+                    title: ScreenViewNames.scriptMaster,
+                    isFilterAvailable: true,
+                    filterClick: masterVC.onCLickFilter,
+                    excelClick: masterVC.onClickExcel,
+                    pdfClick: masterVC.onClickPDF);
               },
             ),
           MenuEntry(
@@ -647,12 +776,19 @@ class MyMenuBar extends StatelessWidget {
               isCommonScreenPopUpOpen = true;
               currentOpenedScreen = ScreenViewNames.scriptQty;
               var masterVC = Get.put(ScriptQuantityController());
-              generalContainerPopup(view: ScriptQuantityScreen(), title: ScreenViewNames.scriptQty, isFilterAvailable: true, filterClick: masterVC.onCLickFilter, excelClick: masterVC.onClickExcel, pdfClick: masterVC.onClickPDF);
+              generalContainerPopup(
+                  view: ScriptQuantityScreen(),
+                  title: ScreenViewNames.scriptQty,
+                  isFilterAvailable: true,
+                  filterClick: masterVC.onCLickFilter,
+                  excelClick: masterVC.onClickExcel,
+                  pdfClick: masterVC.onClickPDF);
             },
           ),
           MenuEntry(
             label: ScreenViewNames.messages,
-            shortcut: const SingleActivator(LogicalKeyboardKey.f10, control: false),
+            shortcut:
+                const SingleActivator(LogicalKeyboardKey.f10, control: false),
             onPressed: () {
               if (marketViewObj.isBuyOpen != -1) {
                 return;
@@ -667,8 +803,18 @@ class MyMenuBar extends StatelessWidget {
                 isCommonScreenPopUpOpen = true;
                 currentOpenedScreen = ScreenViewNames.messages;
                 Get.put(MessagesController());
-                generalContainerPopup(view: MessagesScreen(), title: ScreenViewNames.messages);
+                generalContainerPopup(
+                    view: MessagesScreen(), title: ScreenViewNames.messages);
               });
+            },
+          ),
+          MenuEntry(
+            label: 'Rules & Regulations',
+            onPressed: () {
+              if (marketViewObj.isBuyOpen != -1) {
+                return;
+              }
+              showRulesPopup();
             },
           ),
           MenuEntry(
@@ -685,7 +831,8 @@ class MyMenuBar extends StatelessWidget {
     ];
 
     _shortcutsEntry?.dispose();
-    _shortcutsEntry = ShortcutRegistry.of(context).addAll(MenuEntry.shortcuts(result));
+    _shortcutsEntry =
+        ShortcutRegistry.of(context).addAll(MenuEntry.shortcuts(result));
     return result;
   }
 }

@@ -117,9 +117,9 @@ class NetPositionColumns {
   static const parentUser = "PARENT USER";
   static const exchange = "EXCHANGE";
   static const symbolName = "SYMBOL NAME";
-  static const totalBuyAQty = "TOTAL BUY A QTY";
-  static const totalBuyAPrice = "TOTAL BUY A PRICE";
-  static const totalSellQty = "TOTAL SELL QTY";
+  static const totalBuyAQty = "BUY A QTY";
+  static const totalBuyAPrice = "BUY A PRICE";
+  static const totalSellQty = "SELL QTY";
   static const sellAPrice = "SELL A PRICE";
   static const netQty = "NET QTY";
   static const netLot = "NET LOT";
@@ -305,9 +305,9 @@ class MessageColumns {
 class UserPositionColumns {
   static const exchange = "EXCHANGE";
   static const symbolName = "SYMBOL NAME";
-  static const totalBuyAQty = "TOTAL BUY A QTY";
-  static const totalBuyAPrice = "TOTAL BUY A PRICE";
-  static const totalSellQty = "TOTAL SELL QTY";
+  static const totalBuyAQty = "BUY A QTY";
+  static const totalBuyAPrice = "BUY A PRICE";
+  static const totalSellQty = "SELL QTY";
   static const sellAPrice = "SELL A PRICE";
   static const netQty = "NET QTY";
   static const netLot = "NET LOT";
@@ -411,7 +411,9 @@ Future<void> getColumnListFromDB(int screenId, List<ColumnItem> arrList) async {
       }
     }
     for (var i = 0; i < arrList.length; i++) {
-      var isAvailable = values.indexWhere((element) => element["title"] == arrList[i].title && element["columnId"] == arrList[i].columnId);
+      var isAvailable = values.indexWhere((element) =>
+          element["title"] == arrList[i].title &&
+          element["columnId"] == arrList[i].columnId);
 
       if (isAvailable == -1) {
         await DbService().addColumns([arrList[i]]);
@@ -442,17 +444,21 @@ Widget listTitleContent(BaseController controller) {
         itemCount: controller.arrListTitle1.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-          return controller.isHiddenTitle(controller.arrListTitle1[index].title ?? "")
+          return controller
+                  .isHiddenTitle(controller.arrListTitle1[index].title ?? "")
               ? SizedBox(
                   key: Key("$index"),
                 )
-              : dynamicTitleBox1(controller.arrListTitle1[index].title ?? "", index, controller.arrListTitle1, controller.isScrollEnable,
+              : dynamicTitleBox1(controller.arrListTitle1[index].title ?? "",
+                  index, controller.arrListTitle1, controller.isScrollEnable,
                   updateCallback: () {
                     controller.refreshView();
                   },
                   isForDate: true,
                   isImage: controller.arrListTitle1[index].title!.isEmpty,
-                  strImage: controller.isAllSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
+                  strImage: controller.isAllSelected
+                      ? AppImages.checkBoxSelected
+                      : AppImages.checkBox,
                   onClickImage: () {
                     controller.isAllSelected = !controller.isAllSelected;
                     controller.update();
@@ -813,24 +819,24 @@ List<Map> getColumnNames() {
         {
           "title": NetPositionColumns.totalBuyAQty,
           "screenId": ScreenIds().netPosition,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 5,
           "columnId": "${ScreenIds().netPosition}-5",
         },
         {
           "title": NetPositionColumns.totalBuyAPrice,
           "screenId": ScreenIds().netPosition,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 6,
           "columnId": "${ScreenIds().netPosition}-6",
         },
         {
           "title": NetPositionColumns.totalSellQty,
           "screenId": ScreenIds().netPosition,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 7,
           "columnId": "${ScreenIds().netPosition}-7",
         },
@@ -1979,24 +1985,24 @@ List<Map> getColumnNames() {
         {
           "title": NetPositionColumns.totalBuyAQty,
           "screenId": ScreenIds().userPosition,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 3,
           "columnId": "${ScreenIds().userPosition}-2",
         },
         {
           "title": NetPositionColumns.totalBuyAPrice,
           "screenId": ScreenIds().userPosition,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 4,
           "columnId": "${ScreenIds().userPosition}-3",
         },
         {
           "title": NetPositionColumns.totalSellQty,
           "screenId": ScreenIds().userPosition,
-          "width": ColumnSizes.date,
-          "updatedWidth": ColumnSizes.date,
+          "width": ColumnSizes.normal,
+          "updatedWidth": ColumnSizes.normal,
           "position": 5,
           "columnId": "${ScreenIds().userPosition}-4",
         },

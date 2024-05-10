@@ -69,8 +69,10 @@ class manualOrderController extends BaseController {
     super.onInit();
     arrExchangeForManualOrder.addAll(arrExchange);
     arrExchangeForManualOrder.removeAt(0);
-
-    var index = constantValues!.manuallyTradeAddedFor!.indexWhere((element) => element.name == "ALL");
+    selectedManualType.value = constantValues!.manuallyTradeAddedFor!
+        .firstWhere((element) => element.id == "superAdmin");
+    var index = constantValues!.manuallyTradeAddedFor!
+        .indexWhere((element) => element.name == "ALL");
     if (index != -1) {
       constantValues!.manuallyTradeAddedFor!.removeAt(index);
     }
@@ -78,8 +80,10 @@ class manualOrderController extends BaseController {
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {
       if (!qtyFocus.hasFocus) {
-        if (selectedScriptDropDownValue.value.symbolId != null || selectedScriptDropDownValue.value.symbolId != "") {
-          var temp = num.parse(lotController.text) * selectedScriptDropDownValue.value.lotSize!;
+        if (selectedScriptDropDownValue.value.symbolId != null ||
+            selectedScriptDropDownValue.value.symbolId != "") {
+          var temp = num.parse(lotController.text) *
+              selectedScriptDropDownValue.value.lotSize!;
           qtyController.text = temp.toString();
         }
 
@@ -94,7 +98,8 @@ class manualOrderController extends BaseController {
   }
 
   getScriptList() async {
-    var response = await service.allSymbolListCall(1, "", selectExchangedropdownValue.value.exchangeId ?? "");
+    var response = await service.allSymbolListCall(
+        1, "", selectExchangedropdownValue.value.exchangeId ?? "");
     arrMainScript.value = response!.data ?? [];
   }
 
@@ -138,13 +143,19 @@ class manualOrderController extends BaseController {
     if (msg.isEmpty) {
       var msg = "Are you sure you want to trade for following details? \n";
       msg = msg + "Username : " + selectedUser.value.userName! + "\n";
-      msg = msg + "Exchange : " + selectExchangedropdownValue.value.name! + "\n";
-      msg = msg + "Script : " + selectedScriptDropDownValue.value.symbolTitle! + "\n";
+      msg =
+          msg + "Exchange : " + selectExchangedropdownValue.value.name! + "\n";
+      msg = msg +
+          "Script : " +
+          selectedScriptDropDownValue.value.symbolTitle! +
+          "\n";
       msg = msg + "Rate : " + rateBoxOneController.text + "\n";
       msg = msg + "Qty : " + qtyController.text + "\n";
       msg = msg + "Lot : " + lotController.text + "\n";
-      msg = msg + "Execution Time : " + shortFullDateTime(fromDate.value!) + "\n";
-      msg = msg + "Trade Display For : " + selectedManualType.value.name! + "\n";
+      msg =
+          msg + "Execution Time : " + shortFullDateTime(fromDate.value!) + "\n";
+      msg =
+          msg + "Trade Display For : " + selectedManualType.value.name! + "\n";
       showPermissionDialog(
           message: msg,
           acceptButtonTitle: "Yes",
@@ -156,7 +167,8 @@ class manualOrderController extends BaseController {
             } else {
               isSellApicall = true;
             }
-            var qty = double.parse(qtyController.text) / selectedScriptDropDownValue.value.lotSize!;
+            var qty = double.parse(qtyController.text) /
+                selectedScriptDropDownValue.value.lotSize!;
             update();
             var response = await service.manualTradeFromSACall(
                 executionTime: serverFormatDateTime(fromDate.value!),
@@ -171,7 +183,9 @@ class manualOrderController extends BaseController {
                 exchangeId: selectExchangedropdownValue.value.exchangeId,
                 userId: selectedUser.value.userId!,
                 manuallyTradeAddedFor: selectedManualType.value.id,
-                refPrice: isBuy.value ? selectedScriptDropDownValue.value.ask!.toDouble() : selectedScriptDropDownValue.value.bid!.toDouble());
+                refPrice: isBuy.value
+                    ? selectedScriptDropDownValue.value.ask!.toDouble()
+                    : selectedScriptDropDownValue.value.bid!.toDouble());
 
             //longterm
             isApicall = false;
@@ -180,7 +194,7 @@ class manualOrderController extends BaseController {
             if (response != null) {
               // Get.back();
               if (response.statusCode == 200) {
-                selectExchangedropdownValue = ExchangeData().obs;
+                // selectExchangedropdownValue = ExchangeData().obs;
                 selectedScriptDropDownValue = GlobalSymbolData().obs;
                 lotController.text = "1";
 
@@ -189,7 +203,8 @@ class manualOrderController extends BaseController {
                 if (isBuy.value) {
                   showSuccessToast(response.meta!.message!);
                 } else {
-                  showSuccessToast(response.meta!.message!, bgColor: AppColors().redColor);
+                  showSuccessToast(response.meta!.message!,
+                      bgColor: AppColors().redColor);
                 }
                 update();
               } else {
@@ -271,7 +286,10 @@ class manualOrderController extends BaseController {
                 ),
               ),
               searchMatchFn: (item, searchValue) {
-                return item.value!.userName.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                return item.value!.userName
+                    .toString()
+                    .toLowerCase()
+                    .startsWith(searchValue.toLowerCase());
               },
             ),
             hint: Text(
@@ -286,7 +304,11 @@ class manualOrderController extends BaseController {
                 .map((UserData item) => DropdownItem<UserData>(
                       value: item,
                       height: 30,
-                      child: Text(item.userName ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                      child: Text(item.userName ?? "",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().grayColor)),
                     ))
                 .toList(),
             selectedItemBuilder: (context) {
@@ -295,12 +317,17 @@ class manualOrderController extends BaseController {
                         value: item,
                         child: Text(
                           item.userName ?? "",
-                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().darkText,
+                              overflow: TextOverflow.ellipsis),
                         ),
                       ))
                   .toList();
             },
-            value: selectedUser.value.userId == null ? null : selectedUser.value,
+            value:
+                selectedUser.value.userId == null ? null : selectedUser.value,
             onChanged: (UserData? value) {
               selectedUser.value = value!;
             },

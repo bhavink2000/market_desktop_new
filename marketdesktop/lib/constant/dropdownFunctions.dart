@@ -50,7 +50,8 @@ bool isChangePasswordScreenPopUpOpen = false;
 bool isUpdateLeveragePopUpOpen = false;
 
 String currentOpenedScreen = ScreenViewNames.marketWatch;
-final List<Map<String, dynamic>> _roles = arrLeverageList.map((e) => e.toJson()).toList();
+final List<Map<String, dynamic>> _roles =
+    arrLeverageList.map((e) => e.toJson()).toList();
 
 Widget sortTypeDropDown(RxString selectedType, {double? width}) {
   return Obx(() {
@@ -89,7 +90,10 @@ Widget sortTypeDropDown(RxString selectedType, {double? width}) {
                         height: 40,
                         child: Text(
                           item,
-                          style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontFamily: CustomFonts.family1Medium,
+                              color: AppColors().grayColor),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ))
@@ -161,7 +165,10 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                         height: 30,
                         child: Text(
                           item.name ?? "",
-                          style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().grayColor),
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontFamily: CustomFonts.family1Regular,
+                              color: AppColors().grayColor),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ))
@@ -181,7 +188,9 @@ Widget filterTypeDropDown(Rx<AddMaster> selectedFilterType, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedFilterType.value.id != null ? selectedFilterType.value : null,
+              value: selectedFilterType.value.id != null
+                  ? selectedFilterType.value
+                  : null,
               onChanged: (AddMaster? value) {
                 selectedFilterType.value = value!;
               },
@@ -231,7 +240,11 @@ Widget billTypeDropDown(Rx<AddMaster?> selectedBillType, {double? width}) {
                   .map((AddMaster item) => DropdownItem<AddMaster>(
                         height: 30,
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -249,7 +262,9 @@ Widget billTypeDropDown(Rx<AddMaster?> selectedBillType, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedBillType.value?.name == null ? null : selectedBillType.value,
+              value: selectedBillType.value?.name == null
+                  ? null
+                  : selectedBillType.value,
               onChanged: (AddMaster? value) {
                 selectedBillType.value = value!;
               },
@@ -264,7 +279,8 @@ Widget billTypeDropDown(Rx<AddMaster?> selectedBillType, {double? width}) {
   });
 }
 
-Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? width}) {
+Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType,
+    {double? width}) {
   return Obx(() {
     return SizedBox(
         width: width ?? 250,
@@ -296,7 +312,11 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
                   .map((Type item) => DropdownItem<Type>(
                         height: 30,
                         value: item,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -314,7 +334,9 @@ Widget productTypeForAccountDropDown(Rx<Type?> selectedProductType, {double? wid
                         ))
                     .toList();
               },
-              value: selectedProductType.value?.name == null ? null : selectedProductType.value,
+              value: selectedProductType.value?.name == null
+                  ? null
+                  : selectedProductType.value,
               onChanged: (Type? value) {
                 selectedProductType.value = value!;
               },
@@ -361,7 +383,11 @@ Widget plTypeForAccountDropDown(Rx<String?> selectedPLType, {double? width}) {
                   .map((String item) => DropdownItem<String>(
                         value: item,
                         height: 30,
-                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -429,7 +455,11 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
                   .map((String item) => DropdownItem<String>(
                         value: item,
                         height: 30,
-                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -462,21 +492,31 @@ Widget sortCountDropDown(RxString selectedCount, {double? width}) {
   });
 }
 
-Widget userListDropDown(Rx<UserData> selectedUser, {double? width, String? rollType, Function? userController}) {
+Widget userListDropDown(Rx<UserData> selectedUser,
+    {double? width,
+    String? rollType,
+    Function? userController,
+    double? dropDownWidth}) {
   return Container(
       // height: 40.h,
       width: width ?? 250,
       // margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: 40,
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: Colors.transparent),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5), color: Colors.transparent),
       child: Container(
         width: 200,
         // height: 4.h,
 
-        decoration: BoxDecoration(border: Border.all(color: Colors.transparent, width: 1), borderRadius: BorderRadius.circular(0)),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.transparent, width: 1),
+            borderRadius: BorderRadius.circular(0)),
         child: Autocomplete<UserData>(
           displayStringForOption: (UserData option) => option.userName!,
-          fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
+          fieldViewBuilder: (BuildContext context,
+              TextEditingController searchEditingController,
+              FocusNode searchFocus,
+              VoidCallback onFieldSubmitted) {
             if (userController != null) {
               userController(searchEditingController);
             }
@@ -513,17 +553,21 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width, String? rollT
             alignment: Alignment.topLeft,
             child: Material(
               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(4.0)),
               ),
               child: Container(
                 height: 150,
-                width: (width ?? 250) - 3, // <-- Right here !
+                width: dropDownWidth != null
+                    ? dropDownWidth
+                    : (width ?? 250) - 3, // <-- Right here !
                 child: ListView.builder(
                   padding: EdgeInsets.zero,
                   itemCount: options.length,
                   shrinkWrap: false,
                   itemBuilder: (BuildContext context, int index) {
-                    final String option = arrUserList.elementAt(index).userName!;
+                    final String option =
+                        arrUserList.elementAt(index).userName!;
                     return InkWell(
                       onTap: () => onSelected(arrUserList.elementAt(index)),
                       child: Padding(
@@ -549,7 +593,8 @@ Widget userListDropDown(Rx<UserData> selectedUser, {double? width, String? rollT
               return const Iterable<UserData>.empty();
             }
             if (textEditingValue.text.length > 2) {
-              return await getUserListByKeyWord(textEditingValue.text, rollType: rollType);
+              return await getUserListByKeyWord(textEditingValue.text,
+                  rollType: rollType);
             } else {
               return const Iterable<UserData>.empty();
             }
@@ -603,7 +648,10 @@ Widget userListDropDownFinal(Rx<UserData> selectedUser, {double? width}) {
                     keyboardButtonType: TextInputAction.done,
                     maxLength: 64,
                     isShowPrefix: false,
-                    fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                    fontStyle: TextStyle(
+                        fontSize: 10,
+                        fontFamily: CustomFonts.family1Medium,
+                        color: AppColors().fontColor),
                     suffixIcon: Container(
                       child: GestureDetector(
                         onTap: () {
@@ -619,7 +667,10 @@ Widget userListDropDownFinal(Rx<UserData> selectedUser, {double? width}) {
                   ),
                 ),
                 searchMatchFn: (item, searchValue) {
-                  return item.value!.userName.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                  return item.value!.userName
+                      .toString()
+                      .toLowerCase()
+                      .startsWith(searchValue.toLowerCase());
                 },
               ),
               hint: Text(
@@ -634,7 +685,11 @@ Widget userListDropDownFinal(Rx<UserData> selectedUser, {double? width}) {
                   .map((UserData item) => DropdownItem<UserData>(
                         value: item,
                         height: 30,
-                        child: Text(item.userName ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
+                        child: Text(item.userName ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family2Regular,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -643,12 +698,17 @@ Widget userListDropDownFinal(Rx<UserData> selectedUser, {double? width}) {
                           value: item,
                           child: Text(
                             item.userName ?? "",
-                            style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family2Regular,
+                                color: AppColors().darkText,
+                                overflow: TextOverflow.ellipsis),
                           ),
                         ))
                     .toList();
               },
-              value: selectedUser.value.userId == null ? null : selectedUser.value,
+              value:
+                  selectedUser.value.userId == null ? null : selectedUser.value,
               onChanged: (UserData? value) {
                 selectedUser.value = value!;
               },
@@ -695,7 +755,11 @@ Widget timePeriodDropDown(RxString selectedPeriod, {double? width}) {
                   .map((String item) => DropdownItem<String>(
                         value: item,
                         height: 30,
-                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -728,7 +792,8 @@ Widget timePeriodDropDown(RxString selectedPeriod, {double? width}) {
   });
 }
 
-Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {List<GlobalSymbolData>? arrSymbol, double? width}) {
+Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter,
+    {List<GlobalSymbolData>? arrSymbol, double? width}) {
   return Obx(() {
     if (arrSymbol != null && arrSymbol.isNotEmpty) {
       return SizedBox(
@@ -768,7 +833,10 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                       keyboardButtonType: TextInputAction.done,
                       maxLength: 64,
                       isShowPrefix: false,
-                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                      fontStyle: TextStyle(
+                          fontSize: 10,
+                          fontFamily: CustomFonts.family1Medium,
+                          color: AppColors().fontColor),
                       suffixIcon: Container(
                         child: GestureDetector(
                           onTap: () {
@@ -784,19 +852,32 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                     ),
                   ),
                   searchMatchFn: (item, searchValue) {
-                    return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                    return item.value!.symbolTitle
+                        .toString()
+                        .toLowerCase()
+                        .startsWith(searchValue.toLowerCase());
                   },
                 ),
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                 hint: Text(
                   '',
-                  style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontFamily: CustomFonts.family2Regular,
+                      color: AppColors().darkText,
+                      overflow: TextOverflow.ellipsis),
                 ),
                 items: arrSymbol
-                    .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
+                    .map((GlobalSymbolData item) =>
+                        DropdownItem<GlobalSymbolData>(
                           value: item,
                           height: 30,
-                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                          child: Text(item.symbolTitle ?? "",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family2Regular,
+                                  color: AppColors().darkText,
+                                  overflow: TextOverflow.ellipsis)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -805,12 +886,18 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                             value: item.symbolTitle,
                             child: Text(
                               item.symbolTitle ?? "",
-                              style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family2Regular,
+                                  color: AppColors().darkText,
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
                 },
-                value: selectedScriptFromFilter.value.exchangeId != null ? selectedScriptFromFilter.value : null,
+                value: selectedScriptFromFilter.value.exchangeId != null
+                    ? selectedScriptFromFilter.value
+                    : null,
                 onChanged: (GlobalSymbolData? value) {
                   // // setState(() {
                   // controller.selectedScriptFromAll = value;
@@ -819,7 +906,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
 
                   selectedScriptFromFilter.value = value!;
                 },
-                buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
+                buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
               ),
             ),
           ));
@@ -861,7 +949,10 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                       keyboardButtonType: TextInputAction.done,
                       maxLength: 64,
                       isShowPrefix: false,
-                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                      fontStyle: TextStyle(
+                          fontSize: 10,
+                          fontFamily: CustomFonts.family1Medium,
+                          color: AppColors().fontColor),
                       suffixIcon: Container(
                         child: GestureDetector(
                           onTap: () {
@@ -877,19 +968,32 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                     ),
                   ),
                   searchMatchFn: (item, searchValue) {
-                    return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                    return item.value!.symbolTitle
+                        .toString()
+                        .toLowerCase()
+                        .startsWith(searchValue.toLowerCase());
                   },
                 ),
                 dropdownStyleData: const DropdownStyleData(maxHeight: 250),
                 hint: Text(
                   '',
-                  style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                  style: TextStyle(
+                      fontSize: 10,
+                      fontFamily: CustomFonts.family2Regular,
+                      color: AppColors().darkText,
+                      overflow: TextOverflow.ellipsis),
                 ),
                 items: arrAllScript
-                    .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
+                    .map((GlobalSymbolData item) =>
+                        DropdownItem<GlobalSymbolData>(
                           value: item,
                           height: 30,
-                          child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                          child: Text(item.symbolTitle ?? "",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family2Regular,
+                                  color: AppColors().darkText,
+                                  overflow: TextOverflow.ellipsis)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -898,12 +1002,18 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
                             value: item.symbolTitle,
                             child: Text(
                               item.symbolTitle ?? "",
-                              style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family2Regular,
+                                  color: AppColors().darkText,
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
                 },
-                value: selectedScriptFromFilter.value.exchangeId != null ? selectedScriptFromFilter.value : null,
+                value: selectedScriptFromFilter.value.exchangeId != null
+                    ? selectedScriptFromFilter.value
+                    : null,
                 onChanged: (GlobalSymbolData? value) {
                   // // setState(() {
                   // controller.selectedScriptFromAll = value;
@@ -912,7 +1022,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
 
                   selectedScriptFromFilter.value = value!;
                 },
-                buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
+                buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
               ),
             ),
           ));
@@ -920,7 +1031,8 @@ Widget allScriptListDropDown(Rx<GlobalSymbolData> selectedScriptFromFilter, {Lis
   });
 }
 
-Widget groupListDropDown(Rx<groupListModelData> selectedGroup, {List<groupListModelData>? arrGroup, double? width}) {
+Widget groupListDropDown(Rx<groupListModelData> selectedGroup,
+    {List<groupListModelData>? arrGroup, double? width}) {
   return Obx(() {
     return SizedBox(
         width: width ?? 250,
@@ -941,27 +1053,44 @@ Widget groupListDropDown(Rx<groupListModelData> selectedGroup, {List<groupListMo
               dropdownStyleData: const DropdownStyleData(maxHeight: 250),
               hint: Text(
                 '',
-                style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                style: TextStyle(
+                    fontSize: 10,
+                    fontFamily: CustomFonts.family2Regular,
+                    color: AppColors().darkText,
+                    overflow: TextOverflow.ellipsis),
               ),
               items: arrGroup!
-                  .map((groupListModelData item) => DropdownItem<groupListModelData>(
+                  .map((groupListModelData item) =>
+                      DropdownItem<groupListModelData>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family2Regular,
+                                color: AppColors().darkText,
+                                overflow: TextOverflow.ellipsis)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
                 return arrGroup
-                    .map((groupListModelData item) => DropdownMenuItem<groupListModelData>(
+                    .map((groupListModelData item) =>
+                        DropdownMenuItem<groupListModelData>(
                           value: item,
                           child: Text(
                             item.name ?? "",
-                            style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family2Regular,
+                                color: AppColors().darkText,
+                                overflow: TextOverflow.ellipsis),
                           ),
                         ))
                     .toList();
               },
-              value: selectedGroup.value.groupId != "" ? selectedGroup.value : null,
+              value: selectedGroup.value.groupId != ""
+                  ? selectedGroup.value
+                  : null,
               onChanged: (groupListModelData? value) {
                 // // setState(() {
                 // controller.selectedScriptFromAll = value;
@@ -970,14 +1099,16 @@ Widget groupListDropDown(Rx<groupListModelData> selectedGroup, {List<groupListMo
 
                 selectedGroup.value = value!;
               },
-              buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
+              buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.symmetric(horizontal: 0), height: 30),
             ),
           ),
         ));
   });
 }
 
-Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChange, double width = 210}) {
+Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange,
+    {Function? onChange, double width = 210}) {
   return Container(
     width: width,
     height: 30,
@@ -1016,7 +1147,10 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                   keyboardButtonType: TextInputAction.done,
                   maxLength: 64,
                   isShowPrefix: false,
-                  fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                  fontStyle: TextStyle(
+                      fontSize: 10,
+                      fontFamily: CustomFonts.family1Medium,
+                      color: AppColors().fontColor),
                   suffixIcon: Container(
                     child: GestureDetector(
                       onTap: () {
@@ -1032,7 +1166,10 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                 ),
               ),
               searchMatchFn: (item, searchValue) {
-                return item.value!.name.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                return item.value!.name
+                    .toString()
+                    .toLowerCase()
+                    .startsWith(searchValue.toLowerCase());
               },
             ),
             dropdownStyleData: const DropdownStyleData(maxHeight: 250),
@@ -1073,7 +1210,9 @@ Widget exchangeTypeDropDown(Rx<ExchangeData> selectedExchange, {Function? onChan
                       ))
                   .toList();
             },
-            value: selectedExchange.value.name != null ? selectedExchange.value : null,
+            value: selectedExchange.value.name != null
+                ? selectedExchange.value
+                : null,
             onChanged: (ExchangeData? newSelectedValue) {
               // setState(() {
               selectedExchange.value = newSelectedValue!;
@@ -1127,7 +1266,11 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Regular,
+                                color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1145,7 +1288,9 @@ Widget tradeStatusListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedTradeStatus.value?.name == null ? null : selectedTradeStatus.value,
+              value: selectedTradeStatus.value?.name == null
+                  ? null
+                  : selectedTradeStatus.value,
               onChanged: (Type? value) {
                 selectedTradeStatus.value = value!;
               },
@@ -1191,7 +1336,11 @@ Widget tradeTypeListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Regular,
+                                color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1209,7 +1358,9 @@ Widget tradeTypeListDropDown(Rx<Type?> selectedTradeStatus, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedTradeStatus.value?.name == null ? null : selectedTradeStatus.value,
+              value: selectedTradeStatus.value?.name == null
+                  ? null
+                  : selectedTradeStatus.value,
               onChanged: (Type? value) {
                 selectedTradeStatus.value = value!;
               },
@@ -1259,7 +1410,11 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
                   .map((String item) => DropdownItem<String>(
                         value: item,
                         height: 30,
-                        child: Text(item, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1277,7 +1432,9 @@ Widget tradeAttributeDropDown(RxString selectedTradeStatus, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedTradeStatus.value.isEmpty ? null : selectedTradeStatus.value,
+              value: selectedTradeStatus.value.isEmpty
+                  ? null
+                  : selectedTradeStatus.value,
               onChanged: (String? value) {
                 selectedTradeStatus.value = value!;
               },
@@ -1324,7 +1481,11 @@ Widget logTypeListDropDown(Rx<Type> selectedLogType, {double? width}) {
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name!, style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                        child: Text(item.name!,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1342,7 +1503,9 @@ Widget logTypeListDropDown(Rx<Type> selectedLogType, {double? width}) {
                         ))
                     .toList();
               },
-              value: selectedLogType.value.id == null ? null : selectedLogType.value,
+              value: selectedLogType.value.id == null
+                  ? null
+                  : selectedLogType.value,
               onChanged: (Type? value) {
                 selectedLogType.value = value!;
               },
@@ -1356,7 +1519,8 @@ Widget logTypeListDropDown(Rx<Type> selectedLogType, {double? width}) {
   });
 }
 
-Widget timePeriodSelectionDropDown(Rx<String> selectedPeriod, {double? width, Function? onChange}) {
+Widget timePeriodSelectionDropDown(Rx<String> selectedPeriod,
+    {double? width, Function? onChange}) {
   arrCustomDateSelection.clear();
   arrCustomDateSelection.addAll(CommonCustomDateSelection().arrCustomDate);
   return Obx(() {
@@ -1389,7 +1553,11 @@ Widget timePeriodSelectionDropDown(Rx<String> selectedPeriod, {double? width, Fu
                   .map((String item) => DropdownItem<String>(
                         value: item,
                         height: 30,
-                        child: Text(item, style: TextStyle(fontSize: 8, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
+                        child: Text(item,
+                            style: TextStyle(
+                                fontSize: 8,
+                                fontFamily: CustomFonts.family2Regular,
+                                color: AppColors().grayColor)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1398,7 +1566,11 @@ Widget timePeriodSelectionDropDown(Rx<String> selectedPeriod, {double? width, Fu
                           value: item,
                           child: Text(
                             item,
-                            style: TextStyle(fontSize: 8, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                            style: TextStyle(
+                                fontSize: 8,
+                                fontFamily: CustomFonts.family2Regular,
+                                color: AppColors().darkText,
+                                overflow: TextOverflow.ellipsis),
                           ),
                         ))
                     .toList();
@@ -1421,7 +1593,8 @@ Widget timePeriodSelectionDropDown(Rx<String> selectedPeriod, {double? width, Fu
   });
 }
 
-Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? width, double? height, Function? onChange, FocusNode? focus}) {
+Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue,
+    {double? width, double? height, Function? onChange, FocusNode? focus}) {
   dropdownUserTypeKey = GlobalKey();
 
   return Obx(() {
@@ -1451,15 +1624,21 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                 ),
               ),
               items: arrUserTypeList
-                  .map((userRoleListData item) => DropdownItem<userRoleListData>(
-                        value: item,
-                        height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
-                      ))
+                  .map(
+                      (userRoleListData item) => DropdownItem<userRoleListData>(
+                            value: item,
+                            height: 30,
+                            child: Text(item.name ?? "",
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: CustomFonts.family1Regular,
+                                    color: AppColors().darkText)),
+                          ))
                   .toList(),
               selectedItemBuilder: (context) {
                 return arrUserTypeList
-                    .map((userRoleListData item) => DropdownMenuItem<userRoleListData>(
+                    .map((userRoleListData item) =>
+                        DropdownMenuItem<userRoleListData>(
                           value: item,
                           child: Text(
                             item.name ?? "",
@@ -1472,21 +1651,25 @@ Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? w
                         ))
                     .toList();
               },
-              value: selectUserdropdownValue.value.roleId != null ? selectUserdropdownValue.value : null,
+              value: selectUserdropdownValue.value.roleId != null
+                  ? selectUserdropdownValue.value
+                  : null,
               onChanged: (userRoleListData? value) {
                 selectUserdropdownValue.value = value!;
                 if (onChange != null) {
                   onChange();
                 }
               },
-              buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 40),
+              buttonStyleData: const ButtonStyleData(
+                  padding: EdgeInsets.symmetric(horizontal: 0), height: 40),
             ),
           ),
         ));
   });
 }
 
-Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? width, double? height, Function? onChange}) {
+Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType,
+    {double? width, double? height, Function? onChange}) {
   return Obx(() {
     return Container(
         width: width ?? 250,
@@ -1511,7 +1694,9 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
                   onChange!();
                 },
                 selectedItemBuilder: (context) {
-                  return arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>((BrokerListModelData item) {
+                  return arrBrokerList
+                      .map<DropdownMenuItem<BrokerListModelData>>(
+                          (BrokerListModelData item) {
                     return DropdownMenuItem<BrokerListModelData>(
                       value: item,
                       child: Text(item.name ?? ""),
@@ -1519,7 +1704,8 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
                   }).toList();
                 },
                 isExpanded: true,
-                items: arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>((BrokerListModelData item) {
+                items: arrBrokerList.map<DropdownMenuItem<BrokerListModelData>>(
+                    (BrokerListModelData item) {
                   return DropdownMenuItem<BrokerListModelData>(
                     value: item,
                     child: Text(item.name ?? ""),
@@ -1593,7 +1779,8 @@ Widget brokerListDropDown(Rx<BrokerListModelData> selectedBrokerType, {double? w
 }
 
 // List<AddMaster> selectStatuslist = [];
-Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? height, Function? onChange}) {
+Widget statusListDropDown(Rx<AddMaster> selectedStatus,
+    {double? width, double? height, Function? onChange}) {
   return Obx(() {
     return Container(
         width: width ?? 250,
@@ -1624,7 +1811,11 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                   .map((AddMaster item) => DropdownItem<AddMaster>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Regular,
+                                color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1642,7 +1833,8 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
                         ))
                     .toList();
               },
-              value: selectedStatus.value.id != null ? selectedStatus.value : null,
+              value:
+                  selectedStatus.value.id != null ? selectedStatus.value : null,
               onChanged: (AddMaster? value) {
                 selectedStatus.value = value!;
                 if (onChange != null) {
@@ -1659,7 +1851,8 @@ Widget statusListDropDown(Rx<AddMaster> selectedStatus, {double? width, double? 
   });
 }
 
-Widget rejectedstatusListDropDown(Rx<Type> selectedStatus, {double? width, double? height, Function? onChange}) {
+Widget rejectedstatusListDropDown(Rx<Type> selectedStatus,
+    {double? width, double? height, Function? onChange}) {
   return Obx(() {
     return Container(
         width: width ?? 250,
@@ -1690,7 +1883,11 @@ Widget rejectedstatusListDropDown(Rx<Type> selectedStatus, {double? width, doubl
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Regular,
+                                color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1708,7 +1905,8 @@ Widget rejectedstatusListDropDown(Rx<Type> selectedStatus, {double? width, doubl
                         ))
                     .toList();
               },
-              value: selectedStatus.value.id != null ? selectedStatus.value : null,
+              value:
+                  selectedStatus.value.id != null ? selectedStatus.value : null,
               onChanged: (Type? value) {
                 selectedStatus.value = value!;
                 if (onChange != null) {
@@ -1725,7 +1923,8 @@ Widget rejectedstatusListDropDown(Rx<Type> selectedStatus, {double? width, doubl
   });
 }
 
-Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? height, Function? onChange}) {
+Widget orderTypeDropDown(Rx<Type> selectedOrderType,
+    {double? width, double? height, Function? onChange}) {
   return Obx(() {
     return Container(
         width: width ?? 250,
@@ -1756,7 +1955,11 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                   .map((Type item) => DropdownItem<Type>(
                         value: item,
                         height: 30,
-                        child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                        child: Text(item.name ?? "",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Regular,
+                                color: AppColors().darkText)),
                       ))
                   .toList(),
               selectedItemBuilder: (context) {
@@ -1774,7 +1977,9 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
                         ))
                     .toList();
               },
-              value: selectedOrderType.value.id != null ? selectedOrderType.value : null,
+              value: selectedOrderType.value.id != null
+                  ? selectedOrderType.value
+                  : null,
               onChanged: (Type? value) {
                 selectedOrderType.value = value!;
                 if (onChange != null) {
@@ -1792,7 +1997,8 @@ Widget orderTypeDropDown(Rx<Type> selectedOrderType, {double? width, double? hei
   });
 }
 
-showCalenderPopUp(DateTime fromDate, Function onDateSelection, {DateTime? maxDate}) {
+showCalenderPopUp(DateTime fromDate, Function onDateSelection,
+    {DateTime? maxDate}) {
   showDialog<String>(
       context: Get.context!,
       // barrierColor: Colors.transparent,
@@ -1813,7 +2019,9 @@ showCalenderPopUp(DateTime fromDate, Function onDateSelection, {DateTime? maxDat
               // height: 28.h,
               width: 450,
               height: 450,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
 
               child: CalendarCarousel<Event>(
                 onDayPressed: (DateTime date, List<Event> events) {
@@ -1893,14 +2101,20 @@ getExchangeList() async {
   }
 }
 
-getScriptList({String exchangeId = "", List<GlobalSymbolData>? arrSymbol, isFromOrder = false}) async {
+getScriptList(
+    {String exchangeId = "",
+    List<GlobalSymbolData>? arrSymbol,
+    isFromOrder = false}) async {
   var response = await service.allSymbolListCall(1, "", exchangeId);
   if (arrSymbol != null) {
     arrSymbol.clear();
 
     arrSymbol.addAll(response!.data ?? []);
     if (isFromOrder == false) {
-      arrSymbol.insert(0, GlobalSymbolData(symbolId: "", symbolName: "ALL", symbolTitle: "ALL"));
+      arrSymbol.insert(
+          0,
+          GlobalSymbolData(
+              symbolId: "", symbolName: "ALL", symbolTitle: "ALL"));
     }
   } else {
     arrAllScript = response!.data ?? [];
@@ -1919,7 +2133,8 @@ getUserList() async {
 }
 
 getUserListByKeyWord(String keyWord, {String? rollType}) async {
-  var response = await service.getMyUserListByKeywordCall(text: keyWord, roleId: rollType ?? "");
+  var response = await service.getMyUserListByKeywordCall(
+      text: keyWord, roleId: rollType ?? "");
   if (response != null) {
     if (response.statusCode == 200) {
       arrUserList = response.data ?? [];

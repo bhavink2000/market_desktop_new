@@ -76,6 +76,7 @@ dependencies:
   pdf: ^3.10.8
   widgets_to_image: ^0.0.2
   flutter_to_pdf: ^0.1.1
+  flutter_super_html_viewer: ^0.1.0
 
   window_size:
     git:

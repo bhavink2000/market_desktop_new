@@ -31,7 +31,11 @@ class PositionScreen extends BaseView<PositionController> {
       policy: WidgetOrderTraversalPolicy(),
       child: Row(
         children: [
-          filterPanel(context, isRecordDisplay: true, totalRecord: controller.arrPositionScriptList.length, onCLickExcell: controller.onClickExcel, onCLickPDF: controller.onClickPDF, onCLickFilter: () {
+          filterPanel(context,
+              isRecordDisplay: true,
+              totalRecord: controller.arrPositionScriptList.length,
+              onCLickExcell: controller.onClickExcel,
+              onCLickPDF: controller.onClickPDF, onCLickFilter: () {
             controller.isFilterOpen = !controller.isFilterOpen;
             controller.update();
           }),
@@ -44,7 +48,8 @@ class PositionScreen extends BaseView<PositionController> {
                   ? ExportFrame(
                       exportDelegate: controller.exportDelegate,
                       frameId: '1',
-                      child: Image.memory(controller.bytes!), // the widget you want to export
+                      child: Image.memory(
+                          controller.bytes!), // the widget you want to export
                     )
                   : WidgetsToImage(
                       controller: controller.widgetToImagecontroller,
@@ -146,7 +151,9 @@ class PositionScreen extends BaseView<PositionController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              controller.userTypeDropDown(controller.selectedRoll, width: 150, onChange: () {
+                              controller.userTypeDropDown(
+                                  controller.selectedRoll,
+                                  width: 150, onChange: () {
                                 controller.selectedUser.value = UserData();
                                 controller.arrUserListOnlyClient.clear();
 
@@ -180,7 +187,11 @@ class PositionScreen extends BaseView<PositionController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150, rollType: controller.selectedRoll.value.roleId, userController: (TextEditingController c) {
+                              userListDropDown(controller.selectedUser,
+                                  width: 150,
+                                  rollType:
+                                      controller.selectedRoll.value.roleId,
+                                  userController: (TextEditingController c) {
                                 controller.searchUserController = c;
                               }),
                               SizedBox(
@@ -209,8 +220,12 @@ class PositionScreen extends BaseView<PositionController> {
                             SizedBox(
                               width: 10,
                             ),
-                            exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
-                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript);
+                            exchangeTypeDropDown(controller.selectedExchange,
+                                onChange: () async {
+                              await getScriptList(
+                                  exchangeId: controller
+                                      .selectedExchange.value.exchangeId!,
+                                  arrSymbol: controller.arrExchangeWiseScript);
                               controller.update();
                             }, width: 150),
                             SizedBox(
@@ -239,7 +254,10 @@ class PositionScreen extends BaseView<PositionController> {
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
+                            allScriptListDropDown(
+                                controller.selectedScriptFromFilter,
+                                arrSymbol: controller.arrExchangeWiseScript,
+                                width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -263,9 +281,14 @@ class PositionScreen extends BaseView<PositionController> {
                               onPress: () {
                                 controller.arrPositionScriptList.clear();
                                 controller.currentPage = 1;
-                                controller.isUserSelected = controller.selectedUser.value.userId != null;
-                                controller.isClientSelected = controller.selectedRoll.value.roleId == UserRollList.user;
-                                controller.getPositionList("", isFromfilter: true);
+                                controller.isUserSelected =
+                                    controller.selectedUser.value.userId !=
+                                        null;
+                                controller.isClientSelected =
+                                    controller.selectedRoll.value.roleId ==
+                                        UserRollList.user;
+                                controller.getPositionList("",
+                                    isFromfilter: true);
                               },
                               focusKey: controller.applyFocus,
                               borderColor: Colors.transparent,
@@ -290,17 +313,21 @@ class PositionScreen extends BaseView<PositionController> {
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
-                                controller.selectedExchange.value = ExchangeData();
-                                controller.selectedScriptFromFilter.value = GlobalSymbolData();
+                                controller.selectedExchange.value =
+                                    ExchangeData();
+                                controller.selectedScriptFromFilter.value =
+                                    GlobalSymbolData();
                                 controller.isClientSelected = false;
                                 controller.isUserSelected = false;
                                 controller.searchUserController?.clear();
-                                controller.selectedRoll.value = userRoleListData();
+                                controller.selectedRoll.value =
+                                    userRoleListData();
                                 controller.selectedUser.value = UserData();
                                 controller.arrPositionScriptList.clear();
                                 controller.currentPage = 1;
                                 controller.update();
-                                controller.getPositionList("", isFromfilter: true, isFromClear: true);
+                                controller.getPositionList("",
+                                    isFromfilter: true, isFromClear: true);
                               },
                               focusKey: controller.clearFocus,
                               borderColor: Colors.transparent,
@@ -354,22 +381,29 @@ class PositionScreen extends BaseView<PositionController> {
                 ),
               ),
               Expanded(
-                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrPositionScriptList.isEmpty
+                child: controller.isApiCallRunning == false &&
+                        controller.isResetCall == false &&
+                        controller.arrPositionScriptList.isEmpty
                     ? dataNotFoundView("Positions not found")
                     : CustomScrollBar(
                         bgColor: AppColors().blueColor,
                         child: PaginableListView.builder(
                             loadMore: () async {
-                              if (controller.totalPage >= controller.currentPage) {
+                              if (controller.totalPage >=
+                                  controller.currentPage) {
                                 //print(controller.currentPage);
                                 controller.getPositionList("");
                               }
                             },
-                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            errorIndicatorWidget: (exception, tryAgain) =>
+                                dataNotFoundView("Data not found"),
                             progressIndicatorWidget: displayIndicator(),
                             physics: const ClampingScrollPhysics(),
                             clipBehavior: Clip.hardEdge,
-                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrPositionScriptList.length,
+                            itemCount: controller.isApiCallRunning ||
+                                    controller.isResetCall
+                                ? 50
+                                : controller.arrPositionScriptList.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
@@ -379,12 +413,24 @@ class PositionScreen extends BaseView<PositionController> {
               ),
               Container(
                 height: 30,
-                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+                decoration: BoxDecoration(
+                    color: AppColors().whiteColor,
+                    border: Border(
+                        top: BorderSide(
+                            color: AppColors().lightOnlyText, width: 1))),
                 child: Center(
                     child: Row(
                   children: [
-                    totalContent(value: "Total PL", textColor: AppColors().darkText, width: 1350),
-                    totalContent(value: controller.totalPL.toStringAsFixed(2), textColor: controller.totalPL < 0 ? AppColors().redColor : AppColors().blueColor, width: 110),
+                    totalContent(
+                        value: "Total PL",
+                        textColor: AppColors().darkText,
+                        width: 1350),
+                    totalContent(
+                        value: controller.totalPL.toStringAsFixed(2),
+                        textColor: controller.totalPL < 0
+                            ? AppColors().redColor
+                            : AppColors().blueColor,
+                        width: 110),
                   ],
                 )),
               ),
@@ -404,7 +450,12 @@ class PositionScreen extends BaseView<PositionController> {
     return Container(
       width: width ?? 6.w,
       padding: EdgeInsets.only(left: 5),
-      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+      decoration: BoxDecoration(
+          color: AppColors().whiteColor,
+          border: Border(
+              top: BorderSide(color: AppColors().lightOnlyText, width: 1),
+              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
+              right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
       child: Text(value ?? "",
           style: TextStyle(
             fontSize: 12,
@@ -441,8 +492,13 @@ class PositionScreen extends BaseView<PositionController> {
                         List<SymbolRequestData> arrSquare = [];
                         for (var element in controller.arrPositionScriptList) {
                           if (element.isSelected) {
-                            var price = element.totalQuantity! < 0 ? element.bid!.toStringAsFixed(2).toString() : element.ask!.toStringAsFixed(2).toString();
-                            var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
+                            var price = element.totalQuantity! < 0
+                                ? element.bid!.toStringAsFixed(2).toString()
+                                : element.ask!.toStringAsFixed(2).toString();
+                            var temp = SymbolRequestData(
+                                exchangeId: element.exchangeId!,
+                                symbolId: element.symbolId!,
+                                price: price);
                             arrSquare.add(temp);
                           }
                         }
@@ -486,8 +542,13 @@ class PositionScreen extends BaseView<PositionController> {
                         List<SymbolRequestData> arrSquare = [];
                         for (var element in controller.arrPositionScriptList) {
                           if (element.isSelected) {
-                            var price = element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString();
-                            var temp = SymbolRequestData(exchangeId: element.exchangeId!, symbolId: element.symbolId!, price: price);
+                            var price = element.totalQuantity! < 0
+                                ? element.ask!.toStringAsFixed(2).toString()
+                                : element.bid!.toStringAsFixed(2).toString();
+                            var temp = SymbolRequestData(
+                                exchangeId: element.exchangeId!,
+                                symbolId: element.symbolId!,
+                                price: price);
                             arrSquare.add(temp);
                           }
                         }
@@ -518,14 +579,18 @@ class PositionScreen extends BaseView<PositionController> {
                 color: AppColors().darkText,
               )),
           if (userData!.role == UserRollList.user)
-            Text((userData!.profitLoss! - userData!.brokerageTotal!).toStringAsFixed(2),
+            Text(
+                (userData!.profitLoss! - userData!.brokerageTotal!)
+                    .toStringAsFixed(2),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 )),
           if (userData!.role != UserRollList.user)
-            Text((userData!.profitLoss! + userData!.brokerageTotal!).toStringAsFixed(2),
+            Text(
+                (userData!.profitLoss! + userData!.brokerageTotal!)
+                    .toStringAsFixed(2),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
@@ -555,7 +620,9 @@ class PositionScreen extends BaseView<PositionController> {
                 fontFamily: CustomFonts.family1Medium,
                 color: AppColors().darkText,
               )),
-          Text((userData!.marginBalance! - userData!.tradeMarginBalance!).toStringAsFixed(2),
+          Text(
+              (userData!.marginBalance! - userData!.tradeMarginBalance!)
+                  .toStringAsFixed(2),
               style: TextStyle(
                 fontSize: 12,
                 fontFamily: CustomFonts.family1Medium,
@@ -586,14 +653,24 @@ class PositionScreen extends BaseView<PositionController> {
                 color: AppColors().darkText,
               )),
           if (userData!.role == UserRollList.user)
-            Text(((userData!.credit! + controller.totalPosition.value + userData!.profitLoss!) - userData!.brokerageTotal!).toStringAsFixed(2),
+            Text(
+                ((userData!.credit! +
+                            controller.totalPosition.value +
+                            userData!.profitLoss!) -
+                        userData!.brokerageTotal!)
+                    .toStringAsFixed(2),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
                   color: AppColors().darkText,
                 )),
           if (userData!.role != UserRollList.user)
-            Text(((userData!.credit! + controller.totalPosition.value + userData!.profitLoss!) + userData!.brokerageTotal!).toStringAsFixed(2),
+            Text(
+                ((userData!.credit! +
+                            controller.totalPosition.value +
+                            userData!.profitLoss!) +
+                        userData!.brokerageTotal!)
+                    .toStringAsFixed(2),
                 style: TextStyle(
                   fontSize: 12,
                   fontFamily: CustomFonts.family1Medium,
@@ -626,7 +703,13 @@ class PositionScreen extends BaseView<PositionController> {
           controller.update();
         },
         child: Container(
-          decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedScriptIndex == index ? AppColors().darkText : Colors.transparent)),
+          decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                  width: 1,
+                  color: controller.selectedScriptIndex == index
+                      ? AppColors().darkText
+                      : Colors.transparent)),
           height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -643,10 +726,25 @@ class PositionScreen extends BaseView<PositionController> {
                         if (controller.isHiddenTitle("")) {
                           return SizedBox();
                         }
-                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isImage: true, strImage: controller.arrPositionScriptList[index].isSelected ? AppImages.checkBoxSelected : AppImages.checkBox,
-                            onClickImage: () {
-                          controller.arrPositionScriptList[index].isSelected = !controller.arrPositionScriptList[index].isSelected;
-                          for (var element in controller.arrPositionScriptList) {
+                        return dynamicValueBox1(
+                            "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            Colors.transparent,
+                            index,
+                            indexT,
+                            controller.arrListTitle1,
+                            isImage: true,
+                            strImage: controller
+                                    .arrPositionScriptList[index].isSelected
+                                ? AppImages.checkBoxSelected
+                                : AppImages.checkBox, onClickImage: () {
+                          controller.arrPositionScriptList[index].isSelected =
+                              !controller
+                                  .arrPositionScriptList[index].isSelected;
+                          for (var element
+                              in controller.arrPositionScriptList) {
                             if (element.isSelected) {
                               controller.isAllSelected = true;
                             } else {
@@ -659,9 +757,21 @@ class PositionScreen extends BaseView<PositionController> {
                       }
                     case NetPositionColumns.view:
                       {
-                        return dynamicValueBox1("", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, Colors.transparent, index, indexT, controller.arrListTitle1, isImage: true, strImage: AppImages.viewIcon, onClickImage: () {
+                        return dynamicValueBox1(
+                            "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            Colors.transparent,
+                            index,
+                            indexT,
+                            controller.arrListTitle1,
+                            isImage: true,
+                            strImage: AppImages.viewIcon, onClickImage: () {
                           isUserViewPopUpOpen = true;
-                          showOpenPositionPopUp(controller.arrPositionScriptList[index].symbolId!, controller.arrPositionScriptList[index].userId!);
+                          showOpenPositionPopUp(
+                              controller.arrPositionScriptList[index].symbolId!,
+                              controller.arrPositionScriptList[index].userId!);
                         });
                       }
                     case NetPositionColumns.parentUser:
@@ -669,7 +779,9 @@ class PositionScreen extends BaseView<PositionController> {
                         return IgnorePointer(
                             child: dynamicValueBox1(
                           historyValue.parentUserName ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -681,7 +793,9 @@ class PositionScreen extends BaseView<PositionController> {
                         return IgnorePointer(
                           child: dynamicValueBox1(
                             historyValue.exchangeName ?? "",
-                            index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
                             AppColors().darkText,
                             index,
                             indexT,
@@ -691,32 +805,89 @@ class PositionScreen extends BaseView<PositionController> {
                       }
                     case NetPositionColumns.symbolName:
                       {
-                        return dynamicValueBox1(controller.arrPositionScriptList[index].symbolTitle ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1, isUnderlined: true, onClickValue: () {
+                        return dynamicValueBox1(
+                            controller
+                                    .arrPositionScriptList[index].symbolTitle ??
+                                "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            AppColors().darkText,
+                            index,
+                            indexT,
+                            controller.arrListTitle1,
+                            isUnderlined: true, onClickValue: () {
                           isCommonScreenPopUpOpen = true;
                           currentOpenedScreen = ScreenViewNames.trades;
                           var tradeVC = Get.put(SuccessTradeListController());
-                          tradeVC.selectedExchange.value = ExchangeData(exchangeId: controller.arrPositionScriptList[index].exchangeId, name: controller.arrPositionScriptList[index].exchangeName);
-                          tradeVC.selectedUser.value = UserData(userId: controller.arrPositionScriptList[index].userId!, userName: controller.arrPositionScriptList[index].userName);
-                          tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId!, symbolName: controller.arrPositionScriptList[index].symbolName!, symbolTitle: controller.arrPositionScriptList[index].symbolTitle!);
-                          tradeVC.selectedScriptFromFilter.value = GlobalSymbolData(symbolId: controller.arrPositionScriptList[index].symbolId, symbolName: controller.arrPositionScriptList[index].symbolName, symbolTitle: controller.arrPositionScriptList[index].symbolTitle);
+                          tradeVC.selectedExchange.value = ExchangeData(
+                              exchangeId: controller
+                                  .arrPositionScriptList[index].exchangeId,
+                              name: controller
+                                  .arrPositionScriptList[index].exchangeName);
+                          tradeVC.selectedUser.value = UserData(
+                              userId: controller
+                                  .arrPositionScriptList[index].userId!,
+                              userName: controller
+                                  .arrPositionScriptList[index].userName);
+                          tradeVC.selectedScriptFromFilter.value =
+                              GlobalSymbolData(
+                                  symbolId:
+                                      controller.arrPositionScriptList[index]
+                                          .symbolId!,
+                                  symbolName:
+                                      controller.arrPositionScriptList[index]
+                                          .symbolName!,
+                                  symbolTitle: controller
+                                      .arrPositionScriptList[index]
+                                      .symbolTitle!);
+                          tradeVC.selectedScriptFromFilter.value =
+                              GlobalSymbolData(
+                                  symbolId:
+                                      controller.arrPositionScriptList[index]
+                                          .symbolId,
+                                  symbolName:
+                                      controller.arrPositionScriptList[index]
+                                          .symbolName,
+                                  symbolTitle: controller
+                                      .arrPositionScriptList[index]
+                                      .symbolTitle);
 
                           // Get.delete<ProfitAndLossController>();
                           // Get.back();
-                          generalContainerPopup(view: SuccessTradeListScreen(), title: ScreenViewNames.trades, isFilterAvailable: true, filterClick: tradeVC.onCLickFilter);
+                          generalContainerPopup(
+                              view: SuccessTradeListScreen(),
+                              title: ScreenViewNames.trades,
+                              isFilterAvailable: true,
+                              isFilterIconHide: true,
+                              filterClick: tradeVC.onCLickFilter);
                         });
                       }
                     case NetPositionColumns.totalBuyAQty:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(controller.arrPositionScriptList[index].buyTotalQuantity.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().blueColor, index, indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              controller
+                                  .arrPositionScriptList[index].buyTotalQuantity
+                                  .toString(),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              AppColors().blueColor,
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     case NetPositionColumns.totalBuyAPrice:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
-                            controller.arrPositionScriptList[index].buyPrice!.toStringAsFixed(2),
-                            index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                            controller.arrPositionScriptList[index].buyPrice!
+                                .toStringAsFixed(2),
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
                             AppColors().darkText,
                             index,
                             indexT,
@@ -728,8 +899,12 @@ class PositionScreen extends BaseView<PositionController> {
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
-                            controller.arrPositionScriptList[index].sellTotalQuantity!.toString(),
-                            index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                            controller
+                                .arrPositionScriptList[index].sellTotalQuantity!
+                                .toString(),
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
                             AppColors().redColor,
                             index,
                             indexT,
@@ -740,34 +915,86 @@ class PositionScreen extends BaseView<PositionController> {
                     case NetPositionColumns.sellAPrice:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(controller.arrPositionScriptList[index].sellPrice!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              controller.arrPositionScriptList[index].sellPrice!
+                                  .toStringAsFixed(2),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     case NetPositionColumns.netQty:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(controller.arrPositionScriptList[index].totalQuantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              controller
+                                  .arrPositionScriptList[index].totalQuantity!
+                                  .toString(),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     case NetPositionColumns.netLot:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(controller.arrPositionScriptList[index].quantity!.toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              controller.arrPositionScriptList[index].quantity!
+                                  .toString(),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     case NetPositionColumns.netAPrice:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(controller.arrPositionScriptList[index].price!.toStringAsFixed(2), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              controller.arrPositionScriptList[index].price!
+                                  .toStringAsFixed(2),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              AppColors().darkText,
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     case NetPositionColumns.cmp:
                       {
                         return IgnorePointer(
                           child: dynamicValueBox1(
-                              controller.arrPositionScriptList[index].totalQuantity! < 0 ? controller.arrPositionScriptList[index].ask!.toStringAsFixed(2).toString() : controller.arrPositionScriptList[index].bid!.toStringAsFixed(2).toString(),
-                              index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              controller.arrPositionScriptList[index].scriptDataFromSocket.value.close! < controller.arrPositionScriptList[index].scriptDataFromSocket.value.ltp! ? AppColors().blueColor : AppColors().redColor,
+                              controller.arrPositionScriptList[index]
+                                          .totalQuantity! <
+                                      0
+                                  ? controller.arrPositionScriptList[index].ask!
+                                      .toStringAsFixed(2)
+                                      .toString()
+                                  : controller.arrPositionScriptList[index].bid!
+                                      .toStringAsFixed(2)
+                                      .toString(),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              controller.arrPositionScriptList[index]
+                                          .scriptDataFromSocket.value.close! <
+                                      controller.arrPositionScriptList[index]
+                                          .scriptDataFromSocket.value.ltp!
+                                  ? AppColors().blueColor
+                                  : AppColors().redColor,
                               index,
                               indexT,
                               controller.arrListTitle1),
@@ -776,15 +1003,47 @@ class PositionScreen extends BaseView<PositionController> {
                     case NetPositionColumns.pl:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(double.parse(controller.arrPositionScriptList[index].profitLossValue!.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg, controller.getPriceColor(controller.arrPositionScriptList[index].profitLossValue!), index,
-                              indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              double.parse(controller
+                                      .arrPositionScriptList[index]
+                                      .profitLossValue!
+                                      .toStringAsFixed(2))
+                                  .toString(),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              controller.getPriceColor(controller
+                                  .arrPositionScriptList[index]
+                                  .profitLossValue!),
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     case NetPositionColumns.plPerWise:
                       {
                         return IgnorePointer(
-                          child: dynamicValueBox1(double.parse(controller.arrPositionScriptList[index].plPerTotal.toStringAsFixed(2)).toString(), index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                              controller.getPlPer(percentage: controller.arrPositionScriptList[index].profitAndLossSharing!, pl: controller.arrPositionScriptList[index].profitLossValue!) > 0 ? AppColors().redColor : AppColors().blueColor, index, indexT, controller.arrListTitle1),
+                          child: dynamicValueBox1(
+                              double.parse(controller
+                                      .arrPositionScriptList[index].plPerTotal
+                                      .toStringAsFixed(2))
+                                  .toString(),
+                              index % 2 == 0
+                                  ? Colors.transparent
+                                  : AppColors().grayBg,
+                              controller.getPlPer(
+                                          percentage: controller
+                                              .arrPositionScriptList[index]
+                                              .profitAndLossSharing!,
+                                          pl: controller
+                                              .arrPositionScriptList[index]
+                                              .profitLossValue!) >
+                                      0
+                                  ? AppColors().redColor
+                                  : AppColors().blueColor,
+                              index,
+                              indexT,
+                              controller.arrListTitle1),
                         );
                       }
                     default:

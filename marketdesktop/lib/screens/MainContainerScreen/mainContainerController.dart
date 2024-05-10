@@ -84,12 +84,13 @@ class MainContainerController extends BaseController {
   bool isKeyPressActive = false;
   bool isInitCallRequired = true;
   final debouncer = Debouncer(milliseconds: 300);
-  final oneSecondDebouncer = Debouncer(milliseconds: 1000);
+  final oneSecondDebouncer = Debouncer(milliseconds: 2000);
   RxDouble? pl;
   CreateUserController? createUserVc;
   @override
   void onInit() async {
-    if (userData?.role == UserRollList.user || userData?.role == UserRollList.broker) {
+    if (userData?.role == UserRollList.user ||
+        userData?.role == UserRollList.broker) {
       arrAdditionMenu = [
         AppImages.watchIcon,
         AppImages.addYellowIcon,
@@ -97,7 +98,14 @@ class MainContainerController extends BaseController {
         AppImages.marketIcon,
       ];
     } else {
-      arrAdditionMenu = [AppImages.watchIcon, AppImages.addYellowIcon, AppImages.addRedIcon, AppImages.marketIcon, AppImages.userAddIcon, AppImages.searchColorIcon];
+      arrAdditionMenu = [
+        AppImages.watchIcon,
+        AppImages.addYellowIcon,
+        AppImages.addRedIcon,
+        AppImages.marketIcon,
+        AppImages.userAddIcon,
+        AppImages.searchColorIcon
+      ];
     }
 
     super.onInit();
@@ -116,13 +124,15 @@ class MainContainerController extends BaseController {
       await windowManager.maximize();
       Screen? size = await getCurrentScreen();
       print(size);
-      await windowManager.setSize(Size(size!.frame.width, size.frame.height - 50));
+      await windowManager
+          .setSize(Size(size!.frame.width, size.frame.height - 50));
     } else {
       setWindowMinSize(const Size(1280, 800));
       Future.delayed(Duration(milliseconds: 100), () async {
         Screen? size = await getCurrentScreen();
         print(size);
-        await windowManager.setSize(Size(size!.frame.width, size.frame.height - 50));
+        await windowManager
+            .setSize(Size(size!.frame.width, size.frame.height - 50));
         Future.delayed(const Duration(milliseconds: 100), () async {
           await windowManager.center(animate: true);
           await windowManager.setResizable(true);
@@ -184,7 +194,8 @@ class MainContainerController extends BaseController {
 
       arrLeverageList = constantValues?.leverageList ?? [];
 
-      if (arrLeverageList.isNotEmpty && createUserVc!.selectedLeverage.value.id == null) {
+      if (arrLeverageList.isNotEmpty &&
+          createUserVc!.selectedLeverage.value.id == null) {
         createUserVc!.selectedLeverage.value = arrLeverageList.first;
         createUserVc!.update();
       }
@@ -213,9 +224,11 @@ class MainContainerController extends BaseController {
       Get.delete<SuperAdminTradePopUpController>();
       return;
     }
-    if (currentOpenedScreen == ScreenViewNames.marketWatch && isCreateUserClick == false) {
+    if (currentOpenedScreen == ScreenViewNames.marketWatch &&
+        isCreateUserClick == false) {
       handleMarketWatchKeyEvents(event);
-    } else if (currentOpenedScreen == ScreenViewNames.positions && isCreateUserClick == false) {
+    } else if (currentOpenedScreen == ScreenViewNames.positions &&
+        isCreateUserClick == false) {
       handlePositionKeyEvent(event);
     } else {
       if (event.logicalKey.keyLabel == "Escape") {
@@ -315,9 +328,11 @@ class MainContainerController extends BaseController {
           await Get.delete<ProfitAndLossSummaryController>();
         } else if (currentOpenedScreen == ScreenViewNames.userLogsNew) {
           await Get.delete<LogsHistoryNewController>();
-        } else if (currentOpenedScreen == ScreenViewNames.userwisePAndLSummary) {
+        } else if (currentOpenedScreen ==
+            ScreenViewNames.userwisePAndLSummary) {
           await Get.delete<UserWisePLSummaryController>();
-        } else if (currentOpenedScreen == ScreenViewNames.userScriptPositionTracking) {
+        } else if (currentOpenedScreen ==
+            ScreenViewNames.userScriptPositionTracking) {
           await Get.delete<UserScriptPositionTrackController>();
         } else if (currentOpenedScreen == ScreenViewNames.messages) {
           await Get.delete<MessagesController>();
@@ -331,7 +346,8 @@ class MainContainerController extends BaseController {
           await Get.delete<TradeMarginController>();
         } else if (currentOpenedScreen == ScreenViewNames.manualOrder) {
           await Get.delete<manualOrderController>();
-        } else if (currentOpenedScreen == ScreenViewNames.symbolWisePositionReport) {
+        } else if (currentOpenedScreen ==
+            ScreenViewNames.symbolWisePositionReport) {
           await Get.delete<SymbolWisePositionReportController>();
         } else if (currentOpenedScreen == ScreenViewNames.clientAccountReport) {
           await Get.delete<ClientAccountReportController>();
@@ -361,24 +377,31 @@ class MainContainerController extends BaseController {
       }
     }
 
-    if (event.isKeyPressed(LogicalKeyboardKey.f1) || event.isKeyPressed(LogicalKeyboardKey.numpadAdd)) {
+    if (event.isKeyPressed(LogicalKeyboardKey.f1) ||
+        event.isKeyPressed(LogicalKeyboardKey.numpadAdd)) {
       if (userData!.role == UserRollList.superAdmin) {
         return;
       }
       if (marketVC.selectedScriptIndex != -1) {
         if (marketVC.isBuyOpen == -1 && marketVC.isScripDetailOpen == false) {
-          var obj = marketVC.arrSymbol.firstWhereOrNull((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
-          var exchangeObj = arrExchange.firstWhereOrNull((element) => element.exchangeId == obj!.exchangeId!);
+          var obj = marketVC.arrSymbol.firstWhereOrNull((element) =>
+              marketVC.arrScript[marketVC.selectedScriptIndex].symbol ==
+              element.symbolName);
+          var exchangeObj = arrExchange.firstWhereOrNull(
+              (element) => element.exchangeId == obj!.exchangeId!);
           if (exchangeObj != null) {
             marketVC.selectedExchangeFromPopup.value = exchangeObj;
           }
           marketVC.qtyController.text = obj!.ls!.toString();
           marketVC.isValidQty = true.obs;
           if (userData?.role != UserRollList.superAdmin) {
-            marketVC.priceController.text = marketVC.arrScript[marketVC.selectedScriptIndex].ask!.toString();
+            marketVC.priceController.text = marketVC
+                .arrScript[marketVC.selectedScriptIndex].ask!
+                .toString();
           }
 
-          marketVC.selectedScriptFromPopup.value = marketVC.arrScript[marketVC.selectedScriptIndex];
+          marketVC.selectedScriptFromPopup.value =
+              marketVC.arrScript[marketVC.selectedScriptIndex];
           marketVC.isBuyOpen = 1;
           debouncer.run(() async {
             isKeyPressActive = true;
@@ -388,14 +411,18 @@ class MainContainerController extends BaseController {
           });
         }
       }
-    } else if (event.isKeyPressed(LogicalKeyboardKey.f2) || event.isKeyPressed(LogicalKeyboardKey.numpadSubtract)) {
+    } else if (event.isKeyPressed(LogicalKeyboardKey.f2) ||
+        event.isKeyPressed(LogicalKeyboardKey.numpadSubtract)) {
       if (userData!.role == UserRollList.superAdmin) {
         return;
       }
       if (marketVC.selectedScriptIndex != -1) {
         if (marketVC.isBuyOpen == -1 && marketVC.isScripDetailOpen == false) {
-          var obj = marketVC.arrSymbol.firstWhereOrNull((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
-          var exchangeObj = arrExchange.firstWhereOrNull((element) => element.exchangeId == obj!.exchangeId!);
+          var obj = marketVC.arrSymbol.firstWhereOrNull((element) =>
+              marketVC.arrScript[marketVC.selectedScriptIndex].symbol ==
+              element.symbolName);
+          var exchangeObj = arrExchange.firstWhereOrNull(
+              (element) => element.exchangeId == obj!.exchangeId!);
           if (exchangeObj != null) {
             marketVC.selectedExchangeFromPopup.value = exchangeObj;
           }
@@ -403,10 +430,13 @@ class MainContainerController extends BaseController {
           marketVC.qtyController.text = obj!.ls!.toString();
           marketVC.isValidQty = true.obs;
           if (userData?.role != UserRollList.superAdmin) {
-            marketVC.priceController.text = marketVC.arrScript[marketVC.selectedScriptIndex].bid!.toString();
+            marketVC.priceController.text = marketVC
+                .arrScript[marketVC.selectedScriptIndex].bid!
+                .toString();
           }
 
-          marketVC.selectedScriptFromPopup.value = marketVC.arrScript[marketVC.selectedScriptIndex];
+          marketVC.selectedScriptFromPopup.value =
+              marketVC.arrScript[marketVC.selectedScriptIndex];
           debouncer.run(() async {
             isKeyPressActive = true;
 
@@ -440,14 +470,17 @@ class MainContainerController extends BaseController {
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.f5)) {
       if (marketVC.isBuyOpen == -1) {
-        if (marketVC.selectedScriptIndex != -1 && marketVC.isScripDetailOpen == false) {
+        if (marketVC.selectedScriptIndex != -1 &&
+            marketVC.isScripDetailOpen == false) {
           marketVC.isScripDetailOpen = true;
           marketVC.selectedExpiryForF5.value = expiryData();
           marketVC.arrExpiry.clear();
           marketVC.arrStrikePrice.clear();
           marketVC.selectedCallPutForF5.value = Type();
           marketVC.selectedStrikePriceForF5.value = StrikePriceData();
-          marketVC.selectedExchangeForF5.value = marketVC.arrExchange.firstWhere((element) => element.exchangeId == marketVC.selectedSymbol!.exchangeId);
+          marketVC.selectedExchangeForF5.value = marketVC.arrExchange
+              .firstWhere((element) =>
+                  element.exchangeId == marketVC.selectedSymbol!.exchangeId);
           marketVC.getScriptList(isFromF5: true);
 
           showScriptDetailPopUp();
@@ -455,11 +488,14 @@ class MainContainerController extends BaseController {
         }
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.delete)) {
-      if (marketVC.selectedScriptIndex != -1 && marketVC.isScripDetailOpen == false) {
+      if (marketVC.selectedScriptIndex != -1 &&
+          marketVC.isScripDetailOpen == false) {
         marketVC.isFilterClicked = 0;
         if (marketVC.arrScript[marketVC.selectedScriptIndex].symbol != "") {
-          var selectedScriptObj = marketVC.arrScript[marketVC.selectedScriptIndex];
-          var temp = marketVC.arrSymbol.firstWhereOrNull((value) => value.symbolName == selectedScriptObj.symbol);
+          var selectedScriptObj =
+              marketVC.arrScript[marketVC.selectedScriptIndex];
+          var temp = marketVC.arrSymbol.firstWhereOrNull(
+              (value) => value.symbolName == selectedScriptObj.symbol);
           if (temp != null) {
             marketVC.deleteSymbolFromTab(temp.userTabSymbolId!);
           }
@@ -475,9 +511,12 @@ class MainContainerController extends BaseController {
       }
     } else if (event.isKeyPressed(LogicalKeyboardKey.space)) {
       if (marketVC.isBuyOpen == -1) {
-        if (marketVC.selectedScriptIndex != -1 && marketVC.isScripDetailOpen == false) {
-          marketVC.arrScript.insert(marketVC.selectedScriptIndex + 1, ScriptData());
-          marketVC.arrPreScript.insert(marketVC.selectedScriptIndex + 1, ScriptData());
+        if (marketVC.selectedScriptIndex != -1 &&
+            marketVC.isScripDetailOpen == false) {
+          marketVC.arrScript
+              .insert(marketVC.selectedScriptIndex + 1, ScriptData());
+          marketVC.arrPreScript
+              .insert(marketVC.selectedScriptIndex + 1, ScriptData());
           marketVC.storeScripsInDB();
 
           // selectedScriptIndex = -1;
@@ -491,11 +530,15 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptIndex = marketVC.selectedScriptIndex + 1;
           focusNode.requestFocus();
 
-          marketVC.selectedScript.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
-          marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
+          marketVC.selectedScript.value!.copyObject(ScriptData.fromJson(
+              marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
+          marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(
+              marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
           marketVC.update();
-          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
+          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) =>
+              marketVC.arrScript[marketVC.selectedScriptIndex].symbol ==
+              element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
             marketVC.update();
@@ -513,11 +556,15 @@ class MainContainerController extends BaseController {
           marketVC.selectedScriptIndex = marketVC.selectedScriptIndex - 1;
           focusNode.requestFocus();
 
-          marketVC.selectedScript.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
-          marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
+          marketVC.selectedScript.value!.copyObject(ScriptData.fromJson(
+              marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
+          marketVC.selectedScriptForF5.value!.copyObject(ScriptData.fromJson(
+              marketVC.arrScript[marketVC.selectedScriptIndex].toJson()));
           marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
           marketVC.update();
-          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) => marketVC.arrScript[marketVC.selectedScriptIndex].symbol == element.symbolName);
+          var indexOfSymbol = marketVC.arrSymbol.indexWhere((element) =>
+              marketVC.arrScript[marketVC.selectedScriptIndex].symbol ==
+              element.symbolName);
           if (indexOfSymbol != -1) {
             marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
             marketVC.update();
@@ -529,7 +576,8 @@ class MainContainerController extends BaseController {
         //   marketVC.update();
         // }
       }
-    } else if ((event.isMetaPressed || event.isControlPressed) && event.isKeyPressed(LogicalKeyboardKey.keyX)) {
+    } else if ((event.isMetaPressed || event.isControlPressed) &&
+        event.isKeyPressed(LogicalKeyboardKey.keyX)) {
       if (marketVC.isBuyOpen == -1 && marketVC.isScripDetailOpen == false) {
         if (marketVC.selectedScriptIndex > 0) {}
         if (marketVC.selectedScriptIndex != -1) {
@@ -540,15 +588,18 @@ class MainContainerController extends BaseController {
           showWarningToast("Please selected script for cut");
         }
       }
-    } else if ((event.isMetaPressed || event.isControlPressed) && event.isKeyPressed(LogicalKeyboardKey.keyV)) {
+    } else if ((event.isMetaPressed || event.isControlPressed) &&
+        event.isKeyPressed(LogicalKeyboardKey.keyV)) {
       if (marketVC.isBuyOpen == -1 && marketVC.isScripDetailOpen == false) {
         if (marketVC.selectedScriptIndex > 0) {}
         if (marketVC.selectedIndexforCut != -1) {
-          final ScriptData item = marketVC.arrScript.removeAt(marketVC.selectedIndexforCut);
+          final ScriptData item =
+              marketVC.arrScript.removeAt(marketVC.selectedIndexforCut);
 
           marketVC.arrScript.insert(marketVC.selectedScriptIndex, item);
 
-          final ScriptData preItem = marketVC.arrPreScript.removeAt(marketVC.selectedIndexforCut);
+          final ScriptData preItem =
+              marketVC.arrPreScript.removeAt(marketVC.selectedIndexforCut);
 
           marketVC.arrPreScript.insert(marketVC.selectedScriptIndex, preItem);
 
@@ -557,16 +608,20 @@ class MainContainerController extends BaseController {
           marketVC.selectedIndexforPaste = marketVC.selectedScriptIndex;
 
           marketVC.storeScripsInDB();
+
           marketVC.update();
         }
       }
-    } else if ((event.isMetaPressed || event.isControlPressed) && event.isKeyPressed(LogicalKeyboardKey.keyZ)) {
+    } else if ((event.isMetaPressed || event.isControlPressed) &&
+        event.isKeyPressed(LogicalKeyboardKey.keyZ)) {
       if (marketVC.selectedIndexforUndo != -1) {
-        final ScriptData item = marketVC.arrScript.removeAt(marketVC.selectedIndexforPaste);
+        final ScriptData item =
+            marketVC.arrScript.removeAt(marketVC.selectedIndexforPaste);
 
         marketVC.arrScript.insert(marketVC.selectedIndexforUndo, item);
 
-        final ScriptData preItem = marketVC.arrPreScript.removeAt(marketVC.selectedIndexforPaste);
+        final ScriptData preItem =
+            marketVC.arrPreScript.removeAt(marketVC.selectedIndexforPaste);
 
         marketVC.arrPreScript.insert(marketVC.selectedIndexforUndo, preItem);
         marketVC.selectedIndexforCut = -1;
@@ -578,10 +633,17 @@ class MainContainerController extends BaseController {
       }
     } else {
       if (event is RawKeyDownEvent) {
-        if (!event.isAltPressed && !event.isControlPressed && !event.isMetaPressed && !event.isShiftPressed && event.logicalKey.keyLabel.length == 1) {
-          marketVC.typedString = marketVC.typedString + event.logicalKey.keyLabel;
+        if (!event.isAltPressed &&
+            !event.isControlPressed &&
+            !event.isMetaPressed &&
+            !event.isShiftPressed &&
+            event.logicalKey.keyLabel.length == 1) {
+          marketVC.typedString =
+              marketVC.typedString + event.logicalKey.keyLabel;
           print(marketVC.typedString);
-          var index = marketVC.arrScript.indexWhere((element) => element.symbol!.toLowerCase().startsWith(marketVC.typedString.toLowerCase()));
+          var index = marketVC.arrScript.indexWhere((element) => element.symbol!
+              .toLowerCase()
+              .startsWith(marketVC.typedString.toLowerCase()));
           print(index);
           if (index != -1) {
             var scriptValue = marketVC.arrScript[index];
@@ -590,12 +652,19 @@ class MainContainerController extends BaseController {
             marketVC.selectedScript.value!.copyObject(scriptValue);
             marketVC.selectedScriptForF5.value!.copyObject(scriptValue);
             marketVC.selectedScriptForF5.value!.lut = DateTime.now();
-            var indexOfSymbol = marketVC.arrScript.indexWhere((element) => marketVC.arrScript[index].symbol == element.symbol);
+            var indexOfSymbol = marketVC.arrScript.indexWhere((element) =>
+                marketVC.arrScript[index].symbol == element.symbol);
+
             if (indexOfSymbol != -1) {
-              marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
+              marketVC.selectedSymbol = marketVC.arrSymbol.firstWhere(
+                  (element) =>
+                      element.symbol ==
+                      marketVC.arrScript[indexOfSymbol].symbol);
+              // marketVC.selectedSymbol = marketVC.arrSymbol[indexOfSymbol];
+
               marketVC.update();
             }
-
+            marketVC.upScrollToIndex(marketVC.selectedScriptIndex);
             marketVC.update();
           }
           oneSecondDebouncer.run(() async {
@@ -609,17 +678,31 @@ class MainContainerController extends BaseController {
   handlePositionKeyEvent(RawKeyEvent event) {
     var positionVc = Get.find<PositionController>();
 
-    if (event.isKeyPressed(LogicalKeyboardKey.f1) || event.isKeyPressed(LogicalKeyboardKey.numpadAdd)) {
+    if (event.isKeyPressed(LogicalKeyboardKey.f1) ||
+        event.isKeyPressed(LogicalKeyboardKey.numpadAdd)) {
       if (userData!.role != UserRollList.user) {
         return;
       }
       if (positionVc.selectedScriptIndex != -1) {
         if (positionVc.isBuyOpen == -1) {
           positionVc.isBuyOpen = 1;
-          positionVc.qtyController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!.toString();
-          positionVc.priceController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
-          positionVc.symbolController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].symbolName ?? "";
-          positionVc.exchangeController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].exchangeName ?? "";
+          positionVc.qtyController.text = positionVc
+              .arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!
+              .toString();
+          positionVc.priceController.text = positionVc
+              .arrPositionScriptList[positionVc.selectedScriptIndex]
+              .scriptDataFromSocket
+              .value
+              .bid
+              .toString();
+          positionVc.symbolController.text = positionVc
+                  .arrPositionScriptList[positionVc.selectedScriptIndex]
+                  .symbolName ??
+              "";
+          positionVc.exchangeController.text = positionVc
+                  .arrPositionScriptList[positionVc.selectedScriptIndex]
+                  .exchangeName ??
+              "";
           positionVc.isValidQty = true.obs;
           debouncer.run(() async {
             isKeyPressActive = true;
@@ -631,17 +714,31 @@ class MainContainerController extends BaseController {
           });
         }
       }
-    } else if (event.isKeyPressed(LogicalKeyboardKey.f2) || event.isKeyPressed(LogicalKeyboardKey.numpadSubtract)) {
+    } else if (event.isKeyPressed(LogicalKeyboardKey.f2) ||
+        event.isKeyPressed(LogicalKeyboardKey.numpadSubtract)) {
       if (userData!.role != UserRollList.user) {
         return;
       }
       if (positionVc.selectedScriptIndex != -1) {
         if (positionVc.isBuyOpen == -1) {
           positionVc.isBuyOpen = 2;
-          positionVc.qtyController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!.toString();
-          positionVc.priceController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].scriptDataFromSocket.value.bid.toString();
-          positionVc.symbolController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].symbolName ?? "";
-          positionVc.exchangeController.text = positionVc.arrPositionScriptList[positionVc.selectedScriptIndex].exchangeName ?? "";
+          positionVc.qtyController.text = positionVc
+              .arrPositionScriptList[positionVc.selectedScriptIndex].lotSize!
+              .toString();
+          positionVc.priceController.text = positionVc
+              .arrPositionScriptList[positionVc.selectedScriptIndex]
+              .scriptDataFromSocket
+              .value
+              .bid
+              .toString();
+          positionVc.symbolController.text = positionVc
+                  .arrPositionScriptList[positionVc.selectedScriptIndex]
+                  .symbolName ??
+              "";
+          positionVc.exchangeController.text = positionVc
+                  .arrPositionScriptList[positionVc.selectedScriptIndex]
+                  .exchangeName ??
+              "";
           positionVc.isValidQty = true.obs;
           debouncer.run(() async {
             isKeyPressActive = true;
@@ -670,7 +767,8 @@ class MainContainerController extends BaseController {
       if (positionVc.isBuyOpen != -1) {
         return;
       }
-      if (positionVc.selectedScriptIndex != positionVc.arrPositionScriptList.length - 1) {
+      if (positionVc.selectedScriptIndex !=
+          positionVc.arrPositionScriptList.length - 1) {
         positionVc.selectedScriptIndex = positionVc.selectedScriptIndex + 1;
         // selectedScript!.value = arrPositionScriptList[selectedScriptIndex];
 

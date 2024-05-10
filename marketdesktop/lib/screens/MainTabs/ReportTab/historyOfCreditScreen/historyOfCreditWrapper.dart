@@ -21,7 +21,8 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
         children: [
           Expanded(
             flex: 8,
-            child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+            child: BouncingScrollWrapper.builder(context, mainContent(context),
+                dragWithMouse: true),
             // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
           ),
         ],
@@ -55,17 +56,21 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                 ),
               ),
               Expanded(
-                child: controller.isApiCallRunning == false && controller.arrCreditList.isEmpty
+                child: controller.isApiCallRunning == false &&
+                        controller.arrCreditList.isEmpty
                     ? dataNotFoundView("Credit history not found")
                     : CustomScrollBar(
                         bgColor: AppColors().blueColor,
                         child: PaginableListView.builder(
                             loadMore: () async {},
-                            errorIndicatorWidget: (exception, tryAgain) => dataNotFoundView("Data not found"),
+                            errorIndicatorWidget: (exception, tryAgain) =>
+                                dataNotFoundView("Data not found"),
                             progressIndicatorWidget: displayIndicator(),
                             physics: const ClampingScrollPhysics(),
                             clipBehavior: Clip.hardEdge,
-                            itemCount: controller.isApiCallRunning ? 50 : controller.arrCreditList.length,
+                            itemCount: controller.isApiCallRunning
+                                ? 50
+                                : controller.arrCreditList.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
@@ -73,17 +78,17 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                             }),
                       ),
               ),
-              Container(
-                height: 30,
-                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
-                child: Center(
-                    child: Row(
-                  children: [
-                    totalContent(value: "Total Amount", textColor: AppColors().darkText, width: 22.w),
-                    totalContent(value: controller.arrCreditList.isNotEmpty ? controller.arrCreditList.last.balance.toStringAsFixed(2) : "0", textColor: AppColors().darkText, width: 110),
-                  ],
-                )),
-              ),
+              // Container(
+              //   height: 30,
+              //   decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+              //   child: Center(
+              //       child: Row(
+              //     children: [
+              //       totalContent(value: "Total Amount", textColor: AppColors().darkText, width: 22.w),
+              //       totalContent(value: controller.arrCreditList.isNotEmpty ? controller.arrCreditList.last.balance.toStringAsFixed(2) : "0", textColor: AppColors().darkText, width: 110),
+              //     ],
+              //   )),
+              // ),
               Container(
                 height: 2.h,
                 color: AppColors().headerBgColor,
@@ -99,7 +104,12 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
     return Container(
       width: width ?? 6.w,
       padding: EdgeInsets.only(left: 5),
-      decoration: BoxDecoration(color: AppColors().whiteColor, border: Border(top: BorderSide(color: AppColors().lightOnlyText, width: 1), bottom: BorderSide(color: AppColors().lightOnlyText, width: 1), right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
+      decoration: BoxDecoration(
+          color: AppColors().whiteColor,
+          border: Border(
+              top: BorderSide(color: AppColors().lightOnlyText, width: 1),
+              bottom: BorderSide(color: AppColors().lightOnlyText, width: 1),
+              right: BorderSide(color: AppColors().lightOnlyText, width: 1))),
       child: Text(value ?? "",
           style: TextStyle(
             fontSize: 12,
@@ -138,14 +148,25 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                   case CreditHistoryColumns.username:
                     {
                       return IgnorePointer(
-                        child: dynamicValueBox1(controller.arrCreditList[index].fromUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                        child: dynamicValueBox1(
+                            controller.arrCreditList[index].fromUserName ?? "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            AppColors().darkText,
+                            index,
+                            indexT,
+                            controller.arrListTitle1),
                       );
                     }
                   case CreditHistoryColumns.dateTime:
                     {
                       return dynamicValueBox1(
-                        shortFullDateTime(controller.arrCreditList[index].createdAt!),
-                        index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                        shortFullDateTime(
+                            controller.arrCreditList[index].createdAt!),
+                        index % 2 == 0
+                            ? Colors.transparent
+                            : AppColors().grayBg,
                         AppColors().darkText,
                         index,
                         indexT,
@@ -155,15 +176,27 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                   case CreditHistoryColumns.type:
                     {
                       return IgnorePointer(
-                        child: dynamicValueBox1(controller.arrCreditList[index].transactionType ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1),
+                        child: dynamicValueBox1(
+                            controller.arrCreditList[index].transactionType ??
+                                "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            AppColors().darkText,
+                            index,
+                            indexT,
+                            controller.arrListTitle1),
                       );
                     }
                   case CreditHistoryColumns.amount:
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(
-                          controller.arrCreditList[index].amount!.toStringAsFixed(2),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrCreditList[index].amount!
+                              .toStringAsFixed(2),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -175,8 +208,11 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                     {
                       return IgnorePointer(
                         child: dynamicValueBox1(
-                          controller.arrCreditList[index].balance.toStringAsFixed(2),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrCreditList[index].balance
+                              .toStringAsFixed(2),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -189,7 +225,9 @@ class HistoryOfCreditScreen extends BaseView<HistoryOfCreditController> {
                       return IgnorePointer(
                         child: dynamicValueBox1(
                           controller.arrCreditList[index].comment ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,

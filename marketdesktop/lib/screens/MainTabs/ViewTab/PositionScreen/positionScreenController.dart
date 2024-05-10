@@ -102,7 +102,8 @@ class PositionController extends BaseController {
       arrOrderType.removeWhere((element) => element.id == "limit");
     }
     arrOrderType.removeAt(0);
-    selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
+    selectedOrderType.value =
+        arrOrderType.firstWhere((element) => element.id == "market");
     isApiCallRunning = true;
     callForRoleList();
     getPositionList("");
@@ -112,7 +113,11 @@ class PositionController extends BaseController {
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {
       if (!qtyFocus.hasFocus) {
-        var temp = num.parse(lotController.text) * arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ls!;
+        var temp = num.parse(lotController.text) *
+            arrPositionScriptList[selectedScriptIndex]
+                .scriptDataFromSocket
+                .value
+                .ls!;
         qtyController.text = temp.toString();
         // isValidQty = true.obs;
       }
@@ -156,7 +161,8 @@ class PositionController extends BaseController {
   }
 
   getMyUserList() async {
-    var response = await service.getMyUserListCall(roleId: selectedRoll.value.roleId!, filterType: "0");
+    var response = await service.getMyUserListCall(
+        roleId: selectedRoll.value.roleId!, filterType: "0");
     arrUserListOnlyClient = response!.data ?? [];
     if (arrUserListOnlyClient.isNotEmpty) {
       // selectedUser.value = arrUserListOnlyClient.first;
@@ -168,7 +174,11 @@ class PositionController extends BaseController {
     for (var element in arrSymbol!) {
       arr.add(element.symbolId!);
     }
-    var response = await service.rollOverTradeCall(symbolId: arr, userId: userData!.role == UserRollList.user ? userData!.userId! : selectedUser.value.userId);
+    var response = await service.rollOverTradeCall(
+        symbolId: arr,
+        userId: userData!.role == UserRollList.user
+            ? userData!.userId!
+            : selectedUser.value.userId);
     if (response?.statusCode == 200) {
       showSuccessToast(response!.meta!.message ?? "");
       arrPositionScriptList.clear();
@@ -180,7 +190,8 @@ class PositionController extends BaseController {
     }
   }
 
-  getPositionList(String text, {bool isFromfilter = false, bool isFromClear = false}) async {
+  getPositionList(String text,
+      {bool isFromfilter = false, bool isFromClear = false}) async {
     if (isFromfilter) {
       if (isFromClear) {
         isResetCall = true;
@@ -193,7 +204,10 @@ class PositionController extends BaseController {
     }
     isPagingApiCall = true;
     update();
-    var response = await service.positionListCall(currentPage, text, symbolId: selectedScriptFromFilter.value.symbolId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", userId: selectedUser.value.userId ?? "");
+    var response = await service.positionListCall(currentPage, text,
+        symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+        exchangeId: selectedExchange.value.exchangeId ?? "",
+        userId: selectedUser.value.userId ?? "");
     arrPositionScriptList.addAll(response!.data!);
     isPagingApiCall = false;
     isResetCall = false;
@@ -213,10 +227,23 @@ class PositionController extends BaseController {
     //     mainObj.plPerTotal = mainObj.plPerTotal + mainObj.AllPositionDataObj![i].profitLossValue!;
     //   }
     // });
-    for (var indexOfScript = 0; indexOfScript < arrPositionScriptList.length; indexOfScript++) {
-      arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
-          ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
-          : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
+    for (var indexOfScript = 0;
+        indexOfScript < arrPositionScriptList.length;
+        indexOfScript++) {
+      arrPositionScriptList[indexOfScript].profitLossValue =
+          arrPositionScriptList[indexOfScript].totalQuantity! < 0
+              ? (double.parse(arrPositionScriptList[indexOfScript]
+                          .ask!
+                          .toStringAsFixed(2)) -
+                      arrPositionScriptList[indexOfScript].price!) *
+                  arrPositionScriptList[indexOfScript].totalQuantity!
+              : (double.parse(arrPositionScriptList[indexOfScript]
+                          .bid!
+                          .toStringAsFixed(2)) -
+                      double.parse(arrPositionScriptList[indexOfScript]
+                          .price!
+                          .toStringAsFixed(2))) *
+                  arrPositionScriptList[indexOfScript].totalQuantity!;
       totalPL = 0.0;
 
       // if (userData!.role == UserRollList.user) {
@@ -254,7 +281,11 @@ class PositionController extends BaseController {
   }
 
   squareOffPosition(List<SymbolRequestData>? arrSymbol) async {
-    var response = await service.squareOffPositionCall(arrSymbol: arrSymbol, userId: userData!.role == UserRollList.user ? userData!.userId! : selectedUser.value.userId);
+    var response = await service.squareOffPositionCall(
+        arrSymbol: arrSymbol,
+        userId: userData!.role == UserRollList.user
+            ? userData!.userId!
+            : selectedUser.value.userId);
     if (response?.statusCode == 200) {
       showSuccessToast(response!.meta!.message ?? "");
       arrPositionScriptList.clear();
@@ -271,11 +302,19 @@ class PositionController extends BaseController {
   double getTotal(bool isBuy) {
     var total = 0.0;
     if (isBuy) {
-      for (var element in arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.depth!.buy!) {
+      for (var element in arrPositionScriptList[selectedScriptIndex]
+          .scriptDataFromSocket
+          .value
+          .depth!
+          .buy!) {
         total = total + element.price!;
       }
     } else {
-      for (var element in arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.depth!.sell!) {
+      for (var element in arrPositionScriptList[selectedScriptIndex]
+          .scriptDataFromSocket
+          .value
+          .depth!
+          .sell!) {
         total = total + element.price!;
       }
     }
@@ -304,25 +343,33 @@ class PositionController extends BaseController {
 
   listenPositionScriptFromSocket(GetScriptFromSocket socketData) {
     if (socketData.status == true) {
-      var obj = arrPositionScriptList.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);
-      var ltpObj = LtpUpdateModel(symbolId: "", ltp: socketData.data!.ltp!, symbolTitle: socketData.data!.symbol, dateTime: DateTime.now());
-      var isAvailableObj = arrLtpUpdate.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolTitle);
+      var obj = arrPositionScriptList.firstWhereOrNull(
+          (element) => socketData.data!.symbol == element.symbolName);
+      var ltpObj = LtpUpdateModel(
+          symbolId: "",
+          ltp: socketData.data!.ltp!,
+          symbolTitle: socketData.data!.symbol,
+          dateTime: DateTime.now());
+      var isAvailableObj = arrLtpUpdate.firstWhereOrNull(
+          (element) => socketData.data!.symbol == element.symbolTitle);
       if (isAvailableObj == null) {
         arrLtpUpdate.add(ltpObj);
       } else {
         if (isAvailableObj.ltp != ltpObj.ltp) {
-          var index = arrLtpUpdate.indexWhere((element) => element.symbolTitle == ltpObj.symbolTitle);
+          var index = arrLtpUpdate.indexWhere(
+              (element) => element.symbolTitle == ltpObj.symbolTitle);
           arrLtpUpdate[index] = ltpObj;
           // print(ltpObj.symbolTitle);
           // print(ltpObj.ltp);
         }
       }
       if (obj != null) {
-        print(obj.symbolName);
         if (obj.symbolName == "") {}
-        var indexOfScript = arrPositionScriptList.indexWhere((element) => element.symbolName == socketData.data?.symbol);
+        var indexOfScript = arrPositionScriptList.indexWhere(
+            (element) => element.symbolName == socketData.data?.symbol);
         if (indexOfScript != -1) {
-          arrPositionScriptList[indexOfScript].scriptDataFromSocket = socketData.data!.obs;
+          arrPositionScriptList[indexOfScript].scriptDataFromSocket =
+              socketData.data!.obs;
           arrPositionScriptList[indexOfScript].bid = socketData.data!.bid;
           arrPositionScriptList[indexOfScript].ask = socketData.data!.ask;
           arrPositionScriptList[indexOfScript].ltp = socketData.data!.ltp;
@@ -341,10 +388,22 @@ class PositionController extends BaseController {
           //   arrPositionScriptList[indexOfScript].plPerTotal = arrPositionScriptList[indexOfScript].plPerTotal + arrPositionScriptList[indexOfScript].AllPositionDataObj![i].profitLossValue!;
           // }
 
-          if (arrPositionScriptList[indexOfScript].currentPriceFromSocket != 0.0) {
-            arrPositionScriptList[indexOfScript].profitLossValue = arrPositionScriptList[indexOfScript].totalQuantity! < 0
-                ? (double.parse(arrPositionScriptList[indexOfScript].ask!.toStringAsFixed(2)) - arrPositionScriptList[indexOfScript].price!) * arrPositionScriptList[indexOfScript].totalQuantity!
-                : (double.parse(arrPositionScriptList[indexOfScript].bid!.toStringAsFixed(2)) - double.parse(arrPositionScriptList[indexOfScript].price!.toStringAsFixed(2))) * arrPositionScriptList[indexOfScript].totalQuantity!;
+          if (arrPositionScriptList[indexOfScript].currentPriceFromSocket !=
+              0.0) {
+            arrPositionScriptList[indexOfScript].profitLossValue =
+                arrPositionScriptList[indexOfScript].totalQuantity! < 0
+                    ? (double.parse(arrPositionScriptList[indexOfScript]
+                                .ask!
+                                .toStringAsFixed(2)) -
+                            arrPositionScriptList[indexOfScript].price!) *
+                        arrPositionScriptList[indexOfScript].totalQuantity!
+                    : (double.parse(arrPositionScriptList[indexOfScript]
+                                .bid!
+                                .toStringAsFixed(2)) -
+                            double.parse(arrPositionScriptList[indexOfScript]
+                                .price!
+                                .toStringAsFixed(2))) *
+                        arrPositionScriptList[indexOfScript].totalQuantity!;
           }
         }
         totalPL = 0.0;
@@ -374,7 +433,8 @@ class PositionController extends BaseController {
       }
 
       if (selectedScriptIndex != -1) {
-        if (socketData.data?.symbol == arrPositionScriptList[selectedScriptIndex].symbolName) {
+        if (socketData.data?.symbol ==
+            arrPositionScriptList[selectedScriptIndex].symbolName) {
           if (selectedOrderType.value.name == "Market") {
             if (arrPositionScriptList[selectedScriptIndex].tradeType == "buy") {
               priceController.text = socketData.data!.ask.toString();
@@ -393,13 +453,16 @@ class PositionController extends BaseController {
     var msg = "";
     if (selectedOrderType.value.id != "limit") {
       if (arrPositionScriptList[selectedScriptIndex].tradeSecond != 0) {
-        var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrPositionScriptList[selectedScriptIndex].symbolName);
+        var ltpObj = arrLtpUpdate.firstWhereOrNull((element) =>
+            element.symbolTitle ==
+            arrPositionScriptList[selectedScriptIndex].symbolName);
         if (ltpObj == null) {
           return "INVALID SERVER TIME";
         } else {
           var difference = DateTime.now().difference(ltpObj.dateTime!);
           var differenceInSeconds = difference.inSeconds;
-          if (differenceInSeconds >= arrPositionScriptList[selectedScriptIndex].tradeSecond!) {
+          if (differenceInSeconds >=
+              arrPositionScriptList[selectedScriptIndex].tradeSecond!) {
             return "INVALID SERVER TIME";
           }
         }
@@ -466,16 +529,38 @@ class PositionController extends BaseController {
         price: double.parse(priceController.text),
         isFromStopLoss: selectedOrderType.value.id == "stopLoss",
         marketPrice: selectedOrderType.value.id == "stopLoss"
-            ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ltp!.toDouble()
+            ? arrPositionScriptList[selectedScriptIndex]
+                .scriptDataFromSocket
+                .value
+                .ltp!
+                .toDouble()
             : isFromBuy
-                ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble()
-                : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+                ? arrPositionScriptList[selectedScriptIndex]
+                    .scriptDataFromSocket
+                    .value
+                    .ask!
+                    .toDouble()
+                : arrPositionScriptList[selectedScriptIndex]
+                    .scriptDataFromSocket
+                    .value
+                    .bid!
+                    .toDouble(),
         lotSize: arrPositionScriptList[selectedScriptIndex].lotSize!.toInt(),
         orderType: selectedOrderType.value.id,
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
         productType: "longTerm",
-        refPrice: isFromBuy ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble() : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        refPrice: isFromBuy
+            ? arrPositionScriptList[selectedScriptIndex]
+                .scriptDataFromSocket
+                .value
+                .ask!
+                .toDouble()
+            : arrPositionScriptList[selectedScriptIndex]
+                .scriptDataFromSocket
+                .value
+                .bid!
+                .toDouble(),
       );
 
       //longterm
@@ -536,12 +621,26 @@ class PositionController extends BaseController {
         quantity: double.parse(lotController.text),
         totalQuantity: double.parse(qtyController.text),
         price: double.parse(priceController.text),
-        lotSize: arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ls!.toInt(),
+        lotSize: arrPositionScriptList[selectedScriptIndex]
+            .scriptDataFromSocket
+            .value
+            .ls!
+            .toInt(),
         orderType: selectedOrderType.value.id,
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: arrPositionScriptList[selectedScriptIndex].exchangeId,
         userId: selectedUser.value.userId!,
-        refPrice: isFromBuy ? arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.ask!.toDouble() : arrPositionScriptList[selectedScriptIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        refPrice: isFromBuy
+            ? arrPositionScriptList[selectedScriptIndex]
+                .scriptDataFromSocket
+                .value
+                .ask!
+                .toDouble()
+            : arrPositionScriptList[selectedScriptIndex]
+                .scriptDataFromSocket
+                .value
+                .bid!
+                .toDouble(),
       );
 
       //longterm
@@ -549,7 +648,8 @@ class PositionController extends BaseController {
       update();
       if (response != null) {
         // Get.back();
-        selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
+        selectedOrderType.value =
+            arrOrderType.firstWhere((element) => element.id == "market");
         if (response.statusCode == 200) {
           // bool isTradeAvailable = Get.isRegistered<TradeListController>();
           // bool isSuccessTradeAvailable = Get.isRegistered<SuccessTradeListController>();
@@ -585,7 +685,8 @@ class PositionController extends BaseController {
     }
   }
 
-  buySellPopupDialog({bool isFromBuy = true, Function? CancelClick, Function? DeleteClick}) {
+  buySellPopupDialog(
+      {bool isFromBuy = true, Function? CancelClick, Function? DeleteClick}) {
     showDialog<String>(
         context: Get.context!,
         barrierDismissible: false,
@@ -601,7 +702,8 @@ class PositionController extends BaseController {
               child: StatefulBuilder(builder: (context, setState) {
                 return Container(
                   width: 890,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   clipBehavior: Clip.hardEdge,
                   child: IntrinsicHeight(
                     child: Column(
@@ -620,7 +722,9 @@ class PositionController extends BaseController {
                                 AppImages.appLogo,
                                 width: 22,
                                 height: 22,
-                                color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
+                                color: isFromBuy
+                                    ? AppColors().blueColor
+                                    : AppColors().redColor,
                               ),
                               SizedBox(
                                 width: 10,
@@ -630,7 +734,9 @@ class PositionController extends BaseController {
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
+                                  color: isFromBuy
+                                      ? AppColors().blueColor
+                                      : AppColors().redColor,
                                   fontFamily: CustomFonts.family1Medium,
                                 ),
                               ),
@@ -661,14 +767,17 @@ class PositionController extends BaseController {
                         ),
                         Expanded(
                           child: Container(
-                            color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
+                            color: isFromBuy
+                                ? AppColors().blueColor
+                                : AppColors().redColor,
                             padding: EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Exchange",
@@ -676,13 +785,15 @@ class PositionController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
+                                            fontFamily:
+                                                CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Container(
                                           width: 210,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 5),
                                           child: CustomTextField(
                                             type: 'Exchange',
                                             // regex: '[0-9]',
@@ -690,7 +801,9 @@ class PositionController extends BaseController {
                                             borderColor: Colors.transparent,
                                             // fillColor: AppColors().headerBgColor,
 
-                                            keyBoardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                                            keyBoardType: const TextInputType
+                                                .numberWithOptions(
+                                                signed: true, decimal: false),
 
                                             isShowPrefix: false,
                                             isShowSufix: false,
@@ -699,28 +812,33 @@ class PositionController extends BaseController {
                                             inValidMsg: AppString.emptyPassword,
                                             placeHolderMsg: "Exchange",
 
-                                            emptyFieldMsg: AppString.emptyPassword,
+                                            emptyFieldMsg:
+                                                AppString.emptyPassword,
                                             controller: exchangeController,
                                             focus: exchangeFocus,
                                             isSecure: false,
                                             maxLength: 50,
-                                            keyboardButtonType: TextInputAction.done,
+                                            keyboardButtonType:
+                                                TextInputAction.done,
                                           ),
                                         ),
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: Text(
                                             "Order Type",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
@@ -728,12 +846,15 @@ class PositionController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Obx(() {
                                           print(isValidQty.value);
                                           return Text(
-                                            isValidQty.value ? "Quantity" : "Invalid Quantity",
+                                            isValidQty.value
+                                                ? "Quantity"
+                                                : "Invalid Quantity",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
@@ -742,45 +863,74 @@ class PositionController extends BaseController {
                                                   : isFromBuy
                                                       ? AppColors().redColor
                                                       : AppColors().blueColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           );
                                         }),
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 5),
                                           child: CustomTextField(
                                             regex: "[0-9]",
                                             type: '',
-                                            focusBorderColor: AppColors().redColor,
+                                            focusBorderColor:
+                                                AppColors().redColor,
                                             keyBoardType: TextInputType.none,
                                             isEnabled: true,
                                             isOptional: false,
                                             isNoNeededCapital: true,
-                                            inValidMsg: AppString.emptyMobileNumber,
+                                            inValidMsg:
+                                                AppString.emptyMobileNumber,
                                             placeHolderMsg: "",
                                             labelMsg: "",
-                                            emptyFieldMsg: AppString.emptyMobileNumber,
+                                            emptyFieldMsg:
+                                                AppString.emptyMobileNumber,
                                             controller: qtyController,
                                             focus: qtyFocus,
                                             isSecure: false,
-                                            keyboardButtonType: TextInputAction.next,
+                                            keyboardButtonType:
+                                                TextInputAction.next,
                                             onChange: () {
-                                              if (qtyController.text.isNotEmpty) {
-                                                print(arrPositionScriptList[selectedScriptIndex].oddLotTrade);
-                                                print(arrPositionScriptList[selectedScriptIndex].lotSize);
-                                                if (arrPositionScriptList[selectedScriptIndex].oddLotTrade == 1) {
-                                                  var temp = (num.parse(qtyController.text) / arrPositionScriptList[selectedScriptIndex].lotSize!);
-                                                  lotController.text = temp.toStringAsFixed(2);
+                                              if (qtyController
+                                                  .text.isNotEmpty) {
+                                                print(arrPositionScriptList[
+                                                        selectedScriptIndex]
+                                                    .oddLotTrade);
+                                                print(arrPositionScriptList[
+                                                        selectedScriptIndex]
+                                                    .lotSize);
+                                                if (arrPositionScriptList[
+                                                            selectedScriptIndex]
+                                                        .oddLotTrade ==
+                                                    1) {
+                                                  var temp = (num.parse(
+                                                          qtyController.text) /
+                                                      arrPositionScriptList[
+                                                              selectedScriptIndex]
+                                                          .lotSize!);
+                                                  lotController.text =
+                                                      temp.toStringAsFixed(2);
                                                   print(temp);
                                                   isValidQty.value = true;
                                                 } else {
-                                                  var temp = (num.parse(qtyController.text) / arrPositionScriptList[selectedScriptIndex].lotSize!);
+                                                  var temp = (num.parse(
+                                                          qtyController.text) /
+                                                      arrPositionScriptList[
+                                                              selectedScriptIndex]
+                                                          .lotSize!);
 
                                                   print(temp);
-                                                  if ((num.parse(qtyController.text) % arrPositionScriptList[selectedScriptIndex].lotSize!) == 0) {
-                                                    lotController.text = temp.toStringAsFixed(0);
+                                                  if ((num.parse(qtyController
+                                                              .text) %
+                                                          arrPositionScriptList[
+                                                                  selectedScriptIndex]
+                                                              .lotSize!) ==
+                                                      0) {
+                                                    lotController.text =
+                                                        temp.toStringAsFixed(0);
                                                     isValidQty.value = true;
                                                   } else {
                                                     isValidQty.value = false;
@@ -802,25 +952,30 @@ class PositionController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: Text(
                                             "Lot",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                          child: NumberInputWithIncrementDecrementOwn(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 10),
+                                          child:
+                                              NumberInputWithIncrementDecrementOwn(
                                             incIconSize: 18,
                                             decIconSize: 18,
                                             validator: (value) {
@@ -835,7 +990,8 @@ class PositionController extends BaseController {
                                               setState(() {});
                                             },
                                             onChanged: (newValue) {},
-                                            autovalidateMode: AutovalidateMode.disabled,
+                                            autovalidateMode:
+                                                AutovalidateMode.disabled,
                                             fractionDigits: 2,
                                             textAlign: TextAlign.left,
 
@@ -844,13 +1000,24 @@ class PositionController extends BaseController {
                                             isInt: true,
                                             style: TextStyle(
                                               fontSize: 14,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration:
+                                                InputDecoration(
+                                                    border: InputBorder.none,
+                                                    fillColor:
+                                                        AppColors().whiteColor,
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            bottom: 8,
+                                                            left: 20)),
 
-                                            widgetContainerDecoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(0),
+                                            widgetContainerDecoration:
+                                                BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(0),
                                               color: AppColors().whiteColor,
                                             ),
                                             controller: lotController,
@@ -861,21 +1028,24 @@ class PositionController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
                                             left: 0,
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.only(left: 10),
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
                                             child: Text(
                                               "Price",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: AppColors().whiteColor,
-                                                fontFamily: CustomFonts.family1Regular,
+                                                fontFamily:
+                                                    CustomFonts.family1Regular,
                                               ),
                                             ),
                                           ),
@@ -887,7 +1057,8 @@ class PositionController extends BaseController {
                                             margin: EdgeInsets.symmetric(
                                               vertical: 5,
                                             ),
-                                            child: NumberInputWithIncrementDecrementOwn(
+                                            child:
+                                                NumberInputWithIncrementDecrementOwn(
                                               incIconSize: 18,
                                               decIconSize: 18,
                                               validator: (value) {
@@ -895,15 +1066,29 @@ class PositionController extends BaseController {
                                               },
                                               fractionDigits: 2,
                                               textAlign: TextAlign.left,
-                                              enabled: selectedOrderType.value.name != "Market",
-                                              initialValue: double.tryParse(priceController.text) ?? 0.0,
+                                              enabled: selectedOrderType
+                                                      .value.name !=
+                                                  "Market",
+                                              initialValue: double.tryParse(
+                                                      priceController.text) ??
+                                                  0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
 
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                              numberFieldDecoration:
+                                                  InputDecoration(
+                                                      border: InputBorder.none,
+                                                      fillColor: AppColors()
+                                                          .whiteColor,
+                                                      contentPadding:
+                                                          EdgeInsets.only(
+                                                              bottom: 8,
+                                                              left: 20)),
 
-                                              widgetContainerDecoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(0),
+                                              widgetContainerDecoration:
+                                                  BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,
                                               ),
                                               controller: priceController,
@@ -920,7 +1105,8 @@ class PositionController extends BaseController {
                                   return Row(
                                     children: [
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "Symbol",
@@ -928,41 +1114,50 @@ class PositionController extends BaseController {
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           ),
                                           Container(
                                             width: 210,
                                             height: 40,
-                                            margin: EdgeInsets.symmetric(vertical: 5),
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 5),
                                             child: CustomTextField(
                                               type: 'Symbol',
                                               // regex: '[0-9]',
                                               roundCorner: 0,
                                               borderColor: Colors.transparent,
                                               // fillColor: AppColors().headerBgColor,
-                                              keyBoardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                                              keyBoardType: const TextInputType
+                                                  .numberWithOptions(
+                                                  signed: true, decimal: false),
                                               prefixIcon: SizedBox(),
                                               suffixIcon: SizedBox(),
 
                                               isEnabled: false,
                                               isOptional: false,
-                                              inValidMsg: AppString.emptyPassword,
+                                              inValidMsg:
+                                                  AppString.emptyPassword,
                                               placeHolderMsg: "Symbol",
 
-                                              emptyFieldMsg: AppString.emptyPassword,
+                                              emptyFieldMsg:
+                                                  AppString.emptyPassword,
                                               controller: symbolController,
                                               focus: symbolFocus,
                                               isSecure: false,
                                               maxLength: 50,
-                                              keyboardButtonType: TextInputAction.done,
+                                              keyboardButtonType:
+                                                  TextInputAction.done,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      if (selectedOrderType.value.name == "Market")
+                                      if (selectedOrderType.value.name ==
+                                          "Market")
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [validityListDropDown()],
                                         ),
                                       // Column(
@@ -1086,27 +1281,39 @@ class PositionController extends BaseController {
                                             height: 15,
                                           ),
                                           Padding(
-                                            padding: EdgeInsets.only(left: selectedOrderType.value.name! == "Market" ? 0 : 10),
+                                            padding: EdgeInsets.only(
+                                                left: selectedOrderType
+                                                            .value.name! ==
+                                                        "Market"
+                                                    ? 0
+                                                    : 10),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: [
                                                 SizedBox(
                                                   width: 210,
                                                   height: 42,
                                                   child: CustomButton(
                                                     isEnabled: true,
-                                                    shimmerColor: AppColors().whiteColor,
+                                                    shimmerColor:
+                                                        AppColors().whiteColor,
                                                     title: "Submit",
                                                     textSize: 16,
                                                     focusKey: SubmitFocus,
                                                     onPress: () {
                                                       initiateTrade(isFromBuy);
                                                     },
-                                                    bgColor: AppColors().grayLightLine,
-                                                    focusShadowColor: AppColors().whiteColor,
-                                                    borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
+                                                    bgColor: AppColors()
+                                                        .grayLightLine,
+                                                    focusShadowColor:
+                                                        AppColors().whiteColor,
+                                                    borderColor: isFromBuy
+                                                        ? AppColors().redColor
+                                                        : AppColors().blueColor,
                                                     isFilled: true,
-                                                    textColor: AppColors().darkText,
+                                                    textColor:
+                                                        AppColors().darkText,
                                                     isTextCenter: true,
                                                     isLoading: false,
                                                   ),
@@ -1119,26 +1326,36 @@ class PositionController extends BaseController {
                                                   height: 42,
                                                   child: CustomButton(
                                                     isEnabled: true,
-                                                    shimmerColor: AppColors().whiteColor,
+                                                    shimmerColor:
+                                                        AppColors().whiteColor,
                                                     title: "Cancel",
                                                     textSize: 16,
-                                                    focusShadowColor: AppColors().whiteColor,
-                                                    borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
+                                                    focusShadowColor:
+                                                        AppColors().whiteColor,
+                                                    borderColor: isFromBuy
+                                                        ? AppColors().redColor
+                                                        : AppColors().blueColor,
                                                     focusKey: CancelFocus,
                                                     onPress: () {
-                                                      selectedExchangeFromPopup.value = ExchangeData();
+                                                      selectedExchangeFromPopup
+                                                              .value =
+                                                          ExchangeData();
 
-                                                      selectedScriptFromPopup.value = ScriptData();
+                                                      selectedScriptFromPopup
+                                                          .value = ScriptData();
                                                       qtyController.text = "";
                                                       priceController.text = "";
 
-                                                      remarkController.text = "";
+                                                      remarkController.text =
+                                                          "";
                                                       isBuyOpen = -1;
                                                       Get.back();
                                                     },
-                                                    bgColor: AppColors().whiteColor,
+                                                    bgColor:
+                                                        AppColors().whiteColor,
                                                     isFilled: true,
-                                                    textColor: AppColors().darkText,
+                                                    textColor:
+                                                        AppColors().darkText,
                                                     isTextCenter: true,
                                                     isLoading: false,
                                                   ),
@@ -1172,7 +1389,9 @@ class PositionController extends BaseController {
             width: 210,
             height: 40,
             margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColors().lightOnlyText, width: 1),
+                color: AppColors().whiteColor),
             child: Center(
               child: DropdownButtonHideUnderline(
                 child: ButtonTheme(
@@ -1181,8 +1400,15 @@ class PositionController extends BaseController {
                     isExpanded: true,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(left: 15),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: isBuyOpen == 1
+                                  ? AppColors().redColor
+                                  : AppColors().blueColor,
+                              width: 2)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.transparent, width: 0)),
                     ),
                     hint: Text(
                       isFromAdmin ? "Market" : 'Order Type',
@@ -1196,7 +1422,11 @@ class PositionController extends BaseController {
                     items: arrOrderType
                         .map((Type item) => DropdownMenuItem<Type>(
                               value: item,
-                              child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                              child: Text(item.name ?? "",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: CustomFonts.family1Medium,
+                                      color: AppColors().grayColor)),
                             ))
                         .toList(),
                     selectedItemBuilder: (context) {
@@ -1214,7 +1444,9 @@ class PositionController extends BaseController {
                               ))
                           .toList();
                     },
-                    value: selectedOrderType.value.id == null ? null : selectedOrderType.value,
+                    value: selectedOrderType.value.id == null
+                        ? null
+                        : selectedOrderType.value,
                     onChanged: (Type? value) {
                       selectedOrderType.value = value!;
 
@@ -1258,7 +1490,10 @@ class PositionController extends BaseController {
                       width: 210,
                       height: 40,
                       margin: EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: AppColors().lightOnlyText, width: 1),
+                          color: AppColors().whiteColor),
                       child: Center(
                         child: DropdownButtonHideUnderline(
                           child: ButtonTheme(
@@ -1276,7 +1511,12 @@ class PositionController extends BaseController {
                               items: arrValidaty
                                   .map((Type item) => DropdownMenuItem<Type>(
                                         value: item,
-                                        child: Text(item.name ?? "", style: TextStyle(fontSize: 14, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
+                                        child: Text(item.name ?? "",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily:
+                                                    CustomFonts.family1Medium,
+                                                color: AppColors().grayColor)),
                                       ))
                                   .toList(),
                               selectedItemBuilder: (context) {
@@ -1287,7 +1527,8 @@ class PositionController extends BaseController {
                                             item.name ?? "",
                                             style: TextStyle(
                                               fontSize: 14,
-                                              fontFamily: CustomFonts.family1Medium,
+                                              fontFamily:
+                                                  CustomFonts.family1Medium,
                                               color: AppColors().darkText,
                                             ),
                                           ),
@@ -1296,10 +1537,19 @@ class PositionController extends BaseController {
                               },
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.only(left: 15),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 1 ? AppColors().redColor : AppColors().blueColor, width: 2)),
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 0)),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: isBuyOpen == 1
+                                            ? AppColors().redColor
+                                            : AppColors().blueColor,
+                                        width: 2)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.transparent, width: 0)),
                               ),
-                              value: selectedValidity.value.id == null ? null : selectedValidity.value,
+                              value: selectedValidity.value.id == null
+                                  ? null
+                                  : selectedValidity.value,
                               onChanged: (Type? value) {
                                 selectedValidity.value = value!;
 
@@ -1355,7 +1605,10 @@ class PositionController extends BaseController {
                       keyboardButtonType: TextInputAction.done,
                       maxLength: 64,
                       isShowPrefix: false,
-                      fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
+                      fontStyle: TextStyle(
+                          fontSize: 10,
+                          fontFamily: CustomFonts.family1Medium,
+                          color: AppColors().fontColor),
                       suffixIcon: Container(
                         child: GestureDetector(
                           onTap: () {
@@ -1371,7 +1624,10 @@ class PositionController extends BaseController {
                     ),
                   ),
                   searchMatchFn: (item, searchValue) {
-                    return item.value!.userName.toString().toLowerCase().startsWith(searchValue.toLowerCase());
+                    return item.value!.userName
+                        .toString()
+                        .toLowerCase()
+                        .startsWith(searchValue.toLowerCase());
                   },
                 ),
                 hint: Text(
@@ -1386,7 +1642,11 @@ class PositionController extends BaseController {
                     .map((UserData item) => DropdownItem<UserData>(
                           value: item,
                           height: 30,
-                          child: Text(item.userName ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().grayColor)),
+                          child: Text(item.userName ?? "",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family2Regular,
+                                  color: AppColors().grayColor)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
@@ -1395,12 +1655,18 @@ class PositionController extends BaseController {
                             value: item,
                             child: Text(
                               item.userName ?? "",
-                              style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family2Regular, color: AppColors().darkText, overflow: TextOverflow.ellipsis),
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family2Regular,
+                                  color: AppColors().darkText,
+                                  overflow: TextOverflow.ellipsis),
                             ),
                           ))
                       .toList();
                 },
-                value: selectedUser.value.userId == null ? null : selectedUser.value,
+                value: selectedUser.value.userId == null
+                    ? null
+                    : selectedUser.value,
                 onChanged: (UserData? value) {
                   selectedUser.value = value!;
                 },
@@ -1415,7 +1681,8 @@ class PositionController extends BaseController {
     });
   }
 
-  Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue, {double? width, double? height, Function? onChange, FocusNode? focus}) {
+  Widget userTypeDropDown(Rx<userRoleListData> selectUserdropdownValue,
+      {double? width, double? height, Function? onChange, FocusNode? focus}) {
     dropdownUserTypeKey = GlobalKey();
 
     return Obx(() {
@@ -1445,15 +1712,21 @@ class PositionController extends BaseController {
                   ),
                 ),
                 items: arrUserTypeListPosition
-                    .map((userRoleListData item) => DropdownItem<userRoleListData>(
+                    .map((userRoleListData item) =>
+                        DropdownItem<userRoleListData>(
                           value: item,
                           height: 30,
-                          child: Text(item.name ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Regular, color: AppColors().darkText)),
+                          child: Text(item.name ?? "",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  fontFamily: CustomFonts.family1Regular,
+                                  color: AppColors().darkText)),
                         ))
                     .toList(),
                 selectedItemBuilder: (context) {
                   return arrUserTypeListPosition
-                      .map((userRoleListData item) => DropdownMenuItem<userRoleListData>(
+                      .map((userRoleListData item) =>
+                          DropdownMenuItem<userRoleListData>(
                             value: item,
                             child: Text(
                               item.name ?? "",
@@ -1466,14 +1739,17 @@ class PositionController extends BaseController {
                           ))
                       .toList();
                 },
-                value: selectUserdropdownValue.value.roleId != null ? selectUserdropdownValue.value : null,
+                value: selectUserdropdownValue.value.roleId != null
+                    ? selectUserdropdownValue.value
+                    : null,
                 onChanged: (userRoleListData? value) {
                   selectUserdropdownValue.value = value!;
                   if (onChange != null) {
                     onChange();
                   }
                 },
-                buttonStyleData: const ButtonStyleData(padding: EdgeInsets.symmetric(horizontal: 0), height: 40),
+                buttonStyleData: const ButtonStyleData(
+                    padding: EdgeInsets.symmetric(horizontal: 0), height: 40),
               ),
             ),
           ));
@@ -1512,23 +1788,28 @@ class PositionController extends BaseController {
             }
           case NetPositionColumns.totalBuyAQty:
             {
-              list.add(excelLib.TextCellValue(element.buyTotalQuantity!.toString()));
+              list.add(
+                  excelLib.TextCellValue(element.buyTotalQuantity!.toString()));
             }
           case NetPositionColumns.totalBuyAPrice:
             {
-              list.add(excelLib.TextCellValue(element.buyPrice!.toStringAsFixed(2)));
+              list.add(
+                  excelLib.TextCellValue(element.buyPrice!.toStringAsFixed(2)));
             }
           case NetPositionColumns.totalSellQty:
             {
-              list.add(excelLib.TextCellValue(element.sellTotalQuantity!.toString()));
+              list.add(excelLib.TextCellValue(
+                  element.sellTotalQuantity!.toString()));
             }
           case NetPositionColumns.sellAPrice:
             {
-              list.add(excelLib.TextCellValue(element.sellPrice!.toStringAsFixed(2)));
+              list.add(excelLib.TextCellValue(
+                  element.sellPrice!.toStringAsFixed(2)));
             }
           case NetPositionColumns.netQty:
             {
-              list.add(excelLib.TextCellValue(element.totalQuantity!.toStringAsFixed(2)));
+              list.add(excelLib.TextCellValue(
+                  element.totalQuantity!.toStringAsFixed(2)));
             }
           case NetPositionColumns.netLot:
             {
@@ -1536,19 +1817,27 @@ class PositionController extends BaseController {
             }
           case NetPositionColumns.netAPrice:
             {
-              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+              list.add(
+                  excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
             }
           case NetPositionColumns.cmp:
             {
-              list.add(excelLib.TextCellValue(element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString()));
+              list.add(excelLib.TextCellValue(element.totalQuantity! < 0
+                  ? element.ask!.toStringAsFixed(2).toString()
+                  : element.bid!.toStringAsFixed(2).toString()));
             }
           case NetPositionColumns.pl:
             {
-              list.add(excelLib.TextCellValue(element.profitLossValue!.toStringAsFixed(2)));
+              list.add(excelLib.TextCellValue(
+                  element.profitLossValue!.toStringAsFixed(2)));
             }
           case NetPositionColumns.plPerWise:
             {
-              list.add(excelLib.TextCellValue((getPlPer(percentage: element.profitAndLossSharing!, pl: element.profitLossValue!) * -1).toStringAsFixed(3)));
+              list.add(excelLib.TextCellValue((getPlPer(
+                          percentage: element.profitAndLossSharing!,
+                          pl: element.profitLossValue!) *
+                      -1)
+                  .toStringAsFixed(3)));
             }
           default:
             {
@@ -1623,7 +1912,9 @@ class PositionController extends BaseController {
             }
           case NetPositionColumns.cmp:
             {
-              list.add((element.totalQuantity! < 0 ? element.ask!.toStringAsFixed(2).toString() : element.bid!.toStringAsFixed(2).toString()));
+              list.add((element.totalQuantity! < 0
+                  ? element.ask!.toStringAsFixed(2).toString()
+                  : element.bid!.toStringAsFixed(2).toString()));
             }
           case NetPositionColumns.pl:
             {
@@ -1631,7 +1922,11 @@ class PositionController extends BaseController {
             }
           case NetPositionColumns.plPerWise:
             {
-              list.add(((getPlPer(percentage: element.profitAndLossSharing!, pl: element.profitLossValue!) * -1).toStringAsFixed(3)));
+              list.add(((getPlPer(
+                          percentage: element.profitAndLossSharing!,
+                          pl: element.profitLossValue!) *
+                      -1)
+                  .toStringAsFixed(3)));
             }
           default:
             {
@@ -1641,6 +1936,11 @@ class PositionController extends BaseController {
       });
       dataList.add(list);
     });
-    exportPDFFile(fileName: "NetPositionList", title: "Net Position", width: globalMaxWidth, titleList: headers, dataList: dataList);
+    exportPDFFile(
+        fileName: "NetPositionList",
+        title: "Net Position",
+        width: globalMaxWidth,
+        titleList: headers,
+        dataList: dataList);
   }
 }

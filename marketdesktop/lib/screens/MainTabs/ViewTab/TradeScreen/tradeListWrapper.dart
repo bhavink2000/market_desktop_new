@@ -42,7 +42,9 @@ class TradeListScreen extends BaseView<TradeListController> {
             filterContent(context),
             Expanded(
               flex: 8,
-              child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
+              child: BouncingScrollWrapper.builder(
+                  context, mainContent(context),
+                  dragWithMouse: true),
               // child: BouncingScrollWrapper.builder(context, mainContent(context), dragWithMouse: true),
             ),
           ],
@@ -116,149 +118,151 @@ class TradeListScreen extends BaseView<TradeListController> {
                       SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        height: 35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Spacer(),
-                            Container(
-                              child: Text("From:",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
-                                    color: AppColors().fontColor,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.fromDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.fromDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // SizedBox(
-                            //   width: 30,
-                            // ),
-                            Spacer(),
+                      // Container(
+                      //   height: 35,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Spacer(),
+                      //       Container(
+                      //         child: Text("From:",
+                      //             style: TextStyle(
+                      //               fontSize: 12,
+                      //               fontFamily: CustomFonts.family1Regular,
+                      //               color: AppColors().fontColor,
+                      //             )),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       GestureDetector(
+                      //         onTap: () {
+                      //           showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
+                      //             controller.fromDate.value = shortDateForBackend(selectedDate);
+                      //           });
+                      //         },
+                      //         child: Obx(() {
+                      //           return Container(
+                      //             height: 35,
+                      //             width: 150,
+                      //             decoration: BoxDecoration(
+                      //                 color: AppColors().whiteColor,
+                      //                 border: Border.all(
+                      //                   color: AppColors().lightOnlyText,
+                      //                   width: 1.5,
+                      //                 ),
+                      //                 borderRadius: BorderRadius.circular(3)),
+                      //             // color: AppColors().whiteColor,
+                      //             padding: const EdgeInsets.only(right: 10),
+                      //             child: Row(
+                      //               children: [
+                      //                 const SizedBox(
+                      //                   width: 5,
+                      //                 ),
+                      //                 Text(
+                      //                   controller.fromDate.value,
+                      //                   style: TextStyle(
+                      //                     fontSize: 10,
+                      //                     fontFamily: CustomFonts.family1Medium,
+                      //                     color: AppColors().darkText,
+                      //                   ),
+                      //                 ),
+                      //                 const Spacer(),
+                      //                 Image.asset(
+                      //                   AppImages.calendarIcon,
+                      //                   width: 25,
+                      //                   height: 25,
+                      //                   color: AppColors().fontColor,
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           );
+                      //         }),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 30,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Container(
+                      //   height: 35,
+                      //   child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     children: [
+                      //       // SizedBox(
+                      //       //   width: 30,
+                      //       // ),
+                      //       Spacer(),
 
-                            Container(
-                              child: Text("To:",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontFamily: CustomFonts.family1Regular,
-                                    color: AppColors().fontColor,
-                                  )),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // selectToDate(controller.endDate);
-                                showCalenderPopUp(DateTime.now(), (DateTime selectedDate) {
-                                  controller.endDate.value = shortDateForBackend(selectedDate);
-                                });
-                              },
-                              child: Obx(() {
-                                return Container(
-                                  height: 35,
-                                  width: 150,
-                                  decoration: BoxDecoration(
-                                      color: AppColors().whiteColor,
-                                      border: Border.all(
-                                        color: AppColors().lightOnlyText,
-                                        width: 1.5,
-                                      ),
-                                      borderRadius: BorderRadius.circular(3)),
-                                  // color: AppColors().whiteColor,
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        controller.endDate.value,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          fontFamily: CustomFonts.family1Medium,
-                                          color: AppColors().darkText,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      Image.asset(
-                                        AppImages.calendarIcon,
-                                        width: 25,
-                                        height: 25,
-                                        color: AppColors().fontColor,
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                          ],
-                        ),
-                      ),
+                      //       Container(
+                      //         child: Text("To:",
+                      //             style: TextStyle(
+                      //               fontSize: 12,
+                      //               fontFamily: CustomFonts.family1Regular,
+                      //               color: AppColors().fontColor,
+                      //             )),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 10,
+                      //       ),
+                      //       GestureDetector(
+                      //         onTap: () {
+                      //           // selectToDate(controller.endDate);
+                      //           showCalenderPopUp(DateTime.now(),
+                      //               (DateTime selectedDate) {
+                      //             controller.endDate.value =
+                      //                 shortDateForBackend(selectedDate);
+                      //           });
+                      //         },
+                      //         child: Obx(() {
+                      //           return Container(
+                      //             height: 35,
+                      //             width: 150,
+                      //             decoration: BoxDecoration(
+                      //                 color: AppColors().whiteColor,
+                      //                 border: Border.all(
+                      //                   color: AppColors().lightOnlyText,
+                      //                   width: 1.5,
+                      //                 ),
+                      //                 borderRadius: BorderRadius.circular(3)),
+                      //             // color: AppColors().whiteColor,
+                      //             padding: const EdgeInsets.only(right: 10),
+                      //             child: Row(
+                      //               children: [
+                      //                 const SizedBox(
+                      //                   width: 5,
+                      //                 ),
+                      //                 Text(
+                      //                   controller.endDate.value,
+                      //                   style: TextStyle(
+                      //                     fontSize: 10,
+                      //                     fontFamily: CustomFonts.family1Medium,
+                      //                     color: AppColors().darkText,
+                      //                   ),
+                      //                 ),
+                      //                 const Spacer(),
+                      //                 Image.asset(
+                      //                   AppImages.calendarIcon,
+                      //                   width: 25,
+                      //                   height: 25,
+                      //                   color: AppColors().fontColor,
+                      //                 )
+                      //               ],
+                      //             ),
+                      //           );
+                      //         }),
+                      //       ),
+                      //       SizedBox(
+                      //         width: 30,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                       if (userData!.role != UserRollList.user)
                         SizedBox(
                           height: 10,
@@ -281,7 +285,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                               SizedBox(
                                 width: 10,
                               ),
-                              userListDropDown(controller.selectedUser, width: 150, userController: (TextEditingController c) {
+                              userListDropDown(controller.selectedUser,
+                                  width: 150,
+                                  userController: (TextEditingController c) {
                                 controller.searchUserController = c;
                               }),
                               SizedBox(
@@ -310,8 +316,13 @@ class TradeListScreen extends BaseView<TradeListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            exchangeTypeDropDown(controller.selectedExchange, onChange: () async {
-                              await getScriptList(exchangeId: controller.selectedExchange.value.exchangeId!, arrSymbol: controller.arrExchangeWiseScript, isFromOrder: true);
+                            exchangeTypeDropDown(controller.selectedExchange,
+                                onChange: () async {
+                              await getScriptList(
+                                  exchangeId: controller
+                                      .selectedExchange.value.exchangeId!,
+                                  arrSymbol: controller.arrExchangeWiseScript,
+                                  isFromOrder: true);
 
                               // controller.selectedScriptFromFilter.value = controller.arrExchangeWiseScript.first;
                               controller.update();
@@ -342,7 +353,10 @@ class TradeListScreen extends BaseView<TradeListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            allScriptListDropDown(controller.selectedScriptFromFilter, arrSymbol: controller.arrExchangeWiseScript, width: 150),
+                            allScriptListDropDown(
+                                controller.selectedScriptFromFilter,
+                                arrSymbol: controller.arrExchangeWiseScript,
+                                width: 150),
                             SizedBox(
                               width: 30,
                             ),
@@ -369,7 +383,8 @@ class TradeListScreen extends BaseView<TradeListController> {
                             SizedBox(
                               width: 10,
                             ),
-                            orderTypeDropDown(controller.selectedOrderType, width: 150, onChange: () {
+                            orderTypeDropDown(controller.selectedOrderType,
+                                width: 150, onChange: () {
                               print(controller.selectedOrderType.value.id);
                             }),
                             SizedBox(
@@ -420,8 +435,10 @@ class TradeListScreen extends BaseView<TradeListController> {
                               textSize: 14,
                               prefixWidth: 0,
                               onPress: () {
-                                controller.selectedExchange.value = ExchangeData();
-                                controller.selectedScriptFromFilter.value = GlobalSymbolData();
+                                controller.selectedExchange.value =
+                                    ExchangeData();
+                                controller.selectedScriptFromFilter.value =
+                                    GlobalSymbolData();
                                 controller.selectedUser.value = UserData();
                                 controller.selectedOrderType.value = Type();
                                 controller.fromDate.value = "";
@@ -483,51 +500,69 @@ class TradeListScreen extends BaseView<TradeListController> {
                 ),
               ),
               Expanded(
-                child: controller.isApiCallRunning == false && controller.isResetCall == false && controller.arrTrade.isEmpty
+                child: controller.isApiCallRunning == false &&
+                        controller.isResetCall == false &&
+                        controller.arrTrade.isEmpty
                     ? dataNotFoundView("Orders not found")
                     : CustomScrollBar(
                         bgColor: AppColors().blueColor,
                         child: ListView.builder(
                             physics: const ClampingScrollPhysics(),
                             clipBehavior: Clip.hardEdge,
-                            itemCount: controller.isApiCallRunning || controller.isResetCall ? 50 : controller.arrTrade.length,
+                            itemCount: controller.isApiCallRunning ||
+                                    controller.isResetCall
+                                ? 50
+                                : controller.arrTrade.length,
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              if (controller.isApiCallRunning || controller.isResetCall) {
+                              if (controller.isApiCallRunning ||
+                                  controller.isResetCall) {
                                 return tradeContent(context, index);
                               }
                               return ContextMenuRegion(
-                                contextMenuBuilder: (BuildContext context, Offset offset) {
+                                contextMenuBuilder:
+                                    (BuildContext context, Offset offset) {
                                   // The custom context menu will look like the default context menu
                                   // on the current platform with a single 'Print' button.
-                                  return AdaptiveTextSelectionToolbar.buttonItems(
+                                  return AdaptiveTextSelectionToolbar
+                                      .buttonItems(
                                     anchors: TextSelectionToolbarAnchors(
                                       primaryAnchor: offset,
                                     ),
                                     buttonItems: <ContextMenuButtonItem>[
-                                      ContextMenuButtonItem(
-                                        onPressed: () {
-                                          ContextMenuController.removeAny();
-                                          if (controller.selectedOrderIndex == -1) {
-                                            showWarningToast("Please select order to modify.");
-                                            return;
-                                          }
-                                          showPendingTradeInfoPopup();
-                                          controller.openPopUpCount++;
-                                        },
-                                        label: 'Modify Order',
-                                      ),
-                                      if (userData!.role != UserRollList.admin || (userData!.role == UserRollList.admin && userData!.deleteTrade == 1))
+                                      if (userData!.role == UserRollList.user)
                                         ContextMenuButtonItem(
                                           onPressed: () {
                                             ContextMenuController.removeAny();
-                                            if (controller.selectedOrderIndex == -1) {
-                                              showWarningToast("Please select order to cancel.");
+                                            if (controller.selectedOrderIndex ==
+                                                -1) {
+                                              showWarningToast(
+                                                  "Please select order to modify.");
+                                              return;
+                                            }
+                                            showPendingTradeInfoPopup();
+                                            controller.openPopUpCount++;
+                                          },
+                                          label: 'Modify Order',
+                                        ),
+                                      if (userData!.role !=
+                                              UserRollList.admin ||
+                                          (userData!.role ==
+                                                  UserRollList.admin &&
+                                              userData!.deleteTrade == 1))
+                                        ContextMenuButtonItem(
+                                          onPressed: () {
+                                            ContextMenuController.removeAny();
+                                            if (controller.selectedOrderIndex ==
+                                                -1) {
+                                              showWarningToast(
+                                                  "Please select order to cancel.");
                                               return;
                                             }
                                             showPermissionDialog(
-                                                message: "Are you sure you want to cancel order?",
+                                                message:
+                                                    "Are you sure you want to cancel order?",
                                                 acceptButtonTitle: "Yes",
                                                 rejectButtonTitle: "No",
                                                 yesClick: () {
@@ -540,12 +575,17 @@ class TradeListScreen extends BaseView<TradeListController> {
                                           },
                                           label: 'Cancel Order',
                                         ),
-                                      if (userData!.role != UserRollList.admin || (userData!.role == UserRollList.admin && userData!.deleteTrade == 1))
+                                      if (userData!.role !=
+                                              UserRollList.admin ||
+                                          (userData!.role ==
+                                                  UserRollList.admin &&
+                                              userData!.deleteTrade == 1))
                                         ContextMenuButtonItem(
                                           onPressed: () {
                                             ContextMenuController.removeAny();
                                             showPermissionDialog(
-                                                message: "Are you sure you want to cancel all order?",
+                                                message:
+                                                    "Are you sure you want to cancel all order?",
                                                 acceptButtonTitle: "Yes",
                                                 rejectButtonTitle: "No",
                                                 yesClick: () {
@@ -563,7 +603,10 @@ class TradeListScreen extends BaseView<TradeListController> {
                                 },
                                 child: Row(
                                   children: <Widget>[
-                                    Container(height: 30, color: Colors.transparent, child: tradeContent(context, index)),
+                                    Container(
+                                        height: 30,
+                                        color: Colors.transparent,
+                                        child: tradeContent(context, index)),
                                   ],
                                 ),
                               );
@@ -602,7 +645,13 @@ class TradeListScreen extends BaseView<TradeListController> {
           controller.update();
         },
         child: Container(
-          decoration: BoxDecoration(color: Colors.transparent, border: Border.all(width: 1, color: controller.selectedOrderIndex == index ? AppColors().darkText : Colors.transparent)),
+          decoration: BoxDecoration(
+              color: Colors.transparent,
+              border: Border.all(
+                  width: 1,
+                  color: controller.selectedOrderIndex == index
+                      ? AppColors().darkText
+                      : Colors.transparent)),
           height: 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -616,17 +665,35 @@ class TradeListScreen extends BaseView<TradeListController> {
                   switch (controller.arrListTitle1[indexT].title) {
                     case PendingOrderColumns.username:
                       {
-                        return dynamicValueBox1(controller.arrTrade[index].userName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                        return dynamicValueBox1(
+                            controller.arrTrade[index].userName ?? "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            AppColors().darkText,
+                            index,
+                            indexT,
+                            controller.arrListTitle1);
                       }
                     case PendingOrderColumns.parentUser:
                       {
-                        return dynamicValueBox1(historyValue.parentUserName ?? "", index % 2 == 0 ? Colors.transparent : AppColors().grayBg, AppColors().darkText, index, indexT, controller.arrListTitle1);
+                        return dynamicValueBox1(
+                            historyValue.parentUserName ?? "",
+                            index % 2 == 0
+                                ? Colors.transparent
+                                : AppColors().grayBg,
+                            AppColors().darkText,
+                            index,
+                            indexT,
+                            controller.arrListTitle1);
                       }
                     case PendingOrderColumns.segment:
                       {
                         return dynamicValueBox1(
                           historyValue.exchangeName ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -637,7 +704,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           historyValue.symbolTitle ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -647,9 +716,14 @@ class TradeListScreen extends BaseView<TradeListController> {
                     case PendingOrderColumns.bs:
                       {
                         return dynamicValueBox1(
-                          controller.arrTrade[index].tradeTypeValue!.toUpperCase(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          controller.arrTrade[index].tradeTypeValue!
+                              .toUpperCase(),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy"
+                              ? AppColors().blueColor
+                              : AppColors().redColor,
                           index,
                           indexT,
                           controller.arrListTitle1,
@@ -659,7 +733,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].totalQuantity.toString(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -670,7 +746,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].quantity.toString(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -682,8 +760,12 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           controller.arrTrade[index].price!.toStringAsFixed(2),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy"
+                              ? AppColors().blueColor
+                              : AppColors().redColor,
                           index,
                           indexT,
                           controller.arrListTitle1,
@@ -693,9 +775,14 @@ class TradeListScreen extends BaseView<TradeListController> {
                     case PendingOrderColumns.orderDT:
                       {
                         return dynamicValueBox1(
-                          shortFullDateTime(controller.arrTrade[index].createdAt!),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          shortFullDateTime(
+                              controller.arrTrade[index].createdAt!),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy"
+                              ? AppColors().blueColor
+                              : AppColors().redColor,
                           index,
                           indexT,
                           controller.arrListTitle1,
@@ -704,8 +791,11 @@ class TradeListScreen extends BaseView<TradeListController> {
                     case PendingOrderColumns.type:
                       {
                         return dynamicValueBox1(
-                          controller.arrTrade[index].productTypeValue.toString(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          controller.arrTrade[index].productTypeValue
+                              .toString(),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -715,9 +805,17 @@ class TradeListScreen extends BaseView<TradeListController> {
                     case PendingOrderColumns.cmp:
                       {
                         return dynamicValueBox1(
-                          controller.arrTrade[index].currentPriceFromSocket.toString(),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          controller.arrTrade[index].scriptDataFromSocket.value.close! < controller.arrTrade[index].currentPriceFromSocket ? AppColors().blueColor : AppColors().redColor,
+                          controller.arrTrade[index].currentPriceFromSocket
+                              .toString(),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
+                          controller.arrTrade[index].scriptDataFromSocket.value
+                                      .close! <
+                                  controller
+                                      .arrTrade[index].currentPriceFromSocket
+                              ? AppColors().blueColor
+                              : AppColors().redColor,
                           index,
                           indexT,
                           controller.arrListTitle1,
@@ -726,9 +824,14 @@ class TradeListScreen extends BaseView<TradeListController> {
                     case PendingOrderColumns.refPrice:
                       {
                         return dynamicValueBox1(
-                          controller.arrTrade[index].referencePrice!.toStringAsFixed(2),
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
-                          controller.arrTrade[index].tradeType == "buy" ? AppColors().blueColor : AppColors().redColor,
+                          controller.arrTrade[index].referencePrice!
+                              .toStringAsFixed(2),
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
+                          controller.arrTrade[index].tradeType == "buy"
+                              ? AppColors().blueColor
+                              : AppColors().redColor,
                           index,
                           indexT,
                           controller.arrListTitle1,
@@ -738,7 +841,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           historyValue.ipAddress ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -749,7 +854,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           historyValue.orderMethod ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,
@@ -760,7 +867,9 @@ class TradeListScreen extends BaseView<TradeListController> {
                       {
                         return dynamicValueBox1(
                           historyValue.deviceId ?? "",
-                          index % 2 == 0 ? Colors.transparent : AppColors().grayBg,
+                          index % 2 == 0
+                              ? Colors.transparent
+                              : AppColors().grayBg,
                           AppColors().darkText,
                           index,
                           indexT,

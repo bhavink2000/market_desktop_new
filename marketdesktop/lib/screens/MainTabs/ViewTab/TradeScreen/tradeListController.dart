@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:marketdesktop/constant/utilities.dart';
 import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
@@ -79,7 +80,8 @@ class TradeListController extends BaseController {
     lotController.addListener(() {
       // if (isQuantityUpdate == false) {
       if (!qtyFocus.hasFocus) {
-        var temp = num.parse(lotController.text) * arrTrade[selectedOrderIndex].lotSize!;
+        var temp = num.parse(lotController.text) *
+            arrTrade[selectedOrderIndex].lotSize!;
         qtyController.text = temp.toString();
         // isValidQty = true.obs;
       }
@@ -87,7 +89,11 @@ class TradeListController extends BaseController {
       // }
     });
     listcontroller.addListener(() async {
-      if ((listcontroller.position.pixels > listcontroller.position.maxScrollExtent / 2.5 && totalPage > 1 && pageNumber < totalPage && !isLocalDataLoading)) {
+      if ((listcontroller.position.pixels >
+              listcontroller.position.maxScrollExtent / 2.5 &&
+          totalPage > 1 &&
+          pageNumber < totalPage &&
+          !isLocalDataLoading)) {
         isLocalDataLoading = true;
         pageNumber++;
         String strFromDate = "";
@@ -100,7 +106,16 @@ class TradeListController extends BaseController {
         }
         update();
         var response = await service.getMyTradeListCall(
-            status: "pending", page: pageNumber, text: "", userId: selectedUser.value.userId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", startDate: strFromDate, endDate: strToDate, orderType: selectedOrderType.value.id ?? "");
+            status: "pending",
+            page: pageNumber,
+            text: "",
+            userId: selectedUser.value.userId ?? "",
+            symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+            exchangeId: selectedExchange.value.exchangeId ?? "",
+            startDate: DateFormat('yyyy-MM-dd')
+                .format(DateTime.now().subtract(Duration(days: 2))),
+            endDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+            orderType: selectedOrderType.value.id ?? "");
         if (response != null) {
           if (response.statusCode == 200) {
             totalPage = response.meta?.totalPage ?? 0;
@@ -155,7 +170,16 @@ class TradeListController extends BaseController {
     }
 
     var response = await service.getMyTradeListCall(
-        status: "pending", page: pageNumber, text: "", userId: selectedUser.value.userId ?? "", symbolId: selectedScriptFromFilter.value.symbolId ?? "", exchangeId: selectedExchange.value.exchangeId ?? "", startDate: strFromDate, endDate: strToDate, orderType: selectedOrderType.value.id ?? "");
+        status: "pending",
+        page: pageNumber,
+        text: "",
+        userId: selectedUser.value.userId ?? "",
+        symbolId: selectedScriptFromFilter.value.symbolId ?? "",
+        exchangeId: selectedExchange.value.exchangeId ?? "",
+        startDate: DateFormat('yyyy-MM-dd')
+            .format(DateTime.now().subtract(Duration(days: 2))),
+        endDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        orderType: selectedOrderType.value.id ?? "");
     isLocalDataLoading = false;
     isApiCallRunning = false;
     isResetCall = false;
@@ -193,7 +217,8 @@ class TradeListController extends BaseController {
       showWarningToast("Please select order.");
       return;
     }
-    var response = await service.cancelTradeCall(arrTrade[selectedOrderIndex].tradeId!);
+    var response =
+        await service.cancelTradeCall(arrTrade[selectedOrderIndex].tradeId!);
     if (response?.statusCode == 200) {
       arrTrade.removeAt(selectedOrderIndex);
       showSuccessToast(response!.meta!.message ?? "");
@@ -245,13 +270,25 @@ class TradeListController extends BaseController {
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: arrTrade[selectedOrderIndex].exchangeId,
         productType: arrTrade[selectedOrderIndex].productTypeMain!,
-        refPrice: isFromBuy ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble() : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
+        refPrice: isFromBuy
+            ? arrTrade[selectedOrderIndex]
+                .scriptDataFromSocket
+                .value
+                .ask!
+                .toDouble()
+            : arrTrade[selectedOrderIndex]
+                .scriptDataFromSocket
+                .value
+                .bid!
+                .toDouble(),
       );
 
       if (response != null) {
         // Get.back();
         if (response.statusCode == 200) {
-          showSuccessToast(response.meta!.message!, bgColor: isFromBuy ? AppColors().blueColor : AppColors().redColor);
+          showSuccessToast(response.meta!.message!,
+              bgColor:
+                  isFromBuy ? AppColors().blueColor : AppColors().redColor);
           // pageNumber = 1;
           // arrTrade.clear();
           // getTradeList();
@@ -272,7 +309,8 @@ class TradeListController extends BaseController {
   }
 
   pendingToSuccessTrade(bool isFromBuy) async {
-    var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == arrTrade[selectedOrderIndex].symbolName);
+    var ltpObj = arrLtpUpdate.firstWhereOrNull((element) =>
+        element.symbolTitle == arrTrade[selectedOrderIndex].symbolName);
     if (ltpObj == null) {
       showWarningToast("INVALID SERVER TIME");
       return;
@@ -296,13 +334,24 @@ class TradeListController extends BaseController {
       tradeType: isFromBuy ? "buy" : "sell",
       exchangeId: arrTrade[selectedOrderIndex].exchangeId,
       productType: arrTrade[selectedOrderIndex].productTypeMain!,
-      refPrice: isFromBuy ? arrTrade[selectedOrderIndex].scriptDataFromSocket.value.ask!.toDouble() : arrTrade[selectedOrderIndex].scriptDataFromSocket.value.bid!.toDouble(),
+      refPrice: isFromBuy
+          ? arrTrade[selectedOrderIndex]
+              .scriptDataFromSocket
+              .value
+              .ask!
+              .toDouble()
+          : arrTrade[selectedOrderIndex]
+              .scriptDataFromSocket
+              .value
+              .bid!
+              .toDouble(),
     );
 
     if (response != null) {
       // Get.back();
       if (response.statusCode == 200) {
-        showSuccessToast(response.meta!.message!, bgColor: isFromBuy ? AppColors().blueColor : AppColors().redColor);
+        showSuccessToast(response.meta!.message!,
+            bgColor: isFromBuy ? AppColors().blueColor : AppColors().redColor);
         pageNumber = 1;
         arrTrade.clear();
         getTradeList();
@@ -329,15 +378,22 @@ class TradeListController extends BaseController {
 
   listenTradeScriptFromSocket(GetScriptFromSocket socketData) {
     if (socketData.status == true) {
-      var obj = arrTrade.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolName);
+      var obj = arrTrade.firstWhereOrNull(
+          (element) => socketData.data!.symbol == element.symbolName);
 
-      var ltpObj = LtpUpdateModel(symbolId: "", ltp: socketData.data!.ltp!, symbolTitle: socketData.data!.symbol, dateTime: DateTime.now());
-      var isAvailableObj = arrLtpUpdate.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolTitle);
+      var ltpObj = LtpUpdateModel(
+          symbolId: "",
+          ltp: socketData.data!.ltp!,
+          symbolTitle: socketData.data!.symbol,
+          dateTime: DateTime.now());
+      var isAvailableObj = arrLtpUpdate.firstWhereOrNull(
+          (element) => socketData.data!.symbol == element.symbolTitle);
       if (isAvailableObj == null) {
         arrLtpUpdate.add(ltpObj);
       } else {
         if (isAvailableObj.ltp != ltpObj.ltp) {
-          var index = arrLtpUpdate.indexWhere((element) => element.symbolTitle == ltpObj.symbolTitle);
+          var index = arrLtpUpdate.indexWhere(
+              (element) => element.symbolTitle == ltpObj.symbolTitle);
           arrLtpUpdate[index] = ltpObj;
           // print(ltpObj.symbolTitle);
           // print(ltpObj.ltp);
@@ -348,7 +404,9 @@ class TradeListController extends BaseController {
         for (var i = 0; i < arrTrade.length; i++) {
           if (arrTrade[i].symbolName == socketData.data!.symbol) {
             arrTrade[i].scriptDataFromSocket.value = socketData.data!;
-            arrTrade[i].currentPriceFromSocket = arrTrade[i].tradeType == "buy" ? double.parse(socketData.data!.ask.toString()) : double.parse(socketData.data!.bid.toString());
+            arrTrade[i].currentPriceFromSocket = arrTrade[i].tradeType == "buy"
+                ? double.parse(socketData.data!.ask.toString())
+                : double.parse(socketData.data!.bid.toString());
           }
         }
       }
@@ -412,7 +470,8 @@ class TradeListController extends BaseController {
               child: StatefulBuilder(builder: (context, setState) {
                 return Container(
                   width: 890,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   clipBehavior: Clip.hardEdge,
                   child: IntrinsicHeight(
                     child: Column(
@@ -431,18 +490,24 @@ class TradeListController extends BaseController {
                                 AppImages.appLogo,
                                 width: 22,
                                 height: 22,
-                                color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
+                                color: isFromBuy
+                                    ? AppColors().blueColor
+                                    : AppColors().redColor,
                               ),
                               SizedBox(
                                 width: 10,
                               ),
 
                               Text(
-                                isFromBuy ? "Modify Buy Order" : "Modify Sell Order",
+                                isFromBuy
+                                    ? "Modify Buy Order"
+                                    : "Modify Sell Order",
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 14,
-                                  color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
+                                  color: isFromBuy
+                                      ? AppColors().blueColor
+                                      : AppColors().redColor,
                                   fontFamily: CustomFonts.family1Medium,
                                 ),
                               ),
@@ -477,14 +542,17 @@ class TradeListController extends BaseController {
                         ),
                         Expanded(
                           child: Container(
-                            color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
+                            color: isFromBuy
+                                ? AppColors().blueColor
+                                : AppColors().redColor,
                             padding: EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Client Name",
@@ -492,14 +560,16 @@ class TradeListController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
+                                            fontFamily:
+                                                CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Container(
                                           width: 210,
                                           height: 40,
                                           color: AppColors().whiteColor,
-                                          margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                                          margin: EdgeInsets.only(
+                                              top: 5, bottom: 5, right: 10),
                                           child: Center(
                                             child: Row(
                                               children: [
@@ -507,11 +577,13 @@ class TradeListController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  arrTrade[selectedOrderIndex].userName!,
+                                                  arrTrade[selectedOrderIndex]
+                                                      .userName!,
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,
-                                                    fontFamily: CustomFonts.family1Regular,
+                                                    fontFamily: CustomFonts
+                                                        .family1Regular,
                                                   ),
                                                 ),
                                               ],
@@ -521,7 +593,8 @@ class TradeListController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Order Type",
@@ -529,14 +602,16 @@ class TradeListController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
+                                            fontFamily:
+                                                CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Container(
                                           width: 210,
                                           height: 40,
                                           color: AppColors().whiteColor,
-                                          margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                                          margin: EdgeInsets.only(
+                                              top: 5, bottom: 5, right: 10),
                                           child: Center(
                                             child: Row(
                                               children: [
@@ -544,11 +619,13 @@ class TradeListController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  arrTrade[selectedOrderIndex].orderTypeValue!,
+                                                  arrTrade[selectedOrderIndex]
+                                                      .orderTypeValue!,
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,
-                                                    fontFamily: CustomFonts.family1Regular,
+                                                    fontFamily: CustomFonts
+                                                        .family1Regular,
                                                   ),
                                                 ),
                                               ],
@@ -558,12 +635,15 @@ class TradeListController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Obx(() {
                                           print(isValidQty.value);
                                           return Text(
-                                            isValidQty.value ? "Quantity" : "Invalid Quantity",
+                                            isValidQty.value
+                                                ? "Quantity"
+                                                : "Invalid Quantity",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
@@ -572,42 +652,68 @@ class TradeListController extends BaseController {
                                                   : isFromBuy
                                                       ? AppColors().redColor
                                                       : AppColors().blueColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           );
                                         }),
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5),
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 5),
                                           child: CustomTextField(
                                             regex: "[0-9]",
                                             type: '',
-                                            focusBorderColor: AppColors().redColor,
-                                            keyBoardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
+                                            focusBorderColor:
+                                                AppColors().redColor,
+                                            keyBoardType: const TextInputType
+                                                .numberWithOptions(
+                                                signed: true, decimal: false),
                                             isEnabled: true,
                                             isOptional: false,
                                             isNoNeededCapital: true,
-                                            inValidMsg: AppString.emptyMobileNumber,
+                                            inValidMsg:
+                                                AppString.emptyMobileNumber,
                                             placeHolderMsg: "",
                                             labelMsg: "",
-                                            emptyFieldMsg: AppString.emptyMobileNumber,
+                                            emptyFieldMsg:
+                                                AppString.emptyMobileNumber,
                                             controller: qtyController,
                                             focus: qtyFocus,
                                             isSecure: false,
-                                            keyboardButtonType: TextInputAction.next,
+                                            keyboardButtonType:
+                                                TextInputAction.next,
                                             onChange: () {
-                                              if (qtyController.text.isNotEmpty) {
-                                                if (arrTrade[selectedOrderIndex].oddLotTrade == 1) {
-                                                  var temp = (num.parse(qtyController.text) / arrTrade[selectedOrderIndex].lotSize!);
-                                                  lotController.text = temp.toStringAsFixed(2);
+                                              if (qtyController
+                                                  .text.isNotEmpty) {
+                                                if (arrTrade[selectedOrderIndex]
+                                                        .oddLotTrade ==
+                                                    1) {
+                                                  var temp = (num.parse(
+                                                          qtyController.text) /
+                                                      arrTrade[
+                                                              selectedOrderIndex]
+                                                          .lotSize!);
+                                                  lotController.text =
+                                                      temp.toStringAsFixed(2);
                                                   isValidQty.value = true;
                                                 } else {
-                                                  var temp = (num.parse(qtyController.text) / arrTrade[selectedOrderIndex].lotSize!);
+                                                  var temp = (num.parse(
+                                                          qtyController.text) /
+                                                      arrTrade[
+                                                              selectedOrderIndex]
+                                                          .lotSize!);
 
                                                   print(temp);
-                                                  if ((num.parse(qtyController.text) % arrTrade[selectedOrderIndex].lotSize!) == 0) {
-                                                    lotController.text = temp.toStringAsFixed(0);
+                                                  if ((num.parse(qtyController
+                                                              .text) %
+                                                          arrTrade[
+                                                                  selectedOrderIndex]
+                                                              .lotSize!) ==
+                                                      0) {
+                                                    lotController.text =
+                                                        temp.toStringAsFixed(0);
                                                     isValidQty.value = true;
                                                   } else {
                                                     isValidQty.value = false;
@@ -629,25 +735,30 @@ class TradeListController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 10),
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
                                           child: Text(
                                             "Lot",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                          child: NumberInputWithIncrementDecrementOwn(
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 5, horizontal: 10),
+                                          child:
+                                              NumberInputWithIncrementDecrementOwn(
                                             incIconSize: 18,
                                             decIconSize: 18,
                                             validator: (value) {
@@ -662,22 +773,36 @@ class TradeListController extends BaseController {
                                               setState(() {});
                                             },
                                             onChanged: (newValue) {},
-                                            autovalidateMode: AutovalidateMode.disabled,
+                                            autovalidateMode:
+                                                AutovalidateMode.disabled,
                                             fractionDigits: 2,
                                             textAlign: TextAlign.left,
 
-                                            initialValue: num.tryParse(lotController.text) ?? 0,
+                                            initialValue: num.tryParse(
+                                                    lotController.text) ??
+                                                0,
                                             incDecFactor: 1,
                                             isInt: true,
                                             style: TextStyle(
                                               fontSize: 14,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
+                                            numberFieldDecoration:
+                                                InputDecoration(
+                                                    border: InputBorder.none,
+                                                    fillColor:
+                                                        AppColors().whiteColor,
+                                                    contentPadding:
+                                                        EdgeInsets.only(
+                                                            bottom: 8,
+                                                            left: 20)),
 
-                                            widgetContainerDecoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(0),
+                                            widgetContainerDecoration:
+                                                BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(0),
                                               color: AppColors().whiteColor,
                                             ),
                                             controller: lotController,
@@ -688,7 +813,8 @@ class TradeListController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -700,7 +826,8 @@ class TradeListController extends BaseController {
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily: CustomFonts.family1Regular,
+                                              fontFamily:
+                                                  CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
@@ -712,23 +839,39 @@ class TradeListController extends BaseController {
                                             margin: EdgeInsets.symmetric(
                                               vertical: 5,
                                             ),
-                                            child: NumberInputWithIncrementDecrementOwn(
+                                            child:
+                                                NumberInputWithIncrementDecrementOwn(
                                               incIconSize: 18,
                                               decIconSize: 18,
                                               validator: (value) {
                                                 return null;
                                               },
                                               onChanged: (newValue) {},
-                                              autovalidateMode: AutovalidateMode.disabled,
+                                              autovalidateMode:
+                                                  AutovalidateMode.disabled,
                                               fractionDigits: 2,
                                               textAlign: TextAlign.left,
-                                              enabled: selectedOrderType.value.name != "Market",
-                                              initialValue: double.tryParse(priceController.text) ?? 0.0,
+                                              enabled: selectedOrderType
+                                                      .value.name !=
+                                                  "Market",
+                                              initialValue: double.tryParse(
+                                                      priceController.text) ??
+                                                  0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
-                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: EdgeInsets.only(bottom: 8, left: 20)),
-                                              widgetContainerDecoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(0),
+                                              numberFieldDecoration:
+                                                  InputDecoration(
+                                                      border: InputBorder.none,
+                                                      fillColor: AppColors()
+                                                          .whiteColor,
+                                                      contentPadding:
+                                                          EdgeInsets.only(
+                                                              bottom: 8,
+                                                              left: 20)),
+                                              widgetContainerDecoration:
+                                                  BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,
                                               ),
                                               controller: priceController,
@@ -744,7 +887,8 @@ class TradeListController extends BaseController {
                                 Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Exchange",
@@ -752,14 +896,16 @@ class TradeListController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
+                                            fontFamily:
+                                                CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Container(
                                           width: 210,
                                           height: 40,
                                           color: AppColors().whiteColor,
-                                          margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                                          margin: EdgeInsets.only(
+                                              top: 5, bottom: 5, right: 10),
                                           child: Center(
                                             child: Row(
                                               children: [
@@ -767,11 +913,13 @@ class TradeListController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  arrTrade[selectedOrderIndex].exchangeName!,
+                                                  arrTrade[selectedOrderIndex]
+                                                      .exchangeName!,
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,
-                                                    fontFamily: CustomFonts.family1Regular,
+                                                    fontFamily: CustomFonts
+                                                        .family1Regular,
                                                   ),
                                                 ),
                                               ],
@@ -781,7 +929,8 @@ class TradeListController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Symbol",
@@ -789,14 +938,16 @@ class TradeListController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily: CustomFonts.family1Regular,
+                                            fontFamily:
+                                                CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Container(
                                           width: 210,
                                           height: 40,
                                           color: AppColors().whiteColor,
-                                          margin: EdgeInsets.only(top: 5, bottom: 5, right: 10),
+                                          margin: EdgeInsets.only(
+                                              top: 5, bottom: 5, right: 10),
                                           child: Center(
                                             child: Row(
                                               children: [
@@ -804,11 +955,13 @@ class TradeListController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  arrTrade[selectedOrderIndex].symbolTitle!,
+                                                  arrTrade[selectedOrderIndex]
+                                                      .symbolTitle!,
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,
-                                                    fontFamily: CustomFonts.family1Regular,
+                                                    fontFamily: CustomFonts
+                                                        .family1Regular,
                                                   ),
                                                 ),
                                               ],
@@ -823,24 +976,30 @@ class TradeListController extends BaseController {
                                           height: 20,
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               width: 210,
                                               height: 42,
                                               child: CustomButton(
                                                 isEnabled: true,
-                                                shimmerColor: AppColors().whiteColor,
+                                                shimmerColor:
+                                                    AppColors().whiteColor,
                                                 title: "Submit",
                                                 textSize: 16,
                                                 focusKey: SubmitFocus,
-                                                borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
-                                                focusShadowColor: AppColors().whiteColor,
+                                                borderColor: isFromBuy
+                                                    ? AppColors().redColor
+                                                    : AppColors().blueColor,
+                                                focusShadowColor:
+                                                    AppColors().whiteColor,
                                                 onPress: () {
                                                   // initiateManualTrade(isFromBuy);
                                                   initiateTrade(isFromBuy);
                                                 },
-                                                bgColor: AppColors().grayLightLine,
+                                                bgColor:
+                                                    AppColors().grayLightLine,
                                                 isFilled: true,
                                                 textColor: AppColors().darkText,
                                                 isTextCenter: true,
@@ -855,12 +1014,16 @@ class TradeListController extends BaseController {
                                               height: 42,
                                               child: CustomButton(
                                                 isEnabled: true,
-                                                shimmerColor: AppColors().whiteColor,
+                                                shimmerColor:
+                                                    AppColors().whiteColor,
                                                 title: "Cancel",
-                                                borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
+                                                borderColor: isFromBuy
+                                                    ? AppColors().redColor
+                                                    : AppColors().blueColor,
                                                 textSize: 16,
                                                 focusKey: CancelFocus,
-                                                focusShadowColor: AppColors().whiteColor,
+                                                focusShadowColor:
+                                                    AppColors().whiteColor,
                                                 // buttonWidth: 36.w,
                                                 onPress: () {
                                                   // selectedExchangeFromPopup.value = ExchangeData();
@@ -933,11 +1096,13 @@ class TradeListController extends BaseController {
             }
           case PendingOrderColumns.bs:
             {
-              list.add(excelLib.TextCellValue(element.tradeTypeValue!.toUpperCase()));
+              list.add(excelLib.TextCellValue(
+                  element.tradeTypeValue!.toUpperCase()));
             }
           case PendingOrderColumns.qty:
             {
-              list.add(excelLib.TextCellValue(element.totalQuantity.toString()));
+              list.add(
+                  excelLib.TextCellValue(element.totalQuantity.toString()));
             }
           case PendingOrderColumns.lot:
             {
@@ -946,24 +1111,29 @@ class TradeListController extends BaseController {
 
           case PendingOrderColumns.price:
             {
-              list.add(excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
+              list.add(
+                  excelLib.TextCellValue(element.price!.toStringAsFixed(2)));
             }
 
           case PendingOrderColumns.orderDT:
             {
-              list.add(excelLib.TextCellValue(shortFullDateTime(element.createdAt!)));
+              list.add(excelLib.TextCellValue(
+                  shortFullDateTime(element.createdAt!)));
             }
           case PendingOrderColumns.type:
             {
-              list.add(excelLib.TextCellValue(element.productTypeValue.toString()));
+              list.add(
+                  excelLib.TextCellValue(element.productTypeValue.toString()));
             }
           case PendingOrderColumns.cmp:
             {
-              list.add(excelLib.TextCellValue(element.currentPriceFromSocket.toString()));
+              list.add(excelLib.TextCellValue(
+                  element.currentPriceFromSocket.toString()));
             }
           case PendingOrderColumns.refPrice:
             {
-              list.add(excelLib.TextCellValue(element.referencePrice!.toStringAsFixed(2)));
+              list.add(excelLib.TextCellValue(
+                  element.referencePrice!.toStringAsFixed(2)));
             }
           case PendingOrderColumns.ipAddress:
             {
@@ -1071,6 +1241,11 @@ class TradeListController extends BaseController {
       });
       dataList.add(list);
     });
-    exportPDFFile(fileName: "Orders", title: "Orders", width: globalMaxWidth, titleList: headers, dataList: dataList);
+    exportPDFFile(
+        fileName: "Orders",
+        title: "Orders",
+        width: globalMaxWidth,
+        titleList: headers,
+        dataList: dataList);
   }
 }

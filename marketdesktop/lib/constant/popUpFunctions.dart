@@ -21,6 +21,7 @@ import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontCha
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/FontChangePopUp/fontChangeWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/ScriptDetailPopUp/scriptDetailPopupWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchScriptInfoPopUpWrapper.dart';
+import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/rulesPopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeInfoPopUpWrapper.dart';
 import 'package:marketdesktop/screens/MainTabs/ViewTab/TradeScreen/tradeListController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/BrkPopUp/brkPopUpController.dart';
@@ -57,7 +58,12 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import '../screens/UserDetailPopups/userDetailsPopUpWrapper.dart';
 import 'color.dart';
 
-showUserDetailsPopUp({String userId = "", String userName = "", String roll = "", int selectedCurrentTab = 0, String selectedMenuName = "Position"}) async {
+showUserDetailsPopUp(
+    {String userId = "",
+    String userName = "",
+    String roll = "",
+    int selectedCurrentTab = 0,
+    String selectedMenuName = "Position"}) async {
   bool isAvailable = Get.isRegistered<UserDetailsPopUpController>();
   if (isAvailable) {
     Get.back();
@@ -65,12 +71,14 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
     await Get.delete<UserDetailsPopUpController>();
 
     Get.put(UserDetailsPopUpController());
-    Get.find<UserDetailsPopUpController>().selectedCurrentTab = selectedCurrentTab;
+    Get.find<UserDetailsPopUpController>().selectedCurrentTab =
+        selectedCurrentTab;
     Get.find<UserDetailsPopUpController>().selectedMenuName = selectedMenuName;
     Get.find<UserDetailsPopUpController>().update();
   } else {
     Get.put(UserDetailsPopUpController());
-    Get.find<UserDetailsPopUpController>().selectedCurrentTab = selectedCurrentTab;
+    Get.find<UserDetailsPopUpController>().selectedCurrentTab =
+        selectedCurrentTab;
     Get.find<UserDetailsPopUpController>().selectedMenuName = selectedMenuName;
     Get.find<UserDetailsPopUpController>().update();
   }
@@ -144,7 +152,9 @@ showUserDetailsPopUp({String userId = "", String userName = "", String roll = ""
             child: Container(
               width: 1300,
               height: 60.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: UserDetailsPopUpScreen(),
             ),
           ));
@@ -174,7 +184,9 @@ showOpenPositionPopUp(String symbolId, String userId) {
             child: Container(
               width: 960,
               height: 60.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: OpenPositionPopUpScreen(),
             ),
           ));
@@ -244,7 +256,8 @@ showIPTradeAlertPopUp() {
           ));
 }
 
-showUserWisePLSummaryPopUp({String userId = "", String userName = "", String roll = ""}) {
+showUserWisePLSummaryPopUp(
+    {String userId = "", String userName = "", String roll = ""}) {
   Get.put(UserWisePLSummaryPopUpController());
 
   Get.find<UserWisePLSummaryPopUpController>().selectedUserId = userId;
@@ -270,7 +283,9 @@ showUserWisePLSummaryPopUp({String userId = "", String userName = "", String rol
             child: Container(
               width: 60.w,
               height: 60.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: UserWisePLSummaryPopUpScreen(),
             ),
           ));
@@ -296,7 +311,9 @@ showProfitAndLossSummaryPopUp() {
             child: Container(
               width: 60.w,
               height: 60.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: ProfitAndLossSummaryPopUpScreen(),
             ),
           ));
@@ -322,7 +339,9 @@ showProfitAndLossUserWiseSummaryPopUp() {
             child: Container(
               width: 60.w,
               height: 60.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: ProfitAndLossUserWiseSummaryPopUpScreen(),
             ),
           ));
@@ -352,7 +371,9 @@ showSettlemetPopUp(String userId, String username) {
             child: Container(
               width: 85.w,
               height: 60.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: SettlementPopUpScreen(),
             ),
           ));
@@ -468,7 +489,9 @@ showMarketColumnPopUp() {
             child: Container(
               width: 20.w,
               height: 40.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: marketColumnScreen(),
             ),
           ));
@@ -496,7 +519,9 @@ showSharingDetailPopup() {
               // height: 28.h,
               width: 50.w,
               height: 40.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: ShareDetailPopUpScreen(),
             ),
           ));
@@ -524,7 +549,9 @@ showFontChangePopup() {
               // height: 28.h,
               width: 535,
               height: 400,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: FontChangeScreen(),
             ),
           ));
@@ -552,7 +579,9 @@ showFilterPopup() {
               // height: 28.h,
               width: 50.w,
               height: 40.h,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: FilterPopUpScreen(),
             ),
           ));
@@ -608,7 +637,9 @@ showAboutUsPopup() {
               child: Container(
                 width: 950,
                 height: 300,
-                decoration: BoxDecoration(color: AppColors().whiteColor, border: Border.all(color: Colors.transparent, width: 1)),
+                decoration: BoxDecoration(
+                    color: AppColors().whiteColor,
+                    border: Border.all(color: Colors.transparent, width: 1)),
                 child: AboutUsPopUpScreen(),
               ),
             ),
@@ -637,7 +668,9 @@ showMarketTimingPopup() {
               // height: 28.h,
               width: 400,
               height: 600,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: MarketTimingScreen(),
             ),
           ));
@@ -665,7 +698,9 @@ showAppShortcutPopup() {
               // height: 28.h,
               width: 400,
               height: 500,
-              decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1)),
+              decoration: BoxDecoration(
+                  border:
+                      Border.all(color: AppColors().lightOnlyText, width: 1)),
               child: ShortcutScreen(),
             ),
           ));
@@ -728,7 +763,43 @@ showScriptInfoPopup() {
           ));
 }
 
-generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons = false, bool isFilterAvailable = false, bool isFilterIconHide = false, Function? filterClick, Function? pdfClick, Function? excelClick}) {
+showRulesPopup() {
+  showDialog<String>(
+      context: Get.context!,
+      // barrierColor: Colors.transparent,
+      barrierDismissible: true,
+      builder: (BuildContext context) => FloatingDialog(
+            // titlePadding: EdgeInsets.zero,
+            // backgroundColor: AppColors().bgColor,
+            // surfaceTintColor: AppColors().bgColor,
+
+            // contentPadding: EdgeInsets.zero,
+            // insetPadding: EdgeInsets.symmetric(
+            //   horizontal: 20.w,
+            //   vertical: 32.h,
+            // ),
+            enableDragAnimation: false,
+            child: Container(
+              // width: 30.w,
+              // height: 28.h,
+              color: AppColors().whiteColor,
+              width: 70.w,
+              height: 60.h,
+
+              child: RulesPopUpScreen(),
+            ),
+          ));
+}
+
+generalContainerPopup(
+    {Widget? view,
+    String title = "",
+    bool showTrailingIcons = false,
+    bool isFilterAvailable = false,
+    bool isFilterIconHide = false,
+    Function? filterClick,
+    Function? pdfClick,
+    Function? excelClick}) {
   showDialog<String>(
       context: Get.context!,
       // barrierColor: Colors.transparent,
@@ -743,7 +814,13 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
                 height: 80.h,
                 child: Column(
                   children: [
-                    headerViewContent(title: title, isFilterAvailable: isFilterAvailable, pdfClick: pdfClick, excelClick: excelClick, filterClick: filterClick, isFilterIconHide: isFilterIconHide),
+                    headerViewContent(
+                        title: title,
+                        isFilterAvailable: isFilterAvailable,
+                        pdfClick: pdfClick,
+                        excelClick: excelClick,
+                        filterClick: filterClick,
+                        isFilterIconHide: isFilterIconHide),
                     Expanded(child: view!),
                   ],
                 ),
@@ -752,7 +829,15 @@ generalContainerPopup({Widget? view, String title = "", bool showTrailingIcons =
           ));
 }
 
-Widget headerViewContent({String title = "", bool isFromMarket = false, bool isFilterAvailable = false, bool isFilterIconHide = false, Function? filterClick, Function? pdfClick, Function? excelClick, Function? closeClick}) {
+Widget headerViewContent(
+    {String title = "",
+    bool isFromMarket = false,
+    bool isFilterAvailable = false,
+    bool isFilterIconHide = false,
+    Function? filterClick,
+    Function? pdfClick,
+    Function? excelClick,
+    Function? closeClick}) {
   return Container(
       width: 100.w,
       height: 35,
