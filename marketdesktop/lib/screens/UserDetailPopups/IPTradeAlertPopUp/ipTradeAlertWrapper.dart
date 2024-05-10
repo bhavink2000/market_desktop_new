@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-import 'package:marketdesktop/customWidgets/appScrollBar.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/IPTradeAlertPopUp/ipTradeAlertController.dart';
-import 'package:marketdesktop/screens/UserDetailPopups/SuperAdminTradePopUp/superAdminTradePopUpController.dart';
 import '../../../constant/index.dart';
 
 class IPTradeAlertPopUpScreen extends BaseView<IPTradeAlertPopUpController> {

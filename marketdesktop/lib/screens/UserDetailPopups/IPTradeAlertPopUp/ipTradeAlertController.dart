@@ -3,7 +3,6 @@ import 'package:marketdesktop/modelClass/ipTradeAlertModelClass.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../../modelClass/exchangeListModelClass.dart';
 import '../../../constant/index.dart';
-import '../../../modelClass/superAdminTradePopUpModelClass.dart';
 import '../../MainTabs/ViewTab/MarketWatchScreen/marketWatchController.dart';
 import '../../MainTabs/ViewTab/TradeScreen/successTradeListController.dart';
 import '../../MainTabs/ViewTab/TradeScreen/successTradeListWrapper.dart';

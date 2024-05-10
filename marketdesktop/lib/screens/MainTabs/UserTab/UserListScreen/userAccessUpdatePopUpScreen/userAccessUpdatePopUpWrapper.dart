@@ -1,11 +1,6 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:get/get.dart';
-
-import 'package:marketdesktop/customWidgets/appButton.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userAccessUpdatePopUpScreen/userAccessUpdatePopUpController.dart';
-
 import '../../../../../constant/index.dart';
-import '../../../../../modelClass/constantModelClass.dart';
 import '../../../../BaseController/baseController.dart';
 
 class UserAccessUpdatePopUpScreen extends BaseView<UserAccessUpdatePopUpController> {

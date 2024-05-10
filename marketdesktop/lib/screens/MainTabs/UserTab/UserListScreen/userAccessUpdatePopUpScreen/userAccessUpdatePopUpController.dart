@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:marketdesktop/constant/index.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
-
-import '../../../../../modelClass/constantModelClass.dart';
 import '../../../../../modelClass/myUserListModelClass.dart';
 import '../../../../BaseController/baseController.dart';
 

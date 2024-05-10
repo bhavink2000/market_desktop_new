@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:floating_dialog/floating_dialog.dart';
 import 'package:marketdesktop/modelClass/strikePriceModelClass.dart';
 import 'package:marketdesktop/service/database/dbService.dart';
@@ -171,8 +170,7 @@ class MarketWatchController extends BaseController {
       globalScreenSize = Size(size.frame.width, size.frame.height);
       globalMaxWidth = size.frame.width > 1750 ? size.frame.width : 1750; //
 
-      selectedOrderType.value =
-          arrOrderType.firstWhere((element) => element.id == "market");
+      selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
       update();
       // getUserList();
       getExchangeList();
@@ -203,8 +201,7 @@ class MarketWatchController extends BaseController {
 
   getUserList(String keyWord, String userType) async {
     print(keyWord);
-    var response = await service.getMyUserListByKeywordCall(
-        text: keyWord, roleId: userType);
+    var response = await service.getMyUserListByKeywordCall(text: keyWord, roleId: userType);
     if (response != null) {
       if (response.statusCode == 200) {
         arrUserListOnlyClient = response.data ?? [];
@@ -242,9 +239,7 @@ class MarketWatchController extends BaseController {
   }
 
   getExpiryList() async {
-    var response = await service.expiryListCall(
-        selectedExchangeForF5.value.exchangeId!,
-        selectedSymbolForF5.value!.symbolId!);
+    var response = await service.expiryListCall(selectedExchangeForF5.value.exchangeId!, selectedSymbolForF5.value!.symbolId!);
     if (response != null) {
       if (response.statusCode == 200) {
         arrExpiry = response.data ?? [];
@@ -254,9 +249,7 @@ class MarketWatchController extends BaseController {
   }
 
   getExpiryListForTop() async {
-    var response = await service.expiryListCall(
-        selectedExchange.value.exchangeId!,
-        selectedSymbolForTopDropDown.value!.symbolId!);
+    var response = await service.expiryListCall(selectedExchange.value.exchangeId!, selectedSymbolForTopDropDown.value!.symbolId!);
     if (response != null) {
       if (response.statusCode == 200) {
         arrExpiry = response.data ?? [];
@@ -266,11 +259,7 @@ class MarketWatchController extends BaseController {
   }
 
   getStrikePriceList() async {
-    var response = await service.strikePriceListCall(
-        selectedExchangeForF5.value.exchangeId!,
-        selectedSymbolForF5.value!.symbolId!,
-        selectedCallPutForF5.value.id!,
-        shortDateForBackend(selectedExpiryForF5.value.expiryDate!));
+    var response = await service.strikePriceListCall(selectedExchangeForF5.value.exchangeId!, selectedSymbolForF5.value!.symbolId!, selectedCallPutForF5.value.id!, shortDateForBackend(selectedExpiryForF5.value.expiryDate!));
     if (response != null) {
       if (response.statusCode == 200) {
         arrStrikePrice = response.data ?? [];
@@ -280,11 +269,7 @@ class MarketWatchController extends BaseController {
   }
 
   getStrikePriceListForTop() async {
-    var response = await service.strikePriceListCall(
-        selectedExchange.value.exchangeId!,
-        selectedSymbolForTopDropDown.value!.symbolId!,
-        selectedCallPut.value.id!,
-        shortDateForBackend(selectedExpiry.value.expiryDate!));
+    var response = await service.strikePriceListCall(selectedExchange.value.exchangeId!, selectedSymbolForTopDropDown.value!.symbolId!, selectedCallPut.value.id!, shortDateForBackend(selectedExpiry.value.expiryDate!));
     if (response != null) {
       if (response.statusCode == 200) {
         arrStrikePrice = response.data ?? [];
@@ -306,16 +291,10 @@ class MarketWatchController extends BaseController {
     selectedCallPut.value = Type();
     selectedStrikePrice.value = StrikePriceData();
     update();
-    var response = await service.allSymbolListCallForMarket(
-        1,
-        "",
-        isFromF5
-            ? selectedExchangeForF5.value.exchangeId ?? ""
-            : selectedExchange.value.exchangeId ?? "");
+    var response = await service.allSymbolListCallForMarket(1, "", isFromF5 ? selectedExchangeForF5.value.exchangeId ?? "" : selectedExchange.value.exchangeId ?? "");
     if (isFromF5) {
       arrAllScriptForF5 = response!.data ?? [];
-      var temp = arrAllScriptForF5.firstWhereOrNull(
-          (element) => element.symbolId == selectedSymbol!.symbolId);
+      var temp = arrAllScriptForF5.firstWhereOrNull((element) => element.symbolId == selectedSymbol!.symbolId);
       selectedSymbolForF5.value = temp ?? GlobalSymbolData();
 
       getExpiryList();
@@ -332,8 +311,7 @@ class MarketWatchController extends BaseController {
   sortScript(String name) {
     arrScript.removeWhere((element) => element.symbol!.isEmpty);
     arrPreScript.removeWhere((element) => element.symbol!.isEmpty);
-    var index =
-        arrListTitleMarket.indexWhere((element) => element.title == name);
+    var index = arrListTitleMarket.indexWhere((element) => element.title == name);
     switch (name) {
       case "EXCHANGE":
         switch (arrListTitleMarket[index].sortType) {
@@ -651,8 +629,7 @@ class MarketWatchController extends BaseController {
     }
 
     for (var i = 0; i < arrScript.length; i++) {
-      var preIndex = arrPreScript
-          .indexWhere((element) => element.symbol == arrScript[i].symbol);
+      var preIndex = arrPreScript.indexWhere((element) => element.symbol == arrScript[i].symbol);
       var temp = arrPreScript.removeAt(preIndex);
       arrPreScript.insert(i, temp);
     }
@@ -666,8 +643,7 @@ class MarketWatchController extends BaseController {
     var msg = "";
     if (selectedOrderType.value.id != "limit") {
       if (selectedSymbol!.tradeSecond != 0) {
-        var ltpObj = arrLtpUpdate.firstWhereOrNull(
-            (element) => element.symbolTitle == selectedScript.value!.symbol);
+        var ltpObj = arrLtpUpdate.firstWhereOrNull((element) => element.symbolTitle == selectedScript.value!.symbol);
 
         if (ltpObj == null) {
           return "INVALID SERVER TIME";
@@ -857,27 +833,17 @@ class MarketWatchController extends BaseController {
                     ? selectedScript.value!.ask!.toDouble()
                     : selectedScript.value!.bid!.toDouble(),
         lotSize: selectedSymbol!.lotSize!,
-        orderType: selectedOrderType.value.id == "123" ||
-                (selectedOrderType.value.id == "limit" &&
-                    isFromLimitCheck(
-                            double.parse(priceController.text), isFromBuy) ==
-                        false)
-            ? "market"
-            : selectedOrderType.value.id,
+        orderType: selectedOrderType.value.id == "123" || (selectedOrderType.value.id == "limit" && isFromLimitCheck(double.parse(priceController.text), isFromBuy) == false) ? "market" : selectedOrderType.value.id,
         tradeType: isFromBuy ? "buy" : "sell",
         exchangeId: selectedSymbol!.exchangeId,
-        productType:
-            selectedOrderType.value.id == "123" ? "intraday" : "longTerm",
-        refPrice: isFromBuy
-            ? selectedScript.value!.ask!.toDouble()
-            : selectedScript.value!.bid!.toDouble(),
+        productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm",
+        refPrice: isFromBuy ? selectedScript.value!.ask!.toDouble() : selectedScript.value!.bid!.toDouble(),
       );
 
       //longterm
       isTradeCallFinished.value = false;
       update();
-      selectedOrderType.value =
-          arrOrderType.firstWhere((element) => element.id == "market");
+      selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
       if (response != null) {
         // Get.back();
         if (response.statusCode == 200) {
@@ -898,9 +864,7 @@ class MarketWatchController extends BaseController {
           //   positionVC.getPositionList("", isFromClear: true, isFromfilter: true);
           // }
 
-          showSuccessToast(response.meta!.message!,
-              bgColor:
-                  isFromBuy ? AppColors().blueColor : AppColors().redColor);
+          showSuccessToast(response.meta!.message!, bgColor: isFromBuy ? AppColors().blueColor : AppColors().redColor);
           isTradeCallFinished.value = true;
           update();
         } else {
@@ -949,19 +913,10 @@ class MarketWatchController extends BaseController {
                 : isFromBuy
                     ? selectedScript.value!.ask!.toDouble()
                     : selectedScript.value!.bid!.toDouble(),
-        orderType: selectedOrderType.value.id == "123" ||
-                (selectedOrderType.value.id == "limit" &&
-                    isFromLimitCheck(
-                            double.parse(priceController.text), isFromBuy) ==
-                        false)
-            ? "market"
-            : selectedOrderType.value.id,
+        orderType: selectedOrderType.value.id == "123" || (selectedOrderType.value.id == "limit" && isFromLimitCheck(double.parse(priceController.text), isFromBuy) == false) ? "market" : selectedOrderType.value.id,
         tradeType: isFromBuy ? "buy" : "sell",
-        productType:
-            selectedOrderType.value.id == "123" ? "intraday" : "longTerm",
-        refPrice: isFromBuy
-            ? selectedScript.value!.ask!.toDouble()
-            : selectedScript.value!.bid!.toDouble(),
+        productType: selectedOrderType.value.id == "123" ? "intraday" : "longTerm",
+        refPrice: isFromBuy ? selectedScript.value!.ask!.toDouble() : selectedScript.value!.bid!.toDouble(),
       );
 
       //longterm
@@ -969,8 +924,7 @@ class MarketWatchController extends BaseController {
       update();
       if (response != null) {
         // Get.back();
-        selectedOrderType.value =
-            arrOrderType.firstWhere((element) => element.id == "market");
+        selectedOrderType.value = arrOrderType.firstWhere((element) => element.id == "market");
         if (response.statusCode == 200) {
           // bool isPositionAvailable = Get.isRegistered<PositionController>();
           // bool isTradeAvailable = Get.isRegistered<TradeListController>();
@@ -989,9 +943,7 @@ class MarketWatchController extends BaseController {
           //   positionVC.getPositionList("", isFromClear: true, isFromfilter: true);
           // }
 
-          showSuccessToast(response.meta!.message!,
-              bgColor:
-                  isFromBuy ? AppColors().blueColor : AppColors().redColor);
+          showSuccessToast(response.meta!.message!, bgColor: isFromBuy ? AppColors().blueColor : AppColors().redColor);
           isTradeCallFinished.value = true;
           update();
         } else {
@@ -1019,8 +971,7 @@ class MarketWatchController extends BaseController {
         arrTabList = response.data ?? [];
         if (arrTabList.isNotEmpty) {
           await dbSerivice.initDatabase(arrTabList.length);
-          arrCurrentWatchListOrder.addAll(
-              await dbSerivice.readScripts((selectedPortfolio + 1).toString()));
+          arrCurrentWatchListOrder.addAll(await dbSerivice.readScripts((selectedPortfolio + 1).toString()));
           selectedTab = arrTabList[0];
           getSymbolListTabWise();
         }
@@ -1034,8 +985,7 @@ class MarketWatchController extends BaseController {
     arrPreScript.clear();
     isSymbolListApiCall = true;
     update();
-    var response =
-        await service.getAllSymbolTabWiseListCall(selectedTab!.userTabId!);
+    var response = await service.getAllSymbolTabWiseListCall(selectedTab!.userTabId!);
     isSymbolListApiCall = false;
     update();
     if (response?.statusCode == 200) {
@@ -1047,29 +997,23 @@ class MarketWatchController extends BaseController {
       }
       try {
         for (int i = 0; i < arrSymbol.length; i++) {
-          var index = arrCurrentWatchListOrder.indexWhere(
-              (it) => it.values.toList().last == arrSymbol[i].symbol);
+          var index = arrCurrentWatchListOrder.indexWhere((it) => it.values.toList().last == arrSymbol[i].symbol);
           if (index != -1) {
             // arrScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
             // arrPreScript[index] = (ScriptData.fromJson(arrSymbol[i].toJson()));
             arrPreScript.removeAt(index);
-            arrPreScript.insert(
-                index, (ScriptData.fromJson(arrSymbol[i].toJson())));
+            arrPreScript.insert(index, (ScriptData.fromJson(arrSymbol[i].toJson())));
             arrScript.removeAt(index);
-            arrScript.insert(
-                index, (ScriptData.fromJson(arrSymbol[i].toJson())));
+            arrScript.insert(index, (ScriptData.fromJson(arrSymbol[i].toJson())));
           } else {
             var position = arrCurrentWatchListOrder.length;
-            Map<String, dynamic> newItem = {
-              position.toString(): arrSymbol[i].symbol
-            };
+            Map<String, dynamic> newItem = {position.toString(): arrSymbol[i].symbol};
             if (position == 0) {
               arrCurrentWatchListOrder = [newItem];
             } else {
               arrCurrentWatchListOrder.add(newItem);
             }
-            dbSerivice.addScript((selectedPortfolio + 1).toString(),
-                arrSymbol[i].symbol!, position);
+            dbSerivice.addScript((selectedPortfolio + 1).toString(), arrSymbol[i].symbol!, position);
             arrScript.add(ScriptData.fromJson(arrSymbol[i].toJson()));
             arrPreScript.add(ScriptData.fromJson(arrSymbol[i].toJson()));
           }
@@ -1099,8 +1043,7 @@ class MarketWatchController extends BaseController {
       if (socketData.status == true) {
         if (isScriptApiGoing == false) {
           if (selectedScriptForF5.value?.symbol != null) {
-            if (selectedScriptForF5.value!.symbol == socketData.data!.symbol ||
-                selectedScriptForF5.value!.name == socketData.data!.symbol) {
+            if (selectedScriptForF5.value!.symbol == socketData.data!.symbol || selectedScriptForF5.value!.name == socketData.data!.symbol) {
               selectedScriptForF5.value = socketData.data!;
               selectedScriptForF5.value!.copyObject(socketData.data!);
               // print(selectedScriptForF5.value!.ask);
@@ -1112,27 +1055,20 @@ class MarketWatchController extends BaseController {
             }
           }
         }
-        var ltpObj = LtpUpdateModel(
-            symbolId: "",
-            ltp: socketData.data!.ltp!,
-            symbolTitle: socketData.data!.symbol,
-            dateTime: DateTime.now());
-        var isAvailableObj = arrLtpUpdate.firstWhereOrNull(
-            (element) => socketData.data!.symbol == element.symbolTitle);
+        var ltpObj = LtpUpdateModel(symbolId: "", ltp: socketData.data!.ltp!, symbolTitle: socketData.data!.symbol, dateTime: DateTime.now());
+        var isAvailableObj = arrLtpUpdate.firstWhereOrNull((element) => socketData.data!.symbol == element.symbolTitle);
         if (isAvailableObj == null) {
           arrLtpUpdate.add(ltpObj);
         } else {
           if (isAvailableObj.ltp != ltpObj.ltp) {
-            var index = arrLtpUpdate.indexWhere(
-                (element) => element.symbolTitle == ltpObj.symbolTitle);
+            var index = arrLtpUpdate.indexWhere((element) => element.symbolTitle == ltpObj.symbolTitle);
             arrLtpUpdate[index] = ltpObj;
             // print(ltpObj.symbolTitle);
             // print(ltpObj.ltp);
           }
         }
         // print(arrLtpUpdate.length);
-        var obj = arrScript.firstWhereOrNull(
-            (element) => socketData.data!.symbol == element.symbol);
+        var obj = arrScript.firstWhereOrNull((element) => socketData.data!.symbol == element.symbol);
 
         if (obj?.symbol == selectedScript.value?.symbol) {
           selectedScript.value = socketData.data!;
@@ -1144,15 +1080,13 @@ class MarketWatchController extends BaseController {
         // log("*******************");
         if (obj != null) {
           var index = arrScript.indexOf(obj);
-          var preIndex = arrPreScript
-              .indexWhere((element) => element.symbol == obj.symbol);
+          var preIndex = arrPreScript.indexWhere((element) => element.symbol == obj.symbol);
           arrPreScript.removeAt(preIndex);
           arrPreScript.insert(preIndex, arrScript[index]);
 
           arrScript[index] = socketData.data!;
           arrScript[index].lut = DateTime.now();
-          var symbolObj = arrSymbol.firstWhereOrNull(
-              (element) => element.symbol == arrScript[index].symbol);
+          var symbolObj = arrSymbol.firstWhereOrNull((element) => element.symbol == arrScript[index].symbol);
           if (symbolObj != null) {
             arrScript[index].strikePrice = symbolObj.strikePrice;
             arrScript[index].instrumentType = symbolObj.instrumentType;
@@ -1168,17 +1102,13 @@ class MarketWatchController extends BaseController {
         // }
 
         if (isBuyOpen != -1) {
-          if (selectedOrderType.value.name == "Market" ||
-              selectedOrderType.value.name == "Intraday") {
-            if (arrScript[selectedScriptIndex].symbol ==
-                socketData.data?.symbol) {
+          if (selectedOrderType.value.name == "Market" || selectedOrderType.value.name == "Intraday") {
+            if (arrScript[selectedScriptIndex].symbol == socketData.data?.symbol) {
               // if (userData?.role == UserRollList.user) {
               //   priceController.text = isBuyOpen == 1 ? socketData.data!.ask.toString() : socketData.data!.bid.toString();
               // }
               // if (userData?.role != UserRollList.superAdmin) {
-              priceController.text = isBuyOpen == 1
-                  ? socketData.data!.ask.toString()
-                  : socketData.data!.bid.toString();
+              priceController.text = isBuyOpen == 1 ? socketData.data!.ask.toString() : socketData.data!.bid.toString();
               // }
             }
           }
@@ -1208,8 +1138,7 @@ class MarketWatchController extends BaseController {
           return false;
         }
       });
-      var tempIndex =
-          arrScript.indexWhere((element) => element.symbol == symbolNmae);
+      var tempIndex = arrScript.indexWhere((element) => element.symbol == symbolNmae);
       if (tempIndex != -1) {
         arrScript.removeAt(tempIndex);
         arrPreScript.removeAt(tempIndex);
@@ -1263,8 +1192,7 @@ class MarketWatchController extends BaseController {
 
   addSymbolToTab(String symbolId) async {
     print(symbolId);
-    var response = await service.addSymbolToTabCall(
-        selectedTab!.userTabId!.toString(), symbolId);
+    var response = await service.addSymbolToTabCall(selectedTab!.userTabId!.toString(), symbolId);
     try {
       if (response?.statusCode == 200) {
         // showSuccessToast(response?.meta?.message ?? "");
@@ -1275,35 +1203,24 @@ class MarketWatchController extends BaseController {
           arrScript.add(ScriptData.fromJson(response.data!.toJson()));
           arrPreScript.add(ScriptData.fromJson(response.data!.toJson()));
         } else {
-          if (selectedScriptIndex != -1 &&
-              selectedScriptIndex < arrScript.length) {
+          if (selectedScriptIndex != -1 && selectedScriptIndex < arrScript.length) {
             if (selectedScriptIndex == 0) {
               if (arrScript[selectedScriptIndex + 1].symbol!.isEmpty) {
-                arrScript[selectedScriptIndex + 1] =
-                    ScriptData.fromJson(response.data!.toJson());
-                arrPreScript[selectedScriptIndex + 1] =
-                    ScriptData.fromJson(response.data!.toJson());
+                arrScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
+                arrPreScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
               } else {
-                arrScript.insert(selectedScriptIndex + 1,
-                    ScriptData.fromJson(response.data!.toJson()));
-                arrPreScript.insert(selectedScriptIndex + 1,
-                    ScriptData.fromJson(response.data!.toJson()));
+                arrScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
+                arrPreScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
               }
             } else if (arrScript[selectedScriptIndex - 1].symbol!.isEmpty) {
-              arrScript[selectedScriptIndex - 1] =
-                  ScriptData.fromJson(response.data!.toJson());
-              arrPreScript[selectedScriptIndex - 1] =
-                  ScriptData.fromJson(response.data!.toJson());
+              arrScript[selectedScriptIndex - 1] = ScriptData.fromJson(response.data!.toJson());
+              arrPreScript[selectedScriptIndex - 1] = ScriptData.fromJson(response.data!.toJson());
             } else if (arrScript[selectedScriptIndex + 1].symbol!.isEmpty) {
-              arrScript[selectedScriptIndex + 1] =
-                  ScriptData.fromJson(response.data!.toJson());
-              arrPreScript[selectedScriptIndex + 1] =
-                  ScriptData.fromJson(response.data!.toJson());
+              arrScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
+              arrPreScript[selectedScriptIndex + 1] = ScriptData.fromJson(response.data!.toJson());
             } else {
-              arrScript.insert(selectedScriptIndex + 1,
-                  ScriptData.fromJson(response.data!.toJson()));
-              arrPreScript.insert(selectedScriptIndex + 1,
-                  ScriptData.fromJson(response.data!.toJson()));
+              arrScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
+              arrPreScript.insert(selectedScriptIndex + 1, ScriptData.fromJson(response.data!.toJson()));
             }
           } else {
             arrScript.add(ScriptData.fromJson(response.data!.toJson()));
@@ -1336,13 +1253,11 @@ class MarketWatchController extends BaseController {
         Map<String, dynamic> newItem = {i.toString(): arrScript[i].symbol};
         arrCurrentWatchListOrder.add(newItem);
       }
-      dbSerivice.bulkUpdate(
-          (selectedPortfolio + 1).toString(), arrCurrentWatchListOrder);
+      dbSerivice.bulkUpdate((selectedPortfolio + 1).toString(), arrCurrentWatchListOrder);
     });
   }
 
-  adminBuySellPopupDialog(
-      {bool isFromBuy = true, Function? CancelClick, Function? DeleteClick}) {
+  adminBuySellPopupDialog({bool isFromBuy = true, Function? CancelClick, Function? DeleteClick}) {
     selectedUser = UserData().obs;
 
     showDialog<String>(
@@ -1360,9 +1275,7 @@ class MarketWatchController extends BaseController {
               child: StatefulBuilder(builder: (context, setState) {
                 return Container(
                   width: 890,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.transparent),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.transparent),
                   clipBehavior: Clip.hardEdge,
                   child: IntrinsicHeight(
                     child: Column(
@@ -1381,9 +1294,7 @@ class MarketWatchController extends BaseController {
                                 AppImages.appLogo,
                                 width: 22,
                                 height: 22,
-                                color: isFromBuy
-                                    ? AppColors().blueColor
-                                    : AppColors().redColor,
+                                color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                               ),
                               const SizedBox(
                                 width: 10,
@@ -1394,9 +1305,7 @@ class MarketWatchController extends BaseController {
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: isFromBuy
-                                      ? AppColors().blueColor
-                                      : AppColors().redColor,
+                                  color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                                   fontFamily: CustomFonts.family1Medium,
                                 ),
                               ),
@@ -1431,17 +1340,14 @@ class MarketWatchController extends BaseController {
                         ),
                         Expanded(
                           child: Container(
-                            color: isFromBuy
-                                ? AppColors().blueColor
-                                : AppColors().redColor,
+                            color: isFromBuy ? AppColors().blueColor : AppColors().redColor,
                             padding: const EdgeInsets.all(10),
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Client Name",
@@ -1449,24 +1355,20 @@ class MarketWatchController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily:
-                                                CustomFonts.family1Regular,
+                                            fontFamily: CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 5),
+                                          padding: const EdgeInsets.symmetric(vertical: 5),
                                           child: IgnorePointer(
-                                            ignoring: userData!.role ==
-                                                UserRollList.user,
+                                            ignoring: userData!.role == UserRollList.user,
                                             child: userListView(selectedUser),
                                           ),
                                         ),
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -1478,28 +1380,20 @@ class MarketWatchController extends BaseController {
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily:
-                                                  CustomFonts.family1Regular,
+                                              fontFamily: CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
-                                        orderTypeListDropDown(
-                                            isFromAdmin: userData!.role ==
-                                                    UserRollList.user
-                                                ? false
-                                                : true)
+                                        orderTypeListDropDown(isFromAdmin: userData!.role == UserRollList.user ? false : true)
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Obx(() {
                                           print(isValidQty.value);
                                           return Text(
-                                            isValidQty.value
-                                                ? "Quantity"
-                                                : "Invalid Quantity",
+                                            isValidQty.value ? "Quantity" : "Invalid Quantity",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
@@ -1508,8 +1402,7 @@ class MarketWatchController extends BaseController {
                                                   : isFromBuy
                                                       ? AppColors().redColor
                                                       : AppColors().blueColor,
-                                              fontFamily:
-                                                  CustomFonts.family1Regular,
+                                              fontFamily: CustomFonts.family1Regular,
                                             ),
                                           );
                                         }),
@@ -1520,52 +1413,31 @@ class MarketWatchController extends BaseController {
                                           child: CustomTextField(
                                             regex: "[0-9]",
                                             type: '',
-                                            focusBorderColor:
-                                                AppColors().redColor,
-                                            keyBoardType: const TextInputType
-                                                .numberWithOptions(
-                                                signed: true, decimal: false),
+                                            focusBorderColor: AppColors().redColor,
+                                            keyBoardType: const TextInputType.numberWithOptions(signed: true, decimal: false),
                                             isEnabled: true,
                                             isOptional: false,
                                             isNoNeededCapital: true,
-                                            inValidMsg:
-                                                AppString.emptyMobileNumber,
+                                            inValidMsg: AppString.emptyMobileNumber,
                                             placeHolderMsg: "",
                                             labelMsg: "",
-                                            emptyFieldMsg:
-                                                AppString.emptyMobileNumber,
+                                            emptyFieldMsg: AppString.emptyMobileNumber,
                                             controller: qtyController,
                                             focus: qtyFocus,
                                             isSecure: false,
-                                            keyboardButtonType:
-                                                TextInputAction.next,
+                                            keyboardButtonType: TextInputAction.next,
                                             onChange: () {
-                                              if (qtyController
-                                                  .text.isNotEmpty) {
-                                                if (selectedSymbol
-                                                        ?.oddLotTrade ==
-                                                    1) {
-                                                  var temp = (num.parse(
-                                                          qtyController.text) /
-                                                      selectedScript
-                                                          .value!.ls!);
-                                                  lotController.text =
-                                                      temp.toStringAsFixed(2);
+                                              if (qtyController.text.isNotEmpty) {
+                                                if (selectedSymbol?.oddLotTrade == 1) {
+                                                  var temp = (num.parse(qtyController.text) / selectedScript.value!.ls!);
+                                                  lotController.text = temp.toStringAsFixed(2);
                                                   isValidQty.value = true;
                                                 } else {
-                                                  var temp = (num.parse(
-                                                          qtyController.text) /
-                                                      selectedScript
-                                                          .value!.ls!);
+                                                  var temp = (num.parse(qtyController.text) / selectedScript.value!.ls!);
 
                                                   print(temp);
-                                                  if ((num.parse(qtyController
-                                                              .text) %
-                                                          selectedScript
-                                                              .value!.ls!) ==
-                                                      0) {
-                                                    lotController.text =
-                                                        temp.toStringAsFixed(0);
+                                                  if ((num.parse(qtyController.text) % selectedScript.value!.ls!) == 0) {
+                                                    lotController.text = temp.toStringAsFixed(0);
                                                     isValidQty.value = true;
                                                   } else {
                                                     isValidQty.value = false;
@@ -1587,30 +1459,25 @@ class MarketWatchController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(left: 10),
                                           child: Text(
                                             "Lot",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily:
-                                                  CustomFonts.family1Regular,
+                                              fontFamily: CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
                                         Container(
                                           width: 100,
                                           height: 40,
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 0, horizontal: 10),
-                                          child:
-                                              NumberInputWithIncrementDecrementOwn(
+                                          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                                          child: NumberInputWithIncrementDecrementOwn(
                                             incIconSize: 18,
                                             decIconSize: 18,
                                             validator: (value) {
@@ -1625,8 +1492,7 @@ class MarketWatchController extends BaseController {
                                               setState(() {});
                                             },
                                             onChanged: (newValue) {},
-                                            autovalidateMode:
-                                                AutovalidateMode.disabled,
+                                            autovalidateMode: AutovalidateMode.disabled,
                                             fractionDigits: 2,
                                             textAlign: TextAlign.left,
 
@@ -1635,23 +1501,17 @@ class MarketWatchController extends BaseController {
                                             isInt: true,
                                             style: TextStyle(
                                               fontSize: 12,
-                                              fontFamily:
-                                                  CustomFonts.family1Regular,
+                                              fontFamily: CustomFonts.family1Regular,
                                               color: AppColors().darkText,
                                             ),
-                                            numberFieldDecoration:
-                                                InputDecoration(
+                                            numberFieldDecoration: InputDecoration(
                                               border: InputBorder.none,
                                               fillColor: AppColors().whiteColor,
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      bottom: 8, left: 20),
+                                              contentPadding: const EdgeInsets.only(bottom: 8, left: 20),
                                             ),
 
-                                            widgetContainerDecoration:
-                                                BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(0),
+                                            widgetContainerDecoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(0),
                                               color: AppColors().whiteColor,
                                             ),
                                             controller: lotController,
@@ -1662,8 +1522,7 @@ class MarketWatchController extends BaseController {
                                       ],
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -1675,8 +1534,7 @@ class MarketWatchController extends BaseController {
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors().whiteColor,
-                                              fontFamily:
-                                                  CustomFonts.family1Regular,
+                                              fontFamily: CustomFonts.family1Regular,
                                             ),
                                           ),
                                         ),
@@ -1685,42 +1543,23 @@ class MarketWatchController extends BaseController {
                                           return Container(
                                             width: 210,
                                             height: 40,
-                                            child:
-                                                NumberInputWithIncrementDecrementOwn(
+                                            child: NumberInputWithIncrementDecrementOwn(
                                               incIconSize: 18,
                                               decIconSize: 18,
                                               validator: (value) {
                                                 return null;
                                               },
                                               onChanged: (newValue) {},
-                                              autovalidateMode:
-                                                  AutovalidateMode.disabled,
+                                              autovalidateMode: AutovalidateMode.disabled,
                                               fractionDigits: 2,
                                               textAlign: TextAlign.left,
-                                              enabled: selectedOrderType
-                                                          .value.name !=
-                                                      "Market" &&
-                                                  selectedOrderType
-                                                          .value.name !=
-                                                      "Intraday",
-                                              initialValue: double.tryParse(
-                                                      priceController.text) ??
-                                                  0.0,
+                                              enabled: selectedOrderType.value.name != "Market" && selectedOrderType.value.name != "Intraday",
+                                              initialValue: double.tryParse(priceController.text) ?? 0.0,
                                               incDecFactor: 0.05,
                                               isInt: false,
-                                              numberFieldDecoration:
-                                                  InputDecoration(
-                                                      border: InputBorder.none,
-                                                      fillColor: AppColors()
-                                                          .whiteColor,
-                                                      contentPadding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 8,
-                                                              left: 20)),
-                                              widgetContainerDecoration:
-                                                  BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(0),
+                                              numberFieldDecoration: InputDecoration(border: InputBorder.none, fillColor: AppColors().whiteColor, contentPadding: const EdgeInsets.only(bottom: 8, left: 20)),
+                                              widgetContainerDecoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(0),
                                                 color: AppColors().whiteColor,
                                               ),
                                               controller: priceController,
@@ -1736,8 +1575,7 @@ class MarketWatchController extends BaseController {
                                 Row(
                                   children: [
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Exchange",
@@ -1745,8 +1583,7 @@ class MarketWatchController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily:
-                                                CustomFonts.family1Regular,
+                                            fontFamily: CustomFonts.family1Regular,
                                           ),
                                         ),
                                         // exchangeTypeDropDown
@@ -1755,10 +1592,7 @@ class MarketWatchController extends BaseController {
                                           width: 210,
                                           height: 40,
 
-                                          decoration: BoxDecoration(
-                                              color: AppColors().whiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
+                                          decoration: BoxDecoration(color: AppColors().whiteColor, borderRadius: BorderRadius.circular(5)),
                                           // margin: EdgeInsets.only(top: 5, bottom: 5),
                                           child: Center(
                                             child: Row(
@@ -1767,13 +1601,11 @@ class MarketWatchController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  selectedSymbol?.exchange ??
-                                                      "",
+                                                  selectedSymbol?.exchange ?? "",
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,
-                                                    fontFamily: CustomFonts
-                                                        .family1Regular,
+                                                    fontFamily: CustomFonts.family1Regular,
                                                   ),
                                                 ),
                                               ],
@@ -1786,8 +1618,7 @@ class MarketWatchController extends BaseController {
                                       width: 10,
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "Symbol",
@@ -1795,18 +1626,14 @@ class MarketWatchController extends BaseController {
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: AppColors().whiteColor,
-                                            fontFamily:
-                                                CustomFonts.family1Regular,
+                                            fontFamily: CustomFonts.family1Regular,
                                           ),
                                         ),
                                         Container(
                                           width: 210,
                                           height: 40,
 
-                                          decoration: BoxDecoration(
-                                              color: AppColors().whiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(5)),
+                                          decoration: BoxDecoration(color: AppColors().whiteColor, borderRadius: BorderRadius.circular(5)),
                                           // margin: EdgeInsets.only(top: 5, bottom: 5),
                                           child: Center(
                                             child: Row(
@@ -1815,13 +1642,11 @@ class MarketWatchController extends BaseController {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  selectedScriptFromPopup
-                                                      .value.symbol!,
+                                                  selectedScriptFromPopup.value.symbol!,
                                                   style: TextStyle(
                                                     fontSize: 12,
                                                     color: AppColors().darkText,
-                                                    fontFamily: CustomFonts
-                                                        .family1Regular,
+                                                    fontFamily: CustomFonts.family1Regular,
                                                   ),
                                                 ),
                                               ],
@@ -1836,41 +1661,31 @@ class MarketWatchController extends BaseController {
                                           height: 18,
                                         ),
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
+                                          padding: const EdgeInsets.only(left: 10),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               SizedBox(
                                                 width: 210,
                                                 height: 40,
                                                 child: CustomButton(
                                                   isEnabled: true,
-                                                  shimmerColor:
-                                                      AppColors().whiteColor,
+                                                  shimmerColor: AppColors().whiteColor,
                                                   title: "Submit",
                                                   textSize: 16,
                                                   focusKey: SubmitFocus,
-                                                  borderColor: isFromBuy
-                                                      ? AppColors().redColor
-                                                      : AppColors().blueColor,
-                                                  focusShadowColor:
-                                                      AppColors().whiteColor,
+                                                  borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
+                                                  focusShadowColor: AppColors().whiteColor,
                                                   onPress: () {
-                                                    if (userData!.role ==
-                                                        UserRollList.user) {
+                                                    if (userData!.role == UserRollList.user) {
                                                       initiateTrade(isFromBuy);
                                                     } else {
-                                                      initiateManualTrade(
-                                                          isFromBuy);
+                                                      initiateManualTrade(isFromBuy);
                                                     }
                                                   },
-                                                  bgColor:
-                                                      AppColors().grayLightLine,
+                                                  bgColor: AppColors().grayLightLine,
                                                   isFilled: true,
-                                                  textColor:
-                                                      AppColors().darkText,
+                                                  textColor: AppColors().darkText,
                                                   isTextCenter: true,
                                                   isLoading: false,
                                                 ),
@@ -1883,16 +1698,12 @@ class MarketWatchController extends BaseController {
                                                 height: 40,
                                                 child: CustomButton(
                                                   isEnabled: true,
-                                                  shimmerColor:
-                                                      AppColors().whiteColor,
+                                                  shimmerColor: AppColors().whiteColor,
                                                   title: "Cancel",
-                                                  borderColor: isFromBuy
-                                                      ? AppColors().redColor
-                                                      : AppColors().blueColor,
+                                                  borderColor: isFromBuy ? AppColors().redColor : AppColors().blueColor,
                                                   textSize: 16,
                                                   focusKey: CancelFocus,
-                                                  focusShadowColor:
-                                                      AppColors().whiteColor,
+                                                  focusShadowColor: AppColors().whiteColor,
                                                   // buttonWidth: 36.w,
                                                   onPress: () {
                                                     // selectedExchangeFromPopup.value = ExchangeData();
@@ -1908,11 +1719,9 @@ class MarketWatchController extends BaseController {
                                                     update();
                                                     Get.back();
                                                   },
-                                                  bgColor:
-                                                      AppColors().whiteColor,
+                                                  bgColor: AppColors().whiteColor,
                                                   isFilled: true,
-                                                  textColor:
-                                                      AppColors().darkText,
+                                                  textColor: AppColors().darkText,
                                                   isTextCenter: true,
                                                   isLoading: false,
                                                 ),
@@ -1940,16 +1749,14 @@ class MarketWatchController extends BaseController {
             ));
   }
 
-  Widget exchangeTypeDropDown(Rx<ExchangeData> value,
-      {bool isFromPopUp = false}) {
+  Widget exchangeTypeDropDown(Rx<ExchangeData> value, {bool isFromPopUp = false}) {
     return IgnorePointer(
       ignoring: isFromPopUp,
       child: Obx(() {
         return Container(
             width: isFromPopUp ? 210 : 130,
             height: 40,
-            margin: EdgeInsets.symmetric(
-                horizontal: isFromPopUp ? 0 : 10, vertical: 10),
+            margin: EdgeInsets.symmetric(horizontal: isFromPopUp ? 0 : 10, vertical: 10),
             child: DropdownButtonHideUnderline(
               child: DropdownButtonFormField2<ExchangeData>(
                 isExpanded: true,
@@ -2003,18 +1810,17 @@ class MarketWatchController extends BaseController {
                         .toList(),
                 selectedItemBuilder: (context) {
                   return arrExchange
-                      .map(
-                          (ExchangeData item) => DropdownMenuItem<ExchangeData>(
-                                value: item,
-                                child: Text(
-                                  item.name ?? "",
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontFamily: CustomFonts.family1Medium,
-                                    color: AppColors().darkText,
-                                  ),
-                                ),
-                              ))
+                      .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
+                            value: item,
+                            child: Text(
+                              item.name ?? "",
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontFamily: CustomFonts.family1Medium,
+                                color: AppColors().darkText,
+                              ),
+                            ),
+                          ))
                       .toList();
                 },
                 value: value.value.exchangeId != null ? value.value : null,
@@ -2040,9 +1846,7 @@ class MarketWatchController extends BaseController {
       child: Container(
         width: 210,
         margin: const EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-            border: Border.all(color: AppColors().lightOnlyText, width: 1),
-            color: AppColors().whiteColor),
+        decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
         child: Obx(() {
           return Center(
             child: DropdownButtonHideUnderline(
@@ -2110,23 +1914,17 @@ class MarketWatchController extends BaseController {
                   // setState(() {
                   value.value = newSelectedValue;
                   // focusNode.requestFocus();
-                  selectedScriptIndex = arrScript.indexWhere(
-                      (element) => element.symbol == newSelectedValue?.symbol);
-                  var obj = arrSymbol.firstWhereOrNull((element) =>
-                      arrScript[selectedScriptIndex].symbol ==
-                      element.symbolName);
-                  var exchangeObj = arrExchange.firstWhereOrNull(
-                      (element) => element.exchangeId == obj!.exchangeId!);
+                  selectedScriptIndex = arrScript.indexWhere((element) => element.symbol == newSelectedValue?.symbol);
+                  var obj = arrSymbol.firstWhereOrNull((element) => arrScript[selectedScriptIndex].symbol == element.symbolName);
+                  var exchangeObj = arrExchange.firstWhereOrNull((element) => element.exchangeId == obj!.exchangeId!);
                   if (exchangeObj != null) {
                     selectedExchangeFromPopup.value = exchangeObj;
                   }
                   qtyController.text = obj!.lotSize!.toString();
 
-                  priceController.text =
-                      arrScript[selectedScriptIndex].bid!.toString();
+                  priceController.text = arrScript[selectedScriptIndex].bid!.toString();
 
-                  selectedScriptFromPopup.value =
-                      arrScript[selectedScriptIndex];
+                  selectedScriptFromPopup.value = arrScript[selectedScriptIndex];
                   update();
                   // });
                 },
@@ -2220,10 +2018,7 @@ class MarketWatchController extends BaseController {
                   ),
                 ),
                 searchMatchFn: (item, searchValue) {
-                  return item.value!.symbolTitle
-                      .toString()
-                      .toLowerCase()
-                      .startsWith(searchValue.toLowerCase());
+                  return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
                 },
               ),
               onMenuStateChange: (isOpen) {
@@ -2243,12 +2038,10 @@ class MarketWatchController extends BaseController {
                 ),
               ),
               items: arrAllScript
-                  .map((GlobalSymbolData item) =>
-                      DropdownItem<GlobalSymbolData>(
+                  .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
                         value: item,
                         height: 30,
-                        child:
-                            StatefulBuilder(builder: (context, menuSetState) {
+                        child: StatefulBuilder(builder: (context, menuSetState) {
                           return IgnorePointer(
                             ignoring: selectedExchange.value.isCallPut,
                             child: GestureDetector(
@@ -2269,15 +2062,11 @@ class MarketWatchController extends BaseController {
                                   update();
                                   getExpiryListForTop();
                                 } else {
-                                  var temp = arrSymbol.firstWhereOrNull(
-                                      (element) =>
-                                          item.symbolId == element.symbolId);
+                                  var temp = arrSymbol.firstWhereOrNull((element) => item.symbolId == element.symbolId);
                                   if (temp != null) {
-                                    await deleteSymbolFromTab(
-                                        temp.userTabSymbolId!);
+                                    await deleteSymbolFromTab(temp.userTabSymbolId!);
                                   } else {
-                                    await addSymbolToTab(
-                                        item.symbolId.toString());
+                                    await addSymbolToTab(item.symbolId.toString());
                                   }
                                 }
 
@@ -2290,16 +2079,10 @@ class MarketWatchController extends BaseController {
                                 child: Row(
                                   children: [
                                     Center(
-                                      child: Text(item.symbolTitle ?? "",
-                                          style: TextStyle(
-                                              fontSize: 10,
-                                              fontFamily:
-                                                  CustomFonts.family1Medium,
-                                              color: AppColors().borderColor)),
+                                      child: Text(item.symbolTitle ?? "", style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().borderColor)),
                                     ),
                                     const Spacer(),
-                                    if (selectedExchange.value.isCallPut ==
-                                        false)
+                                    if (selectedExchange.value.isCallPut == false)
                                       item.isApiCallRunning
                                           ? SizedBox(
                                               width: 15,
@@ -2308,11 +2091,7 @@ class MarketWatchController extends BaseController {
                                                 strokeWidth: 2,
                                                 color: AppColors().blueColor,
                                               ))
-                                          : arrSymbol.firstWhereOrNull(
-                                                      (element) =>
-                                                          element.symbolId ==
-                                                          item.symbolId) !=
-                                                  null
+                                          : arrSymbol.firstWhereOrNull((element) => element.symbolId == item.symbolId) != null
                                               ? Icon(
                                                   Icons.check_box,
                                                   color: AppColors().blueColor,
@@ -2357,8 +2136,7 @@ class MarketWatchController extends BaseController {
                 // controller.update();
                 // // });
                 // focusNode.requestFocus();
-                var temp = arrSymbol.firstWhereOrNull(
-                    (element) => value!.symbolId == element.symbolId);
+                var temp = arrSymbol.firstWhereOrNull((element) => value!.symbolId == element.symbolId);
                 if (selectedExchange.value.isCallPut) {
                   selectedSymbolForTopDropDown.value = value!;
 
@@ -2392,8 +2170,7 @@ class MarketWatchController extends BaseController {
   Widget orderTypeListDropDown({bool isFromAdmin = false}) {
     return Obx(() {
       return IgnorePointer(
-        ignoring:
-            false, //userData!.role == UserRollList.superAdmin ? false : isFromAdmin,
+        ignoring: false, //userData!.role == UserRollList.superAdmin ? false : isFromAdmin,
         child: Container(
             width: 210,
             height: 30,
@@ -2407,15 +2184,8 @@ class MarketWatchController extends BaseController {
                     fillColor: Colors.white,
                     filled: true,
                     contentPadding: const EdgeInsets.only(left: 0),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: isBuyOpen == 2
-                                ? AppColors().blueColor
-                                : AppColors().redColor,
-                            width: 2)),
-                    enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: AppColors().lightOnlyText, width: 1)),
+                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: isBuyOpen == 2 ? AppColors().blueColor : AppColors().redColor, width: 2)),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppColors().lightOnlyText, width: 1)),
                   ),
                   hint: Text(
                     isFromAdmin ? "Market" : 'Order Type',
@@ -2430,16 +2200,10 @@ class MarketWatchController extends BaseController {
                             value: item,
                             height: 30,
                             alignment: AlignmentDirectional.centerStart,
-                            child: StatefulBuilder(
-                                builder: (context, menuSetState) {
+                            child: StatefulBuilder(builder: (context, menuSetState) {
                               return Container(
                                 color: Colors.transparent,
-                                child: Text(item.name ?? "",
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: CustomFonts.family1Medium,
-                                        color: AppColors().grayColor)),
+                                child: Text(item.name ?? "", maxLines: 1, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                               );
                             }),
                           ))
@@ -2460,9 +2224,7 @@ class MarketWatchController extends BaseController {
                             ))
                         .toList();
                   },
-                  value: selectedOrderType.value.id == null
-                      ? null
-                      : selectedOrderType.value,
+                  value: selectedOrderType.value.id == null ? null : selectedOrderType.value,
                   onChanged: (Type? value) {
                     selectedOrderType.value = value!;
                     update();
@@ -2504,10 +2266,7 @@ class MarketWatchController extends BaseController {
                     width: 210,
                     height: 40,
                     margin: const EdgeInsets.symmetric(vertical: 5),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: AppColors().lightOnlyText, width: 1),
-                        color: AppColors().whiteColor),
+                    decoration: BoxDecoration(border: Border.all(color: AppColors().lightOnlyText, width: 1), color: AppColors().whiteColor),
                     child: Center(
                       child: DropdownButtonHideUnderline(
                         child: ButtonTheme(
@@ -2525,12 +2284,7 @@ class MarketWatchController extends BaseController {
                             items: arrValidaty
                                 .map((Type item) => DropdownMenuItem<Type>(
                                       value: item,
-                                      child: Text(item.name ?? "",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontFamily:
-                                                  CustomFonts.family1Medium,
-                                              color: AppColors().grayColor)),
+                                      child: Text(item.name ?? "", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().grayColor)),
                                     ))
                                 .toList(),
                             selectedItemBuilder: (context) {
@@ -2541,8 +2295,7 @@ class MarketWatchController extends BaseController {
                                           item.name ?? "",
                                           style: TextStyle(
                                             fontSize: 12,
-                                            fontFamily:
-                                                CustomFonts.family1Medium,
+                                            fontFamily: CustomFonts.family1Medium,
                                             color: AppColors().darkText,
                                           ),
                                         ),
@@ -2550,9 +2303,7 @@ class MarketWatchController extends BaseController {
                                   .toList();
                             },
                             decoration: commonFocusBorder,
-                            value: selectedValidity.value.id == null
-                                ? null
-                                : selectedValidity.value,
+                            value: selectedValidity.value.id == null ? null : selectedValidity.value,
                             onChanged: (Type? value) {
                               selectedValidity.value = value!;
 
@@ -2567,36 +2318,27 @@ class MarketWatchController extends BaseController {
     });
   }
 
-  Widget userListView(Rx<UserData> selectedUser,
-      {double? width, int isFromBS = 0}) {
+  Widget userListView(Rx<UserData> selectedUser, {double? width, int isFromBS = 0}) {
     return Container(
         // height: 40.h,
         width: 210,
         height: 37,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: AppColors().bgColor,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors().fontColor.withOpacity(0.2),
-                offset: Offset.zero,
-                spreadRadius: 2,
-                blurRadius: 7,
-              ),
-            ]),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors().bgColor, boxShadow: [
+          BoxShadow(
+            color: AppColors().fontColor.withOpacity(0.2),
+            offset: Offset.zero,
+            spreadRadius: 2,
+            blurRadius: 7,
+          ),
+        ]),
         child: Container(
           width: 200,
           // height: 4.h,
           margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.transparent, width: 1),
-              borderRadius: BorderRadius.circular(3)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.transparent, width: 1), borderRadius: BorderRadius.circular(3)),
           child: Autocomplete<UserData>(
             displayStringForOption: (UserData option) => option.userName!,
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController searchEditingController,
-                FocusNode searchFocus,
-                VoidCallback onFieldSubmitted) {
+            fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
               return CustomTextField(
                 type: 'Search User',
                 keyBoardType: TextInputType.text,
@@ -2629,8 +2371,7 @@ class MarketWatchController extends BaseController {
               alignment: Alignment.topLeft,
               child: Material(
                 shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(4.0)),
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
                 ),
                 child: Container(
                   height: 70,
@@ -2640,11 +2381,9 @@ class MarketWatchController extends BaseController {
                     itemCount: options.length,
                     shrinkWrap: false,
                     itemBuilder: (BuildContext context, int index) {
-                      final String option =
-                          arrUserListOnlyClient.elementAt(index).userName!;
+                      final String option = arrUserListOnlyClient.elementAt(index).userName!;
                       return InkWell(
-                        onTap: () =>
-                            onSelected(arrUserListOnlyClient.elementAt(index)),
+                        onTap: () => onSelected(arrUserListOnlyClient.elementAt(index)),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
@@ -2668,8 +2407,7 @@ class MarketWatchController extends BaseController {
                 return const Iterable<UserData>.empty();
               }
               if (textEditingValue.text.length > 2) {
-                return await getUserList(
-                    textEditingValue.text, UserRollList.user);
+                return await getUserList(textEditingValue.text, UserRollList.user);
               } else {
                 return const Iterable<UserData>.empty();
               }
@@ -2683,36 +2421,27 @@ class MarketWatchController extends BaseController {
         ));
   }
 
-  Widget searchuserView(Rx<UserData> selectedUser,
-      {double? width, int isFromBS = 0}) {
+  Widget searchuserView(Rx<UserData> selectedUser, {double? width, int isFromBS = 0}) {
     return Container(
         // height: 40.h,
         width: 210,
         height: 37,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: AppColors().bgColor,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors().fontColor.withOpacity(0.2),
-                offset: Offset.zero,
-                spreadRadius: 2,
-                blurRadius: 7,
-              ),
-            ]),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColors().bgColor, boxShadow: [
+          BoxShadow(
+            color: AppColors().fontColor.withOpacity(0.2),
+            offset: Offset.zero,
+            spreadRadius: 2,
+            blurRadius: 7,
+          ),
+        ]),
         child: Container(
           width: 200,
           // height: 4.h,
           margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.transparent, width: 1),
-              borderRadius: BorderRadius.circular(3)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.transparent, width: 1), borderRadius: BorderRadius.circular(3)),
           child: Autocomplete<UserData>(
             displayStringForOption: (UserData option) => option.userName!,
-            fieldViewBuilder: (BuildContext context,
-                TextEditingController searchEditingController,
-                FocusNode searchFocus,
-                VoidCallback onFieldSubmitted) {
+            fieldViewBuilder: (BuildContext context, TextEditingController searchEditingController, FocusNode searchFocus, VoidCallback onFieldSubmitted) {
               return CustomTextField(
                 type: 'Search User',
                 keyBoardType: TextInputType.text,
@@ -2745,8 +2474,7 @@ class MarketWatchController extends BaseController {
               alignment: Alignment.topLeft,
               child: Material(
                 shape: const RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(4.0)),
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(4.0)),
                 ),
                 child: Container(
                   height: 200,
@@ -2756,11 +2484,9 @@ class MarketWatchController extends BaseController {
                     itemCount: options.length,
                     shrinkWrap: false,
                     itemBuilder: (BuildContext context, int index) {
-                      final String option =
-                          arrUserListOnlyClient.elementAt(index).userName!;
+                      final String option = arrUserListOnlyClient.elementAt(index).userName!;
                       return InkWell(
-                        onTap: () =>
-                            onSelected(arrUserListOnlyClient.elementAt(index)),
+                        onTap: () => onSelected(arrUserListOnlyClient.elementAt(index)),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
@@ -2791,10 +2517,7 @@ class MarketWatchController extends BaseController {
             },
             onSelected: (UserData selection) {
               debugPrint('You just selected $selection');
-              showUserDetailsPopUp(
-                  userId: selection.userId!,
-                  userName: selection.userName!,
-                  roll: selection.role!);
+              showUserDetailsPopUp(userId: selection.userId!, userName: selection.userName!, roll: selection.role!);
               // controller.addSymbolToTab(selection.symbolId!);
             },
           ),
@@ -2805,11 +2528,7 @@ class MarketWatchController extends BaseController {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("SYMBOL",
-            style: TextStyle(
-                fontSize: 12,
-                fontFamily: CustomFonts.family1Medium,
-                color: AppColors().darkText)),
+        Text("SYMBOL", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
         Container(
             width: 170,
             height: 20,
@@ -2868,10 +2587,7 @@ class MarketWatchController extends BaseController {
                         keyboardButtonType: TextInputAction.done,
                         maxLength: 64,
                         isShowPrefix: false,
-                        fontStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: CustomFonts.family1Medium,
-                            color: AppColors().fontColor),
+                        fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                         suffixIcon: Container(
                           child: GestureDetector(
                             onTap: () {
@@ -2887,10 +2603,7 @@ class MarketWatchController extends BaseController {
                       ),
                     ),
                     searchMatchFn: (item, searchValue) {
-                      return item.value!.symbolTitle
-                          .toString()
-                          .toLowerCase()
-                          .startsWith(searchValue.toLowerCase());
+                      return item.value!.symbolTitle.toString().toLowerCase().startsWith(searchValue.toLowerCase());
                     },
                   ),
                   onMenuStateChange: (isOpen) {
@@ -2916,47 +2629,37 @@ class MarketWatchController extends BaseController {
                     ),
                   ),
                   items: arrAllScriptForF5
-                      .map((GlobalSymbolData item) =>
-                          DropdownItem<GlobalSymbolData>(
+                      .map((GlobalSymbolData item) => DropdownItem<GlobalSymbolData>(
                             value: item,
                             height: 30,
                             alignment: AlignmentDirectional.centerStart,
-                            child: StatefulBuilder(
-                                builder: (context, menuSetState) {
+                            child: StatefulBuilder(builder: (context, menuSetState) {
                               return Container(
                                 color: Colors.transparent,
-                                child: Text(item.symbolTitle ?? "",
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: CustomFonts.family1Medium,
-                                        color: AppColors().blueColor)),
+                                child: Text(item.symbolTitle ?? "", maxLines: 1, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().blueColor)),
                               );
                             }),
                           ))
                       .toList(),
                   selectedItemBuilder: (context) {
                     return arrAllScriptForF5
-                        .map(
-                            (GlobalSymbolData item) => DropdownMenuItem<String>(
-                                  value: item.symbolTitle,
-                                  child: Container(
-                                    padding: EdgeInsets.only(left: 5),
-                                    child: Text(
-                                      item.symbolTitle ?? "",
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: CustomFonts.family1Medium,
-                                        color: AppColors().darkText,
-                                      ),
-                                    ),
+                        .map((GlobalSymbolData item) => DropdownMenuItem<String>(
+                              value: item.symbolTitle,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 5),
+                                child: Text(
+                                  item.symbolTitle ?? "",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontFamily: CustomFonts.family1Medium,
+                                    color: AppColors().darkText,
                                   ),
-                                ))
+                                ),
+                              ),
+                            ))
                         .toList();
                   },
-                  value: selectedSymbolForF5.value?.symbolId == null
-                      ? null
-                      : selectedSymbolForF5.value!,
+                  value: selectedSymbolForF5.value?.symbolId == null ? null : selectedSymbolForF5.value!,
                   onChanged: (GlobalSymbolData? value) {
                     selectedSymbolForF5.value = value!;
                     if (selectedExchangeForF5.value.isCallPut) {
@@ -2988,18 +2691,11 @@ class MarketWatchController extends BaseController {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("EXCHANGE",
-                style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: CustomFonts.family1Medium,
-                    color: AppColors().darkText))),
+        Container(padding: EdgeInsets.only(left: 10), child: Text("EXCHANGE", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
         Container(
           width: 80,
           height: 20,
-          margin:
-              const EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
+          margin: const EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
           child: Obx(() {
             return Center(
               child: DropdownButtonHideUnderline(
@@ -3049,8 +2745,7 @@ class MarketWatchController extends BaseController {
                       .toList(),
                   selectedItemBuilder: (context) {
                     return arrExchange
-                        .map((ExchangeData item) =>
-                            DropdownMenuItem<ExchangeData>(
+                        .map((ExchangeData item) => DropdownMenuItem<ExchangeData>(
                               value: item,
                               child: Container(
                                 padding: EdgeInsets.only(left: 5),
@@ -3093,18 +2788,11 @@ class MarketWatchController extends BaseController {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("EXPIRY",
-                style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: CustomFonts.family1Medium,
-                    color: AppColors().darkText))),
+        Container(padding: EdgeInsets.only(left: 10), child: Text("EXPIRY", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
         Container(
           width: 100,
           height: 20,
-          margin:
-              const EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
+          margin: const EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
           child: Obx(() {
             return Center(
               child: DropdownButtonHideUnderline(
@@ -3170,9 +2858,7 @@ class MarketWatchController extends BaseController {
                             ))
                         .toList();
                   },
-                  value: selectedExpiryForF5.value.name == null
-                      ? null
-                      : selectedExpiryForF5.value,
+                  value: selectedExpiryForF5.value.name == null ? null : selectedExpiryForF5.value,
                   onChanged: (expiryData? newSelectedValue) {
                     // });
                     selectedExpiryForF5.value = newSelectedValue!;
@@ -3199,11 +2885,7 @@ class MarketWatchController extends BaseController {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("CE/PE",
-            style: TextStyle(
-                fontSize: 12,
-                fontFamily: CustomFonts.family1Medium,
-                color: AppColors().darkText)),
+        Text("CE/PE", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText)),
         Container(
           width: 65,
           height: 20,
@@ -3273,9 +2955,7 @@ class MarketWatchController extends BaseController {
                             ))
                         .toList();
                   },
-                  value: selectedCallPutForF5.value.id == null
-                      ? null
-                      : selectedCallPutForF5.value,
+                  value: selectedCallPutForF5.value.id == null ? null : selectedCallPutForF5.value,
                   onChanged: (Type? newSelectedValue) {
                     // });
                     selectedCallPutForF5.value = newSelectedValue!;
@@ -3302,18 +2982,11 @@ class MarketWatchController extends BaseController {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-            padding: EdgeInsets.only(left: 10),
-            child: Text("Strike Price",
-                style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: CustomFonts.family1Medium,
-                    color: AppColors().darkText))),
+        Container(padding: EdgeInsets.only(left: 10), child: Text("Strike Price", style: TextStyle(fontSize: 12, fontFamily: CustomFonts.family1Medium, color: AppColors().darkText))),
         Container(
             width: 120,
             height: 20,
-            margin:
-                const EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
+            margin: const EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
             child: Center(
               child: DropdownButtonHideUnderline(
                 child: DropdownButtonFormField2<StrikePriceData>(
@@ -3343,10 +3016,7 @@ class MarketWatchController extends BaseController {
                         inValidMsg: "",
                         placeHolderMsg: "Search",
                         emptyFieldMsg: "",
-                        fontStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: CustomFonts.family1Medium,
-                            color: AppColors().fontColor),
+                        fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                         controller: textEditingController,
                         focus: textEditingFocus,
                         isSecure: false,
@@ -3374,10 +3044,7 @@ class MarketWatchController extends BaseController {
                       ),
                     ),
                     searchMatchFn: (item, searchValue) {
-                      return item.value!.strikePrice
-                          .toString()
-                          .toLowerCase()
-                          .startsWith(searchValue.toLowerCase());
+                      return item.value!.strikePrice.toString().toLowerCase().startsWith(searchValue.toLowerCase());
                     },
                   ),
                   onMenuStateChange: (isOpen) {
@@ -3403,29 +3070,21 @@ class MarketWatchController extends BaseController {
                     ),
                   ),
                   items: arrStrikePrice
-                      .map((StrikePriceData item) =>
-                          DropdownItem<StrikePriceData>(
+                      .map((StrikePriceData item) => DropdownItem<StrikePriceData>(
                             value: item,
                             height: 30,
                             alignment: AlignmentDirectional.centerStart,
-                            child: StatefulBuilder(
-                                builder: (context, menuSetState) {
+                            child: StatefulBuilder(builder: (context, menuSetState) {
                               return Container(
                                 color: Colors.transparent,
-                                child: Text(item.strikePrice!.toString(),
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: CustomFonts.family1Medium,
-                                        color: AppColors().blueColor)),
+                                child: Text(item.strikePrice!.toString(), maxLines: 1, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().blueColor)),
                               );
                             }),
                           ))
                       .toList(),
                   selectedItemBuilder: (context) {
                     return arrStrikePrice
-                        .map((StrikePriceData item) =>
-                            DropdownMenuItem<StrikePriceData>(
+                        .map((StrikePriceData item) => DropdownMenuItem<StrikePriceData>(
                               value: item,
                               child: Container(
                                 padding: EdgeInsets.only(left: 5),
@@ -3441,9 +3100,7 @@ class MarketWatchController extends BaseController {
                             ))
                         .toList();
                   },
-                  value: selectedStrikePriceForF5.value.strikePrice == null
-                      ? null
-                      : selectedStrikePriceForF5.value,
+                  value: selectedStrikePriceForF5.value.strikePrice == null ? null : selectedStrikePriceForF5.value,
                   onChanged: (StrikePriceData? value) {
                     selectedStrikePriceForF5.value = value!;
                     getselectedSymbolDetailFromF5PopUp(value.symbolId!);
@@ -3530,9 +3187,7 @@ class MarketWatchController extends BaseController {
                         ))
                     .toList();
               },
-              value: selectedExpiry.value.name == null
-                  ? null
-                  : selectedExpiry.value,
+              value: selectedExpiry.value.name == null ? null : selectedExpiry.value,
               onChanged: (expiryData? newSelectedValue) {
                 // });
                 selectedExpiry.value = newSelectedValue!;
@@ -3623,9 +3278,7 @@ class MarketWatchController extends BaseController {
                         ))
                     .toList();
               },
-              value: selectedCallPut.value.id == null
-                  ? null
-                  : selectedCallPut.value,
+              value: selectedCallPut.value.id == null ? null : selectedCallPut.value,
               onChanged: (Type? newSelectedValue) {
                 // });
                 selectedCallPut.value = newSelectedValue!;
@@ -3683,10 +3336,7 @@ class MarketWatchController extends BaseController {
                         inValidMsg: "",
                         placeHolderMsg: "Search",
                         emptyFieldMsg: "",
-                        fontStyle: TextStyle(
-                            fontSize: 10,
-                            fontFamily: CustomFonts.family1Medium,
-                            color: AppColors().fontColor),
+                        fontStyle: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().fontColor),
                         controller: textEditingController,
                         focus: textEditingFocus,
                         isSecure: false,
@@ -3714,10 +3364,7 @@ class MarketWatchController extends BaseController {
                       ),
                     ),
                     searchMatchFn: (item, searchValue) {
-                      return item.value!.strikePrice
-                          .toString()
-                          .toLowerCase()
-                          .startsWith(searchValue.toLowerCase());
+                      return item.value!.strikePrice.toString().toLowerCase().startsWith(searchValue.toLowerCase());
                     },
                   ),
                   onMenuStateChange: (isOpen) {
@@ -3743,29 +3390,21 @@ class MarketWatchController extends BaseController {
                     ),
                   ),
                   items: arrStrikePrice
-                      .map((StrikePriceData item) =>
-                          DropdownItem<StrikePriceData>(
+                      .map((StrikePriceData item) => DropdownItem<StrikePriceData>(
                             value: item,
                             height: 30,
                             alignment: AlignmentDirectional.centerStart,
-                            child: StatefulBuilder(
-                                builder: (context, menuSetState) {
+                            child: StatefulBuilder(builder: (context, menuSetState) {
                               return Container(
                                 color: Colors.transparent,
-                                child: Text(item.strikePrice!.toString(),
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        fontFamily: CustomFonts.family1Medium,
-                                        color: AppColors().blueColor)),
+                                child: Text(item.strikePrice!.toString(), maxLines: 1, style: TextStyle(fontSize: 10, fontFamily: CustomFonts.family1Medium, color: AppColors().blueColor)),
                               );
                             }),
                           ))
                       .toList(),
                   selectedItemBuilder: (context) {
                     return arrStrikePrice
-                        .map((StrikePriceData item) =>
-                            DropdownMenuItem<StrikePriceData>(
+                        .map((StrikePriceData item) => DropdownMenuItem<StrikePriceData>(
                               value: item,
                               child: Container(
                                 padding: EdgeInsets.only(left: 5),
@@ -3781,9 +3420,7 @@ class MarketWatchController extends BaseController {
                             ))
                         .toList();
                   },
-                  value: selectedStrikePriceForF5.value.strikePrice == null
-                      ? null
-                      : selectedStrikePriceForF5.value,
+                  value: selectedStrikePriceForF5.value.strikePrice == null ? null : selectedStrikePriceForF5.value,
                   onChanged: (StrikePriceData? value) {
                     selectedStrikePrice.value = value!;
                     // getselectedSymbolDetailFromF5PopUp(newSelectedValue.symbolId!);

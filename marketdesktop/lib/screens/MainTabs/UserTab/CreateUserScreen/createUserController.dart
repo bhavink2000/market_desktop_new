@@ -12,7 +12,6 @@ import 'package:marketdesktop/modelClass/userRoleListModelClass.dart';
 import 'package:marketdesktop/screens/MainContainerScreen/mainContainerController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListController.dart';
 import 'package:marketdesktop/screens/MainTabs/UserTab/UserListScreen/userListWrapper.dart';
-import 'package:marketdesktop/screens/MainTabs/ViewTab/MarketWatchScreen/marketWatchController.dart';
 import 'package:marketdesktop/screens/UserDetailPopups/userDetailsPopUpController.dart';
 import 'package:number_to_indian_words/number_to_indian_words.dart';
 
@@ -61,12 +60,9 @@ class CreateUserController extends BaseController {
   FocusNode profitandLossFocus = FocusNode();
   TextEditingController brkSharingMasterController = TextEditingController();
   FocusNode brkSharingMasterFocus = FocusNode();
-  FocusNode leverageFocus =
-      FocusNode(descendantsAreFocusable: true, descendantsAreTraversable: true);
-  FocusNode userTypeFocus =
-      FocusNode(descendantsAreFocusable: true, descendantsAreTraversable: true);
-  FocusNode ChangePasswordOnFirstLoginFocus =
-      FocusNode(descendantsAreFocusable: true, descendantsAreTraversable: true);
+  FocusNode leverageFocus = FocusNode(descendantsAreFocusable: true, descendantsAreTraversable: true);
+  FocusNode userTypeFocus = FocusNode(descendantsAreFocusable: true, descendantsAreTraversable: true);
+  FocusNode ChangePasswordOnFirstLoginFocus = FocusNode(descendantsAreFocusable: true, descendantsAreTraversable: true);
 
   List<String> arrGroupList = ["Client", "Master", "Admin", "Broker"];
   List<ExchangeData> arrExchange = [];
@@ -113,8 +109,7 @@ class CreateUserController extends BaseController {
     if (arrLeverageList.isNotEmpty) {
       selectedLeverage.value = arrLeverageList.first;
     }
-    profitandLossController.text =
-        userData!.profitAndLossSharingDownLine!.toString();
+    profitandLossController.text = userData!.profitAndLossSharingDownLine!.toString();
     brkSharingMasterController.text = userData!.brkSharingDownLine!.toString();
     dropdownLeveargeKey = GlobalKey();
     if (userData!.highLowSLLimitPercentage == true) {
@@ -152,20 +147,15 @@ class CreateUserController extends BaseController {
         nameController.text = selectedUserForEdit!.name!;
         userNameController.text = selectedUserForEdit!.userName!;
         mobileNumberController.text = selectedUserForEdit!.phone!.toString();
-        creditController.text = selectedUserForEdit!.credit
-            .toString()
-            .replaceAll(RegExp(r'\.0$'), '');
+        creditController.text = selectedUserForEdit!.credit.toString().replaceAll(RegExp(r'\.0$'), '');
         remarkController.text = selectedUserForEdit!.remark!;
         isAutoSquareOff = selectedUserForEdit!.addMaster == 1 ? true : false;
-        isChangePasswordOnFirstLogin =
-            selectedUserForEdit!.changePasswordOnFirstLogin!;
+        isChangePasswordOnFirstLogin = selectedUserForEdit!.changePasswordOnFirstLogin!;
         selectedUserType.value.roleId = selectedUserForEdit!.role;
         isCloseOnly = selectedUserForEdit!.marketOrder == 1 ? true : false;
-        profitandLossController.text =
-            selectedUserForEdit!.profitAndLossSharing.toString();
+        profitandLossController.text = selectedUserForEdit!.profitAndLossSharing.toString();
         isFreshLimitSL.value = selectedUserForEdit?.freshLimitSL ?? false;
-        brkSharingMasterController.text =
-            selectedUserForEdit!.brkSharing.toString();
+        brkSharingMasterController.text = selectedUserForEdit!.brkSharing.toString();
         if (selectedUserForEdit!.highLowBetweenTradeLimit != null) {
           for (var element in selectedUserForEdit!.highLowBetweenTradeLimit!) {
             for (var i = 0; i < arrExchange.length; i++) {
@@ -178,23 +168,13 @@ class CreateUserController extends BaseController {
         if (selectedUserForEdit!.exchangeAllow != null) {
           for (var i = 0; i < selectedUserForEdit!.exchangeAllow!.length; i++) {
             for (var j = 0; j < arrExchange.length; j++) {
-              if (arrExchange[j].exchangeId ==
-                  selectedUserForEdit!.exchangeAllow![i].exchangeId) {
+              if (arrExchange[j].exchangeId == selectedUserForEdit!.exchangeAllow![i].exchangeId) {
                 arrExchange[j].isSelected = true;
                 for (var l = 0; l < arrExchange[j].arrGroupList.length; l++) {
-                  for (var k = 0;
-                      k <
-                          selectedUserForEdit!
-                              .exchangeAllow![i].groupId!.length;
-                      k++) {
-                    if (arrExchange[j].arrGroupList[l].groupId ==
-                        selectedUserForEdit!.exchangeAllow![i].groupId![k]) {
-                      if (!arrExchange[j]
-                          .selectedItems
-                          .contains(arrExchange[j].arrGroupList[l])) {
-                        arrExchange[j]
-                            .selectedItems
-                            .add(arrExchange[j].arrGroupList[l]);
+                  for (var k = 0; k < selectedUserForEdit!.exchangeAllow![i].groupId!.length; k++) {
+                    if (arrExchange[j].arrGroupList[l].groupId == selectedUserForEdit!.exchangeAllow![i].groupId![k]) {
+                      if (!arrExchange[j].selectedItems.contains(arrExchange[j].arrGroupList[l])) {
+                        arrExchange[j].selectedItems.add(arrExchange[j].arrGroupList[l]);
                       }
                     }
                   }
@@ -210,8 +190,7 @@ class CreateUserController extends BaseController {
           isSymbolWiseSL = true;
         }
         for (int i = 0; i < selectedUserForEdit!.exchangeAllow!.length; i++) {
-          selectedUserForEdit!.exchangeAllow![i].groupId =
-              selectedUserForEdit!.exchangeAllow![i].groupId!.toSet().toList();
+          selectedUserForEdit!.exchangeAllow![i].groupId = selectedUserForEdit!.exchangeAllow![i].groupId!.toSet().toList();
         }
 
         update();
@@ -220,17 +199,11 @@ class CreateUserController extends BaseController {
         nameController.text = selectedUserForEdit!.name!;
         userNameController.text = selectedUserForEdit!.userName!;
         mobileNumberController.text = selectedUserForEdit!.phone!.toString();
-        creditController.text = selectedUserForEdit!.credit
-            .toString()
-            .replaceAll(RegExp(r'\.0$'), '');
+        creditController.text = selectedUserForEdit!.credit.toString().replaceAll(RegExp(r'\.0$'), '');
         remarkController.text = selectedUserForEdit!.remark!;
-        isAutoSquareOff =
-            selectedUserForEdit!.autoSquareOff == 1 ? true : false;
-        cutoffController.text = selectedUserForEdit!.cutOff! > 0
-            ? selectedUserForEdit!.cutOff.toString()
-            : "";
-        isChangePasswordOnFirstLogin =
-            selectedUserForEdit!.changePasswordOnFirstLogin!;
+        isAutoSquareOff = selectedUserForEdit!.autoSquareOff == 1 ? true : false;
+        cutoffController.text = selectedUserForEdit!.cutOff! > 0 ? selectedUserForEdit!.cutOff.toString() : "";
+        isChangePasswordOnFirstLogin = selectedUserForEdit!.changePasswordOnFirstLogin!;
         if (selectedUserForEdit!.highLowBetweenTradeLimit != null) {
           for (var element in selectedUserForEdit!.highLowBetweenTradeLimit!) {
             for (var i = 0; i < arrExchange.length; i++) {
@@ -240,37 +213,28 @@ class CreateUserController extends BaseController {
             }
           }
         }
-        if (selectedUserForEdit != null &&
-            selectedUserForEdit!.exchangeAllow != null) {
+        if (selectedUserForEdit != null && selectedUserForEdit!.exchangeAllow != null) {
           for (var i = 0; i < selectedUserForEdit!.exchangeAllow!.length; i++) {
-            var currentExchangeId =
-                selectedUserForEdit!.exchangeAllow![i].exchangeId;
+            var currentExchangeId = selectedUserForEdit!.exchangeAllow![i].exchangeId;
             var groupId = selectedUserForEdit!.exchangeAllow![i].groupId?[0];
             for (var j = 0; j < arrExchange.length; j++) {
               if (arrExchange[j].exchangeId == currentExchangeId) {
                 arrExchange[j].isSelected = true;
-                arrExchange[j].isTurnOverSelected =
-                    selectedUserForEdit!.exchangeAllow![i].isTurnoverWise;
-                arrExchange[j].isSymbolSelected =
-                    selectedUserForEdit!.exchangeAllow![i].isSymbolWise;
+                arrExchange[j].isTurnOverSelected = selectedUserForEdit!.exchangeAllow![i].isTurnoverWise;
+                arrExchange[j].isSymbolSelected = selectedUserForEdit!.exchangeAllow![i].isSymbolWise;
                 var groupData = await callforGroupList(currentExchangeId);
 
                 arrExchange[j].arrGroupList.clear();
                 arrExchange[j].arrGroupList.addAll(groupData);
                 if (groupId != null) {
-                  int index = arrExchange[j]
-                      .arrGroupList
-                      .indexWhere((item) => item.groupId == groupId);
+                  int index = arrExchange[j].arrGroupList.indexWhere((item) => item.groupId == groupId);
                   if (index != -1) {
-                    arrExchange[j].isDropDownValueSelected.value =
-                        arrExchange[j].arrGroupList[index];
+                    arrExchange[j].isDropDownValueSelected.value = arrExchange[j].arrGroupList[index];
                   } else {
-                    arrExchange[i].isDropDownValueSelected =
-                        arrExchange[i].arrGroupList.first.obs;
+                    arrExchange[i].isDropDownValueSelected = arrExchange[i].arrGroupList.first.obs;
                   }
                 } else {
-                  arrExchange[i].isDropDownValueSelected =
-                      arrExchange[i].arrGroupList.first.obs;
+                  arrExchange[i].isDropDownValueSelected = arrExchange[i].arrGroupList.first.obs;
                 }
               }
             }
@@ -284,8 +248,7 @@ class CreateUserController extends BaseController {
           isSymbolWiseSL = true;
         }
 
-        var selectedLeverageIndex = arrLeverageList.indexWhere(
-            (element) => element.name == selectedUserForEdit!.leverage!);
+        var selectedLeverageIndex = arrLeverageList.indexWhere((element) => element.name == selectedUserForEdit!.leverage!);
         if (selectedLeverageIndex != -1) {
           selectedLeverage.value = arrLeverageList[selectedLeverageIndex];
         }
@@ -352,21 +315,14 @@ class CreateUserController extends BaseController {
       arrExchange[i].selectedItemsID.clear();
       arrExchange[i].isDropDownValueSelectedID.value = "";
       if (selectedUserType.value.roleId == UserRollList.user) {
-        if (!arrExchange[i]
-            .arrGroupList
-            .any((group) => group.name == "Select Group")) {
-          arrExchange[i]
-              .arrGroupList
-              .insert(0, groupListModelData(name: "Select Group"));
+        if (!arrExchange[i].arrGroupList.any((group) => group.name == "Select Group")) {
+          arrExchange[i].arrGroupList.insert(0, groupListModelData(name: "Select Group"));
         }
 
-        arrExchange[i].isDropDownValueSelected =
-            arrExchange[i].arrGroupList.first.obs;
+        arrExchange[i].isDropDownValueSelected = arrExchange[i].arrGroupList.first.obs;
       }
       if (selectedUserType.value.roleId != UserRollList.user) {
-        arrExchange[i]
-            .arrGroupList
-            .removeWhere((element) => element.name == "Select Group");
+        arrExchange[i].arrGroupList.removeWhere((element) => element.name == "Select Group");
       }
     }
     arrSelectedGroupListIDforOthers.clear();
@@ -406,13 +362,9 @@ class CreateUserController extends BaseController {
         msg = AppString.emptyConfirmPassword;
       } else if (retypePasswordController.text.length < 6) {
         msg = AppString.wrongRetypePassword;
-      } else if (passwordController.text.trim() !=
-          retypePasswordController.text.trim()) {
+      } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
-      } else if ((cutoffController.text.isNotEmpty &&
-              int.parse(cutoffController.text) < 60) ||
-          (cutoffController.text.isNotEmpty &&
-              int.parse(cutoffController.text) > 100)) {
+      } else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
         msg = AppString.cutOffValid;
       } else if (creditController.text.trim().isEmpty) {
         msg = AppString.emptyCredit;
@@ -434,10 +386,7 @@ class CreateUserController extends BaseController {
     // else if (cutoffController.text.trim().isEmpty) {
     //   msg = AppString.emptyCutOff;
     // }
-    else if ((cutoffController.text.isNotEmpty &&
-            int.parse(cutoffController.text) < 60) ||
-        (cutoffController.text.isNotEmpty &&
-            int.parse(cutoffController.text) > 100)) {
+    else if ((cutoffController.text.isNotEmpty && int.parse(cutoffController.text) < 60) || (cutoffController.text.isNotEmpty && int.parse(cutoffController.text) > 100)) {
       msg = AppString.cutOffValid;
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
@@ -494,8 +443,7 @@ class CreateUserController extends BaseController {
         msg = AppString.emptyConfirmPassword;
       } else if (retypePasswordController.text.length < 6) {
         msg = AppString.wrongRetypePassword;
-      } else if (passwordController.text.trim() !=
-          retypePasswordController.text.trim()) {
+      } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
       }
     }
@@ -527,8 +475,7 @@ class CreateUserController extends BaseController {
         msg = AppString.emptyConfirmPassword;
       } else if (retypePasswordController.text.length < 6) {
         msg = AppString.wrongRetypePassword;
-      } else if (passwordController.text.trim() !=
-          retypePasswordController.text.trim()) {
+      } else if (passwordController.text.trim() != retypePasswordController.text.trim()) {
         msg = AppString.passwordNotMatch;
       } else if (creditController.text.trim().isEmpty) {
         msg = AppString.emptyCredit;
@@ -536,16 +483,12 @@ class CreateUserController extends BaseController {
         msg = AppString.emptyExchangeGroup;
       } else if (profitandLossController.text.trim().isEmpty) {
         msg = AppString.emptyProfitLossSharing;
-      } else if (int.parse(profitandLossController.text) >
-          userData!.profitAndLossSharingDownLine!) {
-        msg =
-            "Profit and Loss should be between 0 to ${userData!.profitAndLossSharingDownLine!}";
+      } else if (int.parse(profitandLossController.text) > userData!.profitAndLossSharingDownLine!) {
+        msg = "Profit and Loss should be between 0 to ${userData!.profitAndLossSharingDownLine!}";
       } else if (brkSharingMasterController.text.trim().isEmpty) {
         msg = AppString.emptyBrokerageSharing;
-      } else if (int.parse(brkSharingMasterController.text) >
-          userData!.brkSharingDownLine!) {
-        msg =
-            "Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}";
+      } else if (int.parse(brkSharingMasterController.text) > userData!.brkSharingDownLine!) {
+        msg = "Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}";
       }
     } else if (creditController.text.trim().isEmpty) {
       msg = AppString.emptyCredit;
@@ -553,16 +496,12 @@ class CreateUserController extends BaseController {
       msg = AppString.emptyExchangeGroup;
     } else if (profitandLossController.text.trim().isEmpty) {
       msg = AppString.emptyProfitLossSharing;
-    } else if (int.parse(profitandLossController.text) >
-        userData!.profitAndLossSharingDownLine!) {
-      msg =
-          "Profit and Loss should be between 0 to ${userData!.profitAndLossSharingDownLine!}";
+    } else if (int.parse(profitandLossController.text) > userData!.profitAndLossSharingDownLine!) {
+      msg = "Profit and Loss should be between 0 to ${userData!.profitAndLossSharingDownLine!}";
     } else if (brkSharingMasterController.text.trim().isEmpty) {
       msg = AppString.emptyBrokerageSharing;
-    } else if (int.parse(brkSharingMasterController.text) >
-        userData!.brkSharingDownLine!) {
-      msg =
-          "Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}";
+    } else if (int.parse(brkSharingMasterController.text) > userData!.brkSharingDownLine!) {
+      msg = "Brokerage sharing should be between 0 to ${userData!.brkSharingDownLine!}";
     }
     return msg;
   }
@@ -575,32 +514,17 @@ class CreateUserController extends BaseController {
         arrExchange[i].selectedItemsID.clear();
         for (var k = 0; k < arrExchange[i].arrGroupList.length; k++) {
           for (var l = 0; l < arrExchange[i].selectedItems.length; l++) {
-            if (arrExchange[i].arrGroupList[k].name ==
-                    arrExchange[i].selectedItems[l].name &&
-                arrExchange[i].arrGroupList[k].groupId != null) {
-              if (!arrExchange[i]
-                  .selectedItemsID
-                  .contains(arrExchange[i].arrGroupList[k].groupId!)) {
-                arrExchange[i]
-                    .selectedItemsID
-                    .add(arrExchange[i].arrGroupList[k].groupId!);
+            if (arrExchange[i].arrGroupList[k].name == arrExchange[i].selectedItems[l].name && arrExchange[i].arrGroupList[k].groupId != null) {
+              if (!arrExchange[i].selectedItemsID.contains(arrExchange[i].arrGroupList[k].groupId!)) {
+                arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
               }
             }
           }
-          if (arrExchange[i].arrGroupList[k].name ==
-                  arrExchange[i].isDropDownValueSelected.value.name &&
-              arrExchange[i]
-                  .isDropDownValueSelected
-                  .value
-                  .exchangeId!
-                  .isNotEmpty &&
+          if (arrExchange[i].arrGroupList[k].name == arrExchange[i].isDropDownValueSelected.value.name &&
+              arrExchange[i].isDropDownValueSelected.value.exchangeId!.isNotEmpty &&
               arrExchange[i].arrGroupList[k].groupId != null &&
-              !arrExchange[i]
-                  .selectedItemsID
-                  .contains(arrExchange[i].arrGroupList[k].groupId!)) {
-            arrExchange[i]
-                .selectedItemsID
-                .add(arrExchange[i].arrGroupList[k].groupId!);
+              !arrExchange[i].selectedItemsID.contains(arrExchange[i].arrGroupList[k].groupId!)) {
+            arrExchange[i].selectedItemsID.add(arrExchange[i].arrGroupList[k].groupId!);
           }
         }
 
@@ -624,8 +548,7 @@ class CreateUserController extends BaseController {
       }
       for (var i = 0; i < arrExchange.length; i++) {
         if (arrExchange[i].isHighLowTradeSelected! == true) {
-          arrHighLowBetweenTradeSelectedList
-              .add(arrExchange[i].exchangeId ?? "");
+          arrHighLowBetweenTradeSelectedList.add(arrExchange[i].exchangeId ?? "");
         }
       }
 
@@ -663,14 +586,12 @@ class CreateUserController extends BaseController {
   // Api Calls
   //*********************************************************************** */
   getExchangeList() async {
-    var response =
-        await service.getExchangeListUserWiseCall(userId: userData!.userId!);
+    var response = await service.getExchangeListUserWiseCall(userId: userData!.userId!);
     if (response != null) {
       if (response.statusCode == 200) {
         arrExchange = response.exchangeData ?? [];
         for (var i = 0; i < arrExchange.length; i++) {
-          arrExchange[i].arrGroupList =
-              await callforGroupList(arrExchange[i].exchangeId);
+          arrExchange[i].arrGroupList = await callforGroupList(arrExchange[i].exchangeId);
           update();
         }
       }
@@ -753,8 +674,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems != []) {
               arrExchange[i].selectedItems.clear();
@@ -851,8 +771,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems != []) {
               arrExchange[i].selectedItems.clear();
@@ -911,13 +830,9 @@ class CreateUserController extends BaseController {
         userName: userNameController.text.trim(),
         password: passwordController.text.trim(),
         phone: mobileNumberController.text.trim(),
-        executePendingOrder:
-            isExecutePendingOrder == null || isExecutePendingOrder == false
-                ? 0
-                : 1,
+        executePendingOrder: isExecutePendingOrder == null || isExecutePendingOrder == false ? 0 : 1,
         deleteTrade: isDeleteTrade == null || isDeleteTrade == false ? 0 : 1,
-        manualOrder:
-            isAdminManualOrder == null || isAdminManualOrder == false ? 0 : 1,
+        manualOrder: isAdminManualOrder == null || isAdminManualOrder == false ? 0 : 1,
         cmpOrder: isCmpOrder == null || isCmpOrder == false ? 0 : 1,
         role: selectedUserType.value.roleId,
       );
@@ -962,8 +877,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems != []) {
               arrExchange[i].selectedItems.clear();
@@ -1018,13 +932,9 @@ class CreateUserController extends BaseController {
         name: nameController.text.trim(),
         userName: userNameController.text.trim(),
         phone: mobileNumberController.text.trim(),
-        executePendingOrder:
-            isExecutePendingOrder == null || isExecutePendingOrder == false
-                ? 0
-                : 1,
+        executePendingOrder: isExecutePendingOrder == null || isExecutePendingOrder == false ? 0 : 1,
         deleteTrade: isDeleteTrade == null || isDeleteTrade == false ? 0 : 1,
-        manualOrder:
-            isAdminManualOrder == null || isAdminManualOrder == false ? 0 : 1,
+        manualOrder: isAdminManualOrder == null || isAdminManualOrder == false ? 0 : 1,
         cmpOrder: isCmpOrder == null || isCmpOrder == false ? 0 : 1,
         role: selectedUserType.value.roleId,
       );
@@ -1070,8 +980,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems != []) {
               arrExchange[i].selectedItems.clear();
@@ -1138,9 +1047,7 @@ class CreateUserController extends BaseController {
           phone: mobileNumberController.text.trim(),
           role: selectedUserType.value.roleId,
           credit: int.parse(creditController.text.trim()),
-          cutOff: cutoffController.text.trim().isEmpty
-              ? 0
-              : int.parse(cutoffController.text.trim()),
+          cutOff: cutoffController.text.trim().isEmpty ? 0 : int.parse(cutoffController.text.trim()),
           leverage: selectedLeverage.value.id,
           remark: remarkController.text.trim(),
           exchangeAllow: arrSelectedExchangeListforClient,
@@ -1151,8 +1058,7 @@ class CreateUserController extends BaseController {
           intraday: isIntraday ? 1 : 0,
           symbolWiseSL: isSymbolWiseSL,
           brokerId: selectedBrokerType.value.userId ?? "",
-          brkSharingDownLine:
-              int.tryParse(brokerageSharingController.text) ?? 0,
+          brkSharingDownLine: int.tryParse(brokerageSharingController.text) ?? 0,
           changePassword: isChangePasswordOnFirstLogin,
           freshLimitSL: isFreshLimitSL.value);
       isLoadingSave.value = false;
@@ -1162,9 +1068,7 @@ class CreateUserController extends BaseController {
           showSuccessToast(response.meta?.message ?? "");
           // Get.find<MarketWatchController>().getUserList("","");
           getUserList();
-          showUserDetailsPopUp(
-              userId: response.data!.userId!,
-              userName: response.data!.userName!);
+          showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
           Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
           Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
           Get.find<UserDetailsPopUpController>().update();
@@ -1226,8 +1130,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems.isNotEmpty) {
               arrExchange[i].selectedItems.clear();
@@ -1297,9 +1200,7 @@ class CreateUserController extends BaseController {
           phone: mobileNumberController.text.trim(),
           role: selectedUserType.value.roleId,
           credit: int.parse(creditController.text.trim()),
-          cutOff: cutoffController.text.trim().isEmpty
-              ? 0
-              : int.parse(cutoffController.text.trim()),
+          cutOff: cutoffController.text.trim().isEmpty ? 0 : int.parse(cutoffController.text.trim()),
           leverage: selectedLeverage.value.id,
           remark: remarkController.text.trim(),
           exchangeAllow: arrSelectedExchangeListforClient,
@@ -1310,8 +1211,7 @@ class CreateUserController extends BaseController {
           intraday: isIntraday ? 1 : 0,
           symbolWiseSL: isSymbolWiseSL,
           brokerId: selectedBrokerType.value.userId ?? "",
-          brkSharingDownLine:
-              int.tryParse(brokerageSharingController.text) ?? 0,
+          brkSharingDownLine: int.tryParse(brokerageSharingController.text) ?? 0,
           changePassword: isChangePasswordOnFirstLogin,
           freshLimitSL: isFreshLimitSL.value);
       isLoadingSave.value = false;
@@ -1363,8 +1263,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems.isNotEmpty) {
               arrExchange[i].selectedItems.clear();
@@ -1392,11 +1291,7 @@ class CreateUserController extends BaseController {
           isCommonScreenPopUpOpen = true;
           currentOpenedScreen = ScreenViewNames.userList;
 
-          generalContainerPopup(
-              view: UserListScreen(),
-              title: ScreenViewNames.userList,
-              isFilterAvailable: true,
-              filterClick: Get.find<UserListController>().onCLickFilter);
+          generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: Get.find<UserListController>().onCLickFilter);
 
           update();
         } else {
@@ -1440,12 +1335,8 @@ class CreateUserController extends BaseController {
         userName: userNameController.text.trim(),
         password: passwordController.text.trim(),
         phone: mobileNumberController.text.trim(),
-        profitandLossSharingDownline: (userData!.profitAndLossSharingDownLine! -
-                (num.tryParse(profitandLossController.text) ?? 0))
-            .toInt(),
-        brkSharingDownline: (userData!.brkSharingDownLine! -
-                (num.tryParse(brkSharingMasterController.text) ?? 0))
-            .toInt(),
+        profitandLossSharingDownline: (userData!.profitAndLossSharingDownLine! - (num.tryParse(profitandLossController.text) ?? 0)).toInt(),
+        brkSharingDownline: (userData!.brkSharingDownLine! - (num.tryParse(brkSharingMasterController.text) ?? 0)).toInt(),
         role: selectedUserType.value.roleId,
         credit: int.parse(creditController.text.trim()),
         leverage: selectedLeverage.value.id,
@@ -1501,8 +1392,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems != []) {
               arrExchange[i].selectedItems.clear();
@@ -1519,9 +1409,7 @@ class CreateUserController extends BaseController {
           isAdminManualOrder = null;
           isDeleteTrade = null;
           isExecutePendingOrder = null;
-          showUserDetailsPopUp(
-              userId: response.data!.userId!,
-              userName: response.data!.userName!);
+          showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
           Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
           Get.find<UserDetailsPopUpController>().selectedMenuName = "Brk";
           Get.find<UserDetailsPopUpController>().update();
@@ -1568,12 +1456,8 @@ class CreateUserController extends BaseController {
         userName: userNameController.text.trim(),
         // password: passwordController.text.trim(),
         phone: mobileNumberController.text.trim(),
-        profitandLossSharingDownline: (userData!.profitAndLossSharingDownLine! -
-                (num.tryParse(profitandLossController.text) ?? 0))
-            .toInt(),
-        brkSharingDownline: (userData!.brkSharingDownLine! -
-                (num.tryParse(brkSharingMasterController.text) ?? 0))
-            .toInt(),
+        profitandLossSharingDownline: (userData!.profitAndLossSharingDownLine! - (num.tryParse(profitandLossController.text) ?? 0)).toInt(),
+        brkSharingDownline: (userData!.brkSharingDownLine! - (num.tryParse(brkSharingMasterController.text) ?? 0)).toInt(),
         role: selectedUserType.value.roleId,
         credit: int.parse(creditController.text.trim()),
         leverage: selectedLeverage.value.id,
@@ -1631,8 +1515,7 @@ class CreateUserController extends BaseController {
               arrExchange[i].isHighLowTradeSelected = false;
             }
             if (arrExchange[i].isDropDownValueSelected.value != "") {
-              arrExchange[i].isDropDownValueSelected.value =
-                  groupListModelData();
+              arrExchange[i].isDropDownValueSelected.value = groupListModelData();
             }
             if (arrExchange[i].selectedItems != []) {
               arrExchange[i].selectedItems.clear();
@@ -1658,11 +1541,7 @@ class CreateUserController extends BaseController {
           isCommonScreenPopUpOpen = true;
           currentOpenedScreen = ScreenViewNames.userList;
           var userListVC = Get.put(UserListController());
-          generalContainerPopup(
-              view: UserListScreen(),
-              title: ScreenViewNames.userList,
-              isFilterAvailable: true,
-              filterClick: userListVC.onCLickFilter);
+          generalContainerPopup(view: UserListScreen(), title: ScreenViewNames.userList, isFilterAvailable: true, filterClick: userListVC.onCLickFilter);
 
           // showUserDetailsPopUp(userId: response.data!.userId!, userName: response.data!.userName!);
           // Get.find<UserDetailsPopUpController>().selectedCurrentTab = 4;
@@ -1694,9 +1573,7 @@ class CreateUserController extends BaseController {
   String numericToWord() {
     var word = "";
 
-    word =
-        NumToWords.convertNumberToIndianWords(int.parse(creditController.text))
-            .toUpperCase();
+    word = NumToWords.convertNumberToIndianWords(int.parse(creditController.text)).toUpperCase();
 
     // word.replaceAll("MILLION", "LAC.");
     // word.replaceAll("BILLION", "CR.");
