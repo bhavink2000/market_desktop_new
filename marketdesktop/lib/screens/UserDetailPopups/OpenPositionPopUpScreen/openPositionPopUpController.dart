@@ -2,8 +2,6 @@ import 'package:get/get.dart';
 import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/modelClass/positionModelClass.dart';
 import 'package:marketdesktop/modelClass/profileInfoModelClass.dart';
-
-import '../../../main.dart';
 import '../../../modelClass/allSymbolListModelClass.dart';
 import '../../../modelClass/exchangeListModelClass.dart';
 

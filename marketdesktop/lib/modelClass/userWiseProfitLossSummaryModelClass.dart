@@ -5,7 +5,6 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:marketdesktop/main.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';
 import 'package:marketdesktop/modelClass/tabWiseSymbolListModelClass.dart';
 

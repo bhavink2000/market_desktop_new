@@ -70,7 +70,7 @@ class LeverageUpdateScreen extends BaseView<LeverageUpdateController> {
             onChanged: (AddMaster? value) {
               // This is called when the user selects an item.
               controller.selectedUser.leverage = value!.name;
-              selectedLeverage.value = value!;
+              selectedLeverage.value = value;
               // focus.nextFocus();
             },
             isExpanded: true,

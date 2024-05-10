@@ -1,8 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:get/get.dart';
-
 import 'package:marketdesktop/modelClass/allSymbolListModelClass.dart';
 import 'package:marketdesktop/modelClass/exchangeListModelClass.dart';
 import 'package:marketdesktop/modelClass/getScriptFromSocket.dart';

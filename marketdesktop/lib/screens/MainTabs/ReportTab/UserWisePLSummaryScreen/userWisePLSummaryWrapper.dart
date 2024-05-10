@@ -8,7 +8,6 @@ import 'package:marketdesktop/modelClass/myUserListModelClass.dart';
 import 'package:marketdesktop/screens/MainTabs/ReportTab/UserWisePLSummaryScreen/userWisePLSummaryController.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../../../constant/index.dart';
 import '../../../../constant/screenColumnData.dart';
 import '../../../../constant/utilities.dart';
